@@ -17,7 +17,7 @@ public class JRSBitSet {
     //
     int currentLevel = 0;
 
-    //±äÁ¿¸öÊı
+    //å˜é‡ä¸ªæ•°
     int numVars;
     int numLevel;
     int numTuples;
@@ -40,13 +40,13 @@ public class JRSBitSet {
             words[0][i] = 0xFFFFFFFFFFFFFFFFL;
         }
 
-        //lastLimit È¡ÖµÎª[0, 63]
-        //ÈôlastLimit = 0, lastWord²»¸Ä±ä
+        //lastLimit å–å€¼ä¸º[0, 63]
+        //è‹¥lastLimit = 0, lastWordä¸æ”¹å˜
         //otherwise, lastWord <<= 64 - lastLimit
         if (lastLimits != 0) {
             words[0][num_bit - 1] <<= 64 - lastLimits;
         }
-        //³õÊ¼»¯limit, index, mask
+        //åˆå§‹åŒ–limit, index, mask
         limit = new int[numLevel];
         for (int i = 0; i < numLevel; i++) {
             limit[i] = -1;
@@ -118,9 +118,9 @@ public class JRSBitSet {
         }
         currentLevel = preLevel;
 
-        ///tips:»¹ÓĞ´ı×øÓĞÓÅ»¯¿Õ¼ä
+        ///tips:è¿˜æœ‰å¾…åæœ‰ä¼˜åŒ–ç©ºé—´
 ////        currentLevel =
-//        //»ØËİºócurrentLevelÊ§Ğ§
+//        //å›æº¯åcurrentLevelå¤±æ•ˆ
 //        if (currentLevel >= level){
 //            preLevel = --level;
 //            while (limit[preLevel] == -1) {

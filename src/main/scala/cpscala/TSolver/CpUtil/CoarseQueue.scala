@@ -4,7 +4,7 @@ import cpscala.TSolver.Model.Variable.Var
 import scala.reflect.ClassTag
 
 /**
-  *´ÖÁ£¶È¶ÓÁĞ£¬ÆäÖĞµÄÔªËØÊÇ±äÁ¿¡£
+  *ç²—ç²’åº¦é˜Ÿåˆ—ï¼Œå…¶ä¸­çš„å…ƒç´ æ˜¯å˜é‡ã€‚
   */
 
   class CoarseQueue[T <: Var :ClassTag](val num_vars: Int) {

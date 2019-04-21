@@ -16,10 +16,10 @@ abstract class Solver(xm: XModel, propagatorName: String, varType: String, heuNa
   val tabs = new Array[Propagator](numTabs)
   val helper = new SearchHelper(numVars, numTabs)
 
-  //¼ÇÂ¼ÒÑ¸³ÖµµÄ±äÁ¿
+  //è®°å½•å·²èµ‹å€¼çš„å˜é‡
   val levelvsparse = Array.range(0, numVars)
   val levelvdense = Array.range(0, numVars)
-  //¼ÇÂ¼ÒÑentail µÄÔ¼Êø
+  //è®°å½•å·²entail çš„çº¦æŸ
   //  val levelcsparse = Array.range(0, numTabs)
   //  val levelcdense = Array.range(0, numTabs)
   //  val clevel = Array.fill(numVars + 1)(-1)
@@ -29,7 +29,7 @@ abstract class Solver(xm: XModel, propagatorName: String, varType: String, heuNa
     subscription(i) = new ArrayBuffer[Propagator]()
   }
 
-  // ³õÊ¼»¯±äÁ¿
+  // åˆå§‹åŒ–å˜é‡
   varType match {
     case "BitSet" => {
       for (i <- 0 until numVars) {
@@ -53,7 +53,7 @@ abstract class Solver(xm: XModel, propagatorName: String, varType: String, heuNa
 
   }
 
-  //³õÊ¼»¯Ô¼Êø
+  //åˆå§‹åŒ–çº¦æŸ
   propagatorName match {
     case "STR2" => {
       for (i <- 0 until numTabs) {
@@ -211,7 +211,7 @@ abstract class Solver(xm: XModel, propagatorName: String, varType: String, heuNa
 
       if (consistent && I.full()) {
         I.show()
-        // ÈôÏëÇó³öËùÓÐ½â£¬Ôò½«consistentÖÃÎªfalse£¬ÇÒ²»·µ»Ø
+        // è‹¥æƒ³æ±‚å‡ºæ‰€æœ‰è§£ï¼Œåˆ™å°†consistentç½®ä¸ºfalseï¼Œä¸”ä¸è¿”å›ž
         end_time = System.nanoTime
         helper.time = end_time - start_time
         return
@@ -270,7 +270,7 @@ abstract class Solver(xm: XModel, propagatorName: String, varType: String, heuNa
   def checkConsistencyAfterRefutation(x: Var): Boolean
 
   def remove(v_a: Val): Unit = {
-    //Ô¼ÊøµÄÒÑÊµÀý»¯±äÁ¿¸öÊý¼õ1
+    //çº¦æŸçš„å·²å®žä¾‹åŒ–å˜é‡ä¸ªæ•°å‡1
     for (c <- subscription(v_a.v.id)) {
       //      if (c.assignedCount.toInt != c.assignedCount)
       //        c.assignedCount -= 0.5
@@ -280,7 +280,7 @@ abstract class Solver(xm: XModel, propagatorName: String, varType: String, heuNa
     v_a.v.remove(v_a.a)
   }
 
-  //ÐÞ¸Älevelvdense
+  //ä¿®æ”¹levelvdense
   def selectVal(): Val = {
     var mindmdd = Double.MaxValue
     var minv: Var = null
@@ -316,7 +316,7 @@ abstract class Solver(xm: XModel, propagatorName: String, varType: String, heuNa
   }
 
   def bind(v_a: Val): Unit = {
-    //ÔÚÏ¡Êè¼¯ÉÏ½»»»±äÁ¿
+    //åœ¨ç¨€ç–é›†ä¸Šäº¤æ¢å˜é‡
     val minvi = levelvsparse(v_a.v.id)
     val a = levelvdense(helper.level - 1)
     levelvdense(helper.level - 1) = levelvdense(minvi)

@@ -8,20 +8,20 @@ import scala.collection.mutable.ArrayBuffer
 
 class TableIPSTR2_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[PVar], val tuples: Array[Array[Int]], val helper: IPSearchHelper) extends IPPropagator {
   val position = Array.range(0, tuples.length)
-  // ¾Ö²¿
+  // å±€éƒ¨
   val gacValue = new Array[SingleBitSet](arity)
 
   val levelLimits = Array.fill(num_vars + 1)(-1)
   levelLimits(0) = tuples.length - 1
-  //´æ±äÁ¿Index
+  //å­˜å˜é‡Index
   val Ssup = new ArrayBuffer[Int](arity)
   val Sval = new ArrayBuffer[Int](arity)
   //  val lastsize = Array.fill(arity)(-1)
-  //Ìæ´úlastsizeÈôËüÓëv.simpleMask²»Ò»ÑùÔòĞèÒª¼ÓÈëSval
+  //æ›¿ä»£lastsizeè‹¥å®ƒä¸v.simpleMaskä¸ä¸€æ ·åˆ™éœ€è¦åŠ å…¥Sval
   val lastMask = Array.fill(arity)(0L)
   level = 0
 
-  // ³õÊ¼»¯gacvalue
+  // åˆå§‹åŒ–gacvalue
   var ii = 0
   while (ii < arity) {
     val v = scope(ii)
@@ -30,7 +30,7 @@ class TableIPSTR2_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scop
     ii += 1
   }
 
-  //¼ì²é±äÁ¿
+  //æ£€æŸ¥å˜é‡
   def initial(): Unit = {
     Ssup.clear()
     Sval.clear()
@@ -53,7 +53,7 @@ class TableIPSTR2_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scop
     }
   }
 
-  // ÕâÀïµÄÖµ¼Óµ½gacValueÖĞ
+  // è¿™é‡Œçš„å€¼åŠ åˆ°gacValueä¸­
   def updateTable(): Boolean = {
     var i = levelLimits(level)
     while (i >= 0) {
@@ -71,14 +71,14 @@ class TableIPSTR2_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scop
           val a = t(vv)
 
           gacValue(vv).add(a)
-          // Ó¦¸Ã±È½Ïlastmask¶ø²»ÊÇµ±Ç°µÄv.simplemask£¬µ¥Ïß³ÌÊÇ¿ÉÒÔ±ÈµÄ£¬µ«ÊÇ¶àÏß³Ì²»¿ÉÒÔ
+          // åº”è¯¥æ¯”è¾ƒlastmaskè€Œä¸æ˜¯å½“å‰çš„v.simplemaskï¼Œå•çº¿ç¨‹æ˜¯å¯ä»¥æ¯”çš„ï¼Œä½†æ˜¯å¤šçº¿ç¨‹ä¸å¯ä»¥
           //          if (gacValue(vv).mask() == v.simpleMask()){
           if (gacValue(vv).mask() == lastMask(vv)) {
             //            printf("remove from cid: %d, var: %d\n", id, v.id)
             val lastPos = Ssup.length - 1
-            //ÏÈ½«SsupµÄ×îºóÒ»¸öÔªËØ¸´ÖÆµ½µ±Ç°jÎ»ÖÃ
+            //å…ˆå°†Ssupçš„æœ€åä¸€ä¸ªå…ƒç´ å¤åˆ¶åˆ°å½“å‰jä½ç½®
             Ssup(j) = Ssup(lastPos)
-            //ÔÙ½«×îºóÒ»¸öÔªËØÉ¾³ı£¬ÕâÑùÄÜ½ÚÔ¼Ê±¼ä
+            //å†å°†æœ€åä¸€ä¸ªå…ƒç´ åˆ é™¤ï¼Œè¿™æ ·èƒ½èŠ‚çº¦æ—¶é—´
             Ssup.remove(lastPos)
             j -= 1
           }
@@ -87,7 +87,7 @@ class TableIPSTR2_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scop
       } else {
         //        println("id: " + id + ", remove: " + t.mkString(","))
         removeTuples(i, level)
-        // Ö»ÓĞ¸Ä¶¯±íµÄÊ±ºò²Å»á¸Ä¶¯Ê±¼ä´Á
+        // åªæœ‰æ”¹åŠ¨è¡¨çš„æ—¶å€™æ‰ä¼šæ”¹åŠ¨æ—¶é—´æˆ³
         helper.tabStamp(id) = helper.globalStamp
       }
       i -= 1
@@ -106,22 +106,22 @@ class TableIPSTR2_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scop
       val newMask = v.submitMaskAndGet(mask)
       //      printf("cid: %d, var: %d, fd:%64s~%64s~%64s\n", id, v.id, mask.toBinaryString, newMask.toBinaryString, lastMask(vv).toBinaryString)
 
-      // ±äÁ¿ÂÛÓò¸Ä±ä£¬Ê±¼ä´Á¸üĞÂÎªÈ«¾ÖÊ±¼ä´Á+1
+      // å˜é‡è®ºåŸŸæ”¹å˜ï¼Œæ—¶é—´æˆ³æ›´æ–°ä¸ºå…¨å±€æ—¶é—´æˆ³+1
       //      if (lastMask(vv) != newMask) {
       //      val newMask = v.simpleMask()
       if (lastMask(vv) != newMask) {
-        // ÂÛÓòÈô±»ĞŞ¸Ä£¬ÔòÈ«¾ÖÊ±¼ä´Á¼Ó1
+        // è®ºåŸŸè‹¥è¢«ä¿®æ”¹ï¼Œåˆ™å…¨å±€æ—¶é—´æˆ³åŠ 1
         helper.varStamp(v.id) = helper.globalStamp + 1
-        // ÂÛÓòÎª¿Õ·µ»Øfalse
-        // ÕâÀïÓÃnewmask²»ĞĞ
-        // Ò»¶¨Òª´Ó±äÁ¿È¡µÃ
+        // è®ºåŸŸä¸ºç©ºè¿”å›false
+        // è¿™é‡Œç”¨newmaskä¸è¡Œ
+        // ä¸€å®šè¦ä»å˜é‡å–å¾—
         if (v.simpleMask() == 0L) {
           //          println(s"fail: cid: ${id}, vid:${v.id}")
           helper.isConsistent = false
           return false
         }
 
-        //¸üĞÂ±äÁ¿ÔÚ¸ÃÔ¼ÊøÄÚµÄlastmask
+        //æ›´æ–°å˜é‡åœ¨è¯¥çº¦æŸå†…çš„lastmask
         //        lastMask(vv) = newMask
         lastMask(vv) = mask
       }
@@ -130,8 +130,8 @@ class TableIPSTR2_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scop
     return true
   }
 
-  // !!ÕâÀï²é¿´È«¾ÖµÄ±äÁ¿ÖµÊÇ·ñ´æÔÚ£¬¶øÃ»ÓĞÓÃ¿ìÕÕµÄ£¬²»Ó°ÏìËã·¨ÕıÈ·ĞÔ
-  // !!ÎÒÃÇÔÚ±£Ö¤²¢ĞĞ³ÌĞòÎŞ´íµÄÇé¿öÏÂ ¾¡Á¿¼ÓËÙËã·¨Ğ§ÂÊ
+  // !!è¿™é‡ŒæŸ¥çœ‹å…¨å±€çš„å˜é‡å€¼æ˜¯å¦å­˜åœ¨ï¼Œè€Œæ²¡æœ‰ç”¨å¿«ç…§çš„ï¼Œä¸å½±å“ç®—æ³•æ­£ç¡®æ€§
+  // !!æˆ‘ä»¬åœ¨ä¿è¯å¹¶è¡Œç¨‹åºæ— é”™çš„æƒ…å†µä¸‹ å°½é‡åŠ é€Ÿç®—æ³•æ•ˆç‡
   def isValidTuple(t: Array[Int]): Boolean = {
     for (vidx <- Sval) {
       if (!scope(vidx).contains(t(vidx))) {

@@ -4,14 +4,14 @@ import cpscala.TSolver.Model.Variable.PVar
 import cpscala.XModel.XModel
 
 /**
-  * Ï¸Á£¶È²¢ĞĞÇó½âÆ÷£¬ÊÊÓÃÓÚPSTR3ºÍPSTRbit¡£
+  * ç»†ç²’åº¦å¹¶è¡Œæ±‚è§£å™¨ï¼Œé€‚ç”¨äºPSTR3å’ŒPSTRbitã€‚
   */
 
 class IPFineSolver(xm: XModel, parallelism: Int, propagator_name: String, var_type: String, heu_name: String) extends IPSolver(xm, parallelism, propagator_name, var_type, heu_name){
 
   def initialPropagate(): Boolean = {
 
-    // Ô¼Êø±í³õÊ¼»¯
+    // çº¦æŸè¡¨åˆå§‹åŒ–
     for (c <- tabs){
       Cevt.add(c)
     }
@@ -21,14 +21,14 @@ class IPFineSolver(xm: XModel, parallelism: Int, propagator_name: String, var_ty
     start_time = System.nanoTime
     prop_start_time = System.nanoTime
 
-    // ³õÊ¼É¾Öµ
+    // åˆå§‹åˆ å€¼
     helper.pool.invokeAll(Cevt)
     if (!helper.isConsistent) {
       return false
     }
     helper.globalStamp += 1
 
-    // ³õÊ¼´«²¥
+    // åˆå§‹ä¼ æ’­
     helper.isConsistent = true
     Yevt.clear()
     var i = 0
@@ -53,7 +53,7 @@ class IPFineSolver(xm: XModel, parallelism: Int, propagator_name: String, var_ty
       }
 
       helper.searchState = 2 //"propagate"
-      // ÂÛÓò¸Ä¶¯µÄ±äÁ¿stamp = gstamp+1
+      // è®ºåŸŸæ”¹åŠ¨çš„å˜é‡stamp = gstamp+1
       helper.pool.invokeAll(Cevt)
       helper.c_sum += Cevt.size()
       helper.p_sum += 1
@@ -68,7 +68,7 @@ class IPFineSolver(xm: XModel, parallelism: Int, propagator_name: String, var_ty
       while (i < numVars) {
         val vid = levelvdense(i)
         val v = vars(vid)
-        //ÈôÉÏÂÖ¸Ä¹ıÁË
+        //è‹¥ä¸Šè½®æ”¹è¿‡äº†
         if (helper.varStamp(vid) == helper.globalStamp) {
           Yevt += v
         }
@@ -100,7 +100,7 @@ class IPFineSolver(xm: XModel, parallelism: Int, propagator_name: String, var_ty
       }
 
       helper.searchState = 2 //"propagate"
-      // ÂÛÓò¸Ä¶¯µÄ±äÁ¿stamp = gstamp+1
+      // è®ºåŸŸæ”¹åŠ¨çš„å˜é‡stamp = gstamp+1
       helper.pool.invokeAll(Cevt)
       helper.c_sum += Cevt.size()
       helper.p_sum += 1
@@ -115,7 +115,7 @@ class IPFineSolver(xm: XModel, parallelism: Int, propagator_name: String, var_ty
       while (i < numVars) {
         val vid = levelvdense(i)
         val v = vars(vid)
-        //ÈôÉÏÂÖ¸Ä¹ıÁË
+        //è‹¥ä¸Šè½®æ”¹è¿‡äº†
         if (helper.varStamp(vid) == helper.globalStamp) {
           Yevt += v
         }
@@ -146,7 +146,7 @@ class IPFineSolver(xm: XModel, parallelism: Int, propagator_name: String, var_ty
       }
 
       helper.searchState = 2 //"propagate"
-      // ÂÛÓò¸Ä¶¯µÄ±äÁ¿stamp = gstamp+1
+      // è®ºåŸŸæ”¹åŠ¨çš„å˜é‡stamp = gstamp+1
       helper.pool.invokeAll(Cevt)
       helper.c_sum += Cevt.size()
       helper.p_sum += 1
@@ -161,7 +161,7 @@ class IPFineSolver(xm: XModel, parallelism: Int, propagator_name: String, var_ty
       while (i < numVars) {
         val vid = levelvdense(i)
         val v = vars(vid)
-        //ÈôÉÏÂÖ¸Ä¹ıÁË
+        //è‹¥ä¸Šè½®æ”¹è¿‡äº†
         if (helper.varStamp(vid) == helper.globalStamp) {
           Yevt += v
         }

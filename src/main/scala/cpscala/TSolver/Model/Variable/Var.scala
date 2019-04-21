@@ -10,7 +10,7 @@ abstract class Var {
   var stamp: Long = 0L
   val helper: SearchHelper
   val capacity = 0
-  // !!ÉĞÎ´È«²¿¸Ä¶¯
+  // !!å°šæœªå…¨éƒ¨æ”¹åŠ¨
   var bindLevel = Constants.kINTINF
 
   var level = 0
@@ -21,7 +21,7 @@ abstract class Var {
 
   def size(): Int
 
-  // »ñÈ¡µÚindex¸öÈ¡Öµ
+  // è·å–ç¬¬indexä¸ªå–å€¼
   def get(index: Int): Int
 
   def bind(a: Int)

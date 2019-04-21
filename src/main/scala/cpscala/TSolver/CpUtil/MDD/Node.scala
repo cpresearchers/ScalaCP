@@ -32,26 +32,26 @@ class Node(val name: Long, val level: Int) {
   def isActive() = active
 
   def merge(other: Node): Unit = {
-    //# 1. ½«otherºÏ²¢ÈëselfÖĞ£¬otherÓ¦¸Ã±»É¾È¥
-    //# 2. ½«Á½¸öincomesµÄlistºÏ²¢
-    //# 3. ½Úµãdeactivate
-    //# 4. ½ÚµãÉ¾³ı·ÅÔÚMDD·½·¨ÖĞ
-    //# 6. ¶ÔÓÚother.incomesËùÓĞµÄ»¡arcµÄend¶¼Ö¸Ïòself½Úµã
-    //# 7. ¶ÔÓÚother.outcomesËùÓĞµÄ»¡arcµÄend½ÚµãµÄincomesÉ¾³ıÕâ¸ö»¡arc
+    //# 1. å°†otheråˆå¹¶å…¥selfä¸­ï¼Œotheråº”è¯¥è¢«åˆ å»
+    //# 2. å°†ä¸¤ä¸ªincomesçš„liståˆå¹¶
+    //# 3. èŠ‚ç‚¹deactivate
+    //# 4. èŠ‚ç‚¹åˆ é™¤æ”¾åœ¨MDDæ–¹æ³•ä¸­
+    //# 6. å¯¹äºother.incomesæ‰€æœ‰çš„å¼§arcçš„endéƒ½æŒ‡å‘selfèŠ‚ç‚¹
+    //# 7. å¯¹äºother.outcomesæ‰€æœ‰çš„å¼§arcçš„endèŠ‚ç‚¹çš„incomesåˆ é™¤è¿™ä¸ªå¼§arc
     //        if (!(equal(other)))
-    // Á½¸öµãÊÇÒ»¸öµã,¼´nameÏàÍ¬,
-    // ²»ºÏ²¢,Ö»ÓĞµÈ¼ÛÊ±²ÅºÏ²¢
+    // ä¸¤ä¸ªç‚¹æ˜¯ä¸€ä¸ªç‚¹,å³nameç›¸åŒ,
+    // ä¸åˆå¹¶,åªæœ‰ç­‰ä»·æ—¶æ‰åˆå¹¶
     if (name != other.name) {
-      // ºÏ²¢µôother½ÚµãµÄincomes»¡
-      // other.incomesÖĞÃ¿¸ö»¡µÄend½ÚµãÖØ¶¨ÏòÎªµ±Ç°½Úµã²¢¼ÓÈëµ½this.incomesÖĞ
+      // åˆå¹¶æ‰otherèŠ‚ç‚¹çš„incomeså¼§
+      // other.incomesä¸­æ¯ä¸ªå¼§çš„endèŠ‚ç‚¹é‡å®šå‘ä¸ºå½“å‰èŠ‚ç‚¹å¹¶åŠ å…¥åˆ°this.incomesä¸­
       for (arc <- other.incomes) {
         arc.end = this
         incomes += arc
       }
 
-      // Çå³ıother½ÚµãµÄËùÓĞincome½Úµã,ÔÚdelete other ½ÚµãÊ±²»»áÉ¾³ıÕâĞ©income-arc
+      // æ¸…é™¤otherèŠ‚ç‚¹çš„æ‰€æœ‰incomeèŠ‚ç‚¹,åœ¨delete other èŠ‚ç‚¹æ—¶ä¸ä¼šåˆ é™¤è¿™äº›income-arc
       other.incomes.clear()
-      // ·´¼¤»îother
+      // åæ¿€æ´»other
       other.deactivate()
     }
   }

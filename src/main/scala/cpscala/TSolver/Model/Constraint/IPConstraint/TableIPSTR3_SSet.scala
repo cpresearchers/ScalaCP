@@ -7,49 +7,49 @@ import cpscala.TSolver.Model.Variable.PVar
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.{mutable => m}
 
-// ±äÁ¿ÀàĞÍÊ¹ÓÃSparseSet
+// å˜é‡ç±»å‹ä½¿ç”¨SparseSet
 
 class TableIPSTR3_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[PVar], val tuples: Array[Array[Int]], val helper: IPSearchHelper) extends IPPropagator {
 
-  // ×Ó±í£¬ÈıÎ¬Êı×é£¬µÚÒ»Î¬±äÁ¿£¬µÚ¶şÎ¬È¡Öµ£¬µÚÈıÎ¬Ôª×é
-  // ³õÊ¼»¯±äÁ¿Ê±£¬ÆäÂÛÓòÒÑ¾­±»ĞòÁĞ»¯£¬ÖîÈç[0, 1, ..., var.size()]£¬ËùÒÔ¿ÉÒÔÖ±½ÓÓÃÈ¡Öµ×÷ÎªÏÂ±ê
+  // å­è¡¨ï¼Œä¸‰ç»´æ•°ç»„ï¼Œç¬¬ä¸€ç»´å˜é‡ï¼Œç¬¬äºŒç»´å–å€¼ï¼Œç¬¬ä¸‰ç»´å…ƒç»„
+  // åˆå§‹åŒ–å˜é‡æ—¶ï¼Œå…¶è®ºåŸŸå·²ç»è¢«åºåˆ—åŒ–ï¼Œè¯¸å¦‚[0, 1, ..., var.size()]ï¼Œæ‰€ä»¥å¯ä»¥ç›´æ¥ç”¨å–å€¼ä½œä¸ºä¸‹æ ‡
   private[this] val subtables = Array.tabulate(arity)(i => new Array[Array[Int]](scope(i).size()))
-  // ·Ö½ç·û£¬¶şÎ¬Êı×é£¬µÚÒ»Î¬±äÁ¿£¬µÚ¶şÎ¬È¡Öµ
+  // åˆ†ç•Œç¬¦ï¼ŒäºŒç»´æ•°ç»„ï¼Œç¬¬ä¸€ç»´å˜é‡ï¼Œç¬¬äºŒç»´å–å€¼
   private[this] val separators = Array.tabulate(arity)(i => new Array[Int](scope(i).size()))
-  // ·Ö½ç·ûÕ»
-  // ÔÚËÑË÷Ê÷³õÊ¼²ã£¨0²ã)£¬Èô±äÁ¿ÖµµÄseparator¸Ä±äÁË£¬¼´¸üĞÂ±äÁ¿Õ»¶¥²ãµÄHashMap£¨ºóÀ´ÏëÁËÏë£¬0²ã²»ĞèÒª±£´æ£¬ÒòÎª1²ã¶ÔÓ¦µÄÕ»¶¥±£´æµÄ¼´ÊÇ0²ãµÄĞÅÏ¢£©
-  // ÔÚËÑË÷Ê÷µÄ·Ç³õÊ¼²ã£¬µ±±äÁ¿ÖµµÄseparatorµÚÒ»´Î·¢Éú¸Ä±äÊ±£¬½«¸Ä±äÇ°µÄseparatorÖµ±£´æÔÚ¸Ã±äÁ¿Õ»¶¥²ãHashMapÖĞ
-  // HashMap´«ÈëµÄ·¶ĞÍÖĞµÚÒ»¸öIntÎªvalue£¬µÚ¶ş¸öIntÎªseparator
+  // åˆ†ç•Œç¬¦æ ˆ
+  // åœ¨æœç´¢æ ‘åˆå§‹å±‚ï¼ˆ0å±‚)ï¼Œè‹¥å˜é‡å€¼çš„separatoræ”¹å˜äº†ï¼Œå³æ›´æ–°å˜é‡æ ˆé¡¶å±‚çš„HashMapï¼ˆåæ¥æƒ³äº†æƒ³ï¼Œ0å±‚ä¸éœ€è¦ä¿å­˜ï¼Œå› ä¸º1å±‚å¯¹åº”çš„æ ˆé¡¶ä¿å­˜çš„å³æ˜¯0å±‚çš„ä¿¡æ¯ï¼‰
+  // åœ¨æœç´¢æ ‘çš„éåˆå§‹å±‚ï¼Œå½“å˜é‡å€¼çš„separatorç¬¬ä¸€æ¬¡å‘ç”Ÿæ”¹å˜æ—¶ï¼Œå°†æ”¹å˜å‰çš„separatorå€¼ä¿å­˜åœ¨è¯¥å˜é‡æ ˆé¡¶å±‚HashMapä¸­
+  // HashMapä¼ å…¥çš„èŒƒå‹ä¸­ç¬¬ä¸€ä¸ªIntä¸ºvalueï¼Œç¬¬äºŒä¸ªIntä¸ºseparator
   private[this] val StackS = Array.fill(arity)(new RestoreStack[Int, Int](num_vars))
 
-  // ÎŞĞ§Ôª×é
+  // æ— æ•ˆå…ƒç»„
   private[this] val invalidTuples = new SparseSetInt(tuples.length, num_vars)
-  // ÒÀÀµ±í£¬ÓÃ¹şÏ£±íÊµÏÖ£¬keyÎª±äÁ¿ÔÚscopeÄÚµÄĞòºÅ£¬valueÎªÈ¡Öµ
+  // ä¾èµ–è¡¨ï¼Œç”¨å“ˆå¸Œè¡¨å®ç°ï¼Œkeyä¸ºå˜é‡åœ¨scopeå†…çš„åºå·ï¼Œvalueä¸ºå–å€¼
   private[this] val deps = Array.fill(tuples.length)(new m.HashMap[Int, Int]())
 
-  // oldSizeÓë±äÁ¿sizeÖ®¼äµÄÖµÊÇ¸ÃÔ¼ÊøÁ½´Î´«²¥Ö®¼ä±»¹ıÂËµÄÖµ£¨delta£©
-  // ÏêÇé¼ûÂÛÎÄ£ºSparse-Sets for Domain Implementation
+  // oldSizeä¸å˜é‡sizeä¹‹é—´çš„å€¼æ˜¯è¯¥çº¦æŸä¸¤æ¬¡ä¼ æ’­ä¹‹é—´è¢«è¿‡æ»¤çš„å€¼ï¼ˆdeltaï¼‰
+  // è¯¦æƒ…è§è®ºæ–‡ï¼šSparse-Sets for Domain Implementation
   private[this] val oldSizes = Array.tabulate(arity)(i => scope(i).size())
   private[this] val removeValues = new ArrayBuffer[Int]() //(delta)
 
-  // ³õÊ¼»¯±êÊ¶±äÁ¿
-  // isInitialÎªfalseËµÃ÷setupÖĞ±íÔ¼Êø»¹Î´³õÊ¼»¯Êı¾İ½á¹¹
-  // ÎªtrueËµÃ÷±íÔ¼Êø³õÊ¼»¯Íê³É£¬¿ÉÒÔ½øĞĞ³õÊ¼É¾Öµ
+  // åˆå§‹åŒ–æ ‡è¯†å˜é‡
+  // isInitialä¸ºfalseè¯´æ˜setupä¸­è¡¨çº¦æŸè¿˜æœªåˆå§‹åŒ–æ•°æ®ç»“æ„
+  // ä¸ºtrueè¯´æ˜è¡¨çº¦æŸåˆå§‹åŒ–å®Œæˆï¼Œå¯ä»¥è¿›è¡Œåˆå§‹åˆ å€¼
   private[this] var isInitial = false
 
   override def setup(): Unit = {
 
     if (!isInitial) {
 
-      // ³õÊ¼»¯ÎŞĞ§Ôª×é¼¯
+      // åˆå§‹åŒ–æ— æ•ˆå…ƒç»„é›†
       invalidTuples.clear()
 
-      // ÁÙÊ±×Ó±í
+      // ä¸´æ—¶å­è¡¨
       val tempSupport = Array.tabulate(arity)(i => {
         Array.fill(scope(i).size())(new ArrayBuffer[Int]())
       })
 
-      // ÏòÁÙÊ±×Ó±íÄÚ¶¯Ì¬Ìí¼ÓÔª×é±àºÅ
+      // å‘ä¸´æ—¶å­è¡¨å†…åŠ¨æ€æ·»åŠ å…ƒç»„ç¼–å·
       var t = 0
       while (t < tuples.length) {
         if (isValidTuple(tuples(t))) {
@@ -67,24 +67,24 @@ class TableIPSTR3_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
       while (i < arity) {
         val x = scope(i)
         var j = x.size()
-        // ÒòÎª±äÁ¿»¹Î´É¾Öµ£¬ËùÒÔj¼ÈÎªindex£¬ÓÖÎªÈ¡Öµ
+        // å› ä¸ºå˜é‡è¿˜æœªåˆ å€¼ï¼Œæ‰€ä»¥jæ—¢ä¸ºindexï¼Œåˆä¸ºå–å€¼
         while (j > 0) {
           j -= 1
           val subtable = tempSupport(i)(j).toArray
           subtables(i)(j) = subtable
           separators(i)(j) = subtable.length - 1
           if (!subtable.isEmpty) {
-            // 15ÄêÂÛÎÄÎ±´úÂëÊÇ·ÅÔÚÁË×îºóÒ»¸öÔª×é¶ÔÓ¦µÄdepsÖĞ
+            // 15å¹´è®ºæ–‡ä¼ªä»£ç æ˜¯æ”¾åœ¨äº†æœ€åä¸€ä¸ªå…ƒç»„å¯¹åº”çš„depsä¸­
             deps(subtable(0)) += (i -> j)
           }
         }
         StackS(i).push()
         i += 1
       }
-      // ±íÔ¼Êø³õÊ¼»¯Íê³É
+      // è¡¨çº¦æŸåˆå§‹åŒ–å®Œæˆ
       isInitial = true
     }
-    // ³õÊ¼É¾Öµ
+    // åˆå§‹åˆ å€¼
     else {
       //println(s"c_id: ${id} initial delete value==========================>")
       var i = 0
@@ -93,12 +93,12 @@ class TableIPSTR3_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
         var j = x.size()
         while (j > 0) {
           j -= 1
-          // ÒòÎª±äÁ¿¿ÉÄÜÒÑ±»É¾Öµ£¬ËùÒÔĞèÒªÍ¨¹ıÏÂ±êjÀ´È¡µÃvalue
+          // å› ä¸ºå˜é‡å¯èƒ½å·²è¢«åˆ å€¼ï¼Œæ‰€ä»¥éœ€è¦é€šè¿‡ä¸‹æ ‡jæ¥å–å¾—value
           val value = x.get(j)
           if (subtables(i)(value).isEmpty) {
             x.safeRemove(value)
             //println(s"     var:${x.id} remove new value:${value}")
-            // ÂÛÓòÈô±»ĞŞ¸Ä£¬ÔòÈ«¾ÖÊ±¼ä´Á¼Ó1
+            // è®ºåŸŸè‹¥è¢«ä¿®æ”¹ï¼Œåˆ™å…¨å±€æ—¶é—´æˆ³åŠ 1
             helper.varStamp(x.id) = helper.globalStamp + 1
           }
         }
@@ -117,18 +117,18 @@ class TableIPSTR3_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
     //println(s"c_id: ${id} propagate==========================>")
     val membersBefore = invalidTuples.size()
 
-    // 15ÄêÂÛÎÄÖĞµÄÎ±´úÂëÃ¿´ÎÖ»´¦ÀíÒ»¸öÖµ
+    // 15å¹´è®ºæ–‡ä¸­çš„ä¼ªä»£ç æ¯æ¬¡åªå¤„ç†ä¸€ä¸ªå€¼
     for (i <- 0 until arity) {
 
       val x = scope(i)
 
       if (oldSizes(i) != x.size()) {
 
-        // »ñµÃdelta²¢¸üĞÂoldSize
+        // è·å¾—deltaå¹¶æ›´æ–°oldSize
         removeValues.clear()
         oldSizes(i) = x.getLastRemovedValues(oldSizes(i).toLong, removeValues)
         //println(s"       var: ${x.id} removedValues: " + removeValues.mkString(", "))
-        // Ñ°ÕÒĞÂµÄÎŞĞ§Ôª×é
+        // å¯»æ‰¾æ–°çš„æ— æ•ˆå…ƒç»„
         for (a <- removeValues) {
           val sep = separators(i)(a)
           for (p <- 0 to sep) {
@@ -139,7 +139,7 @@ class TableIPSTR3_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
       }
     }
 
-    // ÎŞĞ§Ôª×éÃ»ÓĞ¸üĞÂ
+    // æ— æ•ˆå…ƒç»„æ²¡æœ‰æ›´æ–°
     val membersAfter = invalidTuples.size()
     if (membersBefore == membersAfter) {
       return true
@@ -147,7 +147,7 @@ class TableIPSTR3_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
 
     //println(s"       the number of invalid tuple: ${membersAfter - membersBefore}")
 
-    // Ñ°ÕÒÃ»ÓĞÖ§³ÖµÄÖµ
+    // å¯»æ‰¾æ²¡æœ‰æ”¯æŒçš„å€¼
     var i = membersBefore
     while (i < membersAfter) {
 
@@ -162,17 +162,17 @@ class TableIPSTR3_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
           val subtable = subtables(varId)(value)
           val sep = separators(varId)(value)
 
-          // Ñ°ÕÒÖ§³Ö
+          // å¯»æ‰¾æ”¯æŒ
           var p = sep
           while (p >= 0 && invalidTuples.has(subtable(p))) p -= 1
 
-          // Ã»ÓĞÖ§³Ö£¬É¾È¥¸ÃÖµ
+          // æ²¡æœ‰æ”¯æŒï¼Œåˆ å»è¯¥å€¼
           if (p == -1) {
             v.safeRemove(value)
             //println(s"     var:${v.id} remove new value:${value}")
-            // ÒòÎªÊÇ²¢ĞĞ²»Í¬ÓÚ´®ĞĞ£¬»á³öÏÖ¶à¸öÔ¼ÊøÉ¾³ıÍ¬Ò»¸ö±äÁ¿²»Í¬ÖµµÄÇé¿ö£¬ËùÒÔÕâÀï²»ÄÜÈÃoldSize-1
+            // å› ä¸ºæ˜¯å¹¶è¡Œä¸åŒäºä¸²è¡Œï¼Œä¼šå‡ºç°å¤šä¸ªçº¦æŸåˆ é™¤åŒä¸€ä¸ªå˜é‡ä¸åŒå€¼çš„æƒ…å†µï¼Œæ‰€ä»¥è¿™é‡Œä¸èƒ½è®©oldSize-1
 //            oldSizes(varId) -= 1
-            // ÂÛÓòÈô±»ĞŞ¸Ä£¬ÔòÈ«¾ÖÊ±¼ä´Á¼Ó1
+            // è®ºåŸŸè‹¥è¢«ä¿®æ”¹ï¼Œåˆ™å…¨å±€æ—¶é—´æˆ³åŠ 1
             helper.varStamp(v.id) = helper.globalStamp + 1
             if (v.isEmpty()) {
               helper.isConsistent = false
@@ -180,14 +180,14 @@ class TableIPSTR3_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
             }
           } else {
             if (p != sep) {
-              // ¸üĞÂ±äÁ¿Õ»¶¥µÄ¹şÏ£±í
+              // æ›´æ–°å˜é‡æ ˆé¡¶çš„å“ˆå¸Œè¡¨
               val topHash = StackS(varId).top
               if (!topHash.contains(value)) {
                 topHash(value) = sep
               }
               separators(varId)(value) = p
             }
-            // ½«±äÁ¿Öµ¶Ô´ÓÎŞĞ§µÄÒÀÀµ±í(k)Å²ÈëÖ§³ÖµÄÒÀÀµ±í(subtable(p))
+            // å°†å˜é‡å€¼å¯¹ä»æ— æ•ˆçš„ä¾èµ–è¡¨(k)æŒªå…¥æ”¯æŒçš„ä¾èµ–è¡¨(subtable(p))
             deps(k) -= (varId)
             deps(subtable(p)) += ((varId, value))
           }
@@ -227,39 +227,39 @@ class TableIPSTR3_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
     return true
   }
 
-  // ĞÂ²ã
+  // æ–°å±‚
   def newLevel(): Unit = {
     //println(s"c_id: ${id} newlevel==================>")
     level += 1
-    // ÏòinStackSÑ¹ÈëÒ»¸öĞÂµÄHashMap£¨¶ÔÓ¦ĞÂ²ã£©
+    // å‘inStackSå‹å…¥ä¸€ä¸ªæ–°çš„HashMapï¼ˆå¯¹åº”æ–°å±‚ï¼‰
     for (i <- 0 until arity) {
       StackS(i).push()
     }
-    // ±£´æÉÏ²ãinvalidTuplesµÄ±ß½çcursize£¨15ÄêÂÛÎÄÖĞµÄmember£©
+    // ä¿å­˜ä¸Šå±‚invalidTuplesçš„è¾¹ç•Œcursizeï¼ˆ15å¹´è®ºæ–‡ä¸­çš„memberï¼‰
     invalidTuples.newLevel()
-    // µ½´ïĞÂ²ãºó²»ÓÃ¸ü¸ÄoldSize£¬oldSizeÓëÉÏ²ã±£³ÖÒ»ÖÂ
+    // åˆ°è¾¾æ–°å±‚åä¸ç”¨æ›´æ”¹oldSizeï¼ŒoldSizeä¸ä¸Šå±‚ä¿æŒä¸€è‡´
   }
 
-  // »ØËİ
+  // å›æº¯
   def backLevel(): Unit = {
     level -= 1
     //println(s"c_id: ${id} backlevel==================>")
     for (i <- 0 until arity) {
-      // inStackSÏÈµ¯³öÒ»¸öHashMap£¨µ±Ç°²ã£©£¬ÔÙ»ñÈ¡¶¥²ãµÄHashMap£¨ÉÏÒ»²ã£©£¬½«ÉÏÒ»²ãµÄsep»Ö¸´
+      // inStackSå…ˆå¼¹å‡ºä¸€ä¸ªHashMapï¼ˆå½“å‰å±‚ï¼‰ï¼Œå†è·å–é¡¶å±‚çš„HashMapï¼ˆä¸Šä¸€å±‚ï¼‰ï¼Œå°†ä¸Šä¸€å±‚çš„sepæ¢å¤
       //      StackS(i).pop()
       val topHash = StackS(i).pop
-      // iÎª±äÁ¿±àºÅ£¬aÎªÈ¡Öµ£¬sÎªÏàÓ¦×Ó±íµÄsep
+      // iä¸ºå˜é‡ç¼–å·ï¼Œaä¸ºå–å€¼ï¼Œsä¸ºç›¸åº”å­è¡¨çš„sep
       for ((a, s) <- topHash) {
         separators(i)(a) = s
       }
-      // »ØËİºóÖØÖÃoldSize£¬ĞÂ¾É´óĞ¡ÏàÍ¬£¬ÒòÎª»¹Ã»ÓĞ´«²¥
+      // å›æº¯åé‡ç½®oldSizeï¼Œæ–°æ—§å¤§å°ç›¸åŒï¼Œå› ä¸ºè¿˜æ²¡æœ‰ä¼ æ’­
       oldSizes(i) = scope(i).size()
     }
-    // »Ö¸´ÉÏ²ãinvalidTuplesµÄ±ß½çcursize£¨15ÄêÂÛÎÄÖĞµÄmember£©
+    // æ¢å¤ä¸Šå±‚invalidTuplesçš„è¾¹ç•Œcursizeï¼ˆ15å¹´è®ºæ–‡ä¸­çš„memberï¼‰
     invalidTuples.backLevel()
   }
 
-  // ÈôÔª×éÓĞĞ§£¬Ôò·µ»ØÕæ
+  // è‹¥å…ƒç»„æœ‰æ•ˆï¼Œåˆ™è¿”å›çœŸ
   @inline private def isValidTuple(tuple: Array[Int]): Boolean = {
     var i = arity
     while (i > 0) {

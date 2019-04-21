@@ -136,7 +136,7 @@ object main {
       branchTime = 0L
       backTime = 0L
       propTime = 0L
-      println(parallelism + "线程 " + ppType + "===============>")
+      println(parallelism + "绾跨▼ " + ppType + "===============>")
       for (i <- 1 to exe) {
         val pstrbit = new IPFineSolver(xm, parallelism, ppType, varType, "")
         pstrbit.search(Constants.TIME)
@@ -167,7 +167,7 @@ object main {
       branchTime = 0L
       backTime = 0L
       propTime = 0L
-      println(parallelism + "线程 " + ppType + "===============>")
+      println(parallelism + "绾跨▼ " + ppType + "===============>")
       for (i <- 1 to exe) {
         val dspStrbit = new DSPFineSolver(xm, parallelism, ppType, varType, "")
         dspStrbit.search(Constants.TIME)
@@ -283,7 +283,7 @@ object main {
     //    parallelism = 2
     //    while (parallelism <= maxPara) {
     //      time = 0L
-    //      println(parallelism + "线程 " + ppType + "===============>")
+    //      println(parallelism + "绾跨▼ " + ppType + "===============>")
     //      for (i <- 1 to exe) {
     //        val pstr3 = new IPFineSolver(xm, parallelism, ppType, varType, "")
     //        pstr3.search(Constants.TIME)
@@ -317,7 +317,7 @@ object main {
     //        branchTime = 0L
     //        backTime = 0L
     //        propTime = 0L
-    //        println(parallelism + "线程 " + ppType + "===============>")
+    //        println(parallelism + "绾跨▼ " + ppType + "===============>")
     //        for (i <- 1 to exe) {
     //          val pstr3 = new IPFineSolver(xm, parallelism, ppType, varType, "")
     //          pstr3.search(Constants.TIME)
@@ -349,7 +349,7 @@ object main {
     //        branchTime = 0L
     //        backTime = 0L
     //        propTime = 0L
-    //        println(parallelism + "线程 " + ppType + "===============>")
+    //        println(parallelism + "绾跨▼ " + ppType + "===============>")
     //        for (i <- 1 to exe) {
     //          val pstr3 = new IPFineSolver(xm, parallelism, ppType, varType, "")
     //          pstr3.search(Constants.TIME)
@@ -381,7 +381,7 @@ object main {
     //      branchTime = 0L
     //      backTime = 0L
     //      propTime = 0L
-    //      println(parallelism + "线程 " + ppType + "===============>")
+    //      println(parallelism + "绾跨▼ " + ppType + "===============>")
     //      for (i <- 1 to exe) {
     //        val pstr3 = new IPFineSolver(xm, parallelism, ppType, varType, "")
     //        pstr3.search(Constants.TIME)
@@ -413,7 +413,7 @@ object main {
 //      propTime = 0L
 //      otherTime = 0L
 //      backTime = 0L
-//      println(parallelism + "线程 " + ppType + "===============>")
+//      println(parallelism + "绾跨▼ " + ppType + "===============>")
 //      for (i <- 1 to exe) {
 //        val pct = new IPCoarseSolver(xm, parallelism, ppType, varType, "")
 //        pct.search(Constants.TIME)
@@ -446,7 +446,7 @@ object main {
       branchTime = 0L
       backTime = 0L
       propTime = 0L
-      println(parallelism + "线程 " + ppType + "===============>")
+      println(parallelism + "绾跨▼ " + ppType + "===============>")
       for (i <- 1 to exe) {
         val pct = new DSPCoarseSolver(xm, parallelism, ppType, varType, "")
         pct.search(Constants.TIME)

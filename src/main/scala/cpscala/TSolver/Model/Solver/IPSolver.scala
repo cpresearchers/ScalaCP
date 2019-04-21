@@ -24,7 +24,7 @@ abstract class IPSolver(xm: XModel, parallelism: Int, propagatorName: String, va
     subscription(i) = new ArrayBuffer[IPPropagator]()
   }
 
-  //¼ÇÂ¼ÒÑ¸³ÖµµÄ±äÁ¿
+  //è®°å½•å·²èµ‹å€¼çš„å˜é‡
   val levelvsparse = Array.range(0, numVars)
   val levelvdense = Array.range(0, numVars)
   val I = new PAssignedStack(numVars)
@@ -32,15 +32,15 @@ abstract class IPSolver(xm: XModel, parallelism: Int, propagatorName: String, va
   val Q = new CoarseQueue[PVar](numVars)
   val Yevt = new ArrayBuffer[PVar](numVars)
   val Cevt = new ArrayList[IPPropagator](numTabs)
-  //inCevt[i]±íÊ¾µÚi¸öÔ¼ÊøÊÇ·ñÔÚCevtÖÐ
+  //inCevt[i]è¡¨ç¤ºç¬¬iä¸ªçº¦æŸæ˜¯å¦åœ¨Cevtä¸­
   val inCevt = Array.fill(numTabs)(false)
 
   val helper = new IPSearchHelper(numVars, numTabs, parallelism)
-  //Ê±¼ä´Á
+  //æ—¶é—´æˆ³
   helper.globalStamp = 0L
 
 
-  // ³õÊ¼»¯±äÁ¿
+  // åˆå§‹åŒ–å˜é‡
   varType match {
 
     case "SafeBitSet" => {
@@ -65,7 +65,7 @@ abstract class IPSolver(xm: XModel, parallelism: Int, propagatorName: String, va
     }
   }
 
-  //³õÊ¼»¯Ô¼Êø
+  //åˆå§‹åŒ–çº¦æŸ
   propagatorName match {
     case "IPSTR2_SSBit" => {
       for (i <- 0 until numTabs) {
@@ -239,7 +239,7 @@ abstract class IPSolver(xm: XModel, parallelism: Int, propagatorName: String, va
       //infoShow()
 
       if (consistent && I.full()) {
-        //        //³É¹¦ÔÙ¼Ó0.5
+        //        //æˆåŠŸå†åŠ 0.5
         //        for (c <- subscription(v_a.v.name)) {
         //          c.assignedCount += 0.5
         //        }
@@ -285,7 +285,7 @@ abstract class IPSolver(xm: XModel, parallelism: Int, propagatorName: String, va
 
   def checkConsistencyAfterRefutation(ix: PVar): Boolean
 
-  //ÐÞ¸Älevelvdense
+  //ä¿®æ”¹levelvdense
   def select_val(): PVal = {
     var mindmdd = Double.MaxValue
     var minv: PVar = null
@@ -362,7 +362,7 @@ abstract class IPSolver(xm: XModel, parallelism: Int, propagatorName: String, va
   }
 
   def remove(v_a: PVal): Unit = {
-    //Ô¼ÊøµÄÒÑÊµÀý»¯±äÁ¿¸öÊý¼õ1
+    //çº¦æŸçš„å·²å®žä¾‹åŒ–å˜é‡ä¸ªæ•°å‡1
     for (c <- subscription(v_a.v.id)) {
       //      if (c.assignedCount.toInt != c.assignedCount)
       //        c.assignedCount -= 0.5
@@ -375,7 +375,7 @@ abstract class IPSolver(xm: XModel, parallelism: Int, propagatorName: String, va
   }
 
   def bind(v_a: PVal): Unit = {
-    //ÔÚÏ¡Êè¼¯ÉÏ½»»»±äÁ¿
+    //åœ¨ç¨€ç–é›†ä¸Šäº¤æ¢å˜é‡
     val minvi = levelvsparse(v_a.v.id)
     val a = levelvdense(helper.level - 1)
     levelvdense(helper.level - 1) = levelvdense(minvi)

@@ -46,7 +46,7 @@ class MyBitSet(inlength: Int) {
     while (i < min_bit) {
       val w = word(i) & myBitSet.word(i)
       if (w != 0) {
-        //ËµÃ÷ÓÐ½»¼¯,64¸öbitÎ»ÖÃ°¤¸ö²éÕÒ
+        //è¯´æ˜Žæœ‰äº¤é›†,64ä¸ªbitä½ç½®æŒ¨ä¸ªæŸ¥æ‰¾
         var j = 0
         while (j < Constants.BITSIZE) {
           if ((w & Constants.MASK1(j)) != 0L) {

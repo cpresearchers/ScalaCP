@@ -5,7 +5,7 @@ import cpscala.XModel.{XModel}
 import scala.collection.mutable._
 
 /**
-  *´ÖÁ£¶ÈÇó½âÆ÷£¬ÊÊÓÃÓÚSTR2¡£
+  *ç²—ç²’åº¦æ±‚è§£å™¨ï¼Œé€‚ç”¨äºSTR2ã€‚
   */
 
 class CoarseSolver(xm: XModel, propagatorName: String, varType: String, heuName: String) extends Solver(xm, propagatorName, varType, heuName) {
@@ -27,7 +27,7 @@ class CoarseSolver(xm: XModel, propagatorName: String, varType: String, heuName:
   def propagate(x: Var): Boolean = {
     Q.clear()
     if (x == null) {
-      //³õÊ¼»¯
+      //åˆå§‹åŒ–
       for (z <- vars) {
         insert(z)
       }

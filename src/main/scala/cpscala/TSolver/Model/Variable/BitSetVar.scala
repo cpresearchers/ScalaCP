@@ -6,7 +6,7 @@ import cpscala.TSolver.CpUtil.{Constants, _}
 import scala.collection.mutable.ArrayBuffer
 
 class BitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[Int], val helper: SearchHelper) extends Var {
-  // ×Ü²ãÊı
+  // æ€»å±‚æ•°
   val numLevel = numVars + 3
 
   override val capacity = vals.length
@@ -14,7 +14,7 @@ class BitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[Int], v
   val bitMark = Array.fill[Long](numBit)(0L)
   val bitDoms = Array.fill[Long](numLevel, numBit)(0L)
 
-  // ³õÊ¼»¯µÚ0¼¶µÄbitDom
+  // åˆå§‹åŒ–ç¬¬0çº§çš„bitDom
   var ii = 0
   while (ii < numBit) {
     bitDoms(0)(ii) = Constants.ALLONELONG
@@ -36,7 +36,7 @@ class BitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[Int], v
   }
 
   override def backLevel(): Int = {
-    // Èô±äÁ¿ÔÚµ±Ç°²ã¸³Öµ£¬Ôò³·Ïú¸³Öµ
+    // è‹¥å˜é‡åœ¨å½“å‰å±‚èµ‹å€¼ï¼Œåˆ™æ’¤é”€èµ‹å€¼
     if (bindLevel == level) {
       bindLevel = Constants.kINTINF
     }
@@ -44,7 +44,7 @@ class BitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[Int], v
     return level
   }
 
-  //Ìá½»¸Ä¶¯
+  //æäº¤æ”¹åŠ¨
   override def restrict(): Unit = {
     var i = 0
     while (i < numBit) {
@@ -101,7 +101,7 @@ class BitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[Int], v
 
   override def mark(a: Int): Unit = {
     val (x, y) = INDEX.getXY(a)
-    // markÖĞÃ»ÓĞ²¢ÇÒÃ»ÓĞ±»É¾µô²Å¼ÓÈëmark
+    // markä¸­æ²¡æœ‰å¹¶ä¸”æ²¡æœ‰è¢«åˆ æ‰æ‰åŠ å…¥mark
     if ((bitMark(x) & Constants.MASK1(y) & bitDoms(level)(x)) == 0L) {
       bitMark(x) |= Constants.MASK1(y)
     }

@@ -13,13 +13,13 @@ abstract class DSPPropagator extends Runnable {
   var assignedCount = 0
   //  val loopContinue = new AtomicBoolean(false)
   var loopContinue: Boolean = false
-  // ÔËĞĞ×´Ì¬
-  // runningStatus = 0 Î´ÔËĞĞ
-  // runningStatus = 1 Ìá½»ÈÎÎñ
-  // runningStatus = 2 ÔËĞĞ
-  // runningStatus = 3 Ñ­»·ÖĞ£¬Ñ­»·Íê³ÉÍË³ö
-  // runningStatus = 4 Ñ­»·ÖĞ£¬¼ÌĞøÏÂÒ»´ÎÑ­»·
-  // runningStatus = 5 ³öÑ­»·£¬ÈÔÔÚÔËĞĞÖĞ
+  // è¿è¡ŒçŠ¶æ€
+  // runningStatus = 0 æœªè¿è¡Œ
+  // runningStatus = 1 æäº¤ä»»åŠ¡
+  // runningStatus = 2 è¿è¡Œ
+  // runningStatus = 3 å¾ªç¯ä¸­ï¼Œå¾ªç¯å®Œæˆé€€å‡º
+  // runningStatus = 4 å¾ªç¯ä¸­ï¼Œç»§ç»­ä¸‹ä¸€æ¬¡å¾ªç¯
+  // runningStatus = 5 å‡ºå¾ªç¯ï¼Œä»åœ¨è¿è¡Œä¸­
   val runningStatus = new AtomicInteger(0)
   val lock = new ReentrantLock()
   val isLock = new AtomicBoolean(false)

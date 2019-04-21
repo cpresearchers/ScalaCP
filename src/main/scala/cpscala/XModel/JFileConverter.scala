@@ -10,14 +10,14 @@ import com.github.tototoshi.csv._
 object JFileConverter {
 
   def main(args: Array[String]): Unit = {
-    //¶ÁXML
+    //è¯»XML
     val file = XML.loadFile("benchmarks/convert.xml")
     val inputRoot = (file \\ "inputRoot").text
     val outputRoot = (file \\ "outputRoot").text
     val outputFolder = (file \\ "outputFolder").text
     if (args.isEmpty) {
       val inputFolderNodes = file \\ "inputFolder"
-      //  //Àı×Ó¸ñÊ½Êä³ö
+      //  //ä¾‹å­æ ¼å¼è¾“å‡º
       //  val infoPath = (file \\ "information").text
       //  val writer = CSVWriter.open(new File(infoPath))
 
@@ -69,7 +69,7 @@ object JFileConverter {
     }
   }
 
-  //»ñÈ¡Ö¸¶¨µ¥¸öÄ¿Â¼ÏÂËùÓĞÎÄ¼ş
+  //è·å–æŒ‡å®šå•ä¸ªç›®å½•ä¸‹æ‰€æœ‰æ–‡ä»¶
   def getFiles(dir: File): Array[File] = {
     dir.listFiles.filter(_.isFile) ++
       dir.listFiles.filter(_.isDirectory).flatMap(getFiles)

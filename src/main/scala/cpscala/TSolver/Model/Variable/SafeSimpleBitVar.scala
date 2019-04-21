@@ -10,17 +10,17 @@ import scala.collection.mutable.ArrayBuffer
 
 class SafeSimpleBitVar(val name: String, val id: Int, num_vars: Int, vals: Array[Int], val helper: SearchHelper) extends PVar {
   override val capacity = vals.length
-  // Èç¹ûÂÛÓò´óÓÚ64Ôò·µ»Øfalse
+  // å¦‚æœè®ºåŸŸå¤§äº64åˆ™è¿”å›false
 
   val limit = capacity
   var cur_level: Int = 0
   var cur_size = new AtomicInteger(capacity)
   var last_size: Int = capacity
   var binded_level = -1
-  // ×Ü²ãÊı
+  // æ€»å±‚æ•°
   val num_level = num_vars + 3
 
-  //Ö»ÓÃÓÚ¼ÇÂ¼sizeµÄÀúÊ·ĞÅÏ¢
+  //åªç”¨äºè®°å½•sizeçš„å†å²ä¿¡æ¯
   val level_size = Array.fill(num_level)(-1)
   level_size(0) = capacity
 
@@ -30,7 +30,7 @@ class SafeSimpleBitVar(val name: String, val id: Int, num_vars: Int, vals: Array
   val bit_doms = new AtomicLongArray(num_level)
   //  val bitDoms = new Array[Long](numLevel)
 
-  // ³õÊ¼»¯µÚ0¼¶µÄbitDom
+  // åˆå§‹åŒ–ç¬¬0çº§çš„bitDom
   bit_doms.set(0, Constants.ALLONELONG << (Constants.BITSIZE - limit))
   var ii = 0
 
@@ -44,23 +44,23 @@ class SafeSimpleBitVar(val name: String, val id: Int, num_vars: Int, vals: Array
   }
 
   override def backLevel(): Int = {
-    // µ±Ç°level_sizeÖÃ-1
-    // Èô±äÁ¿ÔÚµ±Ç°²ã¸³Öµ£¬Ôò³·Ïú¸³Öµ
+    // å½“å‰level_sizeç½®-1
+    // è‹¥å˜é‡åœ¨å½“å‰å±‚èµ‹å€¼ï¼Œåˆ™æ’¤é”€èµ‹å€¼
     level_size(cur_level) = -1
     if (binded_level == cur_level) {
       binded_level = Constants.kINTINF
     }
 
-    // µ±Ç°²ãsizeÖÃ0£¬ÕâÒ»²ã²»ÒªÁË
+    // å½“å‰å±‚sizeç½®0ï¼Œè¿™ä¸€å±‚ä¸è¦äº†
     level_size(cur_level) = -1
-    // »Øµ½ÉÏÒ»²ã£¬µ±Ç°sizeµÈÓÚµ±Ç°²ãµÄÉÏÒ»²ãµÄsize
+    // å›åˆ°ä¸Šä¸€å±‚ï¼Œå½“å‰sizeç­‰äºå½“å‰å±‚çš„ä¸Šä¸€å±‚çš„size
     cur_level -= 1
-    // µ±Ç°size = µ±Ç°²ãµÄÉÏÒ»²ã
+    // å½“å‰size = å½“å‰å±‚çš„ä¸Šä¸€å±‚
     cur_size.set(level_size(cur_level))
     return cur_level
   }
 
-  //Ìá½»¸Ä¶¯
+  //æäº¤æ”¹åŠ¨
   override def restrict(): Unit = {
     var previousBits: Long = 0L
     var newBits: Long = 0L
@@ -159,7 +159,7 @@ class SafeSimpleBitVar(val name: String, val id: Int, num_vars: Int, vals: Array
     bit_doms.get(cur_level) == mask
   }
 
-  // Ìá½»¸Ä¶¯ºóÓĞ¸Ä±ä£¬Ôò·µ»Øtrue
+  // æäº¤æ”¹åŠ¨åæœ‰æ”¹å˜ï¼Œåˆ™è¿”å›true
   override def submitMask(mask: Long): Boolean = {
     var previousBits: Long = 0L
     var newBits: Long = 0L

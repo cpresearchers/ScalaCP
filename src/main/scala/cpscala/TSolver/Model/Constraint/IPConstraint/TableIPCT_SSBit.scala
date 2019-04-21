@@ -27,17 +27,17 @@ class TableIPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
     }
   }
 
-  //´æ±äÁ¿Index
+  //å­˜å˜é‡Index
   val Ssup = new ArrayBuffer[Int](arity)
   val Sval = new ArrayBuffer[Int](arity)
 
-  // »ñÈ¡×î´óÂÛÓò´óĞ¡
+  // è·å–æœ€å¤§è®ºåŸŸå¤§å°
   var maxDomainSize = Int.MinValue
   scope.foreach(x => {
     maxDomainSize = math.max(maxDomainSize, x.size())
   })
 
-  // ¾Ö²¿±äÁ¿±ê¼Ç
+  // å±€éƒ¨å˜é‡æ ‡è®°
   //  val gacValue = new Array[SingleBitSet](arity)
   val newMask = Array.fill[Long](arity)(0L)
   val oldMask = Array.fill[Long](arity)(Constants.ALLONELONG)
@@ -47,9 +47,9 @@ class TableIPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
   val validValues = new ArrayBuffer[Int](maxDomainSize)
   lastRemovedValues.clear()
 
-  // ±êÊ¶ÊÇ·ñÎª³õ´Î´«²¥¡£³õ´Î´«²¥updateTableÊ±ÀûÓÃvalid¸üĞÂ£¬·Ç³õ´Î´«²¥updateTableÊ±¸ù¾İ±È½Ï½á¹ûÈ·¶¨¡£
+  // æ ‡è¯†æ˜¯å¦ä¸ºåˆæ¬¡ä¼ æ’­ã€‚åˆæ¬¡ä¼ æ’­updateTableæ—¶åˆ©ç”¨validæ›´æ–°ï¼Œéåˆæ¬¡ä¼ æ’­updateTableæ—¶æ ¹æ®æ¯”è¾ƒç»“æœç¡®å®šã€‚
   var firstProp = true
-  //  // ³õÊ¼»¯gacValue£¬lastMask
+  //  // åˆå§‹åŒ–gacValueï¼ŒlastMask
   //  var ii = 0
   //  while (ii < arity) {
   //    val v = scope(ii)
@@ -58,7 +58,7 @@ class TableIPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
   //    ii += 1
   //  }
 
-  //¼ì²é±äÁ¿
+  //æ£€æŸ¥å˜é‡
   def initial(): Unit = {
     Ssup.clear()
     Sval.clear()
@@ -79,16 +79,16 @@ class TableIPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
     }
   }
 
-  //·µ»ØtrueÎªdelta¸üĞÂ£¬false´ÓÍ·¸üĞÂ
+  //è¿”å›trueä¸ºdeltaæ›´æ–°ï¼Œfalseä»å¤´æ›´æ–°
   @inline def getValues(vidx: Int, v: PVar): Boolean = {
     val lastRemovedMask: Long = (~newMask(vidx)) & oldMask(vidx)
     val valid = java.lang.Long.bitCount(newMask(vidx))
     val remove = java.lang.Long.bitCount(lastRemovedMask)
 
-    // ±ê¼ÇÊÇ·ñĞèÒªdelta¸üĞÂ
+    // æ ‡è®°æ˜¯å¦éœ€è¦deltaæ›´æ–°
     val needDelta: Boolean = remove < valid
     if (needDelta) {
-      // delta¸üĞÂ
+      // deltaæ›´æ–°
       var i = 0
       lastRemovedValues.clear()
       while (i < v.capacity) {
@@ -98,7 +98,7 @@ class TableIPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
         i += 1
       }
     } else {
-      // ´ÓÍ·¼ÆËã
+      // ä»å¤´è®¡ç®—
       var i = 0
       validValues.clear()
       while (i < v.capacity) {
@@ -119,7 +119,7 @@ class TableIPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
     while (i < SvalN && helper.isConsistent) {
       val vv: Int = Sval(i)
       val v: PVar = scope(vv)
-      // ÒòÎªinitialÖ®ºó»¹¿ÉÄÜÓĞÖµ±»É¾³ı
+      // å› ä¸ºinitialä¹‹åè¿˜å¯èƒ½æœ‰å€¼è¢«åˆ é™¤
       newMask(vv) = v.simpleMask()
       currTab.clearMask()
 
@@ -127,9 +127,9 @@ class TableIPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
       val valid = java.lang.Long.bitCount(newMask(vv))
       val remove = java.lang.Long.bitCount(lastRemovedMask)
 
-      // ±ê¼ÇÊÇ·ñĞèÒªdelta¸üĞÂ
+      // æ ‡è®°æ˜¯å¦éœ€è¦deltaæ›´æ–°
       if (remove < valid && !firstProp) {
-        // delta¸üĞÂ
+        // deltaæ›´æ–°
         lastRemovedValues.clear()
         var j = 0
         while (j < v.capacity) {
@@ -147,7 +147,7 @@ class TableIPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
         currTab.reverseMask()
       }
       else {
-        // ´ÓÍ·¼ÆËã
+        // ä»å¤´è®¡ç®—
         validValues.clear()
         var j = 0
         while (j < v.capacity) {
@@ -158,7 +158,7 @@ class TableIPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
           j += 1
         }
         //        //println(s"cid: ${id}, vid: ${v.id}, validValues: ", validValues.mkString(","))
-        // ÖØÍ·ÖØĞÂ
+        // é‡å¤´é‡æ–°
         for (a <- validValues) {
           currTab.addToMask(supports(vv)(a))
         }
@@ -166,14 +166,14 @@ class TableIPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
 
       val changed = currTab.intersectWithMask()
 
-      //´«²¥Ê§°Ü
+      //ä¼ æ’­å¤±è´¥
       if (currTab.isEmpty()) {
         helper.isConsistent = false
         return false
       }
       i += 1
     }
-    // Ê×´Î´«²¥updateTableÍê³É
+    // é¦–æ¬¡ä¼ æ’­updateTableå®Œæˆ
     firstProp = false
     return true
   }
@@ -199,14 +199,14 @@ class TableIPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
       //      //println(s"cid: ${id}, vid: ${v.id}, validValues: ", validValues.mkString(","))
       for (a <- validValues) {
         var index = residues(vv)(a)
-        if (index == -1 || (currTab.words(helper.level)(index) & supports(vv)(a)(index)) == 0L) { //resÊ§Ğ§
+        if (index == -1 || (currTab.words(helper.level)(index) & supports(vv)(a)(index)) == 0L) { //reså¤±æ•ˆ
           index = currTab.intersectIndex(supports(vv)(a))
-          if (index != -1) { //ÖØĞÂÕÒµ½Ö§³Ö
+          if (index != -1) { //é‡æ–°æ‰¾åˆ°æ”¯æŒ
             residues(vv)(a) = index
           }
           else {
             deleted = true
-            //ÎŞ·¨ÕÒµ½Ö§³Ö, É¾³ı(v, a)
+            //æ— æ³•æ‰¾åˆ°æ”¯æŒ, åˆ é™¤(v, a)
             newMask(vv) &= Constants.MASK0(a)
             //            //println("name: " + id + ", delete: " + v.id + "," + a + ", level: " + helper.level)
           }
@@ -223,7 +223,7 @@ class TableIPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
           return false
         }
 
-        // ÕâÀï²»ÄÜµÈÓÚnewMaskÒòÎª±íÊÇ»ùÓÚlastMask¸üĞÂµÄ
+        // è¿™é‡Œä¸èƒ½ç­‰äºnewMaskå› ä¸ºè¡¨æ˜¯åŸºäºlastMaskæ›´æ–°çš„
         oldMask(vv) = newMask(vv)
 
         //        if (lastMask(vv) != v.simpleMask()) {

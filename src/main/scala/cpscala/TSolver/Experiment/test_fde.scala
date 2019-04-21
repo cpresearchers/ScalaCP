@@ -75,7 +75,7 @@
 //    }
 //  }
 //
-//  //»ñÈ¡Ö¸¶¨µ¥¸öÄ¿Â¼ÏÂËùÓĞÎÄ¼ş
+//  //è·å–æŒ‡å®šå•ä¸ªç›®å½•ä¸‹æ‰€æœ‰æ–‡ä»¶
 //  def getFiles(dir: File): Array[File] = {
 //    dir.listFiles.filter(_.isFile) ++
 //      dir.listFiles.filter(_.isDirectory).flatMap(getFiles)

@@ -27,19 +27,19 @@ class TableCT_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope: Ar
     }
   }
 
-  //´æ±äÁ¿Index
+  //å­˜å˜é‡Index
   val Ssup = new ArrayBuffer[Int](arity)
   val Sval = new ArrayBuffer[Int](arity)
   //  val lastSize = for (v <- scope) yield v.size()
   val lastSize = Array.fill(arity)(-1)
   //  val oldSize = for (v <- scope) yield v.size()
-  // µÚÒ»´ÎÔËĞĞÊ±Òª¶ÔËùÓĞ±äÁ¿Öµ½øĞĞ¼ì²é¡£ËùÒÔÕâÀï½«ÉèÎª×î´ó£¬delta¾Í×î´ó
+  // ç¬¬ä¸€æ¬¡è¿è¡Œæ—¶è¦å¯¹æ‰€æœ‰å˜é‡å€¼è¿›è¡Œæ£€æŸ¥ã€‚æ‰€ä»¥è¿™é‡Œå°†è®¾ä¸ºæœ€å¤§ï¼Œdeltaå°±æœ€å¤§
   val oldSize = Array.fill[Long](arity)(0x3f3f3f3f)
   //  val oldMask = Array.fill[Long](arity)(Long.MaxValue)
-  //  removedValues(delta)»òlastValues
+  //  removedValues(delta)æˆ–lastValues
   val vals = new ArrayBuffer[Int]()
 
-  //¼ì²é±äÁ¿
+  //æ£€æŸ¥å˜é‡
   def initial(): Unit = {
     Ssup.clear()
     Sval.clear()
@@ -70,10 +70,10 @@ class TableCT_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope: Ar
       val v: Var = scope(vv)
       currTab.clearMask()
 
-      // !!´Ë´¦deltaÖØĞ´ÁËÒ»´Î
+      // !!æ­¤å¤„deltaé‡å†™äº†ä¸€æ¬¡
       vals.clear()
       if ((oldSize(vv) - v.size()) < (v.size())) {
-        // delta¸üĞÂ
+        // deltaæ›´æ–°
         v.getLastRemovedValues(oldSize(vv), vals)
         //                //println(s"cid: ${id}, vid: ${v.id}, getLastRemovedValues: ", vals.mkString(","))
         for (a <- vals) {
@@ -81,7 +81,7 @@ class TableCT_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope: Ar
         }
         currTab.reverseMask()
       } else {
-        // ÖØÍ·ÖØĞÂ
+        // é‡å¤´é‡æ–°
         v.getValidValues(vals)
         //                //println(s"cid: ${id}, vid: ${v.id}, validValues: ", vals.mkString(","))
         for (a <- vals) {
@@ -90,7 +90,7 @@ class TableCT_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope: Ar
       }
       val changed = currTab.intersectWithMask()
 
-      //´«²¥Ê§°Ü
+      //ä¼ æ’­å¤±è´¥
       if (currTab.isEmpty()) {
         //println(s"update faild!! cid: ${id}")
         return false
@@ -118,14 +118,14 @@ class TableCT_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope: Ar
       for (a <- vals) {
         //        //println(s"      cid: ${id} var: ${v.id} value: ${a} support: ${Constants.toFormatBinaryString(supports(vv)(a)(0))}")
         var index = residues(vv)(a)
-        if (index == -1 || (currTab.words(helper.level)(index) & supports(vv)(a)(index)) == 0L) { //resÊ§Ğ§
+        if (index == -1 || (currTab.words(helper.level)(index) & supports(vv)(a)(index)) == 0L) { //reså¤±æ•ˆ
           index = currTab.intersectIndex(supports(vv)(a))
-          if (index != -1) { //ÖØĞÂÕÒµ½Ö§³Ö
+          if (index != -1) { //é‡æ–°æ‰¾åˆ°æ”¯æŒ
             residues(vv)(a) = index
           }
           else {
             deleted = true
-            //ÎŞ·¨ÕÒµ½Ö§³Ö, É¾³ı(v, a)
+            //æ— æ³•æ‰¾åˆ°æ”¯æŒ, åˆ é™¤(v, a)
             v.remove(a)
             //println(s"      var:${v.id} remove new value:${a}")
           }

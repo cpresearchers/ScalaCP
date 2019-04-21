@@ -6,20 +6,20 @@ import cpscala.TSolver.CpUtil.SearchHelper.SearchHelper
 import cpscala.TSolver.CpUtil.{Constants, INDEX}
 
 class SafeBitSetVar(val name: String, val id: Int, num_vars: Int, vals: Array[Int], val helper: SearchHelper) extends PVar {
-  // ×Ü²ãÊı
+  // æ€»å±‚æ•°
   val numLevel: Int = num_vars + 3
-  // ËÑË÷Ê÷µ±Ç°²ãÊı
+  // æœç´¢æ ‘å½“å‰å±‚æ•°
   var curLevel: Int = 0
 
-  // ÂÛÓò³õÊ¼´óĞ¡
+  // è®ºåŸŸåˆå§‹å¤§å°
   override val capacity = vals.length
-  // ÂÛÓò±ÈÌØ×é¸öÊı
+  // è®ºåŸŸæ¯”ç‰¹ç»„ä¸ªæ•°
   val numBit = Math.ceil(capacity.toDouble / Constants.BITSIZE.toDouble).toInt
-  // ÁÙÊ±±ÈÌØÂÛÓò
+  // ä¸´æ—¶æ¯”ç‰¹è®ºåŸŸ
   val bitTmp: Array[Long] = Array.fill[Long](numBit)(Constants.ALLONELONG)
-  // ×îºóÒ»¸ö±ÈÌØ×éµÄÄ©Î²ÎŞĞ§Î»ÖÃÇå0
+  // æœ€åä¸€ä¸ªæ¯”ç‰¹ç»„çš„æœ«å°¾æ— æ•ˆä½ç½®æ¸…0
   bitTmp(numBit - 1) <<= (Constants.BITSIZE - capacity % Constants.BITSIZE)
-  // Ô­×Ó±ÈÌØÂÛÓò
+  // åŸå­æ¯”ç‰¹è®ºåŸŸ
   val bitDoms: Array[AtomicLongArray] = Array.fill[AtomicLongArray](numLevel)(new AtomicLongArray(bitTmp))
 
   val bitMark = new AtomicLongArray(numBit)
@@ -44,7 +44,7 @@ class SafeBitSetVar(val name: String, val id: Int, num_vars: Int, vals: Array[In
   }
 
   override def backLevel(): Int = {
-    // Èô±äÁ¿ÔÚµ±Ç°²ã¸³Öµ£¬Ôò³·Ïú¸³Öµ
+    // è‹¥å˜é‡åœ¨å½“å‰å±‚èµ‹å€¼ï¼Œåˆ™æ’¤é”€èµ‹å€¼
     if (bindLevel == curLevel) {
       bindLevel = Constants.kINTINF
     }
@@ -52,7 +52,7 @@ class SafeBitSetVar(val name: String, val id: Int, num_vars: Int, vals: Array[In
     return curLevel
   }
 
-  //Ìá½»¸Ä¶¯
+  //æäº¤æ”¹åŠ¨
   override def restrict(): Unit = {
     var previousBits: Long = 0L
     var newBits: Long = 0L

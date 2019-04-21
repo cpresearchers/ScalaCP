@@ -7,15 +7,15 @@ import scala.collection.mutable.ArrayBuffer
 
 class SimpleBitVar(val name: String, val id: Int, num_vars: Int, vals: Array[Int], val helper: SearchHelper) extends Var {
   override val capacity = vals.length
-  // Èç¹ûÂÛÓò´óÓÚ64Ôò·µ»Øfalse
+  // å¦‚æœè®ºåŸŸå¤§äº64åˆ™è¿”å›false
 
   val limit = capacity
   //  var level_size(helper.level): Int = capacity
   var last_size: Int = capacity
-  // ×Ü²ãÊı
+  // æ€»å±‚æ•°
   val num_level = num_vars + 3
 
-  //Ö»ÓÃÓÚ¼ÇÂ¼sizeµÄÀúÊ·ĞÅÏ¢
+  //åªç”¨äºè®°å½•sizeçš„å†å²ä¿¡æ¯
   val level_size = Array.fill(num_level)(-1)
   level_size(0) = capacity
 
@@ -25,7 +25,7 @@ class SimpleBitVar(val name: String, val id: Int, num_vars: Int, vals: Array[Int
   var mark_size: Int = 0
   val bit_doms = new Array[Long](num_level)
 
-  // ³õÊ¼»¯µÚ0¼¶µÄbitDom
+  // åˆå§‹åŒ–ç¬¬0çº§çš„bitDom
   bit_doms(0) = bit_tmp
 
   var ii = 0
@@ -37,8 +37,8 @@ class SimpleBitVar(val name: String, val id: Int, num_vars: Int, vals: Array[Int
   }
 
   override def backLevel(): Int = {
-    // µ±Ç°level_sizeÖÃ-1
-    // Èô±äÁ¿ÔÚµ±Ç°²ã¸³Öµ£¬Ôò³·Ïú¸³Öµ
+    // å½“å‰level_sizeç½®-1
+    // è‹¥å˜é‡åœ¨å½“å‰å±‚èµ‹å€¼ï¼Œåˆ™æ’¤é”€èµ‹å€¼
     level_size(helper.level) = level_size(helper.level)
     if (bindLevel == helper.level) {
       bindLevel = Constants.kINTINF
@@ -46,7 +46,7 @@ class SimpleBitVar(val name: String, val id: Int, num_vars: Int, vals: Array[Int
     return helper.level
   }
 
-  //Ìá½»¸Ä¶¯
+  //æäº¤æ”¹åŠ¨
   override def restrict(): Unit = {
     level_size(helper.level) = mark_size
     bit_doms(helper.level) = bit_mark
@@ -81,7 +81,7 @@ class SimpleBitVar(val name: String, val id: Int, num_vars: Int, vals: Array[Int
   }
 
   override def mark(a: Int): Unit = {
-    // markÖĞÃ»ÓĞ²¢ÇÒÃ»ÓĞ±»É¾µô²Å¼ÓÈëmark
+    // markä¸­æ²¡æœ‰å¹¶ä¸”æ²¡æœ‰è¢«åˆ æ‰æ‰åŠ å…¥mark
     if ((bit_mark & Constants.MASK1(a) & bit_doms(helper.level)) == 0L) {
       bit_mark |= Constants.MASK1(a)
       mark_size += 1

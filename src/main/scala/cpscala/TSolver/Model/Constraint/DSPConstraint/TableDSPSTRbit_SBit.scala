@@ -9,54 +9,54 @@ import scala.collection.mutable.ArrayBuffer
 import scala.util.control.Breaks._
 
 /**
-  * ÕâÊÇDSPSTRbitÊ¹ÓÃSafeBitVar×÷Îª±äÁ¿ÀàĞÍµÄ°æ±¾£¨¿ÉÒÔ´¦ÀíÂÛÓòÈÎÒâ´óĞ¡µÄ±äÁ¿£©
-  * ÍøÂçÔ¤´¦ÀíÊ±²ÉÓÃSTRbitÎ¬³ÖÍøÂçGAC£¬
-  * ÔÚËÑË÷¹ı³ÌÖĞÒ²²ÉÓÃSTRbitÎ¬³ÖÍøÂçGAC£¬
+  * è¿™æ˜¯DSPSTRbitä½¿ç”¨SafeBitVarä½œä¸ºå˜é‡ç±»å‹çš„ç‰ˆæœ¬ï¼ˆå¯ä»¥å¤„ç†è®ºåŸŸä»»æ„å¤§å°çš„å˜é‡ï¼‰
+  * ç½‘ç»œé¢„å¤„ç†æ—¶é‡‡ç”¨STRbitç»´æŒç½‘ç»œGACï¼Œ
+  * åœ¨æœç´¢è¿‡ç¨‹ä¸­ä¹Ÿé‡‡ç”¨STRbitç»´æŒç½‘ç»œGACï¼Œ
   */
 
 class TableDSPSTRbit_SBit(val id: Int, val arity: Int, val numVars: Int, val scope: Array[PVar], val tuples: Array[Array[Int]], val helper: DSPSearchHelper) extends DSPPropagator {
 
-  // ±ÈÌØ×Ó±í£¬ÈıÎ¬Êı×é£¬µÚÒ»Î¬±äÁ¿£¬µÚ¶şÎ¬È¡Öµ£¬µÚÈıÎ¬Ôª×é
-  // ³õÊ¼»¯±äÁ¿Ê±£¬ÆäÂÛÓòÒÑ¾­±»ĞòÁĞ»¯£¬ÖîÈç[0, 1, ..., var.size()]£¬ËùÒÔ¿ÉÒÔÖ±½ÓÓÃÈ¡Öµ×÷ÎªÏÂ±ê
+  // æ¯”ç‰¹å­è¡¨ï¼Œä¸‰ç»´æ•°ç»„ï¼Œç¬¬ä¸€ç»´å˜é‡ï¼Œç¬¬äºŒç»´å–å€¼ï¼Œç¬¬ä¸‰ç»´å…ƒç»„
+  // åˆå§‹åŒ–å˜é‡æ—¶ï¼Œå…¶è®ºåŸŸå·²ç»è¢«åºåˆ—åŒ–ï¼Œè¯¸å¦‚[0, 1, ..., var.size()]ï¼Œæ‰€ä»¥å¯ä»¥ç›´æ¥ç”¨å–å€¼ä½œä¸ºä¸‹æ ‡
   private[this] val bitTables = Array.tabulate(arity)(i => new Array[Array[BitSupport]](scope(i).size()))
-  // ·Ö½ç·û£¬¶şÎ¬Êı×é£¬µÚÒ»Î¬±äÁ¿£¬µÚ¶şÎ¬È¡Öµ
+  // åˆ†ç•Œç¬¦ï¼ŒäºŒç»´æ•°ç»„ï¼Œç¬¬ä¸€ç»´å˜é‡ï¼Œç¬¬äºŒç»´å–å€¼
   private[this] val last = Array.tabulate(arity)(i => new Array[Int](scope(i).size()))
-  // ·Ö½ç·ûÕ»
-  // ÔÚËÑË÷Ê÷³õÊ¼²ã£¬Èô±äÁ¿ÖµµÄlast¸Ä±äÁË£¬¼´¸üĞÂ±äÁ¿Õ»¶¥²ãµÄArray£¨ºóÀ´ÏëÁËÏë£¬0²ã²»ĞèÒª±£´æ£¬ÒòÎª1²ã¶ÔÓ¦µÄÕ»¶¥±£´æµÄ¼´ÊÇ0²ã³õÊ¼»¯GACºóµÄĞÅÏ¢£©
-  // ÔÚËÑË÷Ê÷µÄ·Ç³õÊ¼²ã£¬µ±±äÁ¿ÖµµÄlastµÚÒ»´Î·¢Éú¸Ä±äÊ±£¬½«¸Ä±äÇ°µÄlastÖµ±£´æÔÚ¸Ã±äÁ¿Õ»¶¥²ãArrayÖĞ
+  // åˆ†ç•Œç¬¦æ ˆ
+  // åœ¨æœç´¢æ ‘åˆå§‹å±‚ï¼Œè‹¥å˜é‡å€¼çš„lastæ”¹å˜äº†ï¼Œå³æ›´æ–°å˜é‡æ ˆé¡¶å±‚çš„Arrayï¼ˆåæ¥æƒ³äº†æƒ³ï¼Œ0å±‚ä¸éœ€è¦ä¿å­˜ï¼Œå› ä¸º1å±‚å¯¹åº”çš„æ ˆé¡¶ä¿å­˜çš„å³æ˜¯0å±‚åˆå§‹åŒ–GACåçš„ä¿¡æ¯ï¼‰
+  // åœ¨æœç´¢æ ‘çš„éåˆå§‹å±‚ï¼Œå½“å˜é‡å€¼çš„lastç¬¬ä¸€æ¬¡å‘ç”Ÿæ”¹å˜æ—¶ï¼Œå°†æ”¹å˜å‰çš„lastå€¼ä¿å­˜åœ¨è¯¥å˜é‡æ ˆé¡¶å±‚Arrayä¸­
   private[this] val lastLevel = Array.fill[Array[Array[Int]]](numVars + 1)(Array.tabulate(arity)(i => Array.fill[Int](scope(i).size())(-1)))
 
   private[this] val lengthTuple = tuples.length
-  // ±ÈÌØÔª×éµÄÊıÁ¿£¬tupleLength²»ÄÜ±»64Õû³ı£¬ÒªÎªÓàÊı´´½¨Ò»¸ö±ÈÌØÔª×é
+  // æ¯”ç‰¹å…ƒç»„çš„æ•°é‡ï¼ŒtupleLengthä¸èƒ½è¢«64æ•´é™¤ï¼Œè¦ä¸ºä½™æ•°åˆ›å»ºä¸€ä¸ªæ¯”ç‰¹å…ƒç»„
   private[this] val numBit = Math.ceil(lengthTuple.toDouble / Constants.BITSIZE.toDouble).toInt
-  // ±ÈÌØÔª×éµÄ¼¯ºÏ£¬±ÈÌØÔª×éµÄÃ¿¸ö±ÈÌØÎ»¼ÇÂ¼¶ÔÓ¦Î»ÖÃµÄÔª×éÊÇ·ñÓĞĞ§
+  // æ¯”ç‰¹å…ƒç»„çš„é›†åˆï¼Œæ¯”ç‰¹å…ƒç»„çš„æ¯ä¸ªæ¯”ç‰¹ä½è®°å½•å¯¹åº”ä½ç½®çš„å…ƒç»„æ˜¯å¦æœ‰æ•ˆ
   private[this] val bitVal = Array.fill[Long](numBit)(-1L)
-  // ×îºóÒ»¸ö±ÈÌØÔª×éÄ©Î²Çå0
+  // æœ€åä¸€ä¸ªæ¯”ç‰¹å…ƒç»„æœ«å°¾æ¸…0
   bitVal(numBit - 1) <<= Constants.BITSIZE - lengthTuple % Constants.BITSIZE
-  // ±ÈÌØÔª×éÕ»
-  // ÔÚËÑË÷Ê÷³õÊ¼²ã£¬Èô±ÈÌØÔª×é¸Ä±äÁË£¬¼´¸üĞÂÕ»¶¥²ãµÄArray£¨ºóÀ´ÏëÁËÏë£¬0²ã²»ĞèÒª±£´æ£¬ÒòÎª1²ã¶ÔÓ¦µÄÕ»¶¥±£´æµÄ¼´ÊÇ0²ã³õÊ¼»¯GACºóµÄĞÅÏ¢£©
-  // ÔÚËÑË÷Ê÷µÄ·Ç³õÊ¼²ã£¬µ±±ÈÌØÔª×éµÚÒ»´Î·¢Éú¸Ä±äÊ±£¬½«¸Ä±äÇ°µÄ±ÈÌØÔª×é±£´æÔÚÕ»¶¥²ãArrayÖĞ
+  // æ¯”ç‰¹å…ƒç»„æ ˆ
+  // åœ¨æœç´¢æ ‘åˆå§‹å±‚ï¼Œè‹¥æ¯”ç‰¹å…ƒç»„æ”¹å˜äº†ï¼Œå³æ›´æ–°æ ˆé¡¶å±‚çš„Arrayï¼ˆåæ¥æƒ³äº†æƒ³ï¼Œ0å±‚ä¸éœ€è¦ä¿å­˜ï¼Œå› ä¸º1å±‚å¯¹åº”çš„æ ˆé¡¶ä¿å­˜çš„å³æ˜¯0å±‚åˆå§‹åŒ–GACåçš„ä¿¡æ¯ï¼‰
+  // åœ¨æœç´¢æ ‘çš„éåˆå§‹å±‚ï¼Œå½“æ¯”ç‰¹å…ƒç»„ç¬¬ä¸€æ¬¡å‘ç”Ÿæ”¹å˜æ—¶ï¼Œå°†æ”¹å˜å‰çš„æ¯”ç‰¹å…ƒç»„ä¿å­˜åœ¨æ ˆé¡¶å±‚Arrayä¸­
   private[this] val bitLevel = Array.fill[Long](numVars + 1, numBit)(0L)
 
-  // ±äÁ¿µÄ±ÈÌØ×é¸öÊı
+  // å˜é‡çš„æ¯”ç‰¹ç»„ä¸ªæ•°
   private[this] val varNumBit: Array[Int] = Array.tabulate[Int](arity)(i => scope(i).getNumBit())
-  // lastMaskÓë±äÁ¿Mask²»Í¬µÄÖµÊÇ¸ÃÔ¼ÊøÁ½´Î´«²¥Ö®¼ä±»¹ıÂËµÄÖµ£¨delta£©
+  // lastMaskä¸å˜é‡Maskä¸åŒçš„å€¼æ˜¯è¯¥çº¦æŸä¸¤æ¬¡ä¼ æ’­ä¹‹é—´è¢«è¿‡æ»¤çš„å€¼ï¼ˆdeltaï¼‰
   private[this] val lastMask = Array.tabulate(arity)(i => new Array[Long](varNumBit(i)))
-  // ÔÚÔ¼Êø´«²¥¿ªÊ¼Ê±localMask»ñÈ¡±äÁ¿×îĞÂµÄmask
+  // åœ¨çº¦æŸä¼ æ’­å¼€å§‹æ—¶localMaskè·å–å˜é‡æœ€æ–°çš„mask
   private[this] val localMask = Array.tabulate(arity)(i => new Array[Long](varNumBit(i)))
-  // ¼ÇÂ¼¸ÃÔ¼ÊøÁ½´Î´«²¥Ö®¼äÉ¾ÖµµÄmask
+  // è®°å½•è¯¥çº¦æŸä¸¤æ¬¡ä¼ æ’­ä¹‹é—´åˆ å€¼çš„mask
   private[this] val removeMask = Array.tabulate(arity)(i => new Array[Long](varNumBit(i)))
   // delta
   private[this] val removeValues = new ArrayBuffer[Int]()
-  // ±äÁ¿µÄÊ£ÓàÓĞĞ§Öµ
+  // å˜é‡çš„å‰©ä½™æœ‰æ•ˆå€¼
   private[this] val validValues = new ArrayBuffer[Int]()
 
-  // ³õÊ¼»¯±êÖ¾±äÁ¿
-  // isInitialÎªfalseËµÃ÷setupÖĞ»¹Î´³õÊ¼»¯Íê³ÉÊı¾İ½á¹¹
-  // ÎªtrueËµÃ÷³õÊ¼»¯Êı¾İ½á¹¹Íê³É£¬¿ÉÒÔ½øĞĞ³õÊ¼É¾Öµ
+  // åˆå§‹åŒ–æ ‡å¿—å˜é‡
+  // isInitialä¸ºfalseè¯´æ˜setupä¸­è¿˜æœªåˆå§‹åŒ–å®Œæˆæ•°æ®ç»“æ„
+  // ä¸ºtrueè¯´æ˜åˆå§‹åŒ–æ•°æ®ç»“æ„å®Œæˆï¼Œå¯ä»¥è¿›è¡Œåˆå§‹åˆ å€¼
   private[this] var isInitial = false
 
-  // ÂÛÓò·¢Éú¸Ä±äµÄ±äÁ¿¼¯
+  // è®ºåŸŸå‘ç”Ÿæ”¹å˜çš„å˜é‡é›†
   private val Xevt = new ArrayBuffer[PVar](arity)
   Xevt.clear()
 
@@ -70,18 +70,18 @@ class TableDSPSTRbit_SBit(val id: Int, val arity: Int, val numVars: Int, val sco
       })
 
 
-      // ÏòÁÙÊ±×Ó±íÄÚ¶¯Ì¬Ìí¼ÓÔª×é±àºÅ
+      // å‘ä¸´æ—¶å­è¡¨å†…åŠ¨æ€æ·»åŠ å…ƒç»„ç¼–å·
       var t = 0
       while (t < lengthTuple) {
         if (isValidTuple(tuples(t))) {
-          // tsÎª±ÈÌØÔª×éÏÂ±ê
+          // tsä¸ºæ¯”ç‰¹å…ƒç»„ä¸‹æ ‡
           val ts = t / 64
-          // indexÎªµÚts¸ö±ÈÌØÔª×éÖĞÔª×éµÄÎ»ÖÃ
+          // indexä¸ºç¬¬tsä¸ªæ¯”ç‰¹å…ƒç»„ä¸­å…ƒç»„çš„ä½ç½®
           val index = t % 64
           var i = 0
           while (i < arity) {
             val a = tuples(t)(i)
-            // ÀûÓÃÕÛ°ë²éÕÒÊ¹µÃ±äÁ¿ÖµµÄ±ÈÌØÖ§³Ö°´ĞòºÅµİÔöÅÅÁĞ
+            // åˆ©ç”¨æŠ˜åŠæŸ¥æ‰¾ä½¿å¾—å˜é‡å€¼çš„æ¯”ç‰¹æ”¯æŒæŒ‰åºå·é€’å¢æ’åˆ—
             val bitSupportsArray = tempBitTable(i)(a)
 
             var low = 0
@@ -117,7 +117,7 @@ class TableDSPSTRbit_SBit(val id: Int, val arity: Int, val numVars: Int, val sco
       while (i < arity) {
         val v = scope(i)
         v.mask(localMask(i))
-        // ÒòÎª±äÁ¿»¹Î´É¾Öµ£¬ËùÒÔj¼ÈÎªindex£¬ÓÖÎªÈ¡Öµ
+        // å› ä¸ºå˜é‡è¿˜æœªåˆ å€¼ï¼Œæ‰€ä»¥jæ—¢ä¸ºindexï¼Œåˆä¸ºå–å€¼
         var j = v.size()
         while (j > 0) {
           j -= 1
@@ -125,7 +125,7 @@ class TableDSPSTRbit_SBit(val id: Int, val arity: Int, val numVars: Int, val sco
           bitTables(i)(j) = tempBitSupports.toArray
           last(i)(j) = tempBitSupports.length - 1
           if (tempBitSupports.isEmpty) {
-            // ÇÉÃî£¬bitÉ¾Öµ£¬¼´½«maskÖĞÖµj¶ÔÓ¦µÄbitÎ»ÉèÖÃÎª0
+            // å·§å¦™ï¼Œbitåˆ å€¼ï¼Œå³å°†maskä¸­å€¼jå¯¹åº”çš„bitä½è®¾ç½®ä¸º0
             val (x, y) = INDEX.getXY(j)
             localMask(i)(x) &= Constants.MASK0(y)
             helper.varIsChange.set(true)
@@ -133,21 +133,21 @@ class TableDSPSTRbit_SBit(val id: Int, val arity: Int, val numVars: Int, val sco
         }
         i += 1
       }
-      // ³õÊ¼»¯Êı¾İ½á¹¹Íê³É
+      // åˆå§‹åŒ–æ•°æ®ç»“æ„å®Œæˆ
       isInitial = true
     }
     else {
       var i = 0
       while (i < arity) {
         val v = scope(i)
-        // ¸üĞÂ±äÁ¿ÂÛÓò
+        // æ›´æ–°å˜é‡è®ºåŸŸ
         v.submitMask(localMask(i))
         if (v.isEmpty()) {
           helper.isConsistent = false
           return
         }
 
-        // ¸üĞÂlastMask
+        // æ›´æ–°lastMask
         var j = 0
         while (j < varNumBit(i)) {
           lastMask(i)(j) = localMask(i)(j)
@@ -159,7 +159,7 @@ class TableDSPSTRbit_SBit(val id: Int, val arity: Int, val numVars: Int, val sco
     }
   }
 
-  // É¾³ıÎŞĞ§Ôª×é
+  // åˆ é™¤æ— æ•ˆå…ƒç»„
   def deleteInvalidTuple(): Unit = {
 
     var i = 0
@@ -167,16 +167,16 @@ class TableDSPSTRbit_SBit(val id: Int, val arity: Int, val numVars: Int, val sco
       val v = scope(i)
       v.mask(localMask(i))
 
-      // ¸ù¾İĞÂ¾ÉmaskµÄ±È½ÏÈ·¶¨ÊÇ·ñÓĞÉ¾Öµ
+      // æ ¹æ®æ–°æ—§maskçš„æ¯”è¾ƒç¡®å®šæ˜¯å¦æœ‰åˆ å€¼
       var diff = false
       var j = 0
       while (j < varNumBit(i)) {
-        // ĞèÏÈ½«removeMaskÇå¿Õ£¬Èç¹û²»Çå¿Õ£¬ÄÇÃ´Óöµ½lastMaskºÍlocalMaskÏàµÈµÄÇé¿ö£¬removeMaskÈÔÈ»Î¬³ÖÔ­Ñù£¬ÈôÔ­Ñù·ÇÈ«0£¬Ôò»á³ö´í
+        // éœ€å…ˆå°†removeMaskæ¸…ç©ºï¼Œå¦‚æœä¸æ¸…ç©ºï¼Œé‚£ä¹ˆé‡åˆ°lastMaskå’ŒlocalMaskç›¸ç­‰çš„æƒ…å†µï¼ŒremoveMaskä»ç„¶ç»´æŒåŸæ ·ï¼Œè‹¥åŸæ ·éå…¨0ï¼Œåˆ™ä¼šå‡ºé”™
         removeMask(i)(j) = 0L
-        // ¸ù¾İĞÂ¾ÉmaskµÄ±È½ÏÈ·¶¨ÊÇ·ñÓĞÉ¾Öµ
+        // æ ¹æ®æ–°æ—§maskçš„æ¯”è¾ƒç¡®å®šæ˜¯å¦æœ‰åˆ å€¼
         if (lastMask(i)(j) != localMask(i)(j)) {
           removeMask(i)(j) = (~localMask(i)(j)) & lastMask(i)(j)
-          // ¸üĞÂlastMasks
+          // æ›´æ–°lastMasks
           lastMask(i)(j) = localMask(i)(j)
           diff = true
         }
@@ -184,9 +184,9 @@ class TableDSPSTRbit_SBit(val id: Int, val arity: Int, val numVars: Int, val sco
       }
 
       if (diff) {
-        // ÈôÓĞÉ¾Öµ£¬Ôò»ñµÃdelta
+        // è‹¥æœ‰åˆ å€¼ï¼Œåˆ™è·å¾—delta
         Constants.getValues(removeMask(i), removeValues)
-        // Ñ°ÕÒĞÂµÄÎŞĞ§Ôª×é
+        // å¯»æ‰¾æ–°çš„æ— æ•ˆå…ƒç»„
         for (a <- removeValues) {
           val old = last(i)(a)
           val bitSupports = bitTables(i)(a)
@@ -195,13 +195,13 @@ class TableDSPSTRbit_SBit(val id: Int, val arity: Int, val numVars: Int, val sco
             val ts = bitSupports(l).ts
             val u = bitSupports(l).mask & bitVal(ts)
 
-            // Óë½á¹û·Ç0£¬ËµÃ÷bitÎª1µÄÎ»ÖÃ¶ÔÓ¦µÄÔª×é±äÎªÎŞĞ§
+            // ä¸ç»“æœé0ï¼Œè¯´æ˜bitä¸º1çš„ä½ç½®å¯¹åº”çš„å…ƒç»„å˜ä¸ºæ— æ•ˆ
             if (u != 0L) {
-              // ½«µÚÒ»´Î¸Ä±äÖ®Ç°µÄ±ÈÌØÔª×é¼ÇÂ¼ÏÂÀ´
+              // å°†ç¬¬ä¸€æ¬¡æ”¹å˜ä¹‹å‰çš„æ¯”ç‰¹å…ƒç»„è®°å½•ä¸‹æ¥
               if (bitLevel(level)(ts) == 0L) {
                 bitLevel(level)(ts) = bitVal(ts)
               }
-              // ¸üĞÂ±ÈÌØÔª×é
+              // æ›´æ–°æ¯”ç‰¹å…ƒç»„
               bitVal(ts) &= ~u
             }
           }
@@ -211,7 +211,7 @@ class TableDSPSTRbit_SBit(val id: Int, val arity: Int, val numVars: Int, val sco
     }
   }
 
-  // Ñ°ÕÒÃ»ÓĞÖ§³ÖµÄÖµ
+  // å¯»æ‰¾æ²¡æœ‰æ”¯æŒçš„å€¼
   def searchSupport(): Boolean = {
 
     Xevt.clear()
@@ -226,7 +226,7 @@ class TableDSPSTRbit_SBit(val id: Int, val arity: Int, val numVars: Int, val sco
         for (a <- validValues) {
           val bitSupports = bitTables(i)(a)
           val old = last(i)(a)
-          // Ñ°ÕÒÖ§³ÖµÄ±ÈÌØÔª×é
+          // å¯»æ‰¾æ”¯æŒçš„æ¯”ç‰¹å…ƒç»„
           var now = old
 
           while (now >= 0 && (bitSupports(now).mask & bitVal(bitSupports(now).ts)) == 0L) {
@@ -235,13 +235,13 @@ class TableDSPSTRbit_SBit(val id: Int, val arity: Int, val numVars: Int, val sco
 
           if (now == -1) {
             deleted = true
-            // ÇÉÃî£¬bitÉ¾Öµ£¬¼´½«maskÖĞÖµvalue¶ÔÓ¦µÄbitÎ»ÉèÖÃÎª0
+            // å·§å¦™ï¼Œbitåˆ å€¼ï¼Œå³å°†maskä¸­å€¼valueå¯¹åº”çš„bitä½è®¾ç½®ä¸º0
             val (x, y) = INDEX.getXY(a)
             localMask(i)(x) &= Constants.MASK0(y)
             //            println(s"    cur_cid: ${id}, var: ${v.id}, remove val: ${a}")
           } else {
             if (now != old) {
-              // ½«µÚÒ»´Î¸Ä±äÖ®Ç°µÄlast¼ÇÂ¼ÏÂÀ´
+              // å°†ç¬¬ä¸€æ¬¡æ”¹å˜ä¹‹å‰çš„lastè®°å½•ä¸‹æ¥
               if (lastLevel(level)(i)(a) == -1) {
                 lastLevel(level)(i)(a) = old
               }
@@ -260,7 +260,7 @@ class TableDSPSTRbit_SBit(val id: Int, val arity: Int, val numVars: Int, val sco
             Xevt += v
           }
 
-          // ¸üĞÂlastMask
+          // æ›´æ–°lastMask
           var j = 0
           while (j < varNumBit(i)) {
             lastMask(i)(j) = localMask(i)(j)
@@ -282,11 +282,11 @@ class TableDSPSTRbit_SBit(val id: Int, val arity: Int, val numVars: Int, val sco
 
   def submitPropagtors(): Boolean = {
     //    println(s"    cur_ID: ${Thread.currentThread().getId()} cons: ${id}  submit, its Xevt size: ${Xevt.length}")
-    // Ìá½»ÆäËüÔ¼Êø
+    // æäº¤å…¶å®ƒçº¦æŸ
     for (x <- Xevt) {
       if (helper.isConsistent) {
         for (c <- helper.subscription(x.id)) {
-          // !!ÕâÀï¿ÉÒÔ¼ÓÏŞÖÆÌõ¼şc.v.simpleMask!=x.simpleMask
+          // !!è¿™é‡Œå¯ä»¥åŠ é™åˆ¶æ¡ä»¶c.v.simpleMask!=x.simpleMask
           if (c.id != id) {
             helper.submitToPool(c)
           }
@@ -308,7 +308,7 @@ class TableDSPSTRbit_SBit(val id: Int, val arity: Int, val numVars: Int, val sco
     } while (!runningStatus.compareAndSet(1, 0))
     helper.c_sub.decrementAndGet()
 
-    // ÒÔÏÂ°æ±¾²»ÎÈ¶¨£¬Ôİ²»¿¼ÂÇ£¬Ö»ÊÇ¶Ô´«²¥¹ı³Ì¼ÓËÙ
+    // ä»¥ä¸‹ç‰ˆæœ¬ä¸ç¨³å®šï¼Œæš‚ä¸è€ƒè™‘ï¼Œåªæ˜¯å¯¹ä¼ æ’­è¿‡ç¨‹åŠ é€Ÿ
     //    helper.searchState match {
     //      case 0 => {
     //        //        println("setup")
@@ -338,14 +338,14 @@ class TableDSPSTRbit_SBit(val id: Int, val arity: Int, val numVars: Int, val sco
     //    runningStatus.set(0)
   }
 
-  // ĞÂ²ã
+  // æ–°å±‚
   def newLevel(): Unit = {
     level += 1
 
-    // µ½´ïĞÂ²ãºó²»ÓÃ¸ü¸ÄoldSize£¬oldSizeÓëÉÏ²ã±£³ÖÒ»ÖÂ
+    // åˆ°è¾¾æ–°å±‚åä¸ç”¨æ›´æ”¹oldSizeï¼ŒoldSizeä¸ä¸Šå±‚ä¿æŒä¸€è‡´
   }
 
-  // »ØËİ
+  // å›æº¯
   def backLevel(): Unit = {
     for (i <- 0 until arity) {
       for (a <- 0 until scope(i).capacity) {
@@ -354,7 +354,7 @@ class TableDSPSTRbit_SBit(val id: Int, val arity: Int, val numVars: Int, val sco
           lastLevel(level)(i)(a) = -1
         }
       }
-      // »ØËİºóÖØÖÃoldMasks£¬ĞÂ¾ÉmaskÏàÍ¬£¬ÒòÎª»¹Ã»ÓĞ´«²¥
+      // å›æº¯åé‡ç½®oldMasksï¼Œæ–°æ—§maskç›¸åŒï¼Œå› ä¸ºè¿˜æ²¡æœ‰ä¼ æ’­
       scope(i).mask(lastMask(i))
     }
 
@@ -368,7 +368,7 @@ class TableDSPSTRbit_SBit(val id: Int, val arity: Int, val numVars: Int, val sco
     level -= 1
   }
 
-  // ÈôÔª×éÓĞĞ§£¬Ôò·µ»ØÕæ
+  // è‹¥å…ƒç»„æœ‰æ•ˆï¼Œåˆ™è¿”å›çœŸ
   @inline private def isValidTuple(tuple: Array[Int]): Boolean = {
     var i = arity
     while (i > 0) {

@@ -3,7 +3,7 @@ package cpscala.TSolver.CpUtil
 import scala.collection.mutable
 import scala.reflect.ClassTag
 
-// 在STR3和STRbit中记录边界信息，用于回溯
+// 鍦⊿TR3鍜孲TRbit涓褰曡竟鐣屼俊鎭紝鐢ㄤ簬鍥炴函
 class RestoreStack[T1: ClassTag, T2: ClassTag](val size: Int) {
   private val hashArray = Array.fill(size + 1)(new mutable.HashMap[T1, T2])
   private var level = -1

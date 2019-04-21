@@ -15,9 +15,9 @@ class SparseSetVar(val name: String, val id: Int, num_vars: Int, vals: Array[Int
   val sparse: Array[Int] = vals.clone()
   val sizeLevel: Array[Int] = Array.fill(numLevel)(-1)
   sizeLevel(0) = vals.length
-  // markÊôĞÔ¼°ÆäÏà¹Øº¯ÊıÊÇ´úÌægacValueµÄ»úÖÆ
+  // markå±æ€§åŠå…¶ç›¸å…³å‡½æ•°æ˜¯ä»£æ›¿gacValueçš„æœºåˆ¶
   var mark = 0
-  //²¢ĞĞstr2ĞèÒªÓÃµ½counter¼ÆÊı
+  //å¹¶è¡Œstr2éœ€è¦ç”¨åˆ°counterè®¡æ•°
   val counter = new AtomicIntegerArray(vals.length)
   val initialPos: mutable.HashMap[Int, Int] = mutable.HashMap[Int, Int]()
 
@@ -52,14 +52,14 @@ class SparseSetVar(val name: String, val id: Int, num_vars: Int, vals: Array[Int
   }
 
   override def newLevel(): Int = {
-    // levelÔÚSolverÖĞÒÑ¾­ÏÈ¼ÓÁË£¬ËùÒÔlevelÊÇ¿Õ°×²ã
+    // levelåœ¨Solverä¸­å·²ç»å…ˆåŠ äº†ï¼Œæ‰€ä»¥levelæ˜¯ç©ºç™½å±‚
     level += 1
     sizeLevel(level) = sizeLevel(level - 1)
     return level
   }
 
   override def backLevel(): Int = {
-    // levelÔÚSolverÖĞÒÑ¾­ÏÈ¼õÁË£¬ËùÒÔlevelÊÇ¾É²ã
+    // levelåœ¨Solverä¸­å·²ç»å…ˆå‡äº†ï¼Œæ‰€ä»¥levelæ˜¯æ—§å±‚
     sizeLevel(level) = -1
     if (bindLevel == level) {
       bindLevel = Constants.kINTINF
@@ -146,7 +146,7 @@ class SparseSetVar(val name: String, val id: Int, num_vars: Int, vals: Array[Int
     sizeLevel(level) == 0
   }
 
-  // !!´ı¸Ä½ø
+  // !!å¾…æ”¹è¿›
   override def nextValue(a: Int): Int = {
     var b = a + 1
     while (b < capacity) {

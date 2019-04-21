@@ -11,14 +11,14 @@ class TableSTR2_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope: 
 
   val levelLimits = Array.fill(num_vars + 1)(-1)
   levelLimits(0) = tuples.length - 1
-  //´æ±äÁ¿Index
+  //å­˜å˜é‡Index
   val Ssup = new ArrayBuffer[Int](arity)
   val Sval = new ArrayBuffer[Int](arity)
   val lastSize = Array.fill(arity)(-1)
 //  private[this] val removeValues = new ArrayBuffer[Int]()
 //  private[this] val validValues = new ArrayBuffer[Int]() //(delta)
 
-  //¼ì²é±äÁ¿
+  //æ£€æŸ¥å˜é‡
   def initial(): Unit = {
     //println("c_id: " + id + " propagate ==============================>")
     Ssup.clear()
@@ -67,9 +67,9 @@ class TableSTR2_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope: 
           v.mark(a)
           if (v.fullMark()) {
             val lastPos = Ssup.length - 1
-            //ÏÈ½«SsupµÄ×îºóÒ»¸öÔªËØ¸´ÖÆµ½µ±Ç°jÎ»ÖÃ
+            //å…ˆå°†Ssupçš„æœ€åä¸€ä¸ªå…ƒç´ å¤åˆ¶åˆ°å½“å‰jä½ç½®
             Ssup(j) = Ssup(lastPos)
-            //ÔÙ½«×îºóÒ»¸öÔªËØÉ¾³ı£¬ÕâÑùÄÜ½ÚÔ¼Ê±¼ä
+            //å†å°†æœ€åä¸€ä¸ªå…ƒç´ åˆ é™¤ï¼Œè¿™æ ·èƒ½èŠ‚çº¦æ—¶é—´
             Ssup.remove(lastPos)
             j -= 1
           }
@@ -94,14 +94,14 @@ class TableSTR2_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope: 
       val vv: Int = Ssup(i)
       val v = scope(vv)
 
-      //ÀûÓÃ±äÁ¿ÖĞµÄMark£¬Restrict()Ö»ĞèÒªO(1)µÄÊ±¼ä¸´ÔÓ¶È±ã¿É¸üĞÂvµÄÂÛÓò
+      //åˆ©ç”¨å˜é‡ä¸­çš„Markï¼ŒRestrict()åªéœ€è¦O(1)çš„æ—¶é—´å¤æ‚åº¦ä¾¿å¯æ›´æ–°vçš„è®ºåŸŸ
       v.restrict()
       if (v.size == 0) {
         evt += v
         return false
       }
 
-      //¸üĞÂ±äÁ¿ÔÚ¸ÃÔ¼ÊøÄÚµÄlastsize
+      //æ›´æ–°å˜é‡åœ¨è¯¥çº¦æŸå†…çš„lastsize
       lastSize(vv) = v.size()
       evt += v
 

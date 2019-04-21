@@ -35,7 +35,7 @@ class IPCoarseSolver(xm: XModel, parallelism: Int, propagator_name: String, var_
       helper.lockTime += otherEndTime - otherStartTime
 
       helper.searchState = 2 //"propagate"
-      // 论域改动的变量stamp = gstamp+1
+      // 璁哄煙鏀瑰姩鐨勫彉閲弒tamp = gstamp+1
       helper.pool.invokeAll(Cevt)
       helper.c_sum += Cevt.size()
       helper.p_sum += 1
@@ -52,7 +52,7 @@ class IPCoarseSolver(xm: XModel, parallelism: Int, propagator_name: String, var_
       while (i < numVars) {
         val vid = levelvdense(i)
         val v = vars(vid)
-        //若上轮改过了
+        //鑻ヤ笂杞敼杩囦簡
         if (helper.varStamp(vid) == helper.globalStamp) {
           Yevt += v
         }
@@ -89,7 +89,7 @@ class IPCoarseSolver(xm: XModel, parallelism: Int, propagator_name: String, var_
       helper.lockTime += otherEndTime - otherStartTime
 
       helper.searchState = 2 //"propagate"
-      // 论域改动的变量stamp = gstamp+1
+      // 璁哄煙鏀瑰姩鐨勫彉閲弒tamp = gstamp+1
       helper.pool.invokeAll(Cevt)
       helper.c_sum += Cevt.size()
       helper.p_sum += 1
@@ -106,7 +106,7 @@ class IPCoarseSolver(xm: XModel, parallelism: Int, propagator_name: String, var_
       while (i < numVars) {
         val vid = levelvdense(i)
         val v = vars(vid)
-        //若上轮改过了
+        //鑻ヤ笂杞敼杩囦簡
         if (helper.varStamp(vid) == helper.globalStamp) {
           Yevt += v
         }
@@ -143,7 +143,7 @@ class IPCoarseSolver(xm: XModel, parallelism: Int, propagator_name: String, var_
       helper.lockTime += otherEndTime - otherStartTime
 
       helper.searchState = 2 //"propagate"
-      // 论域改动的变量stamp = gstamp+1
+      // 璁哄煙鏀瑰姩鐨勫彉閲弒tamp = gstamp+1
       helper.pool.invokeAll(Cevt)
       helper.c_sum += Cevt.size()
       helper.p_sum += 1
@@ -160,7 +160,7 @@ class IPCoarseSolver(xm: XModel, parallelism: Int, propagator_name: String, var_
       while (i < numVars) {
         val vid = levelvdense(i)
         val v = vars(vid)
-        //若上轮改过了
+        //鑻ヤ笂杞敼杩囦簡
         if (helper.varStamp(vid) == helper.globalStamp) {
           Yevt += v
         }

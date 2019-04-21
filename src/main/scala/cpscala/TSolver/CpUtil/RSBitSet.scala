@@ -5,15 +5,15 @@ class RSBitSet(id: Int, numTuples: Int, numVars: Int) {
   val num_bit = Math.ceil(numTuples.toDouble / Constants.BITSIZE.asInstanceOf[Double]).toInt
   val lastLimits = numTuples % Constants.BITSIZE
   // array of rlong, words.length = p
-  //lastLimit È¡ÖµÎª[0, 63]
-  //ÈôlastLimit = 0, lastWord²»¸Ä±ä
+  //lastLimit å–å€¼ä¸º[0, 63]
+  //è‹¥lastLimit = 0, lastWordä¸æ”¹å˜
   //otherwise, lastWord <<= 64 - lastLimit
   // array of int,  index.length = p
   // array of rlong, words.length = p
   val words = Array.ofDim[Long](numLevel, num_bit)
   words(0) = Array.fill(num_bit)(Constants.ALLONELONG);
   if (lastLimits != 0) words(0)(num_bit - 1) <<= 64 - lastLimits
-  //³õÊ¼»¯limit, index, mask
+  //åˆå§‹åŒ–limit, index, mask
   // rint
   val limit = Array.fill(numLevel)(-1)
   limit(0) = num_bit - 1
@@ -108,7 +108,7 @@ class RSBitSet(id: Int, numTuples: Int, numVars: Int) {
   }
 
   def intersectWithMask(): Boolean = {
-    //±¾±íÄ¬ÈÏÎ´ĞŞ¸Ä
+    //æœ¬è¡¨é»˜è®¤æœªä¿®æ”¹
     var changed = false
     var w = 0L
     var currentWords = 0L
@@ -120,7 +120,7 @@ class RSBitSet(id: Int, numTuples: Int, numVars: Int) {
       w = currentWords & mask(offset)
       if (w != currentWords) {
         words(currentLevel)(offset) = w
-        //±¾±íÒÑĞŞ¸Ä
+        //æœ¬è¡¨å·²ä¿®æ”¹
         changed = true
         //        if (w == 0L) {
         //          index(i) = index(limit(currentLevel))
@@ -146,7 +146,7 @@ class RSBitSet(id: Int, numTuples: Int, numVars: Int) {
     //      w = currentWords & mask(offset)
     //      if (w != currentWords) {
     //        words(currentLevel)(offset) = w
-    //        //±¾±íÒÑĞŞ¸Ä
+    //        //æœ¬è¡¨å·²ä¿®æ”¹
     //        changed = true
     //        if (w == 0L) {
     //          index(i) = index(limit(currentLevel))
@@ -155,7 +155,7 @@ class RSBitSet(id: Int, numTuples: Int, numVars: Int) {
     //        }
     //      }
     //    }
-    //¼ÇÂ¼ÊÇ·ñ¸Ä±ä
+    //è®°å½•æ˜¯å¦æ”¹å˜
     return changed
   }
 

@@ -19,7 +19,7 @@ public class FDETab extends XTab {
                 } else if (one[i] < two[i]) {
                     return -1;
                 } else {
-                    continue;  //Èç¹û°´Ò»Ìõ¼þ±È½Ï½á¹ûÏàµÈ£¬¾ÍÊ¹ÓÃµÚ¶þ¸öÌõ¼þ½øÐÐ±È½Ï¡£
+                    continue;  //å¦‚æžœæŒ‰ä¸€æ¡ä»¶æ¯”è¾ƒç»“æžœç›¸ç­‰ï¼Œå°±ä½¿ç”¨ç¬¬äºŒä¸ªæ¡ä»¶è¿›è¡Œæ¯”è¾ƒã€‚
                 }
             }
             return 0;

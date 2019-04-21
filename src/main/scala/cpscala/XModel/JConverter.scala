@@ -42,7 +42,7 @@ object JConverter {
     return jm
   }
 
-  //Éú³ÉJSON File
+  //ç”ŸæˆJSON File
   @throws[Exception]
   def toJsonFile(outputPath: String): Unit = {
     val filePath = outputPath + "/" + jm.fileName + ".json"

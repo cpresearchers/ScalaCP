@@ -9,36 +9,36 @@ import scala.collection.mutable
 import scala.collection.mutable.HashSet
 
 abstract class LinkedMDD(val tab: XTab) {
-  // Ô¼Êø»ù±¾ÐÅÏ¢
+  // çº¦æŸåŸºæœ¬ä¿¡æ¯
   val cid = tab.id
   val arity = tab.arity
   val semantics = tab.semantics
   val numTuples = tab.tuples.size
 
-  // ÁÙÊ±£¨ÐÂ±äÁ¿Ë³Ðò£©µÄÔª×é¼¯ºÏ
+  // ä¸´æ—¶ï¼ˆæ–°å˜é‡é¡ºåºï¼‰çš„å…ƒç»„é›†åˆ
   val tuples = tab.tuples.clone()
 
   //  val levelNodes = new Array[HashSet[Node]](arity + 1)
-  // ´æÃ¿ÐÐµãµÄ¼¯ºÏ
+  // å­˜æ¯è¡Œç‚¹çš„é›†åˆ
   val levelNodes = Array.fill(arity + 1)(new mutable.HashSet[Node]())
 
-  // ÐÂµÄË³ÐòÏÂµÄscope
+  // æ–°çš„é¡ºåºä¸‹çš„scope
   val scope = new Array[XVar](arity)
   val scopeInt = new Array[Int](arity)
-  //ÐÂµÄ±äÁ¿Î»ÖÃ
+  //æ–°çš„å˜é‡ä½ç½®
   val newPosition = Array.fill(arity)(-1)
 
-  // MDDµãºÍ±ßµÄ¸öÊý
+  // MDDç‚¹å’Œè¾¹çš„ä¸ªæ•°
   var numNodes = 0L
   var numArcs = 0L
 
-  // Ô¼Êø×î´óÂÛÓò´óÐ¡
+  // çº¦æŸæœ€å¤§è®ºåŸŸå¤§å°
   var maxDomainSize = Int.MinValue
   tab.scope.foreach(x => {
     maxDomainSize = math.max(maxDomainSize, x.size)
   })
 
-  // MDDÁ½¶ËµÄ½Úµã
+  // MDDä¸¤ç«¯çš„èŠ‚ç‚¹
   var root: Node
   var sink: Node
 
@@ -64,7 +64,7 @@ abstract class LinkedMDD(val tab: XTab) {
       i += 1
     }
 
-    // Ôª×é¼¯ÖØÐÂÅÅÐò
+    // å…ƒç»„é›†é‡æ–°æŽ’åº
     util.Arrays.sort(tuples, cmp)
   }
 
@@ -98,9 +98,9 @@ abstract class LinkedMDD(val tab: XTab) {
   }
 
   def build(): Unit = {
-    // ´´½¨root, sinkÁ½¸ö½Úµã
-    // µÚ0²ã: ¸ù½Úµã£¬id =1
-    // ×îµ×²ã£º sink½Úµã£¬id=0
+    // åˆ›å»ºroot, sinkä¸¤ä¸ªèŠ‚ç‚¹
+    // ç¬¬0å±‚: æ ¹èŠ‚ç‚¹ï¼Œid =1
+    // æœ€åº•å±‚ï¼š sinkèŠ‚ç‚¹ï¼Œid=0
     root = new Node(1, 0)
     levelNodes(0) += root
     sink = new Node(0, arity)
@@ -120,7 +120,7 @@ abstract class LinkedMDD(val tab: XTab) {
         }
 
         if (label != t(i)) {
-          // Ôª×éµÄ×îºóÒ»¸öÔªËØÖ¸Ïòsink½Úµã
+          // å…ƒç»„çš„æœ€åŽä¸€ä¸ªå…ƒç´ æŒ‡å‘sinkèŠ‚ç‚¹
           if (i == (arity - 1)) {
             val arc = u.addOutcome(t(i), sink)
             sink.addIncome(arc)
@@ -140,7 +140,7 @@ abstract class LinkedMDD(val tab: XTab) {
   }
 
   def pReduce(): Unit = {
-    // Ëã×î¶à½Úµã²ãÊýµÄ½áµãÊý£¬Ïëµ±ÓÚ´ø¿í
+    // ç®—æœ€å¤šèŠ‚ç‚¹å±‚æ•°çš„ç»“ç‚¹æ•°ï¼Œæƒ³å½“äºŽå¸¦å®½
     var maxLevelSizeInLevelNodes = Int.MinValue
     levelNodes.foreach(s => {
       maxLevelSizeInLevelNodes = math.max(maxLevelSizeInLevelNodes, s.size)

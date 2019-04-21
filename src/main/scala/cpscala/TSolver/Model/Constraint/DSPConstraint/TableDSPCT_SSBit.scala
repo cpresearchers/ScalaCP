@@ -12,7 +12,7 @@ class TableDSPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope
   val supports = new Array[Array[Array[Long]]](arity)
   val num_bit = currTab.num_bit
   val residues = new Array[Array[Int]](arity)
-  // »î¶¯±äÁ¿
+  // æ´»åŠ¨å˜é‡
   val Xevt = new ArrayBuffer[PVar](arity)
   Xevt.clear()
 
@@ -35,21 +35,21 @@ class TableDSPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope
     scopeMap.put(scope(i), i)
   }
 
-  //´æ±äÁ¿Index
+  //å­˜å˜é‡Index
   val Ssup = new ArrayBuffer[Int](arity)
   val Sval = new ArrayBuffer[Int](arity)
 
-  // »ñÈ¡×î´óÂÛÓò´óĞ¡
+  // è·å–æœ€å¤§è®ºåŸŸå¤§å°
   var maxDomainSize = Int.MinValue
   scope.foreach(x => {
     maxDomainSize = math.max(maxDomainSize, x.size())
   })
 
-  // ¾Ö²¿±äÁ¿±ê¼Ç
-  // 1. newMask: Ô­×ÓÌá½»ºó»ñµÃµÄÂÛÓò
-  // 1. oldMask: Ô­×ÓÌá½»Ç°»ñµÃµÄÂÛÓò
-  // 2. localMask£ºµ±Ç°µ÷ÓÃÊ±²»¶ÏĞŞ¸ÄµÄÂÛÓòµÄmask
-  // 3. lastMask£ºÉÏÒ»´Îµ÷ÓÃºóµÄmask
+  // å±€éƒ¨å˜é‡æ ‡è®°
+  // 1. newMask: åŸå­æäº¤åè·å¾—çš„è®ºåŸŸ
+  // 1. oldMask: åŸå­æäº¤å‰è·å¾—çš„è®ºåŸŸ
+  // 2. localMaskï¼šå½“å‰è°ƒç”¨æ—¶ä¸æ–­ä¿®æ”¹çš„è®ºåŸŸçš„mask
+  // 3. lastMaskï¼šä¸Šä¸€æ¬¡è°ƒç”¨åçš„mask
   val localMask = Array.fill[Long](arity)(0L)
   val lastMask = Array.fill[Long](arity)(Constants.ALLONELONG)
 
@@ -58,18 +58,18 @@ class TableDSPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope
   val validValues = new ArrayBuffer[Int](maxDomainSize)
   validValues.clear()
 
-  //ÅĞ¶ÏdomainÊÇ·ñ¸Ä±ä
+  //åˆ¤æ–­domainæ˜¯å¦æ”¹å˜
   override def domainChanged(v: PVar, mask: Array[Long]): Boolean = {
     //    mask == lastMask(scopeMap(v))
     return true
   }
 
-  //¼ì²é±äÁ¿
+  //æ£€æŸ¥å˜é‡
   def initial(): Boolean = {
 
     Ssup.clear()
     Sval.clear()
-    // ±ê¼ÇSValÊÇ·ñÎª¿Õ£¬Îª¿ÕÔòÌø³öpropagate
+    // æ ‡è®°SValæ˜¯å¦ä¸ºç©ºï¼Œä¸ºç©ºåˆ™è·³å‡ºpropagate
     var snapshotChanged = false
 
     var i = 0
@@ -77,9 +77,9 @@ class TableDSPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope
       val v = scope(i)
       val globalMask = v.simpleMask()
 
-      // ±¾µØÂÛÓò¿ìÕÕÓëÈ«¾ÖÂÛÓò²»Í¬
-      // ¸üĞÂ±¾µØÂÛÓò¿ìÕÕ
-      // snapshotChanged ¼´ÎªĞèÒªpropagate£¬·ñÔò²»ÓÃpropagate
+      // æœ¬åœ°è®ºåŸŸå¿«ç…§ä¸å…¨å±€è®ºåŸŸä¸åŒ
+      // æ›´æ–°æœ¬åœ°è®ºåŸŸå¿«ç…§
+      // snapshotChanged å³ä¸ºéœ€è¦propagateï¼Œå¦åˆ™ä¸ç”¨propagate
       if (lastMask(i) != globalMask) {
         Sval += i
         //        localMask(i) = globalMask
@@ -109,10 +109,10 @@ class TableDSPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope
       val remove = java.lang.Long.bitCount(lastRemovedMask)
       lastMask(vv) = localMask(vv)
 
-      // !!±ê¼ÇÊÇ·ñĞèÒªdelta¸üĞÂ
+      // !!æ ‡è®°æ˜¯å¦éœ€è¦deltaæ›´æ–°
       //      if ((old - last) < last) {
       if (remove < valid) {
-        // delta¸üĞÂ
+        // deltaæ›´æ–°
         lastRemovedValues.clear()
         var j = 0
         while (j < v.capacity) {
@@ -128,7 +128,7 @@ class TableDSPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope
         currTab.reverseMask()
       }
       else {
-        // ´ÓÍ·¼ÆËã
+        // ä»å¤´è®¡ç®—
         validValues.clear()
         var j = 0
         while (j < v.capacity) {
@@ -137,7 +137,7 @@ class TableDSPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope
           }
           j += 1
         }
-        // ÖØÍ·ÖØĞÂ
+        // é‡å¤´é‡æ–°
         for (a <- validValues) {
           currTab.addToMask(supports(vv)(a))
         }
@@ -145,7 +145,7 @@ class TableDSPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope
 
       val changed = currTab.intersectWithMask()
 
-      //´«²¥Ê§°Ü
+      //ä¼ æ’­å¤±è´¥
       if (currTab.isEmpty()) {
         helper.isConsistent = false
         return false
@@ -156,7 +156,7 @@ class TableDSPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope
     return true
   }
 
-  // ÕâÀïÖØĞÂ»ñµÃXevt
+  // è¿™é‡Œé‡æ–°è·å¾—Xevt
   def filterDomains(): Boolean = {
     Xevt.clear()
     val SsupN = Ssup.length
@@ -177,14 +177,14 @@ class TableDSPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope
 
       for (a <- validValues) {
         var index = residues(vv)(a)
-        if (index == -1 || (currTab.words(helper.level)(index) & supports(vv)(a)(index)) == 0L) { //resÊ§Ğ§
+        if (index == -1 || (currTab.words(helper.level)(index) & supports(vv)(a)(index)) == 0L) { //reså¤±æ•ˆ
           index = currTab.intersectIndex(supports(vv)(a))
-          if (index != -1) { //ÖØĞÂÕÒµ½Ö§³Ö
+          if (index != -1) { //é‡æ–°æ‰¾åˆ°æ”¯æŒ
             residues(vv)(a) = index
           }
           else {
             deleted = true
-            //ÎŞ·¨ÕÒµ½Ö§³Ö, É¾³ı(v, a)
+            //æ— æ³•æ‰¾åˆ°æ”¯æŒ, åˆ é™¤(v, a)
             //            println("name: " + id + ", delete: " + v.id + "," + a + ", level: " + helper.level)
             localMask(vv) &= Constants.MASK0(a)
           }
@@ -193,8 +193,8 @@ class TableDSPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope
 
       if (deleted) {
         val newMask = v.submitMaskAndGet(localMask(vv))
-        // ±¾µØÏß³ÌÉ¾Öµ
-        // Ìá½»¸ü¸Ä£¬²¢»ñÈ¡ĞÂÖµ
+        // æœ¬åœ°çº¿ç¨‹åˆ å€¼
+        // æäº¤æ›´æ”¹ï¼Œå¹¶è·å–æ–°å€¼
         if (newMask == 0L) {
           helper.isConsistent = false
           return false
@@ -209,11 +209,11 @@ class TableDSPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope
   }
 
   def submitPropagtors(): Boolean = {
-    // Ìá½»ÆäËüÔ¼Êø
+    // æäº¤å…¶å®ƒçº¦æŸ
     for (x <- Xevt) {
       if (helper.isConsistent) {
         for (c <- helper.subscription(x.id)) {
-          // !!ÕâÀï¿ÉÒÔ¼ÓÏŞÖÆÌõ¼şc.v.simpleMask!=x.simpleMask
+          // !!è¿™é‡Œå¯ä»¥åŠ é™åˆ¶æ¡ä»¶c.v.simpleMask!=x.simpleMask
           //          if (c.id != id && c.domainChanged(x, localMask(scopeMap(x)))) {
           if (c.id != id) {
             helper.submitToPool(c)
@@ -228,7 +228,7 @@ class TableDSPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope
     //    println(s"start: cur_ID: ${Thread.currentThread().getId()},cur_name: ${Thread.currentThread().getName()},cur_cid: ${id}")
     do {
       helper.c_prop.incrementAndGet()
-      // ÔÚÖ´ĞĞ¹ıÂËÖ®Ç°ÖØÖÃÆäÎª1
+      // åœ¨æ‰§è¡Œè¿‡æ»¤ä¹‹å‰é‡ç½®å…¶ä¸º1
 
       //      if (runningStatus.get() == 0) {
       //        return
@@ -240,16 +240,16 @@ class TableDSPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope
         submitPropagtors()
       }
 
-      // !!Ô­×Ó¼ÆËã»òÁÙ½çÇø
-      // ÓÃËø»úÖÆ»ñÈ¡×îÖÕ×´Ì¬
+      // !!åŸå­è®¡ç®—æˆ–ä¸´ç•ŒåŒº
+      // ç”¨é”æœºåˆ¶è·å–æœ€ç»ˆçŠ¶æ€
       //      lock.lock()
       //      try {
       //        if (runningStatus.get() > 1 && helper.isConsistent) {
-      //          // Èç¹ûÒªÔËĞĞµÄÇëÇó´óÓÚ1£¬ Ñ­»·Ğè¼ÌĞø
+      //          // å¦‚æœè¦è¿è¡Œçš„è¯·æ±‚å¤§äº1ï¼Œ å¾ªç¯éœ€ç»§ç»­
       //          loopContinue = true
       //          runningStatus.set(1)
       //        } else {
-      //          // Èç¹ûÒªÔËĞĞµÄÇëÇóµÈÓÚ1£¬¼´ËµÃ÷Ö»ÓĞµ±Ç°ÈÎÎñ£¬ÓÉÓÚµ±Ç°ÈÎÎñÒÑ¾­Íê³ÉÑ­»·Ó¦ÍË³ö
+      //          // å¦‚æœè¦è¿è¡Œçš„è¯·æ±‚ç­‰äº1ï¼Œå³è¯´æ˜åªæœ‰å½“å‰ä»»åŠ¡ï¼Œç”±äºå½“å‰ä»»åŠ¡å·²ç»å®Œæˆå¾ªç¯åº”é€€å‡º
       //          loopContinue = false
       //          runningStatus.set(0)
       //        }
@@ -276,7 +276,7 @@ class TableDSPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope
   override def newLevel(): Unit = {
     level += 1
     currTab.newLevel(level)
-    // ÖØÖÃrunningStatus
+    // é‡ç½®runningStatus
     runningStatus.set(0)
   }
 
@@ -289,7 +289,7 @@ class TableDSPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope
       lastMask(i) = localMask(i)
       i += 1
     }
-    // ÖØÖÃrunningStatus
+    // é‡ç½®runningStatus
     runningStatus.set(0)
   }
 

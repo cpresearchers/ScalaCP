@@ -30,7 +30,7 @@ public class XTab {
         }
 
         if (!AsPre) {
-            //Ã»×ª¹ı
+            //æ²¡è½¬è¿‡
             int[] ori_t = new int[arity];
             int[] std_t = new int[arity];
             boolean standard = true;
@@ -42,8 +42,8 @@ public class XTab {
             }
 
             if (transform) {
-                //×ªÕı±í£¬
-                //ÓïÒå×ªÕı
+                //è½¬æ­£è¡¨ï¼Œ
+                //è¯­ä¹‰è½¬æ­£
                 int all_size = 1;
                 for (XVar v : scp) {
                     all_size *= v.size;
@@ -55,7 +55,7 @@ public class XTab {
                 else
                     sup_size = ts.length;
 
-                //Ô­±íÎª¸º±í
+                //åŸè¡¨ä¸ºè´Ÿè¡¨
                 tuples = new int[sup_size][arity];
                 if (!semantics) {
                     int i = 0, j = 0;
@@ -76,17 +76,17 @@ public class XTab {
                         GetTuple(i++, ori_t, std_t);
                     }
                 } else {
-                    //Ô­±íÎªÕı±í
+                    //åŸè¡¨ä¸ºæ­£è¡¨
                     if (!standard) {
                         int i = 0;
-                        //·Ç±ê×¼±í×ª±ê×¼±í
+                        //éæ ‡å‡†è¡¨è½¬æ ‡å‡†è¡¨
                         for (int[] t : ts) {
                             ToSTDTuple(t, std_t);
                             System.arraycopy(std_t, 0, tuples[i++], 0, arity);
 //                            ++i;
                         }
                     } else {
-//                    //±ê×¼ÂÛÓò
+//                    //æ ‡å‡†è®ºåŸŸ
                         for (int i = 0; i < ts.length; ++i) {
                             tuples[i] = Arrays.copyOf(ts[i], arity);
                         }
@@ -95,10 +95,10 @@ public class XTab {
                 semantics = true;
                 STD = true;
             } else {
-                //²»×ªĞèÕı±í£¬±£³ÖÔ­Ñù£¬µ«Ğè±ê×¼»¯
+                //ä¸è½¬éœ€æ­£è¡¨ï¼Œä¿æŒåŸæ ·ï¼Œä½†éœ€æ ‡å‡†åŒ–
                 tuples = new int[ts.length][arity];
                 if (!standard) {
-                    //·Ç±ê×¼±í×ª±ê×¼±í
+                    //éæ ‡å‡†è¡¨è½¬æ ‡å‡†è¡¨
                     int i = 0;
                     for (int[] t : ts) {
                         ToSTDTuple(t, std_t);

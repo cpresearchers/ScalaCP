@@ -11,7 +11,7 @@ import java.util.*;
 
 import com.alibaba.fastjson.*;
 
-//Ôª×éÎ´ÅÅĞò
+//å…ƒç»„æœªæ’åº
 public class FDEModel {
     public int num_vars = 0;
     public int num_tabs = 0;
@@ -31,17 +31,17 @@ public class FDEModel {
     public int max_domain_size = Integer.MIN_VALUE;
     public int max_tuples_size = Integer.MIN_VALUE;
 
-    //Ô¼Êøscope¾ØÕó
+    //çº¦æŸscopeçŸ©é˜µ
     public ArrayList<Integer>[][] tabsScopeMatrix;
-    //¸½¼ÓÔ¼Êøid¾ØÕó
+    //é™„åŠ çº¦æŸidçŸ©é˜µ
     public int[][] tabsIDMatrix;
 
-    //Õë¶ÔÓÚÀÏ±äÁ¿µÄ±ê¼Ç
-    //µÚÒ»²ãÊÇÔ¼ÊøIDµÚ¶ş²ãÊÇ±äÁ¿ID
+    //é’ˆå¯¹äºè€å˜é‡çš„æ ‡è®°
+    //ç¬¬ä¸€å±‚æ˜¯çº¦æŸIDç¬¬äºŒå±‚æ˜¯å˜é‡ID
     public boolean[][] commonVarsBoolean;
     private ArrayList<ArrayList<Integer>> addtionTabsVarScopeArray = new ArrayList<>();
     private ArrayList<ArrayList<Tuple2<Integer, Integer>>> addtionTabsTabScopeArray = new ArrayList<>();
-    //Îª¾É±äÁ¿
+    //ä¸ºæ—§å˜é‡
     private Set<Integer>[] newScopesInt;
 
     private Set<Integer>[] newTabsScopeInt;
@@ -125,7 +125,7 @@ public class FDEModel {
             }
         }
 
-        //ÀÏÔ¼ÊøaddtionalTabsCache¶ÔÓ¦id
+        //è€çº¦æŸaddtionalTabsCacheå¯¹åº”id
         tabsIDMatrix = new int[num_OriTabs][num_OriTabs];
         for (var i = 0; i < num_OriTabs; ++i) {
             for (var j = 0; j < num_OriTabs; ++j) {
@@ -136,7 +136,7 @@ public class FDEModel {
         buildMatrix();
         build1DScope();
 
-        //ÏÈÉú³ÉÔ­±äÁ¿
+        //å…ˆç”ŸæˆåŸå˜é‡
         vars = new FDEVar[num_vars];
         tabs = new FDETab[num_tabs];
 
@@ -177,21 +177,21 @@ public class FDEModel {
                         }
                     }
                 } else {
-                    //Ô¼Êøi = jÊ²Ã´¶¼²»×ö
+                    //çº¦æŸi = jä»€ä¹ˆéƒ½ä¸åš
                 }
             }
         }
 
-        //Éú³ÉcommonVarsBoolean
+        //ç”ŸæˆcommonVarsBoolean
         for (var i = 0; i < num_OriTabs; ++i) {
             var t0 = xm.tabs.get(i);
 
             for (var j = 0; j < num_OriTabs; ++j) {
                 var t1 = xm.tabs.get(j);
                 var tSM = tabsScopeMatrix[i][j];
-                //<i, k>, <j, l>£ºÔ¼ÊøiµÄµÚk¸öµÄ±äÁ¿£¬Ô¼ÊøjµÄµÚl¸ö±äÁ¿
-                //ÒòÎª±» ÊÕÂ¼Èë¹«¹² ±äÁ¿ ËùÒÔÒÔºó¸Ã±» É¾È¥
-                //¶àÓÚ1µÄ¹«¹²±äÁ¿£¬²Å¼ÇÈëcommonVarsBoolean
+                //<i, k>, <j, l>ï¼šçº¦æŸiçš„ç¬¬kä¸ªçš„å˜é‡ï¼Œçº¦æŸjçš„ç¬¬lä¸ªå˜é‡
+                //å› ä¸ºè¢« æ”¶å½•å…¥å…¬å…± å˜é‡ æ‰€ä»¥ä»¥åè¯¥è¢« åˆ å»
+                //å¤šäº1çš„å…¬å…±å˜é‡ï¼Œæ‰è®°å…¥commonVarsBoolean
                 if (tSM.size() > 1) {
                     for (var vid : tSM) {
                         commonVarsBoolean[i][t0.getVarIndex(vid)] = false;
@@ -203,12 +203,12 @@ public class FDEModel {
 
     }
 
-    //¶şÎ¬¹«¹²scope×ªÒ»Î¬£¬
-    //Éú³ÉtabsIDMatrix
+    //äºŒç»´å…¬å…±scopeè½¬ä¸€ç»´ï¼Œ
+    //ç”ŸæˆtabsIDMatrix
     //addtionTabsTabScopeArray
     //addtionTabsVarScopeArray
-    //Éú³Éfactor variableµÄ³¤¶È
-    //Éú³É ĞÂ±äÁ¿ºÍÔ¼Êø¸öÊı
+    //ç”Ÿæˆfactor variableçš„é•¿åº¦
+    //ç”Ÿæˆ æ–°å˜é‡å’Œçº¦æŸä¸ªæ•°
     void build1DScope() {
 
         for (var i = 0; i < num_OriTabs; ++i) {
@@ -219,14 +219,14 @@ public class FDEModel {
                 boolean has = false;
                 while (k < addtionTabsVarScopeArray.size() && !has) {
                     var cc = addtionTabsVarScopeArray.get(k);
-                    //Èç¹ûµ±Ç°µÄÔ¼ÊøacaÓë¶ÓÁĞÖĞµÄÒÑ´æµÄÔ¼ÊøÓĞÏàÍ¬µÄscope
-                    //has±ê¼ÇÎªtrue£¬ÔòÌø³ö
-                    //ccÔÚaddtionTabsArrayÎ»ÖÃk´æÈëtabsIDMatrix
-                    //ccµÄCScope±»´æÈë¶ÓÁĞÖĞ
-                    //addtionTabsArrayÓëaddtionTabsScopeArrayµÄÎ»ÖÃÊÇÑÏ¸ñ¶ÔÓ¦µÄ
+                    //å¦‚æœå½“å‰çš„çº¦æŸacaä¸é˜Ÿåˆ—ä¸­çš„å·²å­˜çš„çº¦æŸæœ‰ç›¸åŒçš„scope
+                    //hasæ ‡è®°ä¸ºtrueï¼Œåˆ™è·³å‡º
+                    //ccåœ¨addtionTabsArrayä½ç½®kå­˜å…¥tabsIDMatrix
+                    //ccçš„CScopeè¢«å­˜å…¥é˜Ÿåˆ—ä¸­
+                    //addtionTabsArrayä¸addtionTabsScopeArrayçš„ä½ç½®æ˜¯ä¸¥æ ¼å¯¹åº”çš„
                     if (aca.equals(cc)) {
                         has = true;
-                        //k´æÈëmatrix
+                        //kå­˜å…¥matrix
                         tabsIDMatrix[i][j] = k;
                         tabsIDMatrix[j][i] = k;
                         var t2 = new Tuple2<>(i, j);
@@ -235,7 +235,7 @@ public class FDEModel {
                     ++k;
                 }
 
-                //ĞÂµÄ£¬Ã»ÓĞsame scopeµÄ¸½¼ÓÔ¼Êø£¬½«ĞÂ¼Ó´ËÔ¼Êø i j ´æÈë±ê¼Ç
+                //æ–°çš„ï¼Œæ²¡æœ‰same scopeçš„é™„åŠ çº¦æŸï¼Œå°†æ–°åŠ æ­¤çº¦æŸ i j å­˜å…¥æ ‡è®°
                 if (!has && aca.size() > 1) {
                     var t2 = new Tuple2<>(i, j);
                     var tq = new ArrayList<Tuple2<Integer, Integer>>();
@@ -249,16 +249,16 @@ public class FDEModel {
             }
         }
 
-        //factor variable ¸öÊı
-        //Õâ¸ö¸öÊı Ó¦¼ÓÔÚÔ­À´±äÁ¿ºÍÔ¼ÊøÉÏ
+        //factor variable ä¸ªæ•°
+        //è¿™ä¸ªä¸ªæ•° åº”åŠ åœ¨åŸæ¥å˜é‡å’Œçº¦æŸä¸Š
         num_tmp = addtionTabsTabScopeArray.size();
         num_tabs = num_OriTabs + num_tmp;
         num_vars = num_OriVars + num_tmp;
     }
 
-    //È·¶¨ĞÂµÄÔ¼Êø·¶Î§
-    //ĞÂÔ¼Êø·¶Î§
-    //Éú³ÉAddtionalTabCache
+    //ç¡®å®šæ–°çš„çº¦æŸèŒƒå›´
+    //æ–°çº¦æŸèŒƒå›´
+    //ç”ŸæˆAddtionalTabCache
     void buildNewScope() {
         newScopesInt = new TreeSet[num_OriTabs];
         newTabsScopeInt = new TreeSet[num_tmp];
@@ -270,7 +270,7 @@ public class FDEModel {
             newTabsScopeInt[i] = new TreeSet<>();
         }
 
-        //±éÀú¾ÉÔ¼ÊøÉ¾È¥¹«¹²±äÁ¿
+        //éå†æ—§çº¦æŸåˆ å»å…¬å…±å˜é‡
         for (int i = 0; i < num_OriTabs; ++i) {
             var c = xm.tabs.get(i);
             var scp = c.scopeInt;
@@ -314,13 +314,13 @@ public class FDEModel {
     }
 
     public void buildModel() {
-        //Éú³É±äÁ¿
+        //ç”Ÿæˆå˜é‡
         for (int i = num_OriVars, ii = 0; i < num_vars; ++i, ++ii) {
             vars[i] = tmpTabs[ii].exportToAddtionVar();
             max_domain_size = Math.max(max_domain_size, vars[i].size);
         }
 
-        //ÀÏÔ¼Êø²ÅÓĞnewScope
+        //è€çº¦æŸæ‰æœ‰newScope
         for (int i = 0; i < num_OriTabs; ++i) {
             var c = xm.tabs.get(i);
             var arity = newScopesInt[i].size();
@@ -341,10 +341,10 @@ public class FDEModel {
                 for (int k = 0; k < arity; ++k) {
                     var vid = scope[k].id;
                     if (vid < num_OriVars) {
-                        //¾É±äÁ¿
+                        //æ—§å˜é‡
                         t[k] = ori_t[c.getVarIndex(vid)];
                     } else {
-                        //ĞÂ±äÁ¿
+                        //æ–°å˜é‡
                         var tmpTabID = vid - num_OriVars;
                         t[k] = tmpTabs[tmpTabID].getSTDValue(ori_t, c.scopeInt);
                     }
@@ -357,7 +357,7 @@ public class FDEModel {
             max_arity = Math.max(max_arity, tabs[i].arity);
         }
 
-        //Éú³ÉĞÂÔ¼Êø
+        //ç”Ÿæˆæ–°çº¦æŸ
         for (int i = num_OriTabs, ii = 0; i < num_tabs; ++i, ++ii) {
             tabs[i] = tmpTabs[ii].exportToAddtionTab();
             max_arity = Math.max(max_arity, tabs[i].arity);
@@ -388,7 +388,7 @@ public class FDEModel {
         int arity;
         int oriArity;
         int size;
-        //Öµ²¿·Ö
+        //å€¼éƒ¨åˆ†
         SortedSet<Long> compValsSet = new TreeSet<>();
         long[] untiMap;
         int[] vals;
@@ -470,7 +470,7 @@ public class FDEModel {
             compValsSet.add(value);
         }
 
-        //scpÊÇÀÏÂÛÓò
+        //scpæ˜¯è€è®ºåŸŸ
         public int getSTDValue(int[] t, int[] scp) {
             getPiTuple(t, scp);
             var oriValue = getCompoundValues(piTuple);
@@ -480,7 +480,7 @@ public class FDEModel {
         void getPiTuple(int[] t, int[] scp) {
             var i = 0;
             var j = 0;
-            //´«ÈëµÄscpÊÇscopeIntµÄ×Ó¼¯
+            //ä¼ å…¥çš„scpæ˜¯scopeIntçš„å­é›†
             while (i < scp.length && j < oriArity) {
                 if (scopeInt[j] < scp[i])
                     ++j;
@@ -497,7 +497,7 @@ public class FDEModel {
 //        public int getSTDValue(int[] t, ArrayList<Integer> scp) {
 //            var i = 0;
 //            var j = 0;
-//            //´«ÈëµÄscpÊÇscopeIntµÄ×Ó¼¯
+//            //ä¼ å…¥çš„scpæ˜¯scopeIntçš„å­é›†
 //            while (i < scp.size() && j < oriArity) {
 //                if (scopeInt[j] < scp.get(i))
 //                    ++j;
@@ -514,7 +514,7 @@ public class FDEModel {
 //            return valsMap.get(oriValue);
 //        }
 
-        //Éú³ÉÔª×é£¬ºÍÂÛÓòÖµ
+        //ç”Ÿæˆå…ƒç»„ï¼Œå’Œè®ºåŸŸå€¼
         public void finialize() {
             size = compValsSet.size();
             vals = new int[size];

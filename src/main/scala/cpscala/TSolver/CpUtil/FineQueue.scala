@@ -1,7 +1,7 @@
 package cpscala.TSolver.CpUtil
 
 /**
-  * Ï¸Á£¶È¶ÓÁĞ£¬ÆäÖĞµÄÔªËØÊÇ£¨±äÁ¿_Öµ£©¶Ô¡£
+  * ç»†ç²’åº¦é˜Ÿåˆ—ï¼Œå…¶ä¸­çš„å…ƒç´ æ˜¯ï¼ˆå˜é‡_å€¼ï¼‰å¯¹ã€‚
   */
 
 class FineQueue(val num_vars: Int, val max_domin_size: Int) {

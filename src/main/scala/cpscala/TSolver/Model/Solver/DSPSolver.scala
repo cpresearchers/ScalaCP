@@ -16,12 +16,12 @@ abstract class DSPSolver(xm: XModel, val parallelism: Int, propagatorName: Strin
   val ma = xm.max_arity
   val mds = xm.max_domain_size
   val helper = new DSPSearchHelper(numVars, numTabs, parallelism)
-  //¼ÇÂ¼ÒÑ¸³ÖµµÄ±äÁ¿
+  //è®°å½•å·²èµ‹å€¼çš„å˜é‡
   val levelvsparse = Array.range(0, numVars)
   val levelvdense = Array.range(0, numVars)
   val I = new PAssignedStack(numVars)
 
-  // ³õÊ¼»¯±äÁ¿
+  // åˆå§‹åŒ–å˜é‡
 
   varType match {
     case "SafeSimpleBit" => {
@@ -41,7 +41,7 @@ abstract class DSPSolver(xm: XModel, val parallelism: Int, propagatorName: Strin
 
   val Xevt = new ArrayBuffer[PVar]()
 
-  //³õÊ¼»¯Ô¼Êø
+  //åˆå§‹åŒ–çº¦æŸ
   propagatorName match {
     case "DSPCT_SBit" => {
       for (i <- 0 until numTabs) {
@@ -157,7 +157,7 @@ abstract class DSPSolver(xm: XModel, val parallelism: Int, propagatorName: Strin
       //      infoShow()
 
       if (consistent && I.full()) {
-        //        //³É¹¦ÔÙ¼Ó0.5
+        //        //æˆåŠŸå†åŠ 0.5
         //        for (c <- subscription(v_a.v.name)) {
         //          c.assignedCount += 0.5
         //        }
@@ -193,7 +193,7 @@ abstract class DSPSolver(xm: XModel, val parallelism: Int, propagatorName: Strin
     return
   }
 
-  //ÐÞ¸Älevelvdense
+  //ä¿®æ”¹levelvdense
   def select_val(): PVal = {
     var mindmdd = Double.MaxValue
     var minv: PVar = null
@@ -254,7 +254,7 @@ abstract class DSPSolver(xm: XModel, val parallelism: Int, propagatorName: Strin
   }
 
   def remove(v_a: PVal): Unit = {
-    //Ô¼ÊøµÄÒÑÊµÀý»¯±äÁ¿¸öÊý¼õ1
+    //çº¦æŸçš„å·²å®žä¾‹åŒ–å˜é‡ä¸ªæ•°å‡1
     for (c <- helper.subscription(v_a.v.id)) {
       //      if (c.assignedCount.toInt != c.assignedCount)
       //        c.assignedCount -= 0.5
@@ -267,7 +267,7 @@ abstract class DSPSolver(xm: XModel, val parallelism: Int, propagatorName: Strin
   }
 
   def bind(v_a: PVal): Unit = {
-    //ÔÚÏ¡Êè¼¯ÉÏ½»»»±äÁ¿
+    //åœ¨ç¨€ç–é›†ä¸Šäº¤æ¢å˜é‡
     val minvi = levelvsparse(v_a.v.id)
     val a = levelvdense(helper.level - 1)
     levelvdense(helper.level - 1) = levelvdense(minvi)

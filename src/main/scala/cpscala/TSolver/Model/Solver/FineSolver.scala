@@ -4,14 +4,14 @@ import cpscala.TSolver.Model.Variable.{Var}
 import cpscala.XModel.{XModel}
 
 /**
-  * Ï¸Á£¶ÈÇó½âÆ÷£¬ÊÊÓÃÓÚSTR3ºÍSTRbit¡£
+  * ç»†ç²’åº¦æ±‚è§£å™¨ï¼Œé€‚ç”¨äºSTR3å’ŒSTRbitã€‚
   */
 
 class FineSolver(xm: XModel, propagator_name: String, var_type: String, heu_name: String) extends Solver(xm, propagator_name, var_type, heu_name) {
 
   override def initialPropagate(): Boolean = {
 
-    // ±íÔ¼Êø³õÊ¼»¯
+    // è¡¨çº¦æŸåˆå§‹åŒ–
     for (c <- tabs) {
       c.setup()
     }
@@ -19,14 +19,14 @@ class FineSolver(xm: XModel, propagator_name: String, var_type: String, heu_name
     start_time = System.nanoTime
     prop_start_time = System.nanoTime
     helper.globalStamp += 1
-    // ³õÊ¼É¾Öµ
+    // åˆå§‹åˆ å€¼
     for (c <- tabs) {
       if(!c.setup()){
         return false
       }
     }
 
-    // ³õÊ¼´«²¥
+    // åˆå§‹ä¼ æ’­
     Q.clear()
     var i = 0
     for (i <- 0 until numVars) {

@@ -7,7 +7,7 @@ class DSPFineSolver(xm: XModel, parallelism: Int, propagatorName: String, varTyp
 
   def initialPropagate(): Boolean = {
 
-    // Ô¼Êø±í³õÊ¼»¯
+    // çº¦æŸè¡¨åˆå§‹åŒ–
     helper.varIsChange.set(false)
     for (c <- tabs){
       c.setup()
@@ -17,7 +17,7 @@ class DSPFineSolver(xm: XModel, parallelism: Int, propagatorName: String, varTyp
     start_time = System.nanoTime
     prop_start_time = System.nanoTime
 
-    // ³õÊ¼É¾Öµ
+    // åˆå§‹åˆ å€¼
     for (c <- tabs){
       c.setup()
     }

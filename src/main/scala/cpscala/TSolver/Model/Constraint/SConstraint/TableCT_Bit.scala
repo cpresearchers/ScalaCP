@@ -31,11 +31,11 @@ class TableCT_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Arr
     ii += 1
   }
 
-  //´æ±äÁ¿Index
+  //å­˜å˜é‡Index
   val Ssup = new ArrayBuffer[Int](arity)
   val Sval = new ArrayBuffer[Int](arity)
 
-  // »ñÈ¡×î´óÂÛÓò´óĞ¡
+  // è·å–æœ€å¤§è®ºåŸŸå¤§å°
   var maxDomainSize = Int.MinValue
   scope.foreach(x => {
     maxDomainSize = math.max(maxDomainSize, x.size())
@@ -43,25 +43,25 @@ class TableCT_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Arr
 
   val var_num_bit = Math.ceil(maxDomainSize.toDouble / Constants.BITSIZE.toDouble).toInt
 
-  // ¾Ö²¿±äÁ¿±ê¼Ç
-  // 2. localMask£ºµ±Ç°µ÷ÓÃÊ±²»¶ÏĞŞ¸ÄµÄÂÛÓòµÄmask
-  // 3. lastMask£ºÉÏÒ»´Îµ÷ÓÃºóµÄmask
+  // å±€éƒ¨å˜é‡æ ‡è®°
+  // 2. localMaskï¼šå½“å‰è°ƒç”¨æ—¶ä¸æ–­ä¿®æ”¹çš„è®ºåŸŸçš„mask
+  // 3. lastMaskï¼šä¸Šä¸€æ¬¡è°ƒç”¨åçš„mask
   val localMask = Array.fill[Long](arity, var_num_bit)(0L)
   val lastMask = Array.fill[Long](arity, var_num_bit)(0L)
   val tmpMask = Array.fill[Long](var_num_bit)(0L)
 
-  // À´´æ±äÁ¿Öµ
+  // æ¥å­˜å˜é‡å€¼
   val values = new ArrayBuffer[Int](maxDomainSize)
   values.clear()
 
-  // ÊÇ·ñÊ×´Î´«²¥
+  // æ˜¯å¦é¦–æ¬¡ä¼ æ’­
   var firstPropagate = true
 
-  //¼ì²é±äÁ¿
+  //æ£€æŸ¥å˜é‡
   def initial(): Boolean = {
     Ssup.clear()
     Sval.clear()
-    // ±ê¼ÇSValÊÇ·ñÎª¿Õ£¬Îª¿ÕÔòÌø³öpropagate
+    // æ ‡è®°SValæ˜¯å¦ä¸ºç©ºï¼Œä¸ºç©ºåˆ™è·³å‡ºpropagate
     var snapshotChanged = false
 
     var i = 0
@@ -70,9 +70,9 @@ class TableCT_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Arr
       val v = scope(i)
       v.mask(localMask(i))
 
-      // ±¾µØÂÛÓò¿ìÕÕÓëÈ«¾ÖÂÛÓò²»Í¬
-      // ¸üĞÂ±¾µØÂÛÓò¿ìÕÕ
-      // snapshotChanged ¼´ÎªĞèÒªpropagate£¬·ñÔò²»ÓÃpropagate
+      // æœ¬åœ°è®ºåŸŸå¿«ç…§ä¸å…¨å±€è®ºåŸŸä¸åŒ
+      // æ›´æ–°æœ¬åœ°è®ºåŸŸå¿«ç…§
+      // snapshotChanged å³ä¸ºéœ€è¦propagateï¼Œå¦åˆ™ä¸ç”¨propagate
       var j = 0
       while (j < var_num_bit) {
         if (lastMask(i)(j) != localMask(i)(j)) {
@@ -104,7 +104,7 @@ class TableCT_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Arr
       //      v.mask(localMask(vv))
       //println(s"cid: ${id}, vid: ${v.id}: localMask ${Constants.toFormatBinaryString(localMask(vv)(0))}")
 
-      // »ñµÃdelta¸üĞÂÊı¾İ
+      // è·å¾—deltaæ›´æ–°æ•°æ®
       var numValid = 0
       var numRemoved = 0
 
@@ -125,7 +125,7 @@ class TableCT_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Arr
         }
       } else {
         Constants.getValues(tmpMask, values)
-        // ÖØÍ·ÖØĞÂ
+        // é‡å¤´é‡æ–°
         for (a <- values) {
           currTab.addToMask(supports(vv)(a))
         }
@@ -134,7 +134,7 @@ class TableCT_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Arr
 
       val changed = currTab.intersectWithMask()
 
-      //´«²¥Ê§°Ü
+      //ä¼ æ’­å¤±è´¥
       if (currTab.isEmpty()) {
         //println(s"update faild!!: ${Thread.currentThread().getName}, cid: ${id}")
         return false
@@ -160,14 +160,14 @@ class TableCT_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Arr
 
       for (a <- values) {
         var index = residues(vv)(a)
-        if (index == Constants.kINDEXOVERFLOW || (currTab.words(helper.level)(index) & supports(vv)(a)(index)) == 0L) { //resÊ§Ğ§
+        if (index == Constants.kINDEXOVERFLOW || (currTab.words(helper.level)(index) & supports(vv)(a)(index)) == 0L) { //reså¤±æ•ˆ
           index = currTab.intersectIndex(supports(vv)(a))
-          if (index != -1) { //ÖØĞÂÕÒµ½Ö§³Ö
+          if (index != -1) { //é‡æ–°æ‰¾åˆ°æ”¯æŒ
             residues(vv)(a) = index
           }
           else {
             deleted = true
-            //ÎŞ·¨ÕÒµ½Ö§³Ö, É¾³ı(v, a)
+            //æ— æ³•æ‰¾åˆ°æ”¯æŒ, åˆ é™¤(v, a)
             //println(s"      cons:${id} var:${v.id} remove new value:${a}")
             v.remove(a)
           }
@@ -175,12 +175,12 @@ class TableCT_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Arr
       }
 
       if (deleted) {
-        // ÂÛÓòÉ¾¿ÕÍË³ö
+        // è®ºåŸŸåˆ ç©ºé€€å‡º
         if (v.isEmpty()) {
           //println(s"filter faild!!: ${Thread.currentThread().getName}, cid: ${id}, vid: ${v.id}")
           return false
         }
-        //¸üĞÂlastMask
+        //æ›´æ–°lastMask
         v.mask(lastMask(vv))
         y += v
       }

@@ -8,7 +8,7 @@ class RSBitMap(numOriVars: Int) {
   //  val lastLimits = numTuples % Constants.BITSIZE
   val map = new HashMap[Int, Long]()
   val words = new ArrayBuffer[Long]
-  //³õÊ¼»¯limit, index, mask
+  //åˆå§‹åŒ–limit, index, mask
   val limit = Array.fill(numLevel)(-1)
   // array of int,  index.length = p
   //  val index = Array.range(0, numBit)
@@ -18,9 +18,9 @@ class RSBitMap(numOriVars: Int) {
 
   def set(index: Int): Unit = {
     val idx2 = INDEX.getIndex2D(index)
-    //Í¨¹ıindex ÄÃµ½index2 ÅĞ¶Ïkey
-    //Èôkey´æÔÚ£¬Ôò¸Ã´¦ÎªÖÃÎª1
-    //Èôkey²»´æÔÚ£¬ÔòĞÂ½¨key²¢ÖÃÎ»ÖÃÎª1£¬limit + 1
+    //é€šè¿‡index æ‹¿åˆ°index2 åˆ¤æ–­key
+    //è‹¥keyå­˜åœ¨ï¼Œåˆ™è¯¥å¤„ä¸ºç½®ä¸º1
+    //è‹¥keyä¸å­˜åœ¨ï¼Œåˆ™æ–°å»ºkeyå¹¶ç½®ä½ç½®ä¸º1ï¼Œlimit + 1
     if (map.contains(idx2.x)) {
       map(idx2.x) |= Constants.MASK1(idx2.y)
     } else {
@@ -56,7 +56,7 @@ class RSBitMap(numOriVars: Int) {
 
   //
   //  def intersectWithMask(): Boolean = {
-  //    //±¾±íÄ¬ÈÏÎ´ĞŞ¸Ä
+  //    //æœ¬è¡¨é»˜è®¤æœªä¿®æ”¹
   //    var changed = false
   //    var w = 0L
   //    var currentWords = 0L
@@ -68,7 +68,7 @@ class RSBitMap(numOriVars: Int) {
   //      w = currentWords & mask(offset)
   //      if (w != currentWords) {
   //        words(currentLevel)(offset) = w
-  //        //±¾±íÒÑĞŞ¸Ä
+  //        //æœ¬è¡¨å·²ä¿®æ”¹
   //        changed = true
   //
   //        if (w == 0L) {
@@ -83,7 +83,7 @@ class RSBitMap(numOriVars: Int) {
   //      }
   //      i -= 1
   //    }
-  //    //¼ÇÂ¼ÊÇ·ñ¸Ä±ä
+  //    //è®°å½•æ˜¯å¦æ”¹å˜
   //    return changed
   //  }
   //

@@ -12,9 +12,9 @@ abstract class IPPropagator extends Callable[Boolean] {
   var level = 0
   var assignedCount = 0
 //  val helper: IPSearchHelper
-  // ±¾Ïß³Ì¼ÌÐø
+  // æœ¬çº¿ç¨‹ç»§ç»­
   var localContinue = new AtomicBoolean(false)
-  // ÓÉÆäËüÏß³Ì¼ÌÐø
+  // ç”±å…¶å®ƒçº¿ç¨‹ç»§ç»­
   var loopContinueByOther = new AtomicBoolean(false)
 
   var blocking = new AtomicBoolean(false)
