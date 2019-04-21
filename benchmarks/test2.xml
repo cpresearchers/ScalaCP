@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<instance type="CSP" format="XCSP3">
+    <variables>
+        <array id="x" size="[5]">0..1</array>
+    </variables>
+    <constraints>
+        <extension>
+            <list>x[0] x[1] x[3]</list>
+            <supports>(0,0,1)(0,1,0)(1,0,0)(1,1,0)</supports>
+        </extension>
+        <extension>
+            <list>x[0] x[2] x[4]</list>
+            <supports>(0,0,0)(0,1,1)(1,0,0)(1,0,1)</supports>
+        </extension>
+        <extension>
+            <list>x[1] x[2] x[4]</list>
+            <supports>(0,0,1)(0,1,0)(0,1,1)(1,0,1)(1,1,1)</supports>
+        </extension>
+        <extension>
+            <list>x[2] x[3] x[4]</list>
+            <supports>(0,0,0)(0,1,0)(1,0,0)(1,1,1)</supports>
+        </extension>
+    </constraints>
+</instance>

@@ -1,0 +1,10 @@
+{
+  "inputRoot": "/home/leezear/FDE",
+  "folders": [
+    "Random-m1-5-10-10",
+    "Random-RB-3-20-20f",
+    "Random-m1-8-20-5",
+    "Random-m1-10-20-10"
+  ],
+  "outputRoot": "/home/leezear/result/FDE"
+}

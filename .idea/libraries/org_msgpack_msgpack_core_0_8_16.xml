@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="org.msgpack:msgpack-core:0.8.16" type="repository">
+    <properties maven-id="org.msgpack:msgpack-core:0.8.16" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/msgpack/msgpack-core/0.8.16/msgpack-core-0.8.16.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

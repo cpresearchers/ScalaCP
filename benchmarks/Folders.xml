@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="GBK" ?>
+<folders>
+    <inputRoot>/home/leezear/FDE</inputRoot>
+
+    <folder format="3">QRandom-bdd-18-21-2</folder>
+    <folder format="2">zzbddSmall</folder>
+    <!--<folder format="4">Random-m1-8-20-5</folder>-->
+    <!--<folder format="4">Random-m1-10-20-10</folder>-->
+
+    <!--<folder format="2">ogdVg_600s43</folder>-->
+    <!--<folder format="2">ukVg_600s42</folder>-->
+    <!--<folder format="2">wordsVg_total65</folder>-->
+    <!--<folder format="3">Random-m1-5-10-10</folder>-->
+    <!--<folder format="3">Random-m1-10-20-10</folder>-->
+
+    <!--<folder format="2">renault-mod</folder>-->
+    <!--<folder format="2">zzbddSmall</folder>-->
+    <!--<folder format="2">travellingSalesma n-25_total15</folder>-->
+    <!--<folder format="2">travellingSalesman-20_total15</folder>-->
+    <!--<folder format="3">Random-m1-10-60-20</folder>-->
+    <!--<folder format="3">Random-m1-5-12-12</folder>&ndash;&gt;-->
+    <!--<folder format="3">QRandom-bdd-15-21-2</folder>-->
+    <!--<folder format="2">wordsVg_total65</folder>-->
+    <!--<folder format="3">Random-m1-8-20-5</folder>-->
+    <!--<folder format="3">QRandom-mdd-7-25-5</folder>-->
+    <!--<folder format="3">Random-RB-3-20-20f</folder>-->
+    <!--<folder format="3">Random-RB-3-24-24</folder>-->
+    <!--<folder format="3">Random-RB-3-24-24f</folder>-->
+    <!--<folder format="3">Random-RB-3-28-28</folder>-->
+    <!--<folder format="3">Random-RB-3-28-28f</folder>-->
+    <outputRoot>/home/leezear/result/FDE</outputRoot>
+</folders>
+
+<!--<?xml version="1.0" encoding="GBK" ?>-->
+<!--<folders>-->
+    <!--<inputRoot>/home/leezear/X3Bench</inputRoot>-->
+
+    <!--<folder format="2">ogdVg_600s43</folder>-->
+    <!--<folder format="2">ukVg_600s42</folder>-->
+    <!--<folder format="2">wordsVg_total65</folder>-->
+    <!--<folder format="3">Random-m1-5-10-10</folder>-->
+    <!--<folder format="3">Random-m1-10-20-10</folder>-->
+    <!--&lt;!&ndash;<folder format="2">renault-mod</folder>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<folder format="2">zzbddSmall</folder>&ndash;&gt;-->
+    <!--&lt;!&ndash;<folder format="2">travellingSalesma n-25_total15</folder>&ndash;&gt;-->
+    <!--&lt;!&ndash;<folder format="2">travellingSalesman-20_total15</folder>&ndash;&gt;-->
+    <!--&lt;!&ndash;<folder format="3">Random-m1-10-60-20</folder>&ndash;&gt;-->
+    <!--&lt;!&ndash;<folder format="3">Random-m1-5-12-12</folder>&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;<folder format="3">QRandom-bdd-15-21-2</folder>&ndash;&gt;-->
+    <!--&lt;!&ndash;<folder format="2">wordsVg_total65</folder>&ndash;&gt;-->
+    <!--&lt;!&ndash;<folder format="3">Random-m1-8-20-5</folder>&ndash;&gt;-->
+    <!--&lt;!&ndash;<folder format="3">QRandom-mdd-7-25-5</folder>&ndash;&gt;-->
+    <!--&lt;!&ndash;<folder format="3">Random-RB-3-20-20f</folder>&ndash;&gt;-->
+    <!--&lt;!&ndash;<folder format="3">Random-RB-3-24-24</folder>&ndash;&gt;-->
+    <!--&lt;!&ndash;<folder format="3">Random-RB-3-24-24f</folder>&ndash;&gt;-->
+    <!--&lt;!&ndash;<folder format="3">Random-RB-3-28-28</folder>&ndash;&gt;-->
+    <!--&lt;!&ndash;<folder format="3">Random-RB-3-28-28f</folder>&ndash;&gt;-->
+    <!--<outputRoot>/home/leezear/result</outputRoot>-->
+<!--</folders>-->
