@@ -18,7 +18,7 @@
 ////            tempFile.deleteOnExit();
 //// Write packed data to a file. No need exists to wrap the file stream with BufferedOutputStream, since MessagePacker has its own buffer
 //            MessagePacker packer = MessagePack.newDefaultPacker(new FileOutputStream(tempFile));
-//            /* ÒÔÏÂÊÇ¶Ô×Ô¶¨ÒåÊı¾İÀàĞÍµÄ´ò°ü*/
+//            /* ä»¥ä¸‹æ˜¯å¯¹è‡ªå®šä¹‰æ•°æ®ç±»å‹çš„æ‰“åŒ…*/
 //            byte[] extData = "custom data type".getBytes(MessagePack.UTF8);
 //            packer.packExtensionTypeHeader((byte) 1, extData.length);  // type number [0, 127], data byte length
 //            packer.writePayload(extData);
@@ -26,17 +26,17 @@
 //
 //        FileInputStream fileInputStream = new FileInputStream(new File(filepath));
 //        MessageUnpacker unpacker = MessagePack.newDefaultUnpacker(fileInputStream);
-////ÏÈ½«×Ô¶¨ÒåÊı¾İµÄÏûÏ¢Í·¶Á³ö
+////å…ˆå°†è‡ªå®šä¹‰æ•°æ®çš„æ¶ˆæ¯å¤´è¯»å‡º
 ////        ExtensionTypeHeader et = unpacker.unpackExtensionTypeHeader();
-//////ÅĞ¶ÏÏûÏ¢ÀàĞÍ
+//////åˆ¤æ–­æ¶ˆæ¯ç±»å‹
 ////        if (et.getType() == (ExtType.TYPE_TAB)) {
 ////            int lenth = et.getLength();
-////            //°´³¤¶È¶ÁÈ¡¶ş½øÖÆÊı¾İ
+////            //æŒ‰é•¿åº¦è¯»å–äºŒè¿›åˆ¶æ•°æ®
 ////            byte[] bytes = new byte[lenth];
 ////            unpacker.readPayload(bytes);
-////            //¹¹Ôìtabsjson¶ÔÏó?
+////            //æ„é€ tabsjsonå¯¹è±¡?
 ////            TabsJson tab = new TabsJson();
-////            //¹¹Ôìunpacker½«¶ş½øÖÆÊı¾İ½â°üµ½java¶ÔÏóÖĞ
+////            //æ„é€ unpackerå°†äºŒè¿›åˆ¶æ•°æ®è§£åŒ…åˆ°javaå¯¹è±¡ä¸­
 ////            MessageUnpacker unpacker1 = MessagePack.newDefaultUnpacker(bytes);
 ////            tab.type = unpacker1.unpackInt();
 ////            tab.f = unpacker1.unpackString();

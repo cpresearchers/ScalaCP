@@ -1,13 +1,13 @@
 package cpscala.TSolver.CpUtil.SearchHelper
 
 class SearchHelper(val numVars: Int, val numTabs: Int) {
-  // ³õÊ¼»¯¸÷Ê±¼ä´Á
+  // åˆå§‹åŒ–å„æ—¶é—´æˆ³
   var globalStamp: Long = 0L
   val tabStamp: Array[Long] = Array.fill(numTabs)(0L)
   val varStamp: Array[Long] = Array.fill(numVars)(0L)
   //  val sizeLevel: Array[Int] = Array.fill(numLevel)(0)
 
-  // ËÑË÷Ê±¼ä
+  // æœç´¢æ—¶é—´
   var time: Long = 0L
   var branchTime = 0L
   var propTime = 0L
@@ -18,16 +18,16 @@ class SearchHelper(val numVars: Int, val numTabs: Int) {
   var nodes: Long = 0L
 //  @volatile var isConsistent: Boolean = true
   var isConsistent: Boolean = true
-  // ËÑË÷ÉÏÏŞ
+  // æœç´¢ä¸Šé™
   var timeLimit = 0L
   var nodeLimit = 0L
   var failureLimit = 0L
 
   var level: Int = 0
 
-  //Ïß³ÌÆô¶¯´ÎÊı
+  //çº¿ç¨‹å¯åŠ¨æ¬¡æ•°
   var p_sum = 0L
-  //Ô¼Êø´«²¥´ÎÊı
+  //çº¦æŸä¼ æ’­æ¬¡æ•°
   var c_sum = 0L
 
 

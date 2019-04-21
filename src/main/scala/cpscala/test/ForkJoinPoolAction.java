@@ -21,27 +21,27 @@ public class ForkJoinPoolAction extends RecursiveTask<Integer> {
         System.out.println("xx");
         int sum = 0;
 
-        //Èç¹ûÈÎÎñ×ã¹»Ğ¡¾Í¼ÆËãÈÎÎñ
+        //å¦‚æœä»»åŠ¡è¶³å¤Ÿå°å°±è®¡ç®—ä»»åŠ¡
         boolean canCompute = (end - start) <= threshold;
         if (canCompute) {
             for (int i = start; i <= end; i++) {
                 sum += i;
             }
         } else {
-            // Èç¹ûÈÎÎñ´óÓÚãĞÖµ£¬¾Í·ÖÁÑ³ÉÁ½¸ö×ÓÈÎÎñ¼ÆËã
+            // å¦‚æœä»»åŠ¡å¤§äºé˜ˆå€¼ï¼Œå°±åˆ†è£‚æˆä¸¤ä¸ªå­ä»»åŠ¡è®¡ç®—
             int middle = (start + end) / 2;
             ForkJoinPoolAction leftTask = new ForkJoinPoolAction(start, middle);
             ForkJoinPoolAction rightTask = new ForkJoinPoolAction(middle + 1, end);
 
-            // Ö´ĞĞ×ÓÈÎÎñ
+            // æ‰§è¡Œå­ä»»åŠ¡
             leftTask.fork();
             rightTask.fork();
 
-            //µÈ´ıÈÎÎñÖ´ĞĞ½áÊøºÏ²¢Æä½á¹û
+            //ç­‰å¾…ä»»åŠ¡æ‰§è¡Œç»“æŸåˆå¹¶å…¶ç»“æœ
             int leftResult = leftTask.join();
             int rightResult = rightTask.join();
 
-            //ºÏ²¢×ÓÈÎÎñ
+            //åˆå¹¶å­ä»»åŠ¡
             sum = leftResult + rightResult;
 
         }
@@ -52,11 +52,11 @@ public class ForkJoinPoolAction extends RecursiveTask<Integer> {
 
     public static void main(String[] args) {
         ForkJoinPool forkjoinPool = new ForkJoinPool();
-        //Éú³ÉÒ»¸ö¼ÆËãÈÎÎñ£¬¼ÆËã1+2+3+4
+        //ç”Ÿæˆä¸€ä¸ªè®¡ç®—ä»»åŠ¡ï¼Œè®¡ç®—1+2+3+4
         ForkJoinPoolAction task = new ForkJoinPoolAction(1, 100);
 
 
-            //Ö´ĞĞÒ»¸öÈÎÎñ
+            //æ‰§è¡Œä¸€ä¸ªä»»åŠ¡
             Future<Integer> result = forkjoinPool.submit(task);
             try {
                 System.out.println(result.get());

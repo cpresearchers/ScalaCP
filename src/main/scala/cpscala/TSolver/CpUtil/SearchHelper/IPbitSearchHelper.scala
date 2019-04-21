@@ -12,7 +12,7 @@ import scala.collection.mutable.ArrayBuffer
 
 class IPbitSearchHelper(override val numVars: Int, override val numTabs: Int, val parallelism: Int) extends SearchHelper(numVars, numTabs) {
 
-  // ²¢ĞĞÊ±£¬¸ù¾İËÑË÷×´Ì¬Ö´ĞĞÏàÓ¦µÄ´úÂë
+  // å¹¶è¡Œæ—¶ï¼Œæ ¹æ®æœç´¢çŠ¶æ€æ‰§è¡Œç›¸åº”çš„ä»£ç 
   // searchState = 0 setup
   // searchState = 1 newLevel
   // searchState = 2 propagate
@@ -20,11 +20,11 @@ class IPbitSearchHelper(override val numVars: Int, override val numTabs: Int, va
   var searchState = 0
   val pool = if (parallelism == -1) new ForkJoinPool() else new ForkJoinPool(parallelism)
 
-  // ±ÈÌØÔ¼Êø×é¸öÊı
+  // æ¯”ç‰¹çº¦æŸç»„ä¸ªæ•°
   val numBit = Math.ceil(numTabs.toDouble / Constants.BITSIZE.toDouble).toInt
   val bitTmp = Array.fill[Long](numBit)(0L)
   bitTmp(numBit - 1) <<= (Constants.BITSIZE - numTabs % Constants.BITSIZE)
-  //inCevt[i]±íÊ¾µÚi¸öÔ¼ÊøÊÇ·ñÔÚCevtÖĞ
+  //inCevt[i]è¡¨ç¤ºç¬¬iä¸ªçº¦æŸæ˜¯å¦åœ¨Cevtä¸­
   val inCevt = new AtomicLongArray(numTabs)
 
   val subscription = new Array[ArrayBuffer[IPPropagator]](numVars)

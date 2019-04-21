@@ -12,7 +12,7 @@ import scala.collection.mutable.ArrayBuffer
 
 class IPSearchHelper(override val numVars: Int, override val numTabs: Int, val parallelism: Int) extends SearchHelper(numVars, numTabs) {
 
-  // ²¢ĞĞÊ±£¬¸ù¾İËÑË÷×´Ì¬Ö´ĞĞÏàÓ¦µÄ´úÂë
+  // å¹¶è¡Œæ—¶ï¼Œæ ¹æ®æœç´¢çŠ¶æ€æ‰§è¡Œç›¸åº”çš„ä»£ç 
   // searchState = 0 setup
   // searchState = 1 newLevel
   // searchState = 2 propagate
@@ -24,7 +24,7 @@ class IPSearchHelper(override val numVars: Int, override val numTabs: Int, val p
   val Cevt = new ArrayList[IPPropagator](numTabs)
 
   Cevt.clear()
-  //inCevt[i]±íÊ¾µÚi¸öÔ¼ÊøÊÇ·ñÔÚCevtÖĞ
+  //inCevt[i]è¡¨ç¤ºç¬¬iä¸ªçº¦æŸæ˜¯å¦åœ¨Cevtä¸­
   val inCevt = new AtomicIntegerArray(numTabs)
 
   var ii = 0

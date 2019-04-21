@@ -15,11 +15,11 @@ class DSPSearchHelper(override val numVars: Int, override val numTabs: Int, val 
 
   //  val pool = Executors.newWorkStealingPool
   val subscription = new Array[ArrayBuffer[DSPPropagator]](numVars)
-  // ÔËĞĞ´ÎÊı
+  // è¿è¡Œæ¬¡æ•°
   val c_prop = new AtomicLong(0L)
-  // ¶¯Ì¬Ìá½»´ÎÊı
+  // åŠ¨æ€æäº¤æ¬¡æ•°
   val c_sub = new AtomicLong(0L)
-  // ±¾´Î´«²¥ÊÇ·ñÓĞ±äÁ¿µÄÂÛÓò·¢Éú¸Ä±ä
+  // æœ¬æ¬¡ä¼ æ’­æ˜¯å¦æœ‰å˜é‡çš„è®ºåŸŸå‘ç”Ÿæ”¹å˜
   val varIsChange = new AtomicBoolean(false)
 
   //  val p = Promise[Int]

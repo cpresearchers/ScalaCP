@@ -7,9 +7,9 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class X3Convertor implements ProblemAPI {
-    // ÎÄ¼þ¼Ðid
+    // æ–‡ä»¶å¤¹id
     int n;
-    // ÎÄ¼þid
+    // æ–‡ä»¶id
     int r;
 
     public void model() {
@@ -27,11 +27,11 @@ public class X3Convertor implements ProblemAPI {
 
         for (int i = 0; i < tempList.length; i++) {
             if (tempList[i].isFile()) {
-//              System.out.println("ÎÄ     ¼þ£º" + tempList[i]);
+//              System.out.println("æ–‡     ä»¶ï¼š" + tempList[i]);
                 files.add(tempList[i].toString());
             }
             if (tempList[i].isDirectory()) {
-//              System.out.println("ÎÄ¼þ¼Ð£º" + tempList[i]);
+//              System.out.println("æ–‡ä»¶å¤¹ï¼š" + tempList[i]);
             }
         }
         return files;
