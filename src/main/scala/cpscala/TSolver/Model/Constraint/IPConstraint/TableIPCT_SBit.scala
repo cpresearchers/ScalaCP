@@ -32,24 +32,16 @@ class TableIPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope: 
   val Ssup = new ArrayBuffer[Int](arity)
   val Sval = new ArrayBuffer[Int](arity)
 
-  // 获取最大论域大小
-  var maxDomainSize = Int.MinValue
-  scope.foreach(x => {
-    maxDomainSize = math.max(maxDomainSize, x.size())
-  })
-
-  val var_num_bit = Math.ceil(maxDomainSize.toDouble / Constants.BITSIZE.toDouble).toInt
-
-  // 局部变量标记
-  // 2. localMask：当前调用时不断修改的论域的mask
-  // 3. lastMask：上一次调用后的mask
-  val localMask = Array.fill[Long](arity, var_num_bit)(0L)
-  val lastMask = Array.fill[Long](arity, var_num_bit)(0L)
-  val globalMask = Array.fill[Long](var_num_bit)(0L)
-  val tmpMask = Array.fill[Long](var_num_bit)(0L)
-
-  val values = new ArrayBuffer[Int](maxDomainSize)
-  values.clear()
+  // 变量的比特组个数
+  private[this] val varNumBit: Array[Int] = Array.tabulate[Int](arity)(i => scope(i).getNumBit())
+  // lastMask与变量Mask不同的值是该约束两次传播之间被过滤的值（delta）
+  private[this] val lastMask = Array.tabulate(arity)(i => new Array[Long](varNumBit(i)))
+  // 在约束传播开始时localMask获取变量最新的mask
+  private[this] val localMask = Array.tabulate(arity)(i => new Array[Long](varNumBit(i)))
+  // 记录该约束两次传播之间删值的mask
+  private[this] val removeMask = Array.tabulate(arity)(i => new Array[Long](varNumBit(i)))
+  // 保存delta或者变量的剩余有效值
+  private[this] val values = new ArrayBuffer[Int]()
 
   // 标识是否为初次传播。初次传播updateTable时利用valid更新，非初次传播updateTable时根据比较结果确定。
   var firstPropagate = true
@@ -67,37 +59,25 @@ class TableIPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope: 
       val v = scope(i)
       v.mask(localMask(i))
 
-      //      // 本地论域快照与全局论域不同
-      //      // 更新本地论域快照
-      //      // snapshotChanged 即为需要propagate，否则不用propagate
+      //      本地论域快照与全局论域不同
+      //      更新本地论域快照
+      //      snapshotChanged 即为需要propagate，否则不用propagate
       var j = 0
-      while (j < var_num_bit) {
+      while (j < varNumBit(i)) {
         if (lastMask(i)(j) != localMask(i)(j)) {
           diff = true
         }
         j += 1
       }
 
-
-      //      if (v.isChanged(localMask(i)) != diff) {
-      //      if (v.isChanged(lastMask(i))) {
       if (diff) {
         Sval += i
         snapshotChanged = true
       }
-      //      v.mask(localMask(i))
-
-      //      if (v.isChanged(localMask(i)) != diff) {
-      //        println("diff")
-      //      }
-      //      else {
-      //        println("same")
-      //      }
 
       if (v.unBind()) {
         Ssup += i
       }
-
       i += 1
     }
     return snapshotChanged
@@ -105,22 +85,22 @@ class TableIPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope: 
 
 
   def updateTable(): Boolean = {
-    //    //println(s"      ut cid: ${id}===========>")
+    //    println(s"      ut cid: ${id}===========>")
     var i = 0
     while (i < Sval.length && helper.isConsistent) {
       val vv: Int = Sval(i)
       val v: PVar = scope(vv)
       //      v.mask(localMask(vv))
-      //println(s"cid: ${id}, vid: ${v.id}: localMask ${Constants.toFormatBinaryString(localMask(vv)(0))}")
 
       // 获得delta更新数据
       var numValid = 0
       var numRemoved = 0
 
       var j = 0
-      while (j < var_num_bit) {
-        tmpMask(j) = (~localMask(vv)(j)) & lastMask(vv)(j)
-        numRemoved += java.lang.Long.bitCount(tmpMask(j))
+      while (j < varNumBit(vv)) {
+        removeMask(vv)(j) = 0L
+        removeMask(vv)(j) = (~localMask(vv)(j)) & lastMask(vv)(j)
+        numRemoved += java.lang.Long.bitCount(removeMask(vv)(j))
         numValid += java.lang.Long.bitCount(localMask(vv)(j))
         lastMask(vv)(j) = localMask(vv)(j)
         j += 1
@@ -133,7 +113,7 @@ class TableIPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope: 
           currTab.addToMask(supports(vv)(a))
         }
       } else {
-        Constants.getValues(tmpMask, values)
+        Constants.getValues(removeMask(vv), values)
         // 重头重新
         for (a <- values) {
           currTab.addToMask(supports(vv)(a))
@@ -154,8 +134,6 @@ class TableIPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope: 
     }
 
     firstPropagate = false
-    //    printf(s"      cid: %2d           after ut   table: ${currTab.words(helper.level)(0)}\n", id)
-    //    printf(s"      cid: %2d           after ut   table: ${Constants.toFormatBinaryString(currTab.words(helper.level)(0))}\n", id)
 
     return true
   }
@@ -171,9 +149,6 @@ class TableIPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope: 
       Constants.getValues(localMask(vv), values)
 
       for (a <- values) {
-        if (id == 7) {
-          //println(s"      cid: ${id} var: ${v.id} value: ${a} support: ${Constants.toFormatBinaryString(supports(vv)(a)(0))}")
-        }
         var index = residues(vv)(a)
         if (index == -1 || (currTab.words(helper.level)(index) & supports(vv)(a)(index)) == 0L) { //res失效
           index = currTab.intersectIndex(supports(vv)(a))
@@ -192,18 +167,17 @@ class TableIPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope: 
 
       if (deleted) {
         helper.varStamp(v.id) = helper.globalStamp + 1
-        val changed = v.submitMask(localMask(vv))
-        // 本地线程删值
-        // 提交更改，并获取新值
-        if (v.isEmpty()) {
-          helper.isConsistent = false
-          //println(s"filter faild!!: ${Thread.currentThread().getName}, cid: ${id}, vid: ${v.id}")
-          return false
+        if(v.submitMask(localMask(vv))){
+          // 本地线程删值
+          if (v.isEmpty()) {
+            helper.isConsistent = false
+            //println(s"filter faild!!: ${Thread.currentThread().getName}, cid: ${id}, vid: ${v.id}")
+            return false
+          }
         }
 
-        // 这里不能等于newMask因为表是基于lastMask更新的
         var j = 0
-        while (j < var_num_bit) {
+        while (j < varNumBit(vv)) {
           lastMask(vv)(j) = localMask(vv)(j)
           j += 1
         }
@@ -215,15 +189,6 @@ class TableIPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope: 
   }
 
   override def propagate(): Boolean = {
-    //    initial()
-    //    if (!updateTable()) {
-    //      return false
-    //    }
-    //    if (!filterDomains()) {
-    //      return false
-    //    }
-    //    //    }
-    //    return true
     if (initial()) {
       if (updateTable()) {
         if (filterDomains()) {
@@ -253,7 +218,6 @@ class TableIPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope: 
     if (helper.isConsistent) {
       //    //println(s"start: cur_ID: ${Thread.currentThread().getId()},cur_name: ${Thread.currentThread().getName()},cur_cid: ${id}
       return propagate()
-      //    //println(s"end:   cur_ID: ${Thread.currentThread().getId()},cur_name: ${Thread.currentThread().getName()},cur_cid: ${id},propagate_res: ${res}")
     } else {
       return false
     }

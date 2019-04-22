@@ -2,8 +2,6 @@ package cpscala.TSolver.Model.Variable
 
 abstract class PVar extends Var {
 
-  def getNumBit(): Int = ???
-
   def simpleMask(): Long = ???
 
   def submitMask(mask: Long): Boolean = ???

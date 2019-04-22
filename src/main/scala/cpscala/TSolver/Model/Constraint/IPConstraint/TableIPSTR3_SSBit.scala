@@ -116,7 +116,8 @@ class TableIPSTR3_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scop
     val membersBefore = invalidTuples.size()
 
     // 15年论文中的伪代码每次只处理一个值
-    for (i <- 0 until arity) {
+    var i = 0
+    while (i < arity && helper.isConsistent) {
       val x = scope(i)
       localMask(i) = x.simpleMask()
 
@@ -145,6 +146,7 @@ class TableIPSTR3_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scop
           }
         }
       }
+      i += 1
     }
 
     // 无效元组没有更新
@@ -156,10 +158,10 @@ class TableIPSTR3_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scop
     //println(s"       the number of invalid tuple: ${membersAfter - membersBefore}")
 
     // 寻找没有支持的值
-    var i = membersBefore
-    while (i < membersAfter) {
+    var j = membersBefore
+    while (j < membersAfter) {
 
-      val k = invalidTuples.get(i)
+      val k = invalidTuples.get(j)
       val dep = deps(k)
 
       for ((varId, value) <- dep) {
@@ -204,7 +206,7 @@ class TableIPSTR3_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scop
           }
         }
       }
-      i += 1
+      j += 1
     }
     return true
   }

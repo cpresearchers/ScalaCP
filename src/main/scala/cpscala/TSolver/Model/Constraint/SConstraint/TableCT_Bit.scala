@@ -35,24 +35,16 @@ class TableCT_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Arr
   val Ssup = new ArrayBuffer[Int](arity)
   val Sval = new ArrayBuffer[Int](arity)
 
-  // 获取最大论域大小
-  var maxDomainSize = Int.MinValue
-  scope.foreach(x => {
-    maxDomainSize = math.max(maxDomainSize, x.size())
-  })
-
-  val var_num_bit = Math.ceil(maxDomainSize.toDouble / Constants.BITSIZE.toDouble).toInt
-
-  // 局部变量标记
-  // 2. localMask：当前调用时不断修改的论域的mask
-  // 3. lastMask：上一次调用后的mask
-  val localMask = Array.fill[Long](arity, var_num_bit)(0L)
-  val lastMask = Array.fill[Long](arity, var_num_bit)(0L)
-  val tmpMask = Array.fill[Long](var_num_bit)(0L)
-
-  // 来存变量值
-  val values = new ArrayBuffer[Int](maxDomainSize)
-  values.clear()
+  // 变量的比特组个数
+  private[this] val varNumBit: Array[Int] = Array.tabulate[Int](arity)(i => scope(i).getNumBit())
+  // lastMask与变量Mask不同的值是该约束两次传播之间被过滤的值（delta）
+  private[this] val lastMask = Array.tabulate(arity)(i => new Array[Long](varNumBit(i)))
+  // 在约束传播开始时localMask获取变量最新的mask
+  private[this] val localMask = Array.tabulate(arity)(i => new Array[Long](varNumBit(i)))
+  // 记录该约束两次传播之间删值的mask
+  private[this] val removeMask = Array.tabulate(arity)(i => new Array[Long](varNumBit(i)))
+  // 保存delta或者变量的剩余有效值
+  private[this] val values = new ArrayBuffer[Int]()
 
   // 是否首次传播
   var firstPropagate = true
@@ -74,7 +66,7 @@ class TableCT_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Arr
       // 更新本地论域快照
       // snapshotChanged 即为需要propagate，否则不用propagate
       var j = 0
-      while (j < var_num_bit) {
+      while (j < varNumBit(i)) {
         if (lastMask(i)(j) != localMask(i)(j)) {
           diff = true
         }
@@ -109,9 +101,10 @@ class TableCT_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Arr
       var numRemoved = 0
 
       var j = 0
-      while (j < var_num_bit) {
-        tmpMask(j) = (~localMask(vv)(j)) & lastMask(vv)(j)
-        numRemoved += java.lang.Long.bitCount(tmpMask(j))
+      while (j < varNumBit(i)) {
+        removeMask(vv)(j) = 0L
+        removeMask(vv)(j) = (~localMask(vv)(j)) & lastMask(vv)(j)
+        numRemoved += java.lang.Long.bitCount(removeMask(vv)(j))
         numValid += java.lang.Long.bitCount(localMask(vv)(j))
         lastMask(vv)(j) = localMask(vv)(j)
         j += 1
@@ -124,7 +117,7 @@ class TableCT_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Arr
           currTab.addToMask(supports(vv)(a))
         }
       } else {
-        Constants.getValues(tmpMask, values)
+        Constants.getValues(removeMask(vv), values)
         // 重头重新
         for (a <- values) {
           currTab.addToMask(supports(vv)(a))
@@ -144,9 +137,6 @@ class TableCT_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Arr
     }
 
     firstPropagate = false
-    //    printf(s"      cid: %2d           after ut   table: ${currTab.words(helper.level)(0)}\n", id)
-    //    printf(s"      cid: %2d           after ut   table: ${Constants.toFormatBinaryString(currTab.words(helper.level)(0))}\n", id)
-
     return true
   }
 
@@ -192,18 +182,18 @@ class TableCT_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Arr
   override def propagate(evt: ArrayBuffer[Var]): Boolean = {
     //L32~L33
     initial()
-    val utStart = System.nanoTime
+//    val utStart = System.nanoTime
     val res = updateTable()
-    val utEnd = System.nanoTime
-    helper.updateTableTime += utEnd - utStart
+//    val utEnd = System.nanoTime
+//    helper.updateTableTime += utEnd - utStart
     if (!res) {
       return false
     }
 
-    val fiStart = System.nanoTime
+//    val fiStart = System.nanoTime
     val fi = filterDomains(evt)
-    val fiEnd = System.nanoTime
-    helper.filterDomainTime += fiEnd - fiStart
+//    val fiEnd = System.nanoTime
+//    helper.filterDomainTime += fiEnd - fiStart
     return fi
   }
 

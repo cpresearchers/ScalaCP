@@ -102,7 +102,7 @@ class TableIPSTR3_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
             helper.varStamp(x.id) = helper.globalStamp + 1
           }
         }
-        if(x.isEmpty()) {
+        if (x.isEmpty()) {
           helper.isConsistent = false
           return
         }
@@ -118,8 +118,8 @@ class TableIPSTR3_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
     val membersBefore = invalidTuples.size()
 
     // 15年论文中的伪代码每次只处理一个值
-    for (i <- 0 until arity) {
-
+    var i = 0
+    while (i < arity && helper.isConsistent) {
       val x = scope(i)
 
       if (oldSizes(i) != x.size()) {
@@ -137,6 +137,7 @@ class TableIPSTR3_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
           }
         }
       }
+      i += 1
     }
 
     // 无效元组没有更新
@@ -148,10 +149,10 @@ class TableIPSTR3_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
     //println(s"       the number of invalid tuple: ${membersAfter - membersBefore}")
 
     // 寻找没有支持的值
-    var i = membersBefore
-    while (i < membersAfter) {
+    var t = membersBefore
+    while (t < membersAfter) {
 
-      val k = invalidTuples.get(i)
+      val k = invalidTuples.get(t)
       val dep = deps(k)
 
       for ((varId, value) <- dep) {
@@ -171,7 +172,7 @@ class TableIPSTR3_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
             v.safeRemove(value)
             //println(s"     var:${v.id} remove new value:${value}")
             // 因为是并行不同于串行，会出现多个约束删除同一个变量不同值的情况，所以这里不能让oldSize-1
-//            oldSizes(varId) -= 1
+            //            oldSizes(varId) -= 1
             // 论域若被修改，则全局时间戳加1
             helper.varStamp(v.id) = helper.globalStamp + 1
             if (v.isEmpty()) {
@@ -193,13 +194,13 @@ class TableIPSTR3_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
           }
         }
       }
-      i += 1
+      t += 1
     }
     return true
   }
 
   def call(): Boolean = {
-//        //println(s"start: cur_ID: ${Thread.currentThread().getId()},cur_name: ${Thread.currentThread().getName()},cur_cid: ${id}")
+    //        //println(s"start: cur_ID: ${Thread.currentThread().getId()},cur_name: ${Thread.currentThread().getName()},cur_cid: ${id}")
 
     if (!helper.isConsistent) {
       return false

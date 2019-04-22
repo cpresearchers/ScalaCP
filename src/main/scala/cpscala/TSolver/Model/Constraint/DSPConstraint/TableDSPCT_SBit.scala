@@ -10,14 +10,14 @@ import scala.collection.mutable.ArrayBuffer
 class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[PVar], val tuples: Array[Array[Int]], val helper: DSPSearchHelper) extends DSPPropagator {
   val currTab = new RSBitSet(id, tuples.length, num_vars)
   val supports = new Array[Array[Array[Long]]](arity)
-  val num_bit = currTab.num_bit
+  val numBit = currTab.num_bit
   val residues = new Array[Array[Int]](arity)
   // 活动变量
   val Xevt = new ArrayBuffer[PVar](arity)
   Xevt.clear()
 
   for (vv <- 0 until arity) {
-    supports(vv) = Array.ofDim[Long](scope(vv).size, num_bit)
+    supports(vv) = Array.ofDim[Long](scope(vv).size, numBit)
     residues(vv) = Array.fill(scope(vv).size)(-1)
   }
 
@@ -41,36 +41,16 @@ class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
   // 是否首次传播
   var firstPropagate = true
 
-  // 获取最大论域大小
-  var maxDomainSize = Int.MinValue
-  scope.foreach(x => {
-    maxDomainSize = math.max(maxDomainSize, x.size())
-  })
-
-  val var_num_bit = Math.ceil(maxDomainSize.toDouble / Constants.BITSIZE.toDouble).toInt
-
-  // 局部变量标记
-  // 1. newMask: 原子提交后获得的论域
-  // 1. oldMask: 原子提交前获得的论域
-  // 2. localMask：当前调用时不断修改的论域的mask
-  // 3. lastMask：上一次调用后的mask
-  //  val localMask = Array.fill[Long](arity)(0L)
-  //  val lastMask = Array.fill[Long](arity)(Constants.ALLONELONG)
-  val localMask = Array.fill[Long](arity, var_num_bit)(0L)
-  //  val localMask = Array.tabulate(arity)(i => Array.fill[Long](scope(i)))
-  val lastMask = Array.fill[Long](arity, var_num_bit)(0L)
-
-  //  var ii = 0
-  //  while (ii < arity) {
-  //    scope(ii).mask(lastMask(ii))
-  //    ii += 1
-  //  }
-
-  val globalMask = Array.fill[Long](var_num_bit)(0L)
-  val tmpMask = Array.fill[Long](var_num_bit)(0L)
-
-  val values = new ArrayBuffer[Int](maxDomainSize)
-  values.clear()
+  // 变量的比特组个数
+  private[this] val varNumBit: Array[Int] = Array.tabulate[Int](arity)(i => scope(i).getNumBit())
+  // lastMask与变量Mask不同的值是该约束两次传播之间被过滤的值（delta）
+  private[this] val lastMask = Array.tabulate(arity)(i => new Array[Long](varNumBit(i)))
+  // 在约束传播开始时localMask获取变量最新的mask
+  private[this] val localMask = Array.tabulate(arity)(i => new Array[Long](varNumBit(i)))
+  // 记录该约束两次传播之间删值的mask
+  private[this] val removeMask = Array.tabulate(arity)(i => new Array[Long](varNumBit(i)))
+  // 保存delta或者变量的剩余有效值
+  private[this] val values = new ArrayBuffer[Int]()
 
   //检查变量
   def initial(): Boolean = {
@@ -90,7 +70,7 @@ class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
       // snapshotChanged 即为需要propagate，否则不用propagate
 
       var j = 0
-      while (j < var_num_bit) {
+      while (j < varNumBit(i)) {
         if (lastMask(i)(j) != localMask(i)(j)) {
           diff = true
         }
@@ -123,9 +103,10 @@ class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
       var numValid = 0
       var numRemoved = 0
       var j = 0
-      while (j < var_num_bit) {
-        tmpMask(j) = (~localMask(vv)(j)) & lastMask(vv)(j)
-        numRemoved += java.lang.Long.bitCount(tmpMask(j))
+      while (j < varNumBit(vv)) {
+        removeMask(vv)(j) = 0L
+        removeMask(vv)(j) = (~localMask(vv)(j)) & lastMask(vv)(j)
+        numRemoved += java.lang.Long.bitCount(removeMask(vv)(j))
         numValid += java.lang.Long.bitCount(localMask(vv)(j))
         lastMask(vv)(j) = localMask(vv)(j)
         j += 1
@@ -138,7 +119,7 @@ class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
           currTab.addToMask(supports(vv)(a))
         }
       } else {
-        Constants.getValues(tmpMask, values)
+        Constants.getValues(removeMask(vv), values)
         // 重头重新
         for (a <- values) {
           currTab.addToMask(supports(vv)(a))
@@ -174,9 +155,6 @@ class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
       Constants.getValues(localMask(vv), values)
 
       for (a <- values) {
-        if (id == 7) {
-          //println(s"      cid: ${id} var: ${v.id} value: ${a} support: ${Constants.toFormatBinaryString(supports(vv)(a)(0))}")
-        }
         var index = residues(vv)(a)
         if (index == -1 || (currTab.words(helper.level)(index) & supports(vv)(a)(index)) == 0L) { //res失效
           index = currTab.intersectIndex(supports(vv)(a))
@@ -194,20 +172,18 @@ class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
       }
 
       if (deleted) {
-        val changed = v.submitMask(localMask(vv))
-        // 本地线程删值
-        // 提交更改，并获取新值
-        if (v.isEmpty()) {
-          helper.isConsistent = false
-          //println(s"filter faild!!: ${Thread.currentThread().getName}, cid: ${id}, vid: ${v.id}")
-          return false
-        }
+        if (v.submitMask(localMask(vv))) {
+          // 本地线程删值
+          if (v.isEmpty()) {
+            helper.isConsistent = false
+            //println(s"filter faild!!: ${Thread.currentThread().getName}, cid: ${id}, vid: ${v.id}")
+            return false
+          }
 
-        if (changed) {
           Xevt += v
         }
         var j = 0
-        while (j < var_num_bit) {
+        while (j < varNumBit(vv)) {
           lastMask(vv)(j) = localMask(vv)(j)
           j += 1
         }
@@ -216,6 +192,17 @@ class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
     }
 
     return true
+  }
+
+  override def propagate(): Boolean = {
+    if (initial()) {
+      if (updateTable()) {
+        if (filterDomains()) {
+          return true
+        }
+      }
+    }
+    return false
   }
 
   def submitPropagtors(): Boolean = {
@@ -265,22 +252,11 @@ class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
     do {
       helper.c_prop.incrementAndGet()
       runningStatus.set(1)
-      if (propagate()) {
+      if (propagate() && Xevt.nonEmpty) {
         submitPropagtors()
       }
     } while (!runningStatus.compareAndSet(1, 0))
     helper.c_sub.decrementAndGet()
-  }
-
-  override def propagate(): Boolean = {
-    if (initial()) {
-      if (updateTable()) {
-        if (filterDomains()) {
-          return true
-        }
-      }
-    }
-    return false
   }
 
   override def newLevel(): Unit = {

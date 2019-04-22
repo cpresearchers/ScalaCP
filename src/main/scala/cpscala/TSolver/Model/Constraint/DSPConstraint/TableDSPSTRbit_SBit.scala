@@ -58,7 +58,6 @@ class TableDSPSTRbit_SBit(val id: Int, val arity: Int, val numVars: Int, val sco
 
   // 论域发生改变的变量集
   private val Xevt = new ArrayBuffer[PVar](arity)
-  Xevt.clear()
 
   override def setup(): Unit = {
 
@@ -250,13 +249,11 @@ class TableDSPSTRbit_SBit(val id: Int, val arity: Int, val numVars: Int, val sco
           }
         }
         if (deleted) {
-          val changed = v.submitMask(localMask(i))
-          if (v.isEmpty()) {
-            helper.isConsistent = false
-            return false
-          }
-
-          if (changed) {
+          if(v.submitMask(localMask(i))){
+            if (v.isEmpty()) {
+              helper.isConsistent = false
+              return false
+            }
             Xevt += v
           }
 
@@ -281,7 +278,6 @@ class TableDSPSTRbit_SBit(val id: Int, val arity: Int, val numVars: Int, val sco
   }
 
   def submitPropagtors(): Boolean = {
-    //    println(s"    cur_ID: ${Thread.currentThread().getId()} cons: ${id}  submit, its Xevt size: ${Xevt.length}")
     // 提交其它约束
     for (x <- Xevt) {
       if (helper.isConsistent) {
@@ -298,15 +294,15 @@ class TableDSPSTRbit_SBit(val id: Int, val arity: Int, val numVars: Int, val sco
 
   override def run(): Unit = {
     //    println(s"start: cur_ID: ${Thread.currentThread().getId()}, cons: ${id} =========>")
-
     do {
       helper.c_prop.incrementAndGet()
       runningStatus.set(1)
-      if (propagate()) {
+      if (propagate() && Xevt.nonEmpty) {
         submitPropagtors()
       }
     } while (!runningStatus.compareAndSet(1, 0))
     helper.c_sub.decrementAndGet()
+  }
 
     // 以下版本不稳定，暂不考虑，只是对传播过程加速
     //    helper.searchState match {
@@ -336,13 +332,12 @@ class TableDSPSTRbit_SBit(val id: Int, val arity: Int, val numVars: Int, val sco
     //
     //    helper.c_sub.decrementAndGet()
     //    runningStatus.set(0)
-  }
 
   // 新层
   def newLevel(): Unit = {
     level += 1
 
-    // 到达新层后不用更改oldSize，oldSize与上层保持一致
+    // 到达新层后不用更改lastMask，lastMask与上层保持一致
   }
 
   // 回溯
@@ -354,7 +349,7 @@ class TableDSPSTRbit_SBit(val id: Int, val arity: Int, val numVars: Int, val sco
           lastLevel(level)(i)(a) = -1
         }
       }
-      // 回溯后重置oldMasks，新旧mask相同，因为还没有传播
+      // 回溯后重置lastMask，新旧mask相同，因为还没有传播
       scope(i).mask(lastMask(i))
     }
 

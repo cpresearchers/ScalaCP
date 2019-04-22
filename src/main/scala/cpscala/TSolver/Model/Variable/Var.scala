@@ -24,6 +24,8 @@ abstract class Var {
   // 获取第index个取值
   def get(index: Int): Int
 
+  def getNumBit(): Int = ???
+
   def bind(a: Int)
 
   def isBind(): Boolean = bindLevel <= level

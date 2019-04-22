@@ -1,15 +1,19 @@
-package cpscala.TSolver.Model.Constraint.IPConstraint
+package cpscala.TSolver.Model.Constraint.DSPConstraint
 
-import cpscala.TSolver.CpUtil.SearchHelper.IPSearchHelper
+import cpscala.TSolver.CpUtil.SearchHelper.DSPSearchHelper
 import cpscala.TSolver.CpUtil._
 import cpscala.TSolver.Model.Variable.PVar
 
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
-// 变量类型使用SafeBitVar（可以处理论域任意大小的变量）
+/**
+  * 这是DSPSTR3使用SafeBitVar作为变量类型的版本（可以处理论域任意大小的变量）
+  * 网络预处理时采用STR3维持网络GAC，
+  * 在搜索过程中也采用STR3维持网络GAC，
+  */
 
-class TableIPSTR3_SBit(val id: Int, val arity: Int, val numVars: Int, val scope: Array[PVar], val tuples: Array[Array[Int]], val helper: IPSearchHelper) extends IPPropagator {
+class TableDSPSTR3_SBit(val id: Int, val arity: Int, val numVars: Int, val scope: Array[PVar], val tuples: Array[Array[Int]], val helper: DSPSearchHelper) extends DSPPropagator {
 
   // 子表，三维数组，第一维变量，第二维取值，第三维元组
   // 初始化变量时，其论域已经被序列化，诸如[0, 1, ..., var.size()]，所以可以直接用取值作为下标
@@ -43,6 +47,9 @@ class TableIPSTR3_SBit(val id: Int, val arity: Int, val numVars: Int, val scope:
   // isInitial为false说明setup中表约束还未初始化数据结构
   // 为true说明表约束初始化完成，可以进行初始删值
   private[this] var isInitial = false
+
+  // 论域发生改变的变量集
+  private val Xevt = mutable.Set[PVar]()
 
   override def setup(): Unit = {
 
@@ -89,7 +96,7 @@ class TableIPSTR3_SBit(val id: Int, val arity: Int, val numVars: Int, val scope:
             // 巧妙，bit删值，即将mask中值j对应的bit位设置为0
             val (x, y) = INDEX.getXY(j)
             localMask(i)(x) &= Constants.MASK0(y)
-            helper.varStamp(v.id) = helper.globalStamp + 1
+            helper.varIsChange.set(true)
             //            //println(s"     var:${v.id} remove new value:${j}")
           }
         }
@@ -105,11 +112,10 @@ class TableIPSTR3_SBit(val id: Int, val arity: Int, val numVars: Int, val scope:
       while (i < arity) {
         val v = scope(i)
         // 更新变量论域
-        if (v.submitMask(localMask(i))) {
-          if (v.isEmpty()) {
-            helper.isConsistent = false
-            return
-          }
+        v.submitMask(localMask(i))
+        if (v.isEmpty()) {
+          helper.isConsistent = false
+          return
         }
 
         // 更新lastMask
@@ -169,6 +175,7 @@ class TableIPSTR3_SBit(val id: Int, val arity: Int, val numVars: Int, val scope:
       i += 1
     }
 
+    Xevt.clear()
     // 无效元组没有更新
     val membersAfter = invalidTuples.size()
     if (membersBefore == membersAfter) {
@@ -201,14 +208,14 @@ class TableIPSTR3_SBit(val id: Int, val arity: Int, val numVars: Int, val scope:
             // 巧妙，bit删值，即将mask中值value对应的bit位设置为0
             val (x, y) = INDEX.getXY(value)
             localMask(varId)(x) &= Constants.MASK0(y)
+            //println(s"       cons: ${id}  var: ${v.id}  remove new value: ${value}")
+
             if (v.submitMask(localMask(varId))) {
-              // 论域若被修改，则全局时间戳加1
-              helper.varStamp(v.id) = helper.globalStamp + 1
-              //println(s"       cons: ${id}  var: ${v.id}  remove new value: ${value}")
               if (v.isEmpty()) {
                 helper.isConsistent = false
                 return false
               }
+              Xevt += v
             }
             // 更新lastMask
             lastMask(varId)(x) = localMask(varId)(x)
@@ -232,31 +239,31 @@ class TableIPSTR3_SBit(val id: Int, val arity: Int, val numVars: Int, val scope:
     return true
   }
 
-  def call(): Boolean = {
-    if (!helper.isConsistent) {
-      return false
+  def submitPropagtors(): Boolean = {
+    // 提交其它约束
+    for (x <- Xevt) {
+      if (helper.isConsistent) {
+        for (c <- helper.subscription(x.id)) {
+          // !!这里可以加限制条件c.v.simpleMask!=x.simpleMask
+          if (c.id != id) {
+            helper.submitToPool(c)
+          }
+        }
+      }
     }
+    return false
+  }
 
-    helper.searchState match {
-      case 0 => {
-        ////println("setup")
-        setup()
-      };
-      case 1 => {
-        ////println("newLevel")
-        newLevel()
-      };
-      case 2 => {
-        ////println("propagate")
-        propagate()
-      };
-      case 3 => {
-        ////println("backLevel")
-        backLevel()
-      };
-    }
-
-    return true
+  override def run(): Unit = {
+    //    println(s"start: cur_ID: ${Thread.currentThread().getId()}, cons: ${id} =========>")
+    do {
+      helper.c_prop.incrementAndGet()
+      runningStatus.set(1)
+      if (propagate() && Xevt.nonEmpty) {
+        submitPropagtors()
+      }
+    } while (!runningStatus.compareAndSet(1, 0))
+    helper.c_sub.decrementAndGet()
   }
 
   // 新层
@@ -268,7 +275,7 @@ class TableIPSTR3_SBit(val id: Int, val arity: Int, val numVars: Int, val scope:
     }
     // 保存上层invalidTuples的边界cursize（15年论文中的member）
     invalidTuples.newLevel()
-    // 到达新层后不用更改oldMasks，oldMasks与上层保持一致
+    // 到达新层后不用更改lastMask，lastMask与上层保持一致
   }
 
   // 回溯
@@ -282,7 +289,7 @@ class TableIPSTR3_SBit(val id: Int, val arity: Int, val numVars: Int, val scope:
       for ((a, s) <- topHash) {
         separators(i)(a) = s
       }
-      // 回溯后重置lastMasks，新旧mask相同，因为还没有传播
+      // 回溯后重置lastMask，新旧mask相同，因为还没有传播
       scope(i).mask(lastMask(i))
     }
     // 恢复上层invalidTuples的边界cursize（15年论文中的member）
@@ -298,5 +305,9 @@ class TableIPSTR3_SBit(val id: Int, val arity: Int, val numVars: Int, val scope:
     }
     return true
   }
+
+  override def domainChanged(v: PVar): Boolean = ???
+
+  override def domainChanged(v: PVar, mask: Array[Long]): Boolean = ???
 
 }

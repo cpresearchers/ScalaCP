@@ -69,6 +69,19 @@ abstract class DSPSolver(xm: XModel, val parallelism: Int, propagatorName: Strin
       }
     }
 
+    case "DSPSTR3_SBit" => {
+      for (i <- 0 until numTabs) {
+        val xc: XTab = xm.tabs.get(i)
+        val ts: Array[Array[Int]] = xc.tuples
+        val scope: Array[PVar] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
+        tabs(i) = new TableDSPSTR3_SBit(xc.id, xc.arity, numVars, scope, ts, helper)
+
+        for (v <- scope) {
+          helper.subscription(v.id) += tabs(i)
+        }
+      }
+    }
+
     case "DSPCT_SSBit" => {
       for (i <- 0 until numTabs) {
         val xc: XTab = xm.tabs.get(i)

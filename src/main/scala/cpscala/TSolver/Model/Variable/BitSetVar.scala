@@ -22,6 +22,8 @@ class BitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[Int], v
   }
   bitDoms(0)(numBit - 1) <<= (Constants.BITSIZE - capacity % Constants.BITSIZE)
 
+  override def getNumBit(): Int = numBit
+
   override def newLevel(): Int = {
     val pre_level = level
     level += 1
