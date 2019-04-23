@@ -256,7 +256,7 @@ class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
         submitPropagtors()
       }
     } while (!runningStatus.compareAndSet(1, 0))
-    helper.c_sub.decrementAndGet()
+    helper.counter.decrementAndGet()
 //    println(s"${id} end-----")
   }
 

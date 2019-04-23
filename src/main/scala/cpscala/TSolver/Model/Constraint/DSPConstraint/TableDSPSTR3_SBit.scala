@@ -263,7 +263,7 @@ class TableDSPSTR3_SBit(val id: Int, val arity: Int, val numVars: Int, val scope
         submitPropagtors()
       }
     } while (!runningStatus.compareAndSet(1, 0))
-    helper.c_sub.decrementAndGet()
+    helper.counter.decrementAndGet()
   }
 
   // 新层

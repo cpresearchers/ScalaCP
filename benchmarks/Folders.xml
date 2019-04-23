@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="GBK" ?>
 <folders>
-    <inputRoot>/home/leezear/FDE</inputRoot>
+    <inputRoot>E:\benckmarks\optiSTRpackage</inputRoot>
 
-    <folder format="3">QRandom-bdd-18-21-2</folder>
-    <folder format="2">zzbddSmall</folder>
+<!--    <folder format="3">QRandom-bdd-18-21-2</folder>-->
+    <folder format="2">wordsVg_total65-1</folder>
     <!--<folder format="4">Random-m1-8-20-5</folder>-->
     <!--<folder format="4">Random-m1-10-20-10</folder>-->
 
@@ -28,7 +28,7 @@
     <!--<folder format="3">Random-RB-3-24-24f</folder>-->
     <!--<folder format="3">Random-RB-3-28-28</folder>-->
     <!--<folder format="3">Random-RB-3-28-28f</folder>-->
-    <outputRoot>/home/leezear/result/FDE</outputRoot>
+    <outputRoot>E:\benckmarks\res</outputRoot>
 </folders>
 
 <!--<?xml version="1.0" encoding="GBK" ?>-->

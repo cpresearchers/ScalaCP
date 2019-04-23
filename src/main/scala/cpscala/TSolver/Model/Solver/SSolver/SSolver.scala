@@ -201,7 +201,7 @@ abstract class SSolver(xm: XModel, propagatorName: String, varType: String, heuN
         //        for (c <- subscription(literal.v.name)) {
         //          c.assignedCount += 0.5
         //        }
-        I.show()
+//        I.show()
         end_time = System.nanoTime
         helper.time = end_time - start_time
         return
