@@ -13,22 +13,11 @@ import scala.collection.mutable.ArrayBuffer
 import scala.xml.XML
 
 object test_ct {
-  var name: String = ""
-  var node = 0L
-  var time: Double = 0L
-  var branchTime: Double = 0
-  var propTime: Double = 0
-  var otherTime: Double = 0
-  var updateTableTime: Double = 0
-  var filterDomainTime: Double = 0
-  var backTime: Double = 0
-  var pType = " "
-  var ppType = " "
+  var name = ""
+  var pType = ""
+  var ppType = ""
   var varType = ""
-  var c_sum = 0L
-  var p_sum = 0L
-  var c_prop = 0L
-  var c_sub = 0L
+
   val parallelisms = Array[Int](1, 2, 4, 6, 8, 12, 16, 24)
 
   def main(args: Array[String]): Unit = {
@@ -40,6 +29,7 @@ object test_ct {
   }
 
   def argEmpty(): Unit = {
+    println(s"hardware cocurrency: ${Runtime.getRuntime.availableProcessors()}")
     val file = XML.loadFile("benchmarks/Folders.xml")
     val inputRoot = (file \\ "inputRoot").text
     val outputRoot = (file \\ "outputRoot").text
@@ -51,54 +41,52 @@ object test_ct {
       val folderStr = fn.text
       val inputPath = inputRoot + "/" + folderStr
       val files = getFiles(new File(inputPath))
-
       val resFile = new File(outputRoot + "/" + outputFolder + folderStr + ".csv")
       val writer = CSVWriter.open(resFile)
       writer.writeRow(List(
+        "name",
         // seq
-        "name", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
+        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
         // 1
-        "name", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
+        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
         // 2
-        "name", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
+        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
         // 4
-        "name", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
+        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
         // 6
-        "name", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
+        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
         // 8
-        "name", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
+        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
         // 12
-        "name", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
+        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
         // 16
-        "name", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
+        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
         // 24
-        "name", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
+        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
         // 1
-        "name", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
+        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
         // 2
-        "name", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
+        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
         // 4
-        "name", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
+        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
         // 6
-        "name", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
+        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
         // 8
-        "name", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
+        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
         // 12
-        "name", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
+        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
         // 16
-        "name", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
+        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
         // 24
-        "name", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub"
+        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub"
       ))
       var dataLine = new ArrayBuffer[String](136)
       for (f <- files) {
         println("Build Model: " + f.getName)
         val xm = new XModel(f.getPath, true, fmt)
         dataLine.clear()
-        time = 0L
-        branchTime = 0L
-        backTime = 0L
-        propTime = 0L
+        dataLine += f.getName()
+        //-------------串行算法-------------
         pType = "CT_Bit"
         varType = "BitSet"
         name = pType

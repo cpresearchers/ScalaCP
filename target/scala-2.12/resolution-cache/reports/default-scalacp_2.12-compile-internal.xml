@@ -7,17 +7,76 @@
 		revision="0.1"
 		conf="compile-internal"
 		confs="compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, pom, scala-tool"
-		date="20190421161042"/>
+		date="20190424003852"/>
 	<dependencies>
+		<module organisation="com.github.tototoshi" name="scala-csv_2.12">
+			<revision name="1.3.5" status="release" pubdate="20170816230415" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://github.com/tototoshi/scala-csv" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="1">
+				<license name="Apache License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.html"/>
+				<metadata-artifact status="no" details="" size="3095" time="0" location="C:\Users\lee\.ivy2\cache\com.github.tototoshi\scala-csv_2.12\ivy-1.3.5.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/github/tototoshi/scala-csv_2.12/1.3.5/scala-csv_2.12-1.3.5.pom"/>
+				<caller organisation="default" name="scalacp_2.12" conf="compile-internal, compile, provided, optional" rev="1.3.5" rev-constraint-default="1.3.5" rev-constraint-dynamic="1.3.5" callerrev="0.1"/>
+				<artifacts>
+					<artifact name="scala-csv_2.12" type="jar" ext="jar" status="no" details="" size="44365" time="0" location="C:\Users\lee\.ivy2\cache\com.github.tototoshi\scala-csv_2.12\jars\scala-csv_2.12-1.3.5.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/com/github/tototoshi/scala-csv_2.12/1.3.5/scala-csv_2.12-1.3.5.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
 		<module organisation="org.scala-lang" name="scala-library">
-			<revision name="2.12.8" status="release" pubdate="20181204181556" resolver="public" artresolver="public" homepage="http://www.scala-lang.org/" extra-info.apiURL="http://www.scala-lang.org/api/2.12.8/" downloaded="true" searched="true" default="false" conf="default, compile, runtime, default(compile), master" position="0">
+			<revision name="2.12.8" status="release" pubdate="20181204181556" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" extra-info.apiURL="http://www.scala-lang.org/api/2.12.8/" downloaded="false" searched="false" default="false" conf="default, compile, runtime(*), master(compile), runtime, default(compile), compile(*), master" position="0">
 				<license name="Apache-2.0" url="https://www.apache.org/licenses/LICENSE-2.0"/>
-				<metadata-artifact status="successful" details="" size="1597" time="1174" location="C:\Users\cpxiaozu-2\.ivy2\cache\org.scala-lang\scala-library\ivy-2.12.8.xml" searched="true" original-local-location="C:\Users\cpxiaozu-2\.ivy2\cache\org.scala-lang\scala-library\ivy-2.12.8.xml.original" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.8/scala-library-2.12.8.pom"/>
+				<metadata-artifact status="no" details="" size="2688" time="0" location="C:\Users\lee\.ivy2\cache\org.scala-lang\scala-library\ivy-2.12.8.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.8/scala-library-2.12.8.pom"/>
+				<caller organisation="com.github.tototoshi" name="scala-csv_2.12" conf="default, compile, runtime, master" rev="2.12.8" rev-constraint-default="2.12.8" rev-constraint-dynamic="2.12.8" callerrev="1.3.5"/>
 				<caller organisation="default" name="scalacp_2.12" conf="compile-internal, compile, provided, optional" rev="2.12.8" rev-constraint-default="2.12.8" rev-constraint-dynamic="2.12.8" callerrev="0.1"/>
 				<artifacts>
-					<artifact name="scala-library" type="jar" ext="jar" status="successful" details="" size="5272591" time="189245" location="C:\Users\cpxiaozu-2\.ivy2\cache\org.scala-lang\scala-library\jars\scala-library-2.12.8.jar">
+					<artifact name="scala-library" type="jar" ext="jar" status="no" details="" size="5272591" time="0" location="C:\Users\lee\.ivy2\cache\org.scala-lang\scala-library\jars\scala-library-2.12.8.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.8/scala-library-2.12.8.jar"/>
 					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.scala-lang.modules" name="scala-xml_2.12.0-RC1">
+			<revision name="1.0.6" evicted="latest-revision" evicted-reason="" downloaded="false" searched="false" conf="default(compile)" position="-1">
+				<evicted-by rev="1.0.62"/>
+				<caller organisation="default" name="scalacp_2.12" conf="compile-internal, compile, provided, optional" rev="1.0.6" rev-constraint-default="1.0.6" rev-constraint-dynamic="1.0.6" callerrev="0.1"/>
+				<artifacts>
+				</artifacts>
+			</revision>
+			<revision name="1.0.62" error="not found" downloaded="false" searched="false" conf="default(compile)" position="-1">
+				<caller organisation="default" name="scalacp_2.12" conf="compile-internal, compile, provided, optional" rev="1.0.62" rev-constraint-default="1.0.62" rev-constraint-dynamic="1.0.62" callerrev="0.1"/>
+				<artifacts>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.msgpack" name="msgpack-core">
+			<revision name="0.8.16" evicted="latest-revision" evicted-reason="" downloaded="false" searched="false" conf="default(compile)" position="-1">
+				<evicted-by rev="0.8.162"/>
+				<caller organisation="default" name="scalacp_2.12" conf="compile-internal, compile, provided, optional" rev="0.8.16" rev-constraint-default="0.8.16" rev-constraint-dynamic="0.8.16" callerrev="0.1"/>
+				<artifacts>
+				</artifacts>
+			</revision>
+			<revision name="0.8.162" error="not found" downloaded="false" searched="false" conf="default(compile)" position="-1">
+				<caller organisation="default" name="scalacp_2.12" conf="compile-internal, compile, provided, optional" rev="0.8.162" rev-constraint-default="0.8.162" rev-constraint-dynamic="0.8.162" callerrev="0.1"/>
+				<artifacts>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="com.alibaba" name="fastjson">
+			<revision name="1.2.57" evicted="latest-revision" evicted-reason="" downloaded="false" searched="false" conf="default(compile)" position="-1">
+				<evicted-by rev="1.2.492"/>
+				<caller organisation="default" name="scalacp_2.12" conf="compile-internal, compile, provided, optional" rev="1.2.57" rev-constraint-default="1.2.57" rev-constraint-dynamic="1.2.57" callerrev="0.1"/>
+				<artifacts>
+				</artifacts>
+			</revision>
+			<revision name="1.2.492" error="not found" downloaded="false" searched="false" conf="default(compile)" position="-1">
+				<caller organisation="default" name="scalacp_2.12" conf="compile-internal, compile, provided, optional" rev="1.2.492" rev-constraint-default="1.2.492" rev-constraint-dynamic="1.2.492" callerrev="0.1"/>
+				<artifacts>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.xcsp" name="xcsp3-tools">
+			<revision name="1.1.02" error="not found" downloaded="false" searched="false" conf="default(compile)" position="-1">
+				<caller organisation="default" name="scalacp_2.12" conf="compile-internal, compile, provided, optional" rev="1.1.02" rev-constraint-default="1.1.02" rev-constraint-dynamic="1.1.02" callerrev="0.1"/>
+				<artifacts>
 				</artifacts>
 			</revision>
 		</module>
