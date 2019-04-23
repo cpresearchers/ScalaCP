@@ -60,7 +60,7 @@ class DSPSearchHelper(override val numVars: Int, override val numTabs: Int, val 
   //  }
 
   @inline def poolAwait() = {
-//    pool.awaitQuiescence(1, TimeUnit.DAYS)
+    pool.awaitQuiescence(1, TimeUnit.DAYS)
     while (c_sub.get != 0) {}
     //    Await(f.result())
     //    Await.ready(f, Duration.Inf)

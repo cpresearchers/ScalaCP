@@ -1,14 +1,14 @@
 package cpscala.TSolver.Model.Solver.SSolver
 
 import cpscala.TSolver.CpUtil.SearchHelper.SearchHelper
-import cpscala.TSolver.CpUtil.{AssignedStack, CoarseQueue, Val}
+import cpscala.TSolver.CpUtil.{AssignedStack, CoarseQueue, Literal}
 import cpscala.TSolver.Model.Constraint.SConstraint._
 import cpscala.TSolver.Model.Variable._
 import cpscala.XModel.{XModel, XTab, XVar}
 
 import scala.collection.mutable.ArrayBuffer
 
-abstract class Solver(xm: XModel, propagatorName: String, varType: String, heuName: String) {
+abstract class SSolver(xm: XModel, propagatorName: String, varType: String, heuName: String) {
   val numVars: Int = xm.num_vars
   val numTabs: Int = xm.num_tabs
   val vars = new Array[Var](numVars)
@@ -136,7 +136,7 @@ abstract class Solver(xm: XModel, propagatorName: String, varType: String, heuNa
   val Q = new CoarseQueue[Var](numVars)
   var Y_evt: ArrayBuffer[Var] = new ArrayBuffer[Var](xm.max_arity)
 
-  val I = new AssignedStack(xm.num_vars)
+  val I = new AssignedStack[Var](xm.num_vars)
 
   var start_time = 0L
   var branch_start_time = 0L
@@ -144,16 +144,16 @@ abstract class Solver(xm: XModel, propagatorName: String, varType: String, heuNa
   var back_start_time = 0L
   var end_time = 0L
 
-  def search(time_limit: Long): Unit = {
+  def search(timeLimit: Long): Unit = {
     var finished = false
 
-    //infoShow()
-    //    //println("initial propagate")
+    //initial propagate
     var consistent = initialPropagate()
     end_time = System.nanoTime
     helper.propTime += (end_time - prop_start_time)
-//    infoShow()
-//        return
+
+    //infoShow()
+    //    return
 
     if (!consistent) {
       finished = false
@@ -162,42 +162,46 @@ abstract class Solver(xm: XModel, propagatorName: String, varType: String, heuNa
       return
     }
 
-    var v_a: Val = null
+    var literal: Literal[Var] = null
 
     while (!finished) {
       end_time = System.nanoTime
       helper.time = end_time - start_time
-      if (helper.time > time_limit) {
+      if (helper.time > timeLimit) {
         return
       }
 
-//            if (helper.nodes == 7) {
-//              infoShow()
-//              return
-//            }
+      //      if (helper.nodes == 8) {
+      //                //infoShow()
+      //        return
+      //      }
+
       branch_start_time = System.nanoTime
-      v_a = selectVal()
-      //println("new level --------------------------------------------")
-      //infoShow()
+      literal = selectLiteral()
       newLevel()
       helper.nodes += 1
       //println("nodes: " + helper.nodes)
+      I.push(literal)
+      //println("push:" + literal.toString())
+      bind(literal)
 
-      I.push(v_a)
-      //println("push: " + v_a.toString())
-      bind(v_a)
+
       end_time = System.nanoTime
       helper.branchTime += (end_time - branch_start_time)
 
+
       prop_start_time = System.nanoTime
-      consistent = checkConsistencyAfterAssignment(v_a.v)
+      consistent = checkConsistencyAfterAssignment(literal.v)
       end_time = System.nanoTime
       helper.propTime += (end_time - prop_start_time)
-//      infoShow()
+      //infoShow()
 
       if (consistent && I.full()) {
+        //        //成功再加0.5
+        //        for (c <- subscription(literal.v.name)) {
+        //          c.assignedCount += 0.5
+        //        }
         I.show()
-        // 若想求出所有解，则将consistent置为false，且不返回
         end_time = System.nanoTime
         helper.time = end_time - start_time
         return
@@ -205,18 +209,19 @@ abstract class Solver(xm: XModel, propagatorName: String, varType: String, heuNa
 
       while (!consistent && !I.empty()) {
         back_start_time = System.nanoTime
-        v_a = I.pop()
-        //println("pop:  " + v_a.toString())
+        literal = I.pop()
+        //println("pop:" + literal.toString())
         backLevel()
-        remove(v_a)
+        literal.v.remove(literal.a)
+        remove(literal)
         end_time = System.nanoTime
         helper.backTime += (end_time - back_start_time)
 
         prop_start_time = System.nanoTime
-        consistent = !v_a.v.isEmpty() && checkConsistencyAfterRefutation(v_a.v)
+        consistent = !literal.v.isEmpty() && checkConsistencyAfterRefutation(literal.v)
         end_time = System.nanoTime
         helper.propTime += (end_time - prop_start_time)
-//        infoShow()
+        //infoShow()
       }
 
       if (!consistent) {
@@ -225,6 +230,50 @@ abstract class Solver(xm: XModel, propagatorName: String, varType: String, heuNa
     }
     end_time = System.nanoTime
     helper.time = end_time - start_time
+    return
+  }
+
+  def initialPropagate(): Boolean
+
+  def checkConsistencyAfterAssignment(ix: Var): Boolean
+
+  def checkConsistencyAfterRefutation(ix: Var): Boolean
+
+  //修改levelvdense
+  def selectLiteral(): Literal[Var] = {
+    var mindmdd = Double.MaxValue
+    var minvid = 0
+
+    var i = helper.level
+    while (i < numVars) {
+      val vid = levelvdense(i)
+      val v = vars(vid)
+      var ddeg: Double = 0L
+
+      for (c <- subscription(vid)) {
+        if (c.assignedCount + 1 < c.arity) {
+          ddeg += 1
+        }
+      }
+
+      if (ddeg == 0) {
+        //                val a = v.minValue()
+        //        //println(s"(${v.id}, ${a}): ${v.simpleMask().toBinaryString}")
+        return new Literal(v, v.minValue())
+        //        return new Literal(v, v.dense(0))
+      }
+
+      val sizeD: Double = v.size.toDouble
+      val dmdd = sizeD / ddeg
+
+      if (dmdd < mindmdd) {
+        minvid = vid
+        mindmdd = dmdd
+      }
+      i += 1
+    }
+
+    return new Literal(vars(minvid), vars(minvid).minValue())
   }
 
   def newLevel(): Unit = {
@@ -243,67 +292,27 @@ abstract class Solver(xm: XModel, propagatorName: String, varType: String, heuNa
     for (v <- vars) {
       v.backLevel()
     }
-
     for (c <- tabs) {
       c.backLevel()
     }
   }
 
-  def initialPropagate(): Boolean
-
-  def checkConsistencyAfterAssignment(x: Var): Boolean
-
-  def checkConsistencyAfterRefutation(x: Var): Boolean
-
-  def remove(v_a: Val): Unit = {
+  def remove(literal: Literal[Var]): Unit = {
     //约束的已实例化变量个数减1
-    for (c <- subscription(v_a.v.id)) {
+    for (c <- subscription(literal.v.id)) {
       //      if (c.assignedCount.toInt != c.assignedCount)
       //        c.assignedCount -= 0.5
       //      else
       c.assignedCount -= 1
     }
-    v_a.v.remove(v_a.a)
+    literal.v.remove(literal.a)
+    helper.globalStamp += 1
+    helper.varStamp(literal.v.id) = helper.globalStamp
   }
 
-  //修改levelvdense
-  def selectVal(): Val = {
-    var mindmdd = Double.MaxValue
-    var minv: Var = null
-
-    var i = helper.level
-    while (i < numVars) {
-      val vid = levelvdense(i)
-      val v = vars(vid)
-      var ddeg: Double = 0L
-
-      for (c <- subscription(vid)) {
-        if (c.assignedCount + 1 < c.arity) {
-          ddeg += 1
-        }
-      }
-
-      if (ddeg == 0) {
-        return new Val(v, v.minValue)
-        //        return new Val(v, v.dense(0))
-      }
-
-      val sizeD: Double = v.size.toDouble
-      val dmdd = sizeD / ddeg
-
-      if (dmdd < mindmdd) {
-        minv = v
-        mindmdd = dmdd
-      }
-      i += 1
-    }
-
-    return new Val(minv, minv.minValue)
-  }
-
-  def bind(v_a: Val): Unit = {
+  def bind(literal: Literal[Var]): Unit = {
     //在稀疏集上交换变量
-    val minvi = levelvsparse(v_a.v.id)
+    val minvi = levelvsparse(literal.v.id)
     val a = levelvdense(helper.level - 1)
     levelvdense(helper.level - 1) = levelvdense(minvi)
 
@@ -312,10 +321,13 @@ abstract class Solver(xm: XModel, propagatorName: String, varType: String, heuNa
 
     levelvdense(minvi) = a
 
-    for (c <- subscription(v_a.v.id)) {
+    for (c <- subscription(literal.v.id)) {
       c.assignedCount += 1
     }
-    v_a.v.bind(v_a.a)
+    //    //println(s"bind literal is ${literal.a}")
+    literal.v.bind(literal.a)
+    helper.globalStamp += 1
+    helper.varStamp(literal.v.id) = helper.globalStamp
   }
 
   def infoShow(): Unit = {

@@ -7,7 +7,7 @@ import cpscala.XModel.XModel
   * 细粒度求解器，适用于STR3和STRbit。
   */
 
-class FineSolver(xm: XModel, propagator_name: String, var_type: String, heu_name: String) extends Solver(xm, propagator_name, var_type, heu_name) {
+class SFineSolver(xm: XModel, propagator_name: String, var_type: String, heu_name: String) extends SSolver(xm, propagator_name, var_type, heu_name) {
 
   override def initialPropagate(): Boolean = {
 

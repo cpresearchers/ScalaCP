@@ -7,9 +7,9 @@ import scala.reflect.ClassTag
   *粗粒度队列，其中的元素是变量。
   */
 
-  class CoarseQueue[T <: Var :ClassTag](val num_vars: Int) {
+  class CoarseQueue[VT <: Var :ClassTag](val num_vars: Int) {
   val max_size: Int = num_vars + 1
-  val table = new Array[T](max_size)
+  val table = new Array[VT](max_size)
   val inStack = new Array[Boolean](max_size)
   var front: Int = 0
   var rear: Int = 0
@@ -19,7 +19,7 @@ import scala.reflect.ClassTag
     return front == (rear + 1) % max_size;
   }
 
-  def push(v: T) {
+  def push(v: VT) {
     if (inStack(v.id))
       return
     table(rear) = v
@@ -28,7 +28,7 @@ import scala.reflect.ClassTag
     size += 1
   }
 
-  def safe_push(v: T): Unit = this.synchronized {
+  def safe_push(v: VT): Unit = this.synchronized {
     //    println("push: " + v.name)
     if (inStack(v.id))
       return
@@ -38,7 +38,7 @@ import scala.reflect.ClassTag
     size += 1
   }
 
-  def pop(): T = {
+  def pop(): VT = {
     val tmp = table(front)
     front = (front + 1) % max_size
     inStack(tmp.id) = false

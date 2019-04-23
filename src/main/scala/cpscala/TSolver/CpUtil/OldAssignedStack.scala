@@ -1,68 +1,31 @@
 package cpscala.TSolver.CpUtil
 
-import cpscala.TSolver.Model.Variable.{PVar, Var}
+import cpscala.TSolver.Model.Variable.Var
 
-class Val(iv: Var, ia: Int) {
-  val v = iv
-  val a = ia
+import scala.reflect.ClassTag
 
+class Literal[VT <: Var : ClassTag](val v: VT, val a: Int) {
   override def toString(): String = "(" + v.id + "," + a + ")"
 }
 
-class PVal(iv: PVar, ia: Int) {
-  val v = iv
-  val a = ia
-
-  override def toString(): String = "(" + v.id + "," + a + ")"
-}
-
-class AssignedStack(num_vars: Int) {
-  val table = new Array[Val](num_vars)
+class AssignedStack[VT <: Var : ClassTag](num_vars: Int) {
+  val table = new Array[Literal[VT]](num_vars)
   val inStack = Array.fill[Int](num_vars)(-1)
   var index = -1
 
-  def push(va: Val): Unit = {
+  def push(literal: Literal[VT]): Unit = {
     index += 1
-    table(index) = va
-    inStack(va.v.id) = va.a
+    table(index) = literal
+    inStack(literal.v.id) = literal.a
   }
 
-  def pop(): Val = {
+  def pop(): Literal[VT] = {
     if (index == -1) sys.error("Stack empty")
-    val x = table(index)
+    val literal = table(index)
     table(index) = null
     index -= 1
-    inStack(x.v.id) = -1
-    x
-  }
-
-  def full(): Boolean = index + 1 == num_vars
-
-  def empty(): Boolean = index == -1
-
-  def show(): Unit = {
-    println(inStack.mkString(" "))
-  }
-}
-
-class PAssignedStack(num_vars: Int) {
-  val table = new Array[PVal](num_vars)
-  val inStack = Array.fill[Int](num_vars)(-1)
-  var index = -1
-
-  def push(va: PVal): Unit = {
-    index += 1
-    table(index) = va
-    inStack(va.v.id) = va.a
-  }
-
-  def pop(): PVal = {
-    if (index == -1) sys.error("Stack empty")
-    val x = table(index)
-    table(index) = null
-    index -= 1
-    inStack(x.v.id) = -1
-    x
+    inStack(literal.v.id) = -1
+    literal
   }
 
   def full(): Boolean = index + 1 == num_vars
@@ -77,3 +40,4 @@ class PAssignedStack(num_vars: Int) {
     return inStack.clone()
   }
 }
+

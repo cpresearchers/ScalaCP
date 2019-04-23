@@ -1,12 +1,16 @@
 package cpscala.TSolver.CpUtil
 
+import cpscala.TSolver.Model.Variable.Var
+
+import scala.reflect.ClassTag
+
 /**
   * 细粒度队列，其中的元素是（变量_值）对。
   */
 
-class FineQueue(val num_vars: Int, val max_domin_size: Int) {
+class FineQueue[VT <: Var :ClassTag](val num_vars: Int, val max_domin_size: Int) {
   val max_size: Int = num_vars * max_domin_size + 1
-  val table = new Array[Val](max_size)
+  val table = new Array[Literal[VT]](max_size)
   val inStack = Array.ofDim[Boolean](num_vars, max_domin_size)
   var front: Int = 0
   var rear: Int = 0
@@ -16,30 +20,30 @@ class FineQueue(val num_vars: Int, val max_domin_size: Int) {
     return front == (rear + 1) % max_size;
   }
 
-  def push(v_a: Val) {
-    val v = v_a.v
-    val a = v_a.a
+  def push(literal: Literal[VT]) {
+    val v = literal.v
+    val a = literal.a
     if (inStack(v.id)(a))
       return
-    table(rear) = v_a
+    table(rear) = literal
     rear = (rear + 1) % max_size
     inStack(v.id)(a) = true
     size += 1
   }
 
-  def safe_push(v_a: Val): Unit = this.synchronized {
-    //    println("push: " + v_a.name)
-    val v = v_a.v
-    val a = v_a.a
+  def safe_push(literal: Literal[VT]): Unit = this.synchronized {
+    //    println("push: " + literal.name)
+    val v = literal.v
+    val a = literal.a
     if (inStack(v.id)(a))
       return
-    table(rear) = v_a
+    table(rear) = literal
     rear = (rear + 1) % max_size
     inStack(v.id)(a) = true
     size += 1
   }
 
-  def pop(): Val = {
+  def pop(): Literal[VT] = {
     val tmp = table(front)
     val v = tmp.v
     val a = tmp.a

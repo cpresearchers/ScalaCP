@@ -1,6 +1,6 @@
 package cpscala.TSolver.CpUtil.SearchHelper
 
-import java.util.concurrent.ForkJoinPool
+import java.util.concurrent.{ForkJoinPool, TimeUnit}
 import java.util.concurrent.atomic.{AtomicBoolean, AtomicLong, AtomicLongArray}
 
 import cpscala.TSolver.Model.Constraint.IPbitConstraint.IPbitPropagator
@@ -34,6 +34,7 @@ class IPbitSearchHelper(override val numVars: Int, override val numTabs: Int, va
   }
 
   def poolAwait() = {
+    pool.awaitQuiescence(1, TimeUnit.DAYS)
     while (numSubCons.get != 0) {}
   }
 }
