@@ -7,7 +7,11 @@ import cpscala.TSolver.Model.Variable.PVar
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
-// 变量类型使用SafeBitVar（可以处理论域任意大小的变量）
+/**
+  * 这是IPSTR3使用SafeBitVar作为变量类型的版本（可以处理论域任意大小的变量）
+  * 网络预处理时采用STR3维持网络GAC，
+  * 在搜索过程中也采用STR3维持网络GAC，
+  */
 
 class TableIPSTR3_SBit(val id: Int, val arity: Int, val numVars: Int, val scope: Array[PVar], val tuples: Array[Array[Int]], val helper: IPSearchHelper) extends IPPropagator {
 
@@ -237,26 +241,7 @@ class TableIPSTR3_SBit(val id: Int, val arity: Int, val numVars: Int, val scope:
       return false
     }
 
-    helper.searchState match {
-      case 0 => {
-        ////println("setup")
-        setup()
-      };
-      case 1 => {
-        ////println("newLevel")
-        newLevel()
-      };
-      case 2 => {
-        ////println("propagate")
-        propagate()
-      };
-      case 3 => {
-        ////println("backLevel")
-        backLevel()
-      };
-    }
-
-    return true
+    return propagate()
   }
 
   // 新层

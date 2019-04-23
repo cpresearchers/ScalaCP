@@ -200,32 +200,11 @@ class TableIPSTR3_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
   }
 
   def call(): Boolean = {
-    //        //println(s"start: cur_ID: ${Thread.currentThread().getId()},cur_name: ${Thread.currentThread().getName()},cur_cid: ${id}")
-
     if (!helper.isConsistent) {
       return false
     }
 
-    helper.searchState match {
-      case 0 => {
-        //println("setup")
-        setup()
-      };
-      case 1 => {
-        //println("newLevel")
-        newLevel()
-      };
-      case 2 => {
-        //println("propagate")
-        propagate()
-      };
-      case 3 => {
-        //println("backLevel")
-        backLevel()
-      };
-    }
-
-    return true
+    return propagate()
   }
 
   // 新层

@@ -1,65 +1,47 @@
-package cpscala.TSolver.Model.Solver
+package cpscala.TSolver.Model.Solver.IPbitSolver
 
 import cpscala.TSolver.Model.Variable.PVar
 import cpscala.XModel.XModel
 
-/**
-  * 细粒度并行求解器，适用于PSTR3和PSTRbit。
-  */
-
-class IPFineSolver(xm: XModel, parallelism: Int, propagator_name: String, var_type: String, heu_name: String) extends IPSolver(xm, parallelism, propagator_name, var_type, heu_name){
+class IPtmpCoarseSolver(xm: XModel, parallelism: Int, propagatorName: String, varType: String, heuName: String) extends IPbitSolver(xm, parallelism, propagatorName, varType, heuName) {
 
   def initialPropagate(): Boolean = {
-
-    // 约束表初始化
-    for (c <- tabs){
-      Cevt.add(c)
-    }
-    helper.searchState = 0
-    helper.pool.invokeAll(Cevt)
 
     start_time = System.nanoTime
     prop_start_time = System.nanoTime
 
-    // 初始删值
-    helper.pool.invokeAll(Cevt)
-    if (!helper.isConsistent) {
-      return false
-    }
-    helper.globalStamp += 1
-
-    // 初始传播
     helper.isConsistent = true
     Yevt.clear()
-    var i = 0
-    for (i <- 0 until numVars) {
-      if (helper.varStamp(i) == helper.globalStamp) {
-        Yevt += vars(i)
-      }
-    }
+    Yevt ++= vars
 
-    while (Yevt.size != 0) {
+    var otherStartTime = System.nanoTime()
+    var otherEndTime = 0L
 
-      Cevt.clear()
+    while (Yevt.nonEmpty) {
+
+      otherEndTime = System.nanoTime()
+      helper.lockTime += otherEndTime - otherStartTime
+
       ClearInCevt()
-
       for (v <- Yevt) {
         for (c <- subscription(v.id)) {
           if (!inCevt(c.id)) {
-            Cevt.add(c)
             inCevt(c.id) = true
+            helper.c_sum += 1
+            helper.submitToPool(c)
+            //            println(s"${c.id} submit-----")
           }
         }
       }
-
-      helper.searchState = 2 //"propagate"
-      // 论域改动的变量stamp = gstamp+1
-      helper.pool.invokeAll(Cevt)
-      helper.c_sum += Cevt.size()
+      helper.poolAwait()
       helper.p_sum += 1
+
+      // 论域改动的变量stamp = gstamp+1
       if (!helper.isConsistent) {
         return false
       }
+
+      otherStartTime = System.nanoTime()
 
       helper.globalStamp += 1
       Yevt.clear()
@@ -78,35 +60,40 @@ class IPFineSolver(xm: XModel, parallelism: Int, propagator_name: String, var_ty
     return true
   }
 
-
   def checkConsistencyAfterAssignment(ix: PVar): Boolean = {
 
     helper.isConsistent = true
     Yevt.clear()
     Yevt += ix
 
+    var otherStartTime = System.nanoTime()
+    var otherEndTime = 0L
+
     while (Yevt.size != 0) {
 
-      Cevt.clear()
-      ClearInCevt()
+      otherEndTime = System.nanoTime()
+      helper.lockTime += otherEndTime - otherStartTime
 
+      ClearInCevt()
       for (v <- Yevt) {
         for (c <- subscription(v.id)) {
           if (!inCevt(c.id)) {
-            Cevt.add(c)
             inCevt(c.id) = true
+            helper.c_sum += 1
+            helper.submitToPool(c)
           }
         }
       }
+      helper.poolAwait()
+      helper.p_sum += 1
 
-      helper.searchState = 2 //"propagate"
       // 论域改动的变量stamp = gstamp+1
-      helper.pool.invokeAll(Cevt)
-      helper.c_sum += Cevt.size()
       helper.p_sum += 1
       if (!helper.isConsistent) {
         return false
       }
+
+      otherStartTime = System.nanoTime()
 
       helper.globalStamp += 1
       Yevt.clear()
@@ -131,28 +118,34 @@ class IPFineSolver(xm: XModel, parallelism: Int, propagator_name: String, var_ty
     Yevt.clear()
     Yevt += ix
 
+    var otherStartTime = System.nanoTime()
+    var otherEndTime = 0L
+
     while (Yevt.size != 0) {
 
-      Cevt.clear()
-      ClearInCevt()
+      otherEndTime = System.nanoTime()
+      helper.lockTime += otherEndTime - otherStartTime
 
+      ClearInCevt()
       for (v <- Yevt) {
         for (c <- subscription(v.id)) {
           if (!inCevt(c.id)) {
-            Cevt.add(c)
             inCevt(c.id) = true
+            helper.c_sum += 1
+            helper.submitToPool(c)
           }
         }
       }
+      helper.poolAwait()
+      helper.p_sum += 1
 
-      helper.searchState = 2 //"propagate"
       // 论域改动的变量stamp = gstamp+1
-      helper.pool.invokeAll(Cevt)
-      helper.c_sum += Cevt.size()
       helper.p_sum += 1
       if (!helper.isConsistent) {
         return false
       }
+
+      otherStartTime = System.nanoTime()
 
       helper.globalStamp += 1
       Yevt.clear()

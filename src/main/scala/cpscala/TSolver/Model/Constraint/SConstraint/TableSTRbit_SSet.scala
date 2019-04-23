@@ -8,7 +8,7 @@ import scala.collection.mutable.ArrayBuffer
 import scala.util.control.Breaks._
 
 /**
-  * 这是STRbit的第一个版本，
+  * 这是STRbit使用SparseSet作为变量类型的版本（可以处理论域任意大小的变量）
   * 网络预处理时采用STRbit维持网络GAC，
   * 在搜索过程中也采用STRbit维持网络GAC，
   * 参考论文：2016_IJCAI_Optimizing Simple Table Reduction with Bitwise Representation
@@ -168,24 +168,24 @@ class TableSTRbit_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
       //println("c_id:" + id + " ===============>")
       var i = 0
       while (i < arity) {
-        val x = scope(i)
+        val v = scope(i)
         // j既为取值，又为下标
-        var j = x.size()
+        var j = v.size()
         while (j > 0) {
           j -= 1
           // 因为变量可能已被删值，所以需要通过下标j来取得value
-          val value = x.get(j)
+          val value = v.get(j)
           if (bitTables(i)(value).isEmpty) {
-            x.remove(value)
-            helper.varStamp(x.id) = helper.globalStamp
+            v.remove(value)
+            helper.varStamp(v.id) = helper.globalStamp
             //println(s"       var:${x.id} remove new value:${value}")
           }
         }
         //      stackL(i).push()
-        i += 1
-        if (x.isEmpty()) {
+        if (v.isEmpty()) {
           return false
         }
+        i += 1
       }
     }
     //    stackV.push()
@@ -196,12 +196,12 @@ class TableSTRbit_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
   def deleteInvalidTuple(): Unit = {
 
     for (i <- 0 until arity) {
-      val x = scope(i)
+      val v = scope(i)
 
-      if (oldSizes(i) != x.size()) {
+      if (oldSizes(i) != v.size()) {
         // 获得delta并更新oldSize
         removeValues.clear()
-        oldSizes(i) = x.getLastRemovedValues(oldSizes(i).toLong, removeValues)
+        oldSizes(i) = v.getLastRemovedValues(oldSizes(i).toLong, removeValues)
         //println(s"       var: ${x.id} dit removedValues: " + removeValues.mkString(", "))
 
         // 寻找新的无效元组
@@ -258,7 +258,7 @@ class TableSTRbit_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
           if (now == -1) {
             deleted = true
             v.remove(a)
-//            println(s"    cur_cid: ${id}, var: ${v.id}, remove val: ${a}")
+            //            println(s"    cur_cid: ${id}, var: ${v.id}, remove val: ${a}")
 
             // 以下操作放在这里不如放在循环外面快，因为删了多个值会重复执行
             //            oldSizes(i) -= 1
@@ -292,19 +292,18 @@ class TableSTRbit_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
 
   override def propagate(evt: ArrayBuffer[Var]): Boolean = {
 
-//    println(s"c_id: ${id} propagate==========================>")
-//    val ditStart = System.nanoTime
+    //    println(s"c_id: ${id} propagate==========================>")
+    //    val ditStart = System.nanoTime
     deleteInvalidTuple()
-//    val ditEnd = System.nanoTime
-//    helper.updateTableTime += ditEnd - ditStart
+    //    val ditEnd = System.nanoTime
+    //    helper.updateTableTime += ditEnd - ditStart
 
-//    val ssStart = System.nanoTime
+    //    val ssStart = System.nanoTime
     val ss = searchSupport(evt)
-//    val ssEnd = System.nanoTime
-//    helper.filterDomainTime += ssEnd - ssStart
+    //    val ssEnd = System.nanoTime
+    //    helper.filterDomainTime += ssEnd - ssStart
 
     return ss
-
   }
 
   // 新层
@@ -369,6 +368,4 @@ class TableSTRbit_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
   }
 }
 
-class BitSupport(val ts: Int, var mask: Long) {
-
-}
+class BitSupport(val ts: Int, var mask: Long) {}

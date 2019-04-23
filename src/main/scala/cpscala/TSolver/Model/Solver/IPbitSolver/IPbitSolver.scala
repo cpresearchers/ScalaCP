@@ -1,27 +1,25 @@
-package cpscala.TSolver.Model.Solver
+package cpscala.TSolver.Model.Solver.IPbitSolver
 
-import java.util.ArrayList
-
-import cpscala.TSolver.Model.Constraint.IPConstraint._
-import cpscala.TSolver.CpUtil.SearchHelper.IPSearchHelper
+import cpscala.TSolver.CpUtil.SearchHelper.IPbitSearchHelper
 import cpscala.TSolver.CpUtil.{CoarseQueue, PAssignedStack, PVal}
-import cpscala.TSolver.Model.Variable.{PVar, SafeBitSetVar, SafeSimpleBitVar, SparseSetVar}
+import cpscala.TSolver.Model.Constraint.IPbitConstraint._
+import cpscala.TSolver.Model.Variable.{PVar, SafeBitSetVar, SparseSetVar}
 import cpscala.XModel.{XModel, XTab, XVar}
 
 import scala.collection.mutable.ArrayBuffer
 
-abstract class IPSolver(xm: XModel, parallelism: Int, propagatorName: String, varType: String, heuName: String) {
+abstract class IPbitSolver(xm: XModel, parallelism: Int, propagatorName: String, varType: String, heuName: String) {
 
   val vars = new Array[PVar](xm.num_vars)
-  val tabs = new Array[IPPropagator](xm.num_tabs)
+  val tabs = new Array[IPbitPropagator](xm.num_tabs)
   val numVars = xm.num_vars
   val numTabs = xm.num_tabs
   val ma = xm.max_arity
   val mds = xm.max_domain_size
 
-  val subscription = new Array[ArrayBuffer[IPPropagator]](numVars)
+  val subscription = new Array[ArrayBuffer[IPbitPropagator]](numVars)
   for (i <- 0 until numVars) {
-    subscription(i) = new ArrayBuffer[IPPropagator]()
+    subscription(i) = new ArrayBuffer[IPbitPropagator]()
   }
 
   //记录已赋值的变量
@@ -31,11 +29,10 @@ abstract class IPSolver(xm: XModel, parallelism: Int, propagatorName: String, va
 
   val Q = new CoarseQueue[PVar](numVars)
   val Yevt = new ArrayBuffer[PVar](numVars)
-  val Cevt = new ArrayList[IPPropagator](numTabs)
-  //inCevt[i]表示第i个约束是否在Cevt中
+  //subCons[i]表示第i个约束是否被提交
   val inCevt = Array.fill(numTabs)(false)
 
-  val helper = new IPSearchHelper(numVars, numTabs, parallelism)
+  val helper = new IPbitSearchHelper(numVars, numTabs, parallelism)
   //时间戳
   helper.globalStamp = 0L
 
@@ -50,13 +47,6 @@ abstract class IPSolver(xm: XModel, parallelism: Int, propagatorName: String, va
       }
     }
 
-    case "SafeSimpleBit" => {
-      for (i <- 0 until numVars) {
-        val xv: XVar = xm.vars.get(i)
-        vars(i) = new SafeSimpleBitVar(xv.name, xv.id, numVars, xv.values, helper)
-      }
-    }
-
     case "SparseSet" => {
       for (i <- 0 until numVars) {
         val xv: XVar = xm.vars.get(i)
@@ -67,109 +57,59 @@ abstract class IPSolver(xm: XModel, parallelism: Int, propagatorName: String, va
 
   //初始化约束
   propagatorName match {
-    case "IPSTR2_SSBit" => {
+
+//    case "IPbitSTR3_SBit" => {
+//      for (i <- 0 until numTabs) {
+//        val xc: XTab = xm.tabs.get(i)
+//        val ts: Array[Array[Int]] = xc.tuples
+//        val scope: Array[PVar] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
+//
+//        tabs(i) = new TableIPSTR3_SBit(xc.id, xc.arity, numVars, scope, ts, helper)
+//        for (v <- scope) {
+//          subscription(v.id) += tabs(i)
+//        }
+//      }
+//    }
+//
+//    case "IPbitSTRbit_SBit" => {
+//      for (i <- 0 until numTabs) {
+//        val xc: XTab = xm.tabs.get(i)
+//        val ts: Array[Array[Int]] = xc.tuples
+//        val scope: Array[PVar] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
+//
+//        tabs(i) = new TableIPSTRbit_SBit(xc.id, xc.arity, numVars, scope, ts, helper)
+//        for (v <- scope) {
+//          subscription(v.id) += tabs(i)
+//        }
+//      }
+//    }
+
+    case "IPtmpCT_SBit" => {
       for (i <- 0 until numTabs) {
         val xc: XTab = xm.tabs.get(i)
         val ts: Array[Array[Int]] = xc.tuples
         val scope: Array[PVar] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
 
-        tabs(i) = new TableIPSTR2_SSBit(xc.id, xc.arity, numVars, scope, ts, helper)
+        tabs(i) = new TableIPtmpCT_SBit(xc.id, xc.arity, numVars, scope, ts, helper)
         for (v <- scope) {
           subscription(v.id) += tabs(i)
         }
       }
     }
 
-    case "IPSTR3_SSet" => {
+    case "IPbitCT_SBit" => {
       for (i <- 0 until numTabs) {
         val xc: XTab = xm.tabs.get(i)
         val ts: Array[Array[Int]] = xc.tuples
         val scope: Array[PVar] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
 
-        tabs(i) = new TableIPSTR3_SSet(xc.id, xc.arity, numVars, scope, ts, helper)
+        tabs(i) = new TableIPbitCT_SBit(xc.id, xc.arity, numVars, scope, ts, helper)
         for (v <- scope) {
           subscription(v.id) += tabs(i)
         }
       }
     }
 
-    case "IPSTR3_SSBit" => {
-      for (i <- 0 until numTabs) {
-        val xc: XTab = xm.tabs.get(i)
-        val ts: Array[Array[Int]] = xc.tuples
-        val scope: Array[PVar] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
-
-        tabs(i) = new TableIPSTR3_SSBit(xc.id, xc.arity, numVars, scope, ts, helper)
-        for (v <- scope) {
-          subscription(v.id) += tabs(i)
-        }
-      }
-    }
-
-    case "IPSTR3_SBit" => {
-      for (i <- 0 until numTabs) {
-        val xc: XTab = xm.tabs.get(i)
-        val ts: Array[Array[Int]] = xc.tuples
-        val scope: Array[PVar] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
-
-        tabs(i) = new TableIPSTR3_SBit(xc.id, xc.arity, numVars, scope, ts, helper)
-        for (v <- scope) {
-          subscription(v.id) += tabs(i)
-        }
-      }
-    }
-
-    case "IPSTRbit_SSet" => {
-      for (i <- 0 until numTabs) {
-        val xc: XTab = xm.tabs.get(i)
-        val ts: Array[Array[Int]] = xc.tuples
-        val scope: Array[PVar] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
-
-        tabs(i) = new TableIPSTRbit_SSet(xc.id, xc.arity, numVars, scope, ts, helper)
-        for (v <- scope) {
-          subscription(v.id) += tabs(i)
-        }
-      }
-    }
-
-    case "IPSTRbit_SSBit" => {
-      for (i <- 0 until numTabs) {
-        val xc: XTab = xm.tabs.get(i)
-        val ts: Array[Array[Int]] = xc.tuples
-        val scope: Array[PVar] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
-
-        tabs(i) = new TableIPSTRbit_SSBit(xc.id, xc.arity, numVars, scope, ts, helper)
-        for (v <- scope) {
-          subscription(v.id) += tabs(i)
-        }
-      }
-    }
-
-    case "IPCT_SBit" => {
-      for (i <- 0 until numTabs) {
-        val xc: XTab = xm.tabs.get(i)
-        val ts: Array[Array[Int]] = xc.tuples
-        val scope: Array[PVar] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
-
-        tabs(i) = new TableIPCT_SBit(xc.id, xc.arity, numVars, scope, ts, helper)
-        for (v <- scope) {
-          subscription(v.id) += tabs(i)
-        }
-      }
-    }
-
-    case "IPCT_SSBit" => {
-      for (i <- 0 until numTabs) {
-        val xc: XTab = xm.tabs.get(i)
-        val ts: Array[Array[Int]] = xc.tuples
-        val scope: Array[PVar] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
-
-        tabs(i) = new TableIPCT_SSBit(xc.id, xc.arity, numVars, scope, ts, helper)
-        for (v <- scope) {
-          subscription(v.id) += tabs(i)
-        }
-      }
-    }
   }
 
   def ClearInCevt() = {
@@ -194,8 +134,8 @@ abstract class IPSolver(xm: XModel, parallelism: Int, propagatorName: String, va
     end_time = System.nanoTime
     helper.propTime += (end_time - prop_start_time)
 
-    //infoShow()
-    //    return
+//    infoShow()
+//        return
 
     if (!consistent) {
       finished = false
@@ -402,3 +342,4 @@ abstract class IPSolver(xm: XModel, parallelism: Int, propagatorName: String, va
     //println("---------------------------------------------------------------------------------------------")
   }
 }
+

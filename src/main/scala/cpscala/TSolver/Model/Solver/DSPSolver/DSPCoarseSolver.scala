@@ -1,4 +1,4 @@
-package cpscala.TSolver.Model.Solver
+package cpscala.TSolver.Model.Solver.DSPSolver
 
 import cpscala.TSolver.Model.Variable.PVar
 import cpscala.XModel.XModel

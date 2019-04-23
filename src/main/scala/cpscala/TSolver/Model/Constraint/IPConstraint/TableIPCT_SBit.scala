@@ -166,7 +166,6 @@ class TableIPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope: 
       }
 
       if (deleted) {
-        helper.varStamp(v.id) = helper.globalStamp + 1
         if(v.submitMask(localMask(vv))){
           // 本地线程删值
           if (v.isEmpty()) {
@@ -174,6 +173,7 @@ class TableIPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope: 
             //println(s"filter faild!!: ${Thread.currentThread().getName}, cid: ${id}, vid: ${v.id}")
             return false
           }
+          helper.varStamp(v.id) = helper.globalStamp + 1
         }
 
         var j = 0

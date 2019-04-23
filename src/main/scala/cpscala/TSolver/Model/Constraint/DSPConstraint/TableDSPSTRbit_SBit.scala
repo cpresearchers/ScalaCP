@@ -28,15 +28,15 @@ class TableDSPSTRbit_SBit(val id: Int, val arity: Int, val numVars: Int, val sco
 
   private[this] val lengthTuple = tuples.length
   // 比特元组的数量，tupleLength不能被64整除，要为余数创建一个比特元组
-  private[this] val numBit = Math.ceil(lengthTuple.toDouble / Constants.BITSIZE.toDouble).toInt
+  private[this] val numBitTuple = Math.ceil(lengthTuple.toDouble / Constants.BITSIZE.toDouble).toInt
   // 比特元组的集合，比特元组的每个比特位记录对应位置的元组是否有效
-  private[this] val bitVal = Array.fill[Long](numBit)(-1L)
+  private[this] val bitVal = Array.fill[Long](numBitTuple)(-1L)
   // 最后一个比特元组末尾清0
-  bitVal(numBit - 1) <<= Constants.BITSIZE - lengthTuple % Constants.BITSIZE
+  bitVal(numBitTuple - 1) <<= Constants.BITSIZE - lengthTuple % Constants.BITSIZE
   // 比特元组栈
   // 在搜索树初始层，若比特元组改变了，即更新栈顶层的Array（后来想了想，0层不需要保存，因为1层对应的栈顶保存的即是0层初始化GAC后的信息）
   // 在搜索树的非初始层，当比特元组第一次发生改变时，将改变前的比特元组保存在栈顶层Array中
-  private[this] val bitLevel = Array.fill[Long](numVars + 1, numBit)(0L)
+  private[this] val bitLevel = Array.fill[Long](numVars + 1, numBitTuple)(0L)
 
   // 变量的比特组个数
   private[this] val varNumBit: Array[Int] = Array.tabulate[Int](arity)(i => scope(i).getNumBit())
@@ -115,6 +115,7 @@ class TableDSPSTRbit_SBit(val id: Int, val arity: Int, val numVars: Int, val sco
       var i = 0
       while (i < arity) {
         val v = scope(i)
+        // 初始化localMask
         v.mask(localMask(i))
         // 因为变量还未删值，所以j既为index，又为取值
         var j = v.size()
@@ -353,7 +354,7 @@ class TableDSPSTRbit_SBit(val id: Int, val arity: Int, val numVars: Int, val sco
       scope(i).mask(lastMask(i))
     }
 
-    for (ts <- 0 until numBit) {
+    for (ts <- 0 until numBitTuple) {
       if (bitLevel(level)(ts) != 0L) {
         bitVal(ts) = bitLevel(level)(ts)
         bitLevel(level)(ts) = 0L

@@ -1,21 +1,42 @@
-package cpscala.TSolver.Model.Solver
+package cpscala.TSolver.Model.Solver.IPSolver
 
 import cpscala.TSolver.Model.Variable.PVar
 import cpscala.XModel.XModel
 
-class IPCoarseSolver(xm: XModel, parallelism: Int, propagator_name: String, var_type: String, heu_name: String) extends IPSolver(xm, parallelism, propagator_name, var_type, heu_name){
+/**
+  * 细粒度并行求解器，适用于PSTR3和PSTRbit。
+  */
+
+class IPFineSolver(xm: XModel, parallelism: Int, propagator_name: String, var_type: String, heu_name: String) extends IPSolver(xm, parallelism, propagator_name, var_type, heu_name) {
 
   def initialPropagate(): Boolean = {
+
+    // 约束表初始化
+    for (c <- tabs) {
+      c.setup()
+    }
 
     start_time = System.nanoTime
     prop_start_time = System.nanoTime
 
+    // 初始删值
+    for (c <- tabs) {
+      c.setup()
+    }
+    if (!helper.isConsistent) {
+      return false
+    }
+    helper.globalStamp += 1
+
+    // 初始传播
     helper.isConsistent = true
     Yevt.clear()
-    Yevt ++= vars
-
-    var otherStartTime = System.nanoTime()
-    var otherEndTime = 0L
+    var i = 0
+    for (i <- 0 until numVars) {
+      if (helper.varStamp(i) == helper.globalStamp) {
+        Yevt += vars(i)
+      }
+    }
 
     while (Yevt.size != 0) {
 
@@ -31,10 +52,6 @@ class IPCoarseSolver(xm: XModel, parallelism: Int, propagator_name: String, var_
         }
       }
 
-      otherEndTime = System.nanoTime()
-      helper.lockTime += otherEndTime - otherStartTime
-
-      helper.searchState = 2 //"propagate"
       // 论域改动的变量stamp = gstamp+1
       helper.pool.invokeAll(Cevt)
       helper.c_sum += Cevt.size()
@@ -42,8 +59,6 @@ class IPCoarseSolver(xm: XModel, parallelism: Int, propagator_name: String, var_
       if (!helper.isConsistent) {
         return false
       }
-
-      otherStartTime = System.nanoTime()
 
       helper.globalStamp += 1
       Yevt.clear()
@@ -62,14 +77,12 @@ class IPCoarseSolver(xm: XModel, parallelism: Int, propagator_name: String, var_
     return true
   }
 
+
   def checkConsistencyAfterAssignment(ix: PVar): Boolean = {
 
     helper.isConsistent = true
     Yevt.clear()
     Yevt += ix
-
-    var otherStartTime = System.nanoTime()
-    var otherEndTime = 0L
 
     while (Yevt.size != 0) {
 
@@ -85,10 +98,6 @@ class IPCoarseSolver(xm: XModel, parallelism: Int, propagator_name: String, var_
         }
       }
 
-      otherEndTime = System.nanoTime()
-      helper.lockTime += otherEndTime - otherStartTime
-
-      helper.searchState = 2 //"propagate"
       // 论域改动的变量stamp = gstamp+1
       helper.pool.invokeAll(Cevt)
       helper.c_sum += Cevt.size()
@@ -96,8 +105,6 @@ class IPCoarseSolver(xm: XModel, parallelism: Int, propagator_name: String, var_
       if (!helper.isConsistent) {
         return false
       }
-
-      otherStartTime = System.nanoTime()
 
       helper.globalStamp += 1
       Yevt.clear()
@@ -122,9 +129,6 @@ class IPCoarseSolver(xm: XModel, parallelism: Int, propagator_name: String, var_
     Yevt.clear()
     Yevt += ix
 
-    var otherStartTime = System.nanoTime()
-    var otherEndTime = 0L
-
     while (Yevt.size != 0) {
 
       Cevt.clear()
@@ -139,10 +143,6 @@ class IPCoarseSolver(xm: XModel, parallelism: Int, propagator_name: String, var_
         }
       }
 
-      otherEndTime = System.nanoTime()
-      helper.lockTime += otherEndTime - otherStartTime
-
-      helper.searchState = 2 //"propagate"
       // 论域改动的变量stamp = gstamp+1
       helper.pool.invokeAll(Cevt)
       helper.c_sum += Cevt.size()
@@ -150,8 +150,6 @@ class IPCoarseSolver(xm: XModel, parallelism: Int, propagator_name: String, var_
       if (!helper.isConsistent) {
         return false
       }
-
-      otherStartTime = System.nanoTime()
 
       helper.globalStamp += 1
       Yevt.clear()

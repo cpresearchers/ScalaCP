@@ -1,45 +1,36 @@
-package cpscala.TSolver.Model.Constraint.DSPConstraint
+package cpscala.TSolver.Model.Constraint.IPbitConstraint
 
-import cpscala.TSolver.CpUtil.SearchHelper.DSPSearchHelper
 import cpscala.TSolver.CpUtil.{Constants, INDEX, RSBitSet}
+import cpscala.TSolver.CpUtil.SearchHelper.IPbitSearchHelper
 import cpscala.TSolver.Model.Variable.PVar
 
-import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
-class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[PVar], val tuples: Array[Array[Int]], val helper: DSPSearchHelper) extends DSPPropagator {
+class TableIPtmpCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[PVar], val tuples: Array[Array[Int]], val helper: IPbitSearchHelper) extends IPbitPropagator {
   val currTab = new RSBitSet(id, tuples.length, num_vars)
   val supports = new Array[Array[Array[Long]]](arity)
-  val numBit = currTab.num_bit
+  val num_bit = currTab.num_bit
   val residues = new Array[Array[Int]](arity)
-  // 活动变量
-  val Xevt = new ArrayBuffer[PVar](arity)
-  Xevt.clear()
 
-  for (vv <- 0 until arity) {
-    supports(vv) = Array.ofDim[Long](scope(vv).size, numBit)
-    residues(vv) = Array.fill(scope(vv).size)(-1)
+  for (i <- 0 until arity) {
+    supports(i) = Array.ofDim[Long](scope(i).size, num_bit)
+    residues(i) = Array.fill(scope(i).size)(-1)
   }
 
-  for (i <- 0 until tuples.length) {
-    val (x, y) = INDEX.getXY(i)
-    val t = tuples(i)
+  var ii = 0
+  while (ii < tuples.length) {
+    val (x, y) = INDEX.getXY(ii)
+    val t = tuples(ii)
 
     for (j <- 0 until t.length) {
       supports(j)(t(j))(x) |= Constants.MASK1(y)
     }
-  }
-
-  val scopeMap = new mutable.HashMap[PVar, Int]()
-  for (i <- 0 until arity) {
-    scopeMap.put(scope(i), i)
+    ii += 1
   }
 
   //存变量Index
   val Ssup = new ArrayBuffer[Int](arity)
   val Sval = new ArrayBuffer[Int](arity)
-  // 是否首次传播
-  var firstPropagate = true
 
   // 变量的比特组个数
   private[this] val varNumBit: Array[Int] = Array.tabulate[Int](arity)(i => scope(i).getNumBit())
@@ -51,6 +42,9 @@ class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
   private[this] val removeMask = Array.tabulate(arity)(i => new Array[Long](varNumBit(i)))
   // 保存delta或者变量的剩余有效值
   private[this] val values = new ArrayBuffer[Int]()
+
+  // 标识是否为初次传播。初次传播updateTable时利用valid更新，非初次传播updateTable时根据比较结果确定。
+  var firstPropagate = true
 
   //检查变量
   def initial(): Boolean = {
@@ -65,10 +59,9 @@ class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
       val v = scope(i)
       v.mask(localMask(i))
 
-      // 本地论域快照与全局论域不同
-      // 更新本地论域快照
-      // snapshotChanged 即为需要propagate，否则不用propagate
-
+      //      本地论域快照与全局论域不同
+      //      更新本地论域快照
+      //      snapshotChanged 即为需要propagate，否则不用propagate
       var j = 0
       while (j < varNumBit(i)) {
         if (lastMask(i)(j) != localMask(i)(j)) {
@@ -90,18 +83,19 @@ class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
     return snapshotChanged
   }
 
+
   def updateTable(): Boolean = {
-    //    //println(s"      ut cid: ${id}===========>")
+    //    println(s"      ut cid: ${id}===========>")
     var i = 0
     while (i < Sval.length && helper.isConsistent) {
       val vv: Int = Sval(i)
       val v: PVar = scope(vv)
       //      v.mask(localMask(vv))
-      //println(s"cid: ${id}, vid: ${v.id}: localMask ${Constants.toFormatBinaryString(localMask(vv)(0))}")
 
       // 获得delta更新数据
       var numValid = 0
       var numRemoved = 0
+
       var j = 0
       while (j < varNumBit(vv)) {
         removeMask(vv)(j) = 0L
@@ -140,12 +134,12 @@ class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
     }
 
     firstPropagate = false
+
     return true
   }
 
   def filterDomains(): Boolean = {
     //println(s"      fd cid: ${id}===========>")
-    Xevt.clear()
     var i = 0
     while (i < Ssup.length && helper.isConsistent) {
       var deleted: Boolean = false
@@ -172,16 +166,16 @@ class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
       }
 
       if (deleted) {
-        if (v.submitMask(localMask(vv))) {
+        if(v.submitMask(localMask(vv))){
+          helper.varStamp(v.id) = helper.globalStamp + 1
           // 本地线程删值
           if (v.isEmpty()) {
             helper.isConsistent = false
             //println(s"filter faild!!: ${Thread.currentThread().getName}, cid: ${id}, vid: ${v.id}")
             return false
           }
-
-          Xevt += v
         }
+
         var j = 0
         while (j < varNumBit(vv)) {
           lastMask(vv)(j) = localMask(vv)(j)
@@ -205,66 +199,9 @@ class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
     return false
   }
 
-  def submitPropagtors(): Boolean = {
-    //println(s"   cur_ID: ${Thread.currentThread().getId()} cur_cid: ${id}  submitPropa")
-
-    // 提交其它约束
-    for (x <- Xevt) {
-      if (helper.isConsistent) {
-        for (c <- helper.subscription(x.id)) {
-          // !!这里可以加限制条件c.v.simpleMask!=x.simpleMask
-          if (c.id != id) {
-            helper.submitToPool(c)
-          }
-        }
-      }
-    }
-
-    // 提交其它约束
-    //
-    //    for (vv <- Xevt) {
-    //      val x = scope(vv)
-    //      if (helper.isConsistent) {
-    //        for (c <- helper.subscription(x.id)) {
-    //          // !!这里可以加限制条件c.v.simpleMask!=x.simpleMask
-    //          //          if (c.domainChanged(x)) {
-    //          //          if (c.domainChanged(x, localMask(vv))) {
-    //          //          if (c.id != id && c.domainChanged(x)) {
-    //          if (c.id != id) {
-    //            //            println(s"cid:${id}, vid: %${x.id}, changed: ${c.domainChanged(x)}")
-    //            helper.submitToCevt(c)
-    //            //          if (c.runningStatus.getAndIncrement() == 0) {
-    //            ////            c_sub.incrementAndGet()
-    //            //            c.reinitialize()
-    //            //            c.fork()
-    //          }
-    //          //          }
-    //          //          }
-    //          //          }
-    //        }
-    //      }
-    //    }
-    return false
-  }
-
-  override def run(): Unit = {
-//    println(s"${id} start  ----- cur_ID: ${Thread.currentThread().getId()}")
-    do {
-      helper.c_prop.incrementAndGet()
-      runningStatus.set(1)
-      if (propagate() && Xevt.nonEmpty) {
-        submitPropagtors()
-      }
-    } while (!runningStatus.compareAndSet(1, 0))
-    helper.c_sub.decrementAndGet()
-//    println(s"${id} end-----")
-  }
-
   override def newLevel(): Unit = {
     level += 1
     currTab.newLevel(level)
-    // 重置runningStatus
-    runningStatus.set(0)
   }
 
   override def backLevel(): Unit = {
@@ -275,21 +212,17 @@ class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
       scope(i).mask(lastMask(i))
       i += 1
     }
-    // 重置runningStatus
-    runningStatus.set(0)
   }
 
-  override def domainChanged(v: PVar): Boolean = v.isChanged(localMask(scopeMap(v)))
-
-  override def domainChanged(v: PVar, mask: Array[Long]): Boolean = {
-    val index = scopeMap(v)
-    var ii = 0
-    while (ii < v.getNumBit()) {
-      if (localMask(index)(ii) != mask(ii)) {
-        return true
-      }
-      ii += 1
+  override def call(): Unit = {
+    //    println(s"${id} start  ----- cur_ID: ${Thread.currentThread().getId()}")
+    if (helper.isConsistent) {
+      propagate()
     }
-    return false
+    helper.numSubCons.decrementAndGet()
+    //    println(s"${id} end-----")
   }
+
 }
+
+

@@ -1,8 +1,8 @@
-package cpscala.TSolver.Model.Solver
+package cpscala.TSolver.Model.Solver.DSPSolver
 
-import cpscala.TSolver.Model.Constraint.DSPConstraint._
 import cpscala.TSolver.CpUtil.SearchHelper.DSPSearchHelper
 import cpscala.TSolver.CpUtil.{PAssignedStack, PVal}
+import cpscala.TSolver.Model.Constraint.DSPConstraint._
 import cpscala.TSolver.Model.Variable.{PVar, SafeBitSetVar, SafeSimpleBitVar}
 import cpscala.XModel.{XModel, XTab, XVar}
 
@@ -124,8 +124,8 @@ abstract class DSPSolver(xm: XModel, val parallelism: Int, propagatorName: Strin
     var consistent = initialPropagate()
     end_time = System.nanoTime
     helper.propTime += (end_time - prop_start_time)
-    //infoShow()
-    //    return
+//    infoShow()
+//        return
 
     if (!consistent) {
       finished = false

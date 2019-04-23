@@ -36,7 +36,7 @@ class DSPSearchHelper(override val numVars: Int, override val numTabs: Int, val 
       c_sub.incrementAndGet()
       //      c.reinitialize()
       pool.execute(c)
-//      println(s"   cur_cid: ${c.id}  was submitted")
+//      println(s"   cur_cid: ${c.id} submit")
     }
   }
 

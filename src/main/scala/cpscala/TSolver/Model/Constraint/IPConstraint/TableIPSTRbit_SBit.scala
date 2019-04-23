@@ -1,7 +1,7 @@
 package cpscala.TSolver.Model.Constraint.IPConstraint
 
 import cpscala.TSolver.Model.Constraint.SConstraint.BitSupport
-import cpscala.TSolver.CpUtil.Constants
+import cpscala.TSolver.CpUtil.{Constants, INDEX}
 import cpscala.TSolver.CpUtil.SearchHelper.IPSearchHelper
 import cpscala.TSolver.Model.Variable.PVar
 
@@ -9,12 +9,12 @@ import scala.collection.mutable.ArrayBuffer
 import scala.util.control.Breaks._
 
 /**
-  * 这是IPSTRbit使用SafeSimpleBitVar作为变量类型的版本（仅处理论域大小小于64的变量）
+  * 这是IPSTRbit使用SafeBitVar作为变量类型的版本（可以处理论域任意大小的变量）
   * 网络预处理时采用STRbit维持网络GAC，
   * 在搜索过程中也采用STRbit维持网络GAC，
   */
 
-class TableIPSTRbit_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[PVar], val tuples: Array[Array[Int]], val helper: IPSearchHelper) extends IPPropagator {
+class TableIPSTRbit_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[PVar], val tuples: Array[Array[Int]], val helper: IPSearchHelper) extends IPPropagator {
 
   // 比特子表，三维数组，第一维变量，第二维取值，第三维元组
   // 初始化变量时，其论域已经被序列化，诸如[0, 1, ..., var.size()]，所以可以直接用取值作为下标
@@ -38,14 +38,19 @@ class TableIPSTRbit_SSBit(val id: Int, val arity: Int, val num_vars: Int, val sc
   // 在搜索树的非初始层，当比特元组第一次发生改变时，将改变前的比特元组保存在栈顶层Array中
   private[this] val bitLevel = Array.fill[Long](num_vars + 1, numBitTuple)(0L)
 
+  // 变量的比特组个数
+  private[this] val varNumBit: Array[Int] = Array.tabulate[Int](arity)(i => scope(i).getNumBit())
   // lastMask与变量Mask不同的值是该约束两次传播之间被过滤的值（delta）
-  private[this] val lastMask = Array.tabulate[Long](arity)(i => scope(i).simpleMask())
+  private[this] val lastMask = Array.tabulate(arity)(i => new Array[Long](varNumBit(i)))
   // 在约束传播开始时localMask获取变量最新的mask
-  private[this] val localMask = Array.tabulate[Long](arity)(i => scope(i).simpleMask())
+  private[this] val localMask = Array.tabulate(arity)(i => new Array[Long](varNumBit(i)))
+  // 记录该约束两次传播之间删值的mask
+  private[this] val removeMask = Array.tabulate(arity)(i => new Array[Long](varNumBit(i)))
   // delta
   private[this] val removeValues = new ArrayBuffer[Int]()
   // 变量的剩余有效值
   private[this] val validValues = new ArrayBuffer[Int]()
+
 
   // 初始化标志变量
   // isInitial为false说明setup中还未初始化完成数据结构
@@ -107,9 +112,11 @@ class TableIPSTRbit_SSBit(val id: Int, val arity: Int, val num_vars: Int, val sc
 
       var i = 0
       while (i < arity) {
-        val x = scope(i)
+        val v = scope(i)
+        // 初始化localMask
+        v.mask(localMask(i))
         // 因为变量还未删值，所以j既为index，又为取值
-        var j = x.size()
+        var j = v.size()
         while (j > 0) {
           j -= 1
           val tempBitSupports = tempBitTable(i)(j)
@@ -117,9 +124,10 @@ class TableIPSTRbit_SSBit(val id: Int, val arity: Int, val num_vars: Int, val sc
           last(i)(j) = tempBitSupports.length - 1
           if (tempBitSupports.isEmpty) {
             // 巧妙，bit删值，即将mask中值j对应的bit位设置为0
-            localMask(i) &= Constants.MASK0(j)
-            helper.varStamp(x.id) = helper.globalStamp + 1
-            //            println(s"     var:${x.id} remove new value:${j}")
+            val (x, y) = INDEX.getXY(j)
+            localMask(i)(x) &= Constants.MASK0(y)
+            helper.varStamp(v.id) = helper.globalStamp + 1
+            //            println(s"     var:${v.id} remove new value:${j}")
           }
         }
         i += 1
@@ -130,15 +138,21 @@ class TableIPSTRbit_SSBit(val id: Int, val arity: Int, val num_vars: Int, val sc
     else {
       var i = 0
       while (i < arity) {
-        val x = scope(i)
+        val v = scope(i)
         // 更新变量论域
-        x.submitMask(localMask(i))
-        if (x.isEmpty()) {
+        v.submitMask(localMask(i))
+        if (v.isEmpty()) {
           helper.isConsistent = false
           return
         }
-        // 更新变量在该约束中的Mask（这里不能更新oldMasks，因为还未传播）
-        lastMask(i) = localMask(i)
+
+        // 更新lastMask
+        var j = 0
+        while (j < varNumBit(i)) {
+          lastMask(i)(j) = localMask(i)(j)
+          j += 1
+        }
+
         i += 1
       }
     }
@@ -147,26 +161,30 @@ class TableIPSTRbit_SSBit(val id: Int, val arity: Int, val num_vars: Int, val sc
   // 删除无效元组
   def deleteInvalidTuple(): Unit = {
 
-    for (i <- 0 until arity) {
-      val x = scope(i)
-      localMask(i) = x.simpleMask()
+    var i = 0
+    while (i < arity && helper.isConsistent) {
+      val v = scope(i)
+      v.mask(localMask(i))
 
       // 根据新旧mask的比较确定是否有删值
-      if (lastMask(i) != localMask(i)) {
-        val removeMask: Long = (~localMask(i)) & lastMask(i)
-        removeValues.clear()
-
-        var j = 0
-        while (j < x.capacity) {
-          // 巧妙，判断第j个bit处是否为1
-          if ((removeMask & Constants.MASK1(j)) != 0L) {
-            removeValues += j
-          }
-          j += 1
+      var diff = false
+      var j = 0
+      while (j < varNumBit(i)) {
+        // 需先将removeMask清空，如果不清空，那么遇到lastMask和localMask相等的情况，removeMask仍然维持原样，若原样非全0，则会出错
+        removeMask(i)(j) = 0L
+        // 根据新旧mask的比较确定是否有删值
+        if (lastMask(i)(j) != localMask(i)(j)) {
+          removeMask(i)(j) = (~localMask(i)(j)) & lastMask(i)(j)
+          // 更新lastMasks
+          lastMask(i)(j) = localMask(i)(j)
+          diff = true
         }
-        //        //println(s"cur_ID: ${Thread.currentThread().getId()},cur_name: ${Thread.currentThread().getName()}, cur_cid: ${id}, var: ${i}, removeValues: " + removeValues.mkString(","))
-        // 更新oldMasks
-        lastMask(i) = localMask(i)
+        j += 1
+      }
+
+      if (diff) {
+        // 若有删值，则获得delta
+        Constants.getValues(removeMask(i), removeValues)
 
         // 寻找新的无效元组
         for (a <- removeValues) {
@@ -189,31 +207,20 @@ class TableIPSTRbit_SSBit(val id: Int, val arity: Int, val num_vars: Int, val sc
           }
         }
       }
+      i += 1
     }
   }
 
   // 寻找没有支持的值
   def searchSupport(): Boolean = {
 
-    for (i <- 0 until arity) {
+    var i = 0
+    while (i < arity && helper.isConsistent) {
       val v = scope(i)
 
       if (v.unBind()) {
         var deleted = false
-
-        // 这里不能获取最新的mask，因为只在约束传播开始时获取最新的mask
-        // localMask(i) = v.simpleMask()
-        validValues.clear()
-        var j = 0
-
-        while (j < v.capacity) {
-          if ((localMask(i) & Constants.MASK1(j)) != 0L) {
-            validValues += j
-          }
-          j += 1
-        }
-        //        //println(s"cur_ID: ${Thread.currentThread().getId()},cur_name: ${Thread.currentThread().getName()}, cur_cid: ${id}, var: ${i}, removeValues: " + removeValues.mkString(","))
-
+        Constants.getValues(localMask(i), validValues)
 
         for (a <- validValues) {
           val bitSupports = bitTables(i)(a)
@@ -228,9 +235,8 @@ class TableIPSTRbit_SSBit(val id: Int, val arity: Int, val num_vars: Int, val sc
           if (now == -1) {
             deleted = true
             // 巧妙，bit删值，即将mask中值value对应的bit位设置为0
-            localMask(i) &= Constants.MASK0(a)
-
-            //println(s"cur_ID: ${Thread.currentThread().getId()},cur_name: ${Thread.currentThread().getName()}, cur_cid: ${id}, var: ${i}, remove val: ${a}")
+            val (x, y) = INDEX.getXY(a)
+            localMask(i)(x) &= Constants.MASK0(y)
           } else {
             if (now != old) {
               // 将第一次改变之前的last记录下来
@@ -242,17 +248,26 @@ class TableIPSTRbit_SSBit(val id: Int, val arity: Int, val num_vars: Int, val sc
           }
         }
         if (deleted) {
-          v.submitMask(localMask(i))
-          if (v.isEmpty()) {
-            helper.isConsistent = false
-            return false
+          if (v.submitMask(localMask(i))) {
+            if (v.isEmpty()) {
+              helper.isConsistent = false
+              return false
+            }
+            // 论域若被修改，则全局时间戳加1
+            helper.varStamp(v.id) = helper.globalStamp + 1
           }
-          // 更新oldMasks
-          lastMask(i) = localMask(i)
-          // 论域若被修改，则全局时间戳加1
-          helper.varStamp(v.id) = helper.globalStamp + 1
+
+          // 更新lastMask
+          var j = 0
+          while (j < varNumBit(i)) {
+            lastMask(i)(j) = localMask(i)(j)
+            j += 1
+          }
+
+
         }
       }
+      i += 1
     }
     return true
   }
@@ -265,6 +280,7 @@ class TableIPSTRbit_SSBit(val id: Int, val arity: Int, val num_vars: Int, val sc
   }
 
   def call(): Boolean = {
+
     if (!helper.isConsistent) {
       return false
     }
@@ -275,6 +291,7 @@ class TableIPSTRbit_SSBit(val id: Int, val arity: Int, val num_vars: Int, val sc
   // 新层
   def newLevel(): Unit = {
     level += 1
+
     // 到达新层后不用更改lastMask，lastMask与上层保持一致
   }
 
@@ -287,8 +304,8 @@ class TableIPSTRbit_SSBit(val id: Int, val arity: Int, val num_vars: Int, val sc
           lastLevel(level)(i)(a) = -1
         }
       }
-      // 回溯后重置oldMasks，新旧mask相同，因为还没有传播
-      lastMask(i) = scope(i).simpleMask()
+      // 回溯后重置lastMask，新旧mask相同，因为还没有传播
+      scope(i).mask(lastMask(i))
     }
 
     for (ts <- 0 until numBitTuple) {
@@ -311,3 +328,4 @@ class TableIPSTRbit_SSBit(val id: Int, val arity: Int, val num_vars: Int, val sc
     return true
   }
 }
+

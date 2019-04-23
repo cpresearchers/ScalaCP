@@ -216,26 +216,7 @@ class TableIPSTR3_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scop
       return false
     }
 
-    helper.searchState match {
-      case 0 => {
-        //println("setup")
-        setup()
-      };
-      case 1 => {
-        //println("newLevel")
-        newLevel()
-      };
-      case 2 => {
-        //println("propagate")
-        propagate()
-      };
-      case 3 => {
-        //println("backLevel")
-        backLevel()
-      };
-    }
-
-    return true
+    return propagate()
   }
 
   // 新层

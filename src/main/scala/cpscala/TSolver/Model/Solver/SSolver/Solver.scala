@@ -1,9 +1,8 @@
-package cpscala.TSolver.Model.Solver
+package cpscala.TSolver.Model.Solver.SSolver
 
-import cpscala.TSolver.Model.Constraint.SConstraint.{Propagator, TableCT_Bit, TableCT_SSet, TableSTR2_SSet, TableSTR3_SSet, TableSTRbit_2, TableSTRbit_SSet}
-import cpscala.TSolver.Model.Constraint._
 import cpscala.TSolver.CpUtil.SearchHelper.SearchHelper
 import cpscala.TSolver.CpUtil.{AssignedStack, CoarseQueue, Val}
+import cpscala.TSolver.Model.Constraint.SConstraint._
 import cpscala.TSolver.Model.Variable._
 import cpscala.XModel.{XModel, XTab, XVar}
 
@@ -94,12 +93,12 @@ abstract class Solver(xm: XModel, propagatorName: String, varType: String, heuNa
       }
     }
 
-    case "STRbit_2" => {
+    case "STRbit_Bit" => {
       for (i <- 0 until numTabs) {
         val xc: XTab = xm.tabs.get(i)
         val ts: Array[Array[Int]] = xc.tuples
         val scope: Array[Var] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
-        tabs(i) = new TableSTRbit_2(xc.id, xc.arity, numVars, scope, ts, helper)
+        tabs(i) = new TableSTRbit_Bit(xc.id, xc.arity, numVars, scope, ts, helper)
 
         for (v <- scope) {
           subscription(v.id) += tabs(i)
@@ -133,19 +132,6 @@ abstract class Solver(xm: XModel, propagatorName: String, varType: String, heuNa
       }
     }
   }
-
-  //  else if (propagatorName == "CTBV") {
-  //    for (i <- 0 until numTabs) {
-  //      val xc: XTab = xm.tabs.get(i)
-  //      val ts: Array[Array[Int]] = xc.tuples
-  //      val scope: Array[Var] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
-  //      tabs(i) = new TableCT_Bit(xc.id, xc.arity, numVars, scope, ts, helper)
-  //
-  //      for (v <- scope) {
-  //        subscription(v.id) += tabs(i)
-  //      }
-  //    }
-  //  }
 
   val Q = new CoarseQueue[Var](numVars)
   var Y_evt: ArrayBuffer[Var] = new ArrayBuffer[Var](xm.max_arity)
@@ -334,7 +320,7 @@ abstract class Solver(xm: XModel, propagatorName: String, varType: String, heuNa
 
   def infoShow(): Unit = {
     for (x <- vars) {
-      //println(s"     var:${x.id} size:${x.size()}")
+      println(s"     var:${x.id} size:${x.size()}")
     }
   }
 

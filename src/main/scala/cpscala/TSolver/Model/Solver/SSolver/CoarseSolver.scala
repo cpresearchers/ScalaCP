@@ -1,8 +1,7 @@
-package cpscala.TSolver.Model.Solver
+package cpscala.TSolver.Model.Solver.SSolver
 
-import cpscala.TSolver.Model.Variable.{Var}
-import cpscala.XModel.{XModel}
-import scala.collection.mutable._
+import cpscala.TSolver.Model.Variable.Var
+import cpscala.XModel.XModel
 
 /**
   *粗粒度求解器，适用于STR2。

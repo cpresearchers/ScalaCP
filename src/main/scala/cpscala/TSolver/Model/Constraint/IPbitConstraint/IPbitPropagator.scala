@@ -1,11 +1,10 @@
-package cpscala.TSolver.Model.Constraint.IPConstraint
+package cpscala.TSolver.Model.Constraint.IPbitConstraint
 
 import java.util.concurrent.Callable
-import java.util.concurrent.atomic.AtomicBoolean
 
 import cpscala.TSolver.Model.Variable.PVar
 
-abstract class IPPropagator extends Callable[Boolean] {
+abstract class IPbitPropagator extends Callable[Unit] {
   val id: Int
   val arity: Int
   val scope: Array[PVar]

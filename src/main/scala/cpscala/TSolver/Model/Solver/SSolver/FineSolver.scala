@@ -1,7 +1,7 @@
-package cpscala.TSolver.Model.Solver
+package cpscala.TSolver.Model.Solver.SSolver
 
-import cpscala.TSolver.Model.Variable.{Var}
-import cpscala.XModel.{XModel}
+import cpscala.TSolver.Model.Variable.Var
+import cpscala.XModel.XModel
 
 /**
   * 细粒度求解器，适用于STR3和STRbit。

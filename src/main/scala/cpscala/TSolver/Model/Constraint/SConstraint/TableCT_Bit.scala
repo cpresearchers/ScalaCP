@@ -99,9 +99,8 @@ class TableCT_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Arr
       // 获得delta更新数据
       var numValid = 0
       var numRemoved = 0
-
       var j = 0
-      while (j < varNumBit(i)) {
+      while (j < varNumBit(vv)) {
         removeMask(vv)(j) = 0L
         removeMask(vv)(j) = (~localMask(vv)(j)) & lastMask(vv)(j)
         numRemoved += java.lang.Long.bitCount(removeMask(vv)(j))
