@@ -15,6 +15,8 @@ abstract class Var {
 
   var level = 0
 
+  var activity = 0L
+
   def newLevel(): Int
 
   def backLevel(): Int

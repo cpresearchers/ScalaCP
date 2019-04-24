@@ -10,6 +10,7 @@ import cpscala.TSolver.Model.Solver.SSolver.SCoarseSolver
 import cpscala.XModel.XModel
 
 import scala.collection.mutable.ArrayBuffer
+import scala.util.Sorting
 import scala.xml.XML
 
 object test_ct {
@@ -18,7 +19,8 @@ object test_ct {
   var ppType = ""
   var varType = ""
 
-  val parallelisms = Array[Int](1, 2, 4, 6, 8, 12, 16, 24)
+//  val parallelisms = Array[Int](1, 2, 4, 6, 8, 12, 16, 24)
+  val parallelisms = Array[Int](1, 2, 4, 8, 16, 24)
 
   def main(args: Array[String]): Unit = {
 
@@ -35,52 +37,65 @@ object test_ct {
     val outputRoot = (file \\ "outputRoot").text
     val outputFolder = (file \\ "outputFolder").text
     val inputFolderNodes = file \\ "folder"
-
     for (fn <- inputFolderNodes) {
       val fmt = (fn \\ "@format").text.toInt
       val folderStr = fn.text
       val inputPath = inputRoot + "/" + folderStr
       val files = getFiles(new File(inputPath))
+      Sorting.quickSort(files)
+      println("exp files:")
+      files.foreach(f => println(f.getName))
       val resFile = new File(outputRoot + "/" + outputFolder + folderStr + ".csv")
       val writer = CSVWriter.open(resFile)
-      writer.writeRow(List(
-        "name",
-        // seq
-        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
-        // 1
-        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
-        // 2
-        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
-        // 4
-        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
-        // 6
-        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
-        // 8
-        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
-        // 12
-        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
-        // 16
-        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
-        // 24
-        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
-        // 1
-        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
-        // 2
-        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
-        // 4
-        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
-        // 6
-        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
-        // 8
-        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
-        // 12
-        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
-        // 16
-        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
-        // 24
-        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub"
-      ))
-      var dataLine = new ArrayBuffer[String](136)
+      val titleLine = ArrayBuffer[String]()
+      titleLine += "name"
+      titleLine ++= Array("algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum")
+      for(ii <- 0 until parallelisms.length){
+        titleLine ++= Array("algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum")
+      }
+      for(ii <- 0 until parallelisms.length){
+        titleLine ++= Array("algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub")
+      }
+        //      val titleLine = List(
+//        "name",
+//        // seq
+//        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
+//        // 1
+//        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
+//        // 2
+//        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
+//        // 4
+//        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
+//        //        // 6
+//        //        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
+//        // 8
+//        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
+//        //        // 12
+//        //        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
+//        // 16
+//        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
+//        // 24
+//        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
+//        // 1
+//        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
+//        // 2
+//        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
+//        // 4
+//        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
+//        //        // 6
+//        //        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
+//        // 8
+//        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
+//        //        // 12
+//        //        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
+//        // 16
+//        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
+//        // 24
+//        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub"
+//      )
+      writer.writeRow(titleLine)
+      var dataLine = new ArrayBuffer[String](titleLine.length)
+
       for (f <- files) {
         println("Build Model: " + f.getName)
         val xm = new XModel(f.getPath, true, fmt)
@@ -139,6 +154,7 @@ object test_ct {
           dataLine += pct.helper.c_sub.toString()
         }
         writer.writeRow(dataLine)
+        println("end: " + f.getName)
       }
       writer.close()
       println("-----" + folderStr + " done!-----")

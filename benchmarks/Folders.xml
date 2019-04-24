@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="GBK" ?>
 <folders>
-    <inputRoot>/root/optiSTRpackage</inputRoot>
-    <!--    <folder format="2">rand-3-20-20_total50</folder>-->
-    <!--    <folder format="2">rand-3-20-20-fcd_total50</folder>-->
-    <!--    <folder format="2">rand-3-24-24_600s15</folder>-->
-    <!--    <folder format="2">rand-3-24-24-fcd_600s17</folder>-->
-    <!--    <folder format="2">rand-5-12-12_total50</folder>-->
-    <!--    <folder format="2">rand-8-20-5_total20</folder>-->
+    <inputRoot>/home/lee/benckmarks/X2</inputRoot>
+<!--    <folder format="2">rand-3-20-20_total50</folder>-->
+<!--    <folder format="2">rand-3-20-20-fcd_total50</folder>-->
+<!--    <folder format="2">rand-3-24-24_600s15</folder>-->
+<!--    <folder format="2">rand-3-24-24-fcd_600s17</folder>-->
+<!--    <folder format="2">rand-5-12-12_total50</folder>-->
+<!--    <folder format="2">rand-8-20-5_total20</folder>-->
     <folder format="2">wordsVg_total65-1</folder>
     <!--<folder format="3">Random-m1-5-10-10</folder>-->
     <!--<folder format="3">Random-m1-10-20-10</folder>-->
@@ -26,7 +26,7 @@
     <!--    <folder format="3">Random-RB-3-24-24f</folder>-->
     <!--    <folder format="3">Random-RB-3-28-28</folder>-->
     <!--    <folder format="3">Random-RB-3-28-28f</folder>-->
-    <outputRoot>/root/res</outputRoot>
+    <outputRoot>/home/lee/exp/pct</outputRoot>
 </folders>
 
         <!--<?xml version="1.0" encoding="GBK" ?>-->
