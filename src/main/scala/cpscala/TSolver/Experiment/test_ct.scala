@@ -56,43 +56,7 @@ object test_ct {
       for(ii <- 0 until parallelisms.length){
         titleLine ++= Array("algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub")
       }
-        //      val titleLine = List(
-//        "name",
-//        // seq
-//        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
-//        // 1
-//        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
-//        // 2
-//        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
-//        // 4
-//        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
-//        //        // 6
-//        //        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
-//        // 8
-//        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
-//        //        // 12
-//        //        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
-//        // 16
-//        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
-//        // 24
-//        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum",
-//        // 1
-//        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
-//        // 2
-//        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
-//        // 4
-//        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
-//        //        // 6
-//        //        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
-//        // 8
-//        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
-//        //        // 12
-//        //        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
-//        // 16
-//        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub",
-//        // 24
-//        "algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub"
-//      )
+
       writer.writeRow(titleLine)
       var dataLine = new ArrayBuffer[String](titleLine.length)
 
