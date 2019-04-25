@@ -19,8 +19,8 @@ object test_ct {
   var ppType = ""
   var varType = ""
 
-//  val parallelisms = Array[Int](1, 2, 4, 6, 8, 12, 16, 24)
-  val parallelisms = Array[Int](1, 2, 4, 8, 16, 24)
+  //  val parallelisms = Array[Int](1, 2, 4, 6, 8, 12, 16, 24)
+  val parallelisms = Array[Int](1, 2, 4, 6, 8, 16, 24)
 
   def main(args: Array[String]): Unit = {
 
@@ -50,10 +50,10 @@ object test_ct {
       val titleLine = ArrayBuffer[String]()
       titleLine += "name"
       titleLine ++= Array("algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum")
-      for(ii <- 0 until parallelisms.length){
+      for (ii <- 0 until parallelisms.length) {
         titleLine ++= Array("algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum")
       }
-      for(ii <- 0 until parallelisms.length){
+      for (ii <- 0 until parallelisms.length) {
         titleLine ++= Array("algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub")
       }
 
