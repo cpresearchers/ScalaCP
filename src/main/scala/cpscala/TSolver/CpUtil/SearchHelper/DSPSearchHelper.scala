@@ -1,7 +1,7 @@
 package cpscala.TSolver.CpUtil.SearchHelper
 
-import java.util.concurrent.{ForkJoinPool, TimeUnit}
 import java.util.concurrent.atomic.{AtomicBoolean, AtomicLong}
+import java.util.concurrent.{ForkJoinPool, TimeUnit}
 
 import cpscala.TSolver.Model.Constraint.DSPConstraint.DSPPropagator
 
@@ -19,6 +19,7 @@ class DSPSearchHelper(override val numVars: Int, override val numTabs: Int, val 
   val c_prop = new AtomicLong(0L)
   // 动态提交次数
   val c_sub = new AtomicLong(0L)
+  val counter = new AtomicLong(0L)
   // 本次传播是否有变量的论域发生改变
   val varIsChange = new AtomicBoolean(false)
 
@@ -33,10 +34,11 @@ class DSPSearchHelper(override val numVars: Int, override val numTabs: Int, val 
 
   @inline def submitToPool(c: DSPPropagator): Unit = {
     if (c.runningStatus.getAndIncrement() == 0) {
+      counter.incrementAndGet()
       c_sub.incrementAndGet()
       //      c.reinitialize()
       pool.execute(c)
-//      println(s"   cur_cid: ${c.id} submit")
+      //      println(s"   cur_cid: ${c.id} submit")
     }
   }
 
@@ -61,7 +63,7 @@ class DSPSearchHelper(override val numVars: Int, override val numTabs: Int, val 
 
   @inline def poolAwait() = {
     pool.awaitQuiescence(1, TimeUnit.DAYS)
-    while (c_sub.get != 0) {}
+    while (counter.get != 0) {}
     //    Await(f.result())
     //    Await.ready(f, Duration.Inf)
   }

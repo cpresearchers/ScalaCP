@@ -302,7 +302,7 @@ class TableDSPSTRbit_SBit(val id: Int, val arity: Int, val numVars: Int, val sco
         submitPropagtors()
       }
     } while (!runningStatus.compareAndSet(1, 0))
-    helper.c_sub.decrementAndGet()
+    helper.counter.decrementAndGet()
   }
 
     // 以下版本不稳定，暂不考虑，只是对传播过程加速

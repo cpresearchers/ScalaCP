@@ -4,7 +4,7 @@
 		module="scalacp_2.12"
 		revision="0.1"
 		status="integration"
-		publication="20190421161042"
+		publication="20190426161340"
 	>
 		<description>
 		ScalaCP
@@ -32,5 +32,10 @@
 	<dependencies>
 		<dependency org="org.scala-lang" name="scala-compiler" rev="2.12.8" conf="scala-tool->default,optional(default)"/>
 		<dependency org="org.scala-lang" name="scala-library" rev="2.12.8" conf="scala-tool->default,optional(default);compile->default(compile)"/>
+		<dependency org="com.alibaba" name="fastjson" rev="1.2.57" conf="compile->default(compile)"/>
+		<dependency org="com.github.tototoshi" name="scala-csv_2.12" rev="1.3.5" conf="compile->default(compile)"/>
+		<dependency org="org.msgpack" name="msgpack-core" rev="0.8.16" conf="compile->default(compile)"/>
+		<dependency org="org.scala-lang.modules" name="scala-xml_2.12.0-RC1" rev="1.0.6" conf="compile->default(compile)"/>
+		<dependency org="org.xcsp" name="xcsp3-tools" rev="1.1.0" conf="compile->default(compile)"/>
 	</dependencies>
 </ivy-module>
