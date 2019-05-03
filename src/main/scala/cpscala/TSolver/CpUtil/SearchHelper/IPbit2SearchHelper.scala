@@ -3,49 +3,36 @@ package cpscala.TSolver.CpUtil.SearchHelper
 import java.util.concurrent.{ForkJoinPool, TimeUnit}
 import java.util.concurrent.atomic.{AtomicBoolean, AtomicLong, AtomicLongArray}
 
-import cpscala.TSolver.Model.Constraint.IPbitConstraint.IPbitPropagator
 import cpscala.TSolver.CpUtil.{Constants, INDEX}
+import cpscala.TSolver.Model.Constraint.IPbitConstraint.IPbitPropagator
 
-import scala.collection.mutable.ArrayBuffer
+class IPbit2SearchHelper(override val numVars: Int, override val numTabs: Int, val numBitCons: Int, val parallelism: Int) extends SearchHelper(numVars, numTabs) {
 
-
-class IPbitSearchHelper(override val numVars: Int, override val numTabs: Int, val numBitCons: Int, val parallelism: Int) extends SearchHelper(numVars, numTabs) {
-
-  val bitTmp = Array.fill[Long](numBitCons)(-1L)
-  bitTmp(numBitCons - 1) <<= (Constants.BITSIZE - numTabs % Constants.BITSIZE)
   // tableMask[i]表示第i个约束是否需要被提交
-  val tableMask = new AtomicLongArray(bitTmp)
+  val tableMask = Array.fill[Long](numBitCons)(-1L)
+  tableMask(numBitCons - 1) <<= (Constants.BITSIZE - numTabs % Constants.BITSIZE)
   // 变量所对应的比特约束组，第n个bit位为1说明第n个约束的scope包含该变量
   val bitSrb = Array.fill[Long](numVars, numBitCons)(0L)
 
   def clearTableMask(): Unit = {
     var i = 0
     while (i < numBitCons) {
-      tableMask.set(i, 0L)
+      tableMask(i) = 0L
       i += 1
     }
   }
 
   // 在第cid个约束内，第vid个变量的论域被缩减，则将该变量对应的比特约束组提交至subMask（或运算）
-  def addToTableMask(cid: Int, vid: Int): Unit = {
-    var previousBits: Long = 0L
-    var tmpBits: Long = 0L
-    var newBits: Long = 0L
+  def addToTableMask(cid: Int, vid: Int): Unit = this.synchronized {
     var i = 0
     val (x, y) = INDEX.getXY(cid)
     while (i < numBitCons) {
-      do {
-        previousBits = tableMask.get(i)
-        if (i == x) {
-          // 因为在第cid个约束内，第vid个变量的论域被缩减，所以无需提交第cid个约束
-          tmpBits = bitSrb(vid)(i) & Constants.MASK0(y)
-        } else {
-          tmpBits = bitSrb(vid)(i)
-        }
-        // Add the relevant bit
-        newBits = previousBits | tmpBits
-        // Try to set the new bit mask, and loop round until successful
-      } while (!tableMask.compareAndSet(i, previousBits, newBits))
+      if (i == x) {
+        // 因为在第cid个约束内，第vid个变量的论域被缩减，所以无需提交第cid个约束
+        tableMask(i) |= (bitSrb(vid)(i) & Constants.MASK0(y))
+      } else {
+        tableMask(i) |= bitSrb(vid)(i)
+      }
       i += 1
     }
   }
@@ -53,7 +40,7 @@ class IPbitSearchHelper(override val numVars: Int, override val numTabs: Int, va
   def getTableMask(mask: Array[Long]): Unit = {
     var i = 0
     while (i < numBitCons) {
-      mask(i) = tableMask.get(i)
+      mask(i) = tableMask(i)
       i += 1
     }
   }
@@ -91,7 +78,7 @@ class IPbitSearchHelper(override val numVars: Int, override val numTabs: Int, va
   def submitToPool(c: IPbitPropagator): Unit = {
     numSubCons.incrementAndGet()
     pool.submit(c)
-    println(s"   cur_cid: ${c.id} submit by cur_ID: ${Thread.currentThread().getId()}")
+//    println(s"   cur_cid: ${c.id} submit")
   }
 
   def poolAwait(): Unit = {
@@ -99,7 +86,6 @@ class IPbitSearchHelper(override val numVars: Int, override val numTabs: Int, va
     while (numSubCons.get != 0) {
       pool.awaitQuiescence(1, TimeUnit.DAYS)
     }
-    println(s"pool quiet --------------------------")
   }
 }
 

@@ -1,5 +1,7 @@
 package cpscala.TSolver.CpUtil.SearchHelper
 
+import java.util.concurrent.atomic.AtomicLong
+
 class SearchHelper(val numVars: Int, val numTabs: Int) {
   // 初始化各时间戳
   var globalStamp: Long = 0L
@@ -14,7 +16,8 @@ class SearchHelper(val numVars: Int, val numTabs: Int) {
   var updateTableTime = 0L
   var filterDomainTime = 0L
   var backTime = 0L
-  var lockTime = 0L
+  var lockTime = new AtomicLong(0L)
+//  var lockTime = 0L
   var nodes: Long = 0L
 //  @volatile var isConsistent: Boolean = true
   var isConsistent: Boolean = true

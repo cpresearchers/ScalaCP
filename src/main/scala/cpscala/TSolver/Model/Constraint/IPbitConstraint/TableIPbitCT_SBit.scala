@@ -1,12 +1,13 @@
 package cpscala.TSolver.Model.Constraint.IPbitConstraint
 
 import cpscala.TSolver.CpUtil.{Constants, INDEX, RSBitSet}
-import cpscala.TSolver.CpUtil.SearchHelper.IPbitSearchHelper
+import cpscala.TSolver.CpUtil.SearchHelper.{IPbit2SearchHelper, IPbitSearchHelper}
 import cpscala.TSolver.Model.Variable.PVar
 
 import scala.collection.mutable.ArrayBuffer
 
 class TableIPbitCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[PVar], val tuples: Array[Array[Int]], val helper: IPbitSearchHelper) extends IPbitPropagator {
+//class TableIPbitCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[PVar], val tuples: Array[Array[Int]], val helper: IPbit2SearchHelper) extends IPbitPropagator {
   val currTab = new RSBitSet(id, tuples.length, num_vars)
   val supports = new Array[Array[Array[Long]]](arity)
   val num_bit = currTab.num_bit
@@ -45,6 +46,9 @@ class TableIPbitCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scop
 
   // 标识是否为初次传播。初次传播updateTable时利用valid更新，非初次传播updateTable时根据比较结果确定。
   var firstPropagate = true
+
+  var otherStartTime = 0L
+  var otherEndTime = 0L
 
   //检查变量
   def initial(): Boolean = {
@@ -85,7 +89,7 @@ class TableIPbitCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scop
 
 
   def updateTable(): Boolean = {
-    //    println(s"      ut cid: ${id}===========>")
+    //    //println(s"      ut cid: ${id}===========>")
     var i = 0
     while (i < Sval.length && helper.isConsistent) {
       val vv: Int = Sval(i)
@@ -166,15 +170,21 @@ class TableIPbitCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scop
       }
 
       if (deleted) {
-        helper.varStamp(v.id) = helper.globalStamp + 1
-        if(v.submitMask(localMask(vv))){
+        otherStartTime = System.nanoTime()
+        val res = v.submitMask(localMask(vv))
+        if (res) {
           // 本地线程删值
           if (v.isEmpty()) {
             helper.isConsistent = false
             //println(s"filter faild!!: ${Thread.currentThread().getName}, cid: ${id}, vid: ${v.id}")
             return false
           }
+          // 提交变量对应的比特约束组
+          helper.addToTableMask(id, v.id)
+          helper.varIsChange.set(true)
         }
+        otherEndTime = System.nanoTime()
+        helper.lockTime.addAndGet(otherEndTime - otherStartTime)
 
         var j = 0
         while (j < varNumBit(vv)) {
@@ -215,12 +225,12 @@ class TableIPbitCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scop
   }
 
   override def call(): Unit = {
-//    println(s"${id} start  ----- cur_ID: ${Thread.currentThread().getId()}")
+    println(s"      ${id} start  ----- cur_ID: ${Thread.currentThread().getId()}")
     if (helper.isConsistent) {
       propagate()
     }
     helper.numSubCons.decrementAndGet()
-//    println(s"${id} end-----")
+    println(s"      ${id} end  -----  cur_ID: ${Thread.currentThread().getId()}")
   }
 
 }

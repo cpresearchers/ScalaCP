@@ -179,6 +179,7 @@ class TableCT_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Arr
   }
 
   override def propagate(evt: ArrayBuffer[Var]): Boolean = {
+    //println(s"${id} cons starts ------------------>")
     //L32~L33
     initial()
 //    val utStart = System.nanoTime

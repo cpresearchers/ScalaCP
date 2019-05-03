@@ -93,6 +93,32 @@ abstract class SSolver(xm: XModel, propagatorName: String, varType: String, heuN
       }
     }
 
+    case "STRbit_2" => {
+      for (i <- 0 until numTabs) {
+        val xc: XTab = xm.tabs.get(i)
+        val ts: Array[Array[Int]] = xc.tuples
+        val scope: Array[Var] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
+        tabs(i) = new TableSTRbit_2(xc.id, xc.arity, numVars, scope, ts, helper)
+
+        for (v <- scope) {
+          subscription(v.id) += tabs(i)
+        }
+      }
+    }
+
+    case "STRbit_1_SSet" => {
+      for (i <- 0 until numTabs) {
+        val xc: XTab = xm.tabs.get(i)
+        val ts: Array[Array[Int]] = xc.tuples
+        val scope: Array[Var] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
+        tabs(i) = new TableSTRbit_1_SSet(xc.id, xc.arity, numVars, scope, ts, helper)
+
+        for (v <- scope) {
+          subscription(v.id) += tabs(i)
+        }
+      }
+    }
+
     case "STRbit_Bit" => {
       for (i <- 0 until numTabs) {
         val xc: XTab = xm.tabs.get(i)
@@ -171,10 +197,10 @@ abstract class SSolver(xm: XModel, propagatorName: String, varType: String, heuN
         return
       }
 
-      //      if (helper.nodes == 8) {
-      //                //infoShow()
-      //        return
-      //      }
+//      if (helper.nodes == 4) {
+//        infoShow()
+//        return
+//      }
 
       branch_start_time = System.nanoTime
       literal = selectLiteral()
@@ -194,14 +220,16 @@ abstract class SSolver(xm: XModel, propagatorName: String, varType: String, heuN
       consistent = checkConsistencyAfterAssignment(literal.v)
       end_time = System.nanoTime
       helper.propTime += (end_time - prop_start_time)
-      //infoShow()
+//      infoShow()
 
       if (consistent && I.full()) {
         //        //成功再加0.5
-        //        for (c <- subscription(literal.v.name)) {
+        //        for (c <- bitSrb(literal.v.name)) {
         //          c.assignedCount += 0.5
         //        }
         I.show()
+        // 若想求出所有解，则将consistent设置为false，且不返回
+//        consistent = false
         end_time = System.nanoTime
         helper.time = end_time - start_time
         return
@@ -332,7 +360,7 @@ abstract class SSolver(xm: XModel, propagatorName: String, varType: String, heuN
 
   def infoShow(): Unit = {
     for (x <- vars) {
-      println(s"     var:${x.id} size:${x.size()}")
+      //println(s"     var:${x.id} size:${x.size()}")
     }
   }
 

@@ -1,7 +1,7 @@
 package cpscala.TSolver.Model.Solver.IPbitSolver
 
-import cpscala.TSolver.CpUtil.SearchHelper.IPbitSearchHelper
-import cpscala.TSolver.CpUtil.{CoarseQueue, AssignedStack, Literal}
+import cpscala.TSolver.CpUtil.SearchHelper.{IPbit2SearchHelper, IPbitSearchHelper}
+import cpscala.TSolver.CpUtil.{AssignedStack, CoarseQueue, Constants, Literal}
 import cpscala.TSolver.Model.Constraint.IPbitConstraint._
 import cpscala.TSolver.Model.Variable.{PVar, SafeBitSetVar, SparseSetVar}
 import cpscala.XModel.{XModel, XTab, XVar}
@@ -12,8 +12,10 @@ abstract class IPbitSolver(xm: XModel, parallelism: Int, propagatorName: String,
 
   val vars = new Array[PVar](xm.num_vars)
   val tabs = new Array[IPbitPropagator](xm.num_tabs)
+  // 比特约束组个数
   val numVars = xm.num_vars
   val numTabs = xm.num_tabs
+  val numBitTabs = Math.ceil(numTabs.toDouble / Constants.BITSIZE.toDouble).toInt
   val ma = xm.max_arity
   val mds = xm.max_domain_size
 
@@ -29,10 +31,11 @@ abstract class IPbitSolver(xm: XModel, parallelism: Int, propagatorName: String,
 
   val Q = new CoarseQueue[PVar](numVars)
   val Yevt = new ArrayBuffer[PVar](numVars)
-  //subCons[i]表示第i个约束是否被提交
+  //inCevt[i]表示第i个约束是否被提交
   val inCevt = Array.fill(numTabs)(false)
 
-  val helper = new IPbitSearchHelper(numVars, numTabs, parallelism)
+  val helper = new IPbitSearchHelper(numVars, numTabs, numBitTabs, parallelism)
+//  val helper = new IPbit2SearchHelper(numVars, numTabs, numBitTabs, parallelism)
   //时间戳
   helper.globalStamp = 0L
 
@@ -58,44 +61,44 @@ abstract class IPbitSolver(xm: XModel, parallelism: Int, propagatorName: String,
   //初始化约束
   propagatorName match {
 
-//    case "IPbitSTR3_SBit" => {
+    //    case "IPbitSTR3_SBit" => {
+    //      for (i <- 0 until numTabs) {
+    //        val xc: XTab = xm.tabs.get(i)
+    //        val ts: Array[Array[Int]] = xc.tuples
+    //        val scope: Array[PVar] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
+    //
+    //        tabs(i) = new TableIPSTR3_SBit(xc.id, xc.arity, numVars, scope, ts, helper)
+    //        for (v <- scope) {
+    //          bitSrb(v.id) += tabs(i)
+    //        }
+    //      }
+    //    }
+    //
+    //    case "IPbitSTRbit_SBit" => {
+    //      for (i <- 0 until numTabs) {
+    //        val xc: XTab = xm.tabs.get(i)
+    //        val ts: Array[Array[Int]] = xc.tuples
+    //        val scope: Array[PVar] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
+    //
+    //        tabs(i) = new TableIPSTRbit_SBit(xc.id, xc.arity, numVars, scope, ts, helper)
+    //        for (v <- scope) {
+    //          bitSrb(v.id) += tabs(i)
+    //        }
+    //      }
+    //    }
+
+//    case "IPtmpCT_SBit" => {
 //      for (i <- 0 until numTabs) {
 //        val xc: XTab = xm.tabs.get(i)
 //        val ts: Array[Array[Int]] = xc.tuples
 //        val scope: Array[PVar] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
 //
-//        tabs(i) = new TableIPSTR3_SBit(xc.id, xc.arity, numVars, scope, ts, helper)
+//        tabs(i) = new TableIPtmpCT_SBit(xc.id, xc.arity, numVars, scope, ts, helper)
 //        for (v <- scope) {
 //          subscription(v.id) += tabs(i)
 //        }
 //      }
 //    }
-//
-//    case "IPbitSTRbit_SBit" => {
-//      for (i <- 0 until numTabs) {
-//        val xc: XTab = xm.tabs.get(i)
-//        val ts: Array[Array[Int]] = xc.tuples
-//        val scope: Array[PVar] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
-//
-//        tabs(i) = new TableIPSTRbit_SBit(xc.id, xc.arity, numVars, scope, ts, helper)
-//        for (v <- scope) {
-//          subscription(v.id) += tabs(i)
-//        }
-//      }
-//    }
-
-    case "IPtmpCT_SBit" => {
-      for (i <- 0 until numTabs) {
-        val xc: XTab = xm.tabs.get(i)
-        val ts: Array[Array[Int]] = xc.tuples
-        val scope: Array[PVar] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
-
-        tabs(i) = new TableIPtmpCT_SBit(xc.id, xc.arity, numVars, scope, ts, helper)
-        for (v <- scope) {
-          subscription(v.id) += tabs(i)
-        }
-      }
-    }
 
     case "IPbitCT_SBit" => {
       for (i <- 0 until numTabs) {
@@ -106,11 +109,13 @@ abstract class IPbitSolver(xm: XModel, parallelism: Int, propagatorName: String,
         tabs(i) = new TableIPbitCT_SBit(xc.id, xc.arity, numVars, scope, ts, helper)
         for (v <- scope) {
           subscription(v.id) += tabs(i)
+          helper.setSrb(i, v.id)
         }
       }
     }
-
   }
+
+//  helper.showSubs()
 
   def ClearInCevt() = {
     var i = 0
@@ -135,7 +140,7 @@ abstract class IPbitSolver(xm: XModel, parallelism: Int, propagatorName: String,
     helper.propTime += (end_time - prop_start_time)
 
     //infoShow()
-    //    return
+//    return
 
     if (!consistent) {
       finished = false
@@ -153,18 +158,18 @@ abstract class IPbitSolver(xm: XModel, parallelism: Int, propagatorName: String,
         return
       }
 
-      //      if (helper.nodes == 8) {
-      //                //infoShow()
-      //        return
-      //      }
+//            if (helper.nodes == 4) {
+//                      infoShow()
+//              return
+//            }
 
       branch_start_time = System.nanoTime
       literal = selectLiteral()
       newLevel()
       helper.nodes += 1
-      //println("nodes: " + helper.nodes)
+      println("nodes: " + helper.nodes)
       I.push(literal)
-      //println("push:" + literal.toString())
+      println("push:" + literal.toString())
       bind(literal)
 
 
@@ -176,11 +181,11 @@ abstract class IPbitSolver(xm: XModel, parallelism: Int, propagatorName: String,
       consistent = checkConsistencyAfterAssignment(literal.v.asInstanceOf[PVar])
       end_time = System.nanoTime
       helper.propTime += (end_time - prop_start_time)
-      //infoShow()
+//      infoShow()
 
       if (consistent && I.full()) {
         //        //成功再加0.5
-        //        for (c <- subscription(literal.v.name)) {
+        //        for (c <- bitSrb(literal.v.name)) {
         //          c.assignedCount += 0.5
         //        }
         I.show()
@@ -192,7 +197,7 @@ abstract class IPbitSolver(xm: XModel, parallelism: Int, propagatorName: String,
       while (!consistent && !I.empty()) {
         back_start_time = System.nanoTime
         literal = I.pop()
-        //println("pop:" + literal.toString())
+        println("pop:" + literal.toString())
         backLevel()
         literal.v.remove(literal.a)
         remove(literal)
@@ -244,7 +249,7 @@ abstract class IPbitSolver(xm: XModel, parallelism: Int, propagatorName: String,
 
       if (ddeg == 0) {
         //                val a = v.minValue()
-        //        //println(s"(${v.id}, ${a}): ${v.simpleMask().toBinaryString}")
+        //        println(s"(${v.id}, ${a}): ${v.simpleMask().toBinaryString}")
         return new Literal(v, v.minValue())
         //        return new Literal(v, v.dense(0))
       }
@@ -276,7 +281,7 @@ abstract class IPbitSolver(xm: XModel, parallelism: Int, propagatorName: String,
       //      helper.pool.submit(c)
     }
     //    helper.pool.invokeAll(Cevt)
-    //    //println("check newLevel")
+    //    println("check newLevel")
   }
 
   def backLevel(): Unit = {
@@ -294,7 +299,7 @@ abstract class IPbitSolver(xm: XModel, parallelism: Int, propagatorName: String,
     }
 
     //        helper.pool.invokeAll(Cevt)
-    //println("check backLevel")
+    println("check backLevel")
   }
 
   def remove(literal: Literal[PVar]): Unit = {
@@ -324,18 +329,18 @@ abstract class IPbitSolver(xm: XModel, parallelism: Int, propagatorName: String,
     for (c <- subscription(literal.v.id)) {
       c.assignedCount += 1
     }
-    //    //println(s"bind literal is ${literal.a}")
+    //    println(s"bind literal is ${literal.a}")
     literal.v.bind(literal.a)
     helper.globalStamp += 1
     helper.varStamp(literal.v.id) = helper.globalStamp
   }
 
   def infoShow(): Unit = {
-    //println("---------------------------------------show-model--------------------------------------------")
+    println("---------------------------------------show-model--------------------------------------------")
     for (v <- vars) {
       v.show()
     }
-    //println("---------------------------------------------------------------------------------------------")
+    println("---------------------------------------------------------------------------------------------")
   }
 }
 

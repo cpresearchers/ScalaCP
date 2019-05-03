@@ -252,9 +252,17 @@ class TableSTRbit_Bit(val id: Int, val arity: Int, val numVars: Int, val scope: 
 
   override def propagate(evt: ArrayBuffer[Var]): Boolean = {
 
+    val ditStart = System.nanoTime
     deleteInvalidTuple()
+    val ditEnd = System.nanoTime
+    helper.updateTableTime += ditEnd - ditStart
 
-    return searchSupport(evt)
+    val ssStart = System.nanoTime
+    val ss = searchSupport(evt)
+    val ssEnd = System.nanoTime
+    helper.filterDomainTime += ssEnd - ssStart
+
+    return ss
   }
 
   // 新层

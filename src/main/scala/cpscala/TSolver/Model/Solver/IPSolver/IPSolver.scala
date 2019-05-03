@@ -253,7 +253,7 @@ abstract class IPSolver(xm: XModel, parallelism: Int, propagatorName: String, va
 
       if (consistent && I.full()) {
         //        //成功再加0.5
-        //        for (c <- subscription(literal.v.name)) {
+        //        for (c <- bitSrb(literal.v.name)) {
         //          c.assignedCount += 0.5
         //        }
         I.show()

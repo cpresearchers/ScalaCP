@@ -16,8 +16,6 @@ class SFineSolver(xm: XModel, propagator_name: String, var_type: String, heu_nam
       c.setup()
     }
 
-    start_time = System.nanoTime
-    prop_start_time = System.nanoTime
     helper.globalStamp += 1
     // 初始删值
     for (c <- tabs) {
@@ -26,6 +24,8 @@ class SFineSolver(xm: XModel, propagator_name: String, var_type: String, heu_nam
       }
     }
 
+    start_time = System.nanoTime
+    prop_start_time = System.nanoTime
     // 初始传播
     Q.clear()
     var i = 0

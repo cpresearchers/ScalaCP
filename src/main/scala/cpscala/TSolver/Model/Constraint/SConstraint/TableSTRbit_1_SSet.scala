@@ -5,16 +5,9 @@ import cpscala.TSolver.CpUtil.SearchHelper.SearchHelper
 import cpscala.TSolver.Model.Variable.Var
 
 import scala.collection.mutable.ArrayBuffer
-import scala.util.control.Breaks._
+import scala.util.control.Breaks.{break, breakable}
 
-/**
-  * 这是STRbit使用SparseSet作为变量类型的版本（可以处理论域任意大小的变量）
-  * 网络预处理时采用STRbit维持网络GAC，
-  * 在搜索过程中也采用STRbit维持网络GAC，
-  * 参考论文：2016_IJCAI_Optimizing Simple Table Reduction with Bitwise Representation
-  */
-
-class TableSTRbit_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[Var], val tuples: Array[Array[Int]], val helper: SearchHelper) extends Propagator {
+class TableSTRbit_1_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[Var], val tuples: Array[Array[Int]], val helper: SearchHelper) extends Propagator {
 
   // 比特子表，三维数组，第一维变量，第二维取值，第三维元组
   // 初始化变量时，其论域已经被序列化，诸如[0, 1, ..., var.size()]，所以可以直接用取值作为下标
@@ -44,7 +37,9 @@ class TableSTRbit_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
   // HashMap传入的范型中Int为ts，Long为mask
   //  private[this] val stackV = new RestoreStack[Int, Long](numVars)
   // 尝试一下Array是否比HashMap快（确实快一点）
-  private[this] val bitLevel = Array.fill[Long](num_vars + 1, numBit)(0L)
+//  private[this] val bitLevel = Array.fill[Long](num_vars + 1, numBit)(0L)
+  private[this] val bitLevel = Array.fill[Long](num_vars + 1, numBit)(-1L)
+  bitLevel(0)(numBit - 1) <<= Constants.BITSIZE - lengthTuple % Constants.BITSIZE
 
   // oldSize与变量size之间的值是该约束两次传播之间被过滤的值（delta）
   // 详情见论文：Sparse-Sets for Domain Implementation
@@ -155,7 +150,8 @@ class TableSTRbit_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
           //            tempBitSupports.insert(index, bitSupport)
           //          }
           bitTables(i)(j) = tempBitSupports.toArray
-          last(i)(j) = tempBitSupports.length - 1
+//          last(i)(j) = tempBitSupports.length - 1
+          lastLevel(level)(i)(j) = tempBitSupports.length - 1
         }
         //      stackL(i).push()
         i += 1
@@ -206,12 +202,15 @@ class TableSTRbit_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
 
         // 寻找新的无效元组
         for (a <- removeValues) {
-          val old = last(i)(a)
+//          val old = last(i)(a)
+          val old = lastLevel(level)(i)(a)
 
           val bitSupports = bitTables(i)(a)
           for (l <- 0 to old) {
             val ts = bitSupports(l).ts
-            val u = bitSupports(l).mask & bitVal(ts)
+//            val u = bitSupports(l).mask & bitVal(ts)
+            val tmpBit = bitLevel(level)
+            val u = bitSupports(l).mask & tmpBit(ts)
 
             // 与结果非0，说明bit为1的位置对应的元组变为无效
             if (u != 0L) {
@@ -221,11 +220,12 @@ class TableSTRbit_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
               //                topHashV(ts) = bitVal(ts)
               //              }
               // 将第一次改变之前的比特元组记录下来
-              if (bitLevel(level)(ts) == 0L) {
-                bitLevel(level)(ts) = bitVal(ts)
-              }
+//              if (bitLevel(level)(ts) == 0L) {
+//                bitLevel(level)(ts) = bitVal(ts)
+//              }
               // 更新比特元组
-              bitVal(ts) &= ~u
+//              bitVal(ts) &= ~u
+              tmpBit(ts) &= ~u
             }
           }
         }
@@ -247,11 +247,15 @@ class TableSTRbit_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
 
         for (a <- validValues) {
           val bitSupports = bitTables(i)(a)
-          val old = last(i)(a)
+//          val old = last(i)(a)
+          val tmp = lastLevel(level)
+          val old = tmp(i)(a)
 
           // 寻找支持的比特元组
           var now = old
-          while (now >= 0 && (bitSupports(now).mask & bitVal(bitSupports(now).ts)) == 0L) {
+//          while (now >= 0 && (bitSupports(now).mask & bitVal(bitSupports(now).ts)) == 0L) {
+          val tmpBit = bitLevel(level)
+          while (now >= 0 && (bitSupports(now).mask & tmpBit(bitSupports(now).ts)) == 0L) {
             now -= 1
           }
 
@@ -273,10 +277,11 @@ class TableSTRbit_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
               //              topHashL(a) = old
               //            }
               // 将第一次改变之前的last记录下来
-              if (lastLevel(level)(i)(a) == -1) {
-                lastLevel(level)(i)(a) = old
-              }
-              last(i)(a) = now
+//              if (lastLevel(level)(i)(a) == -1) {
+//                lastLevel(level)(i)(a) = old
+//              }
+//              last(i)(a) = now
+              tmp(i)(a) = now
             }
           }
         }
@@ -308,7 +313,18 @@ class TableSTRbit_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
 
   // 新层
   def newLevel(): Unit = {
+    val oldLevel = level
     level += 1
+    for (i <- 0 until arity) {
+      for (j <- 0 until scope(i).size()) {
+        val a = scope(i).get(j)
+        lastLevel(level)(i)(a) = lastLevel(oldLevel)(i)(a)
+      }
+    }
+
+    for (ts <- 0 until numBit) {
+      bitLevel(level)(ts) = bitLevel(oldLevel)(ts)
+    }
     // 向stackL压入一个新的HashMap（对应新层）
     //    for (i <- 0 until arity) {
     //      stackL(i).push()
@@ -326,12 +342,12 @@ class TableSTRbit_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
       // i为变量编号，a为取值，l为相应子表的last
       //      for ((a, l) <- topHashL) {
       //      last(i)(a) = l
-      for (a <- 0 until scope(i).capacity) {
-        if (lastLevel(level)(i)(a) != -1) {
-          last(i)(a) = lastLevel(level)(i)(a)
-          lastLevel(level)(i)(a) = -1
-        }
-      }
+//      for (a <- 0 until scope(i).capacity) {
+//        if (lastLevel(level)(i)(a) != -1) {
+//          last(i)(a) = lastLevel(level)(i)(a)
+//          lastLevel(level)(i)(a) = -1
+//        }
+//      }
       // 回溯后重置oldSize，新旧大小相同，因为还没有传播
       oldSizes(i) = scope(i).size()
     }
@@ -341,12 +357,12 @@ class TableSTRbit_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
     //    for ((ts, mask) <- topHashV) {
     //      bitVal(ts) = mask
     //    }
-    for (ts <- 0 until numBit) {
-      if (bitLevel(level)(ts) != 0L) {
-        bitVal(ts) = bitLevel(level)(ts)
-        bitLevel(level)(ts) = 0L
-      }
-    }
+//    for (ts <- 0 until numBit) {
+//      if (bitLevel(level)(ts) != 0L) {
+//        bitVal(ts) = bitLevel(level)(ts)
+//        bitLevel(level)(ts) = 0L
+//      }
+//    }
 
     level -= 1
   }

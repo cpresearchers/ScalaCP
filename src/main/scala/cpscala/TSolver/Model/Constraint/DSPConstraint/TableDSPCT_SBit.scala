@@ -225,7 +225,7 @@ class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
     //    for (vv <- Xevt) {
     //      val x = scope(vv)
     //      if (helper.isConsistent) {
-    //        for (c <- helper.subscription(x.id)) {
+    //        for (c <- helper.bitSrb(x.id)) {
     //          // !!这里可以加限制条件c.v.simpleMask!=x.simpleMask
     //          //          if (c.domainChanged(x)) {
     //          //          if (c.domainChanged(x, localMask(vv))) {

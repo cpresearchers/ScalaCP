@@ -14,13 +14,7 @@ class IPtmpCoarseSolver(xm: XModel, parallelism: Int, propagatorName: String, va
     Yevt.clear()
     Yevt ++= vars
 
-    var otherStartTime = System.nanoTime()
-    var otherEndTime = 0L
-
     while (Yevt.nonEmpty) {
-
-      otherEndTime = System.nanoTime()
-      helper.lockTime += otherEndTime - otherStartTime
 
       ClearInCevt()
       for (v <- Yevt) {
@@ -40,8 +34,6 @@ class IPtmpCoarseSolver(xm: XModel, parallelism: Int, propagatorName: String, va
       if (!helper.isConsistent) {
         return false
       }
-
-      otherStartTime = System.nanoTime()
 
       helper.globalStamp += 1
       Yevt.clear()
@@ -66,13 +58,7 @@ class IPtmpCoarseSolver(xm: XModel, parallelism: Int, propagatorName: String, va
     Yevt.clear()
     Yevt += ix
 
-    var otherStartTime = System.nanoTime()
-    var otherEndTime = 0L
-
     while (Yevt.size != 0) {
-
-      otherEndTime = System.nanoTime()
-      helper.lockTime += otherEndTime - otherStartTime
 
       ClearInCevt()
       for (v <- Yevt) {
@@ -85,15 +71,12 @@ class IPtmpCoarseSolver(xm: XModel, parallelism: Int, propagatorName: String, va
         }
       }
       helper.poolAwait()
-      helper.p_sum += 1
 
       // 论域改动的变量stamp = gstamp+1
       helper.p_sum += 1
       if (!helper.isConsistent) {
         return false
       }
-
-      otherStartTime = System.nanoTime()
 
       helper.globalStamp += 1
       Yevt.clear()
@@ -118,14 +101,7 @@ class IPtmpCoarseSolver(xm: XModel, parallelism: Int, propagatorName: String, va
     Yevt.clear()
     Yevt += ix
 
-    var otherStartTime = System.nanoTime()
-    var otherEndTime = 0L
-
     while (Yevt.size != 0) {
-
-      otherEndTime = System.nanoTime()
-      helper.lockTime += otherEndTime - otherStartTime
-
       ClearInCevt()
       for (v <- Yevt) {
         for (c <- subscription(v.id)) {
@@ -137,15 +113,12 @@ class IPtmpCoarseSolver(xm: XModel, parallelism: Int, propagatorName: String, va
         }
       }
       helper.poolAwait()
-      helper.p_sum += 1
 
       // 论域改动的变量stamp = gstamp+1
       helper.p_sum += 1
       if (!helper.isConsistent) {
         return false
       }
-
-      otherStartTime = System.nanoTime()
 
       helper.globalStamp += 1
       Yevt.clear()

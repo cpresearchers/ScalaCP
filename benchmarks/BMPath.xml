@@ -6,16 +6,17 @@
 <!--        <BMFile name="0" format="3">benchmarks/queen4.xml</BMFile>-->
 <!--        <BMFile name="0" format="3">benchmarks/queen12.xml</BMFile>-->
 <!--        <BMFile name="0" format="3">benchmarks/rand-5-12-12-200-12442-01.xml</BMFile>-->
-<!--        <BMFile name="0" format="2">/home/cpxiaozu/lotus/cp-data/XCSP2/8-20-5/rand-8-20-5-18-800-2_ext.xml</BMFile>-->
+<!--        <BMFile name="0" format="2">C:/XBench/Data/rand-5-12-12_total50/rand-5-12-12-200-p12442-0_ext_glb.xml</BMFile>-->
 <!--        <BMFile name ="0" format="2">C:/XBench/Data/X2Bench/modifiedRenault_600s26/renault-mod-20_ext.xml</BMFile>-->
         <!--<BMFile name="0" format="3">C:/XBench/Random/Random-RB-3-24-24/rand-3-24-24-76-632-01.xml</BMFile>-->
 <!--        <BMFile name="0" format="3">C:/XBench/Random/Random-RB-3-20-20f/rand-3-20-20-60-632f-01.xml</BMFile>-->
-<!--        <BMFile name="0" format="2">C:/XBench/Queens/queen/queens-8_ext.xml</BMFile>-->
-        <BMFile name="0" format="2">C:/XBench/Data/travellingSalesman-20_total15/tsp-20-901_ext.xml</BMFile>
-<!--        <BMFile name="0" format="2">C:/XBench/Data/X2Bench/wordsVg_total65/crossword-m1c-words-vg5-5_ext.xml</BMFile>-->
+<!--        <BMFile name="0" format="2">C:/XBench/Queens/queen/queens-10_ext.xml</BMFile>-->
+<!--        <BMFile name="0" format="2">C:/XBench/Data/travellingSalesman-20_total15/tsp-20-901_ext.xml</BMFile>-->
+<!--        <BMFile name="0" format="2">C:/XBench/Data/X2Bench/wordsVg_total65/crossword-m1c-words-vg4-4_ext.xml</BMFile>-->
 <!--        <BMFile name="0" format="2">C:/XBench/Data/zzbddSmall/bdd-21-133-18-78-10_ext.xml</BMFile>-->
-<!--        <BMFile name ="0" format="2">C:/XBench/Data/zzdubois/dubois-20_ext.xml</BMFile>-->
-<!--        <BMFile name ="0" format="2">C:/XBench/Data/X2Bench/lexVg_total63/crossword-m1c-lex-vg6-10_ext.xml</BMFile>-->
+        <BMFile name ="0" format="2">C:/XBench/Data/zzdubois/dubois-20_ext.xml</BMFile>
+<!--        <BMFile name ="0" format="2">C:/XBench/Data/X2Bench/lexVg_total63/crossword-m1c-lex-vg7-10_ext.xml</BMFile>-->
+<!--        <BMFile name ="0" format="2">C:/XBench/Data/X2Bench/modifiedRenault_600s26/renault-mod-20_ext.xml</BMFile>-->
         <!--<BMFile name="0">F:/output/rand-10-10-2-15-370-0_ext-merged.xml</BMFile>-->
         <!--<BMFile name="0" format="3">E:/X3Benchmarks/QRandom-bdd-15-21-2/bdd-15-21-2-2713-79-01.xml</BMFile>-->
         <!--<BMFile name="0">E:/X3Benchmarks/Random-m1-15-23-3/rand-15-23-3-16-150000-01.xml</BMFile>-->

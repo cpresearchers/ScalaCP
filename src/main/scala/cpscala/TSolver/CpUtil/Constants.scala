@@ -92,10 +92,10 @@ object Constants {
   //通过mask表示获取值存入values
   @inline def getValues(b: Array[Long], values: ArrayBuffer[Int]): Unit = {
     values.clear()
-    var j = 0
-    var end = 0
     var i = 0
     var base = 0
+    var j = 0
+    var end = 0
 
     while (i < b.length) {
       val a = b(i)
