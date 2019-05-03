@@ -4,9 +4,9 @@
         <!--<BMFile name="0" format="3">benchmarks/Experiment.xml</BMFile>-->
         <!--<BMFile name="0" format="3">benchmarks/test2.xml</BMFile>-->
 <!--        <BMFile name="0" format="3">benchmarks/queen4.xml</BMFile>-->
-        <BMFile name="0" format="3">benchmarks/queen12.xml</BMFile>
+<!--        <BMFile name="0" format="3">benchmarks/queen12.xml</BMFile>-->
 <!--        <BMFile name="0" format="3">benchmarks/rand-5-12-12-200-12442-01.xml</BMFile>-->
-<!--        <BMFile name="0" format="2">/home/cpxiaozu/lotus/cp-data/XCSP2/8-20-5/rand-8-20-5-18-800-2_ext.xml</BMFile>-->
+        <BMFile name="0" format="2">/home/lee/benckmarks/X2/rand-8-20-5_total20/rand-8-20-5-18-800-2_ext.xml</BMFile>
 <!--        <BMFile name ="0" format="2">C:/XBench/Data/X2Bench/modifiedRenault_600s26/renault-mod-20_ext.xml</BMFile>-->
         <!--<BMFile name="0" format="3">C:/XBench/Random/Random-RB-3-24-24/rand-3-24-24-76-632-01.xml</BMFile>-->
 <!--        <BMFile name="0" format="3">C:/XBench/Random/Random-RB-3-20-20f/rand-3-20-20-60-632f-01.xml</BMFile>-->

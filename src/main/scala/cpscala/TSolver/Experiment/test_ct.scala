@@ -20,7 +20,7 @@ object test_ct {
   var varType = ""
 
   //  val parallelisms = Array[Int](1, 2, 4, 6, 8, 12, 16, 24)
-  val parallelisms = Array[Int](1, 2, 4, 6, 8, 16, 24)
+  val parallelisms = Array[Int](1, 2, 4, 6, 8, 12, 16)
 
   def main(args: Array[String]): Unit = {
 
@@ -37,6 +37,7 @@ object test_ct {
     val outputRoot = (file \\ "outputRoot").text
     val outputFolder = (file \\ "outputFolder").text
     val inputFolderNodes = file \\ "folder"
+
     for (fn <- inputFolderNodes) {
       val fmt = (fn \\ "@format").text.toInt
       val folderStr = fn.text
@@ -50,10 +51,10 @@ object test_ct {
       val titleLine = ArrayBuffer[String]()
       titleLine += "name"
       titleLine ++= Array("algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum")
-      for (ii <- 0 until parallelisms.length) {
+      for (_ <- 0 until parallelisms.length) {
         titleLine ++= Array("algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum")
       }
-      for (ii <- 0 until parallelisms.length) {
+      for (_ <- 0 until parallelisms.length) {
         titleLine ++= Array("algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub")
       }
 
@@ -65,7 +66,7 @@ object test_ct {
         val xm = new XModel(f.getPath, true, fmt)
         dataLine.clear()
         dataLine += f.getName()
-        //-------------串行算法-------------
+        //-------------CT串行算法-------------
         pType = "CT_Bit"
         varType = "BitSet"
         name = pType
@@ -80,7 +81,7 @@ object test_ct {
         dataLine += (ct.helper.backTime.toDouble * 1e-9).toString()
         dataLine += ct.helper.c_sum.toString()
         dataLine += ct.helper.p_sum.toString()
-        //-------------批量提交-------------
+        //-------------CT批量提交-------------
         ppType = "IPCT_SBit"
         varType = "SafeBitSet"
         for (parallelism <- parallelisms) {
@@ -98,8 +99,7 @@ object test_ct {
           dataLine += pct.helper.c_sum.toString()
           dataLine += pct.helper.p_sum.toString()
         }
-        //-------------动态提交-------------
-
+        //-------------CT动态提交-------------
         ppType = "DSPCT_SBit"
         varType = "SafeBitSet"
         for (parallelism <- parallelisms) {
