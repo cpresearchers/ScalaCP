@@ -202,11 +202,12 @@ abstract class SSolver(xm: XModel, propagatorName: String, varType: String, heuN
 //        return
 //      }
 
+      helper.nodes += 1
+      //println("nodes: " + helper.nodes)
+      infoShow()
       branch_start_time = System.nanoTime
       literal = selectLiteral()
       newLevel()
-      helper.nodes += 1
-      //println("nodes: " + helper.nodes)
       I.push(literal)
       //println("push:" + literal.toString())
       bind(literal)
@@ -270,7 +271,7 @@ abstract class SSolver(xm: XModel, propagatorName: String, varType: String, heuN
   //修改levelvdense
   def selectLiteral(): Literal[Var] = {
     var mindmdd = Double.MaxValue
-    var minvid = 0
+    var minvid = levelvdense(helper.level)
 
     var i = helper.level
     while (i < numVars) {
@@ -284,20 +285,19 @@ abstract class SSolver(xm: XModel, propagatorName: String, varType: String, heuN
         }
       }
 
-      if (ddeg == 0) {
-        //                val a = v.minValue()
-        //        //println(s"(${v.id}, ${a}): ${v.simpleMask().toBinaryString}")
-        return new Literal(v, v.minValue())
-        //        return new Literal(v, v.dense(0))
-      }
-
-      val sizeD: Double = v.size.toDouble
-      val dmdd = sizeD / ddeg
-
-      if (dmdd < mindmdd) {
+      if (ddeg == 0 && mindmdd == Double.MaxValue) {
         minvid = vid
-        mindmdd = dmdd
+      } else {
+        val sizeD: Double = v.size.toDouble
+        val dmdd = sizeD / ddeg
+
+        // 变量论域若恰好为1，但又未赋值，则应先考虑论域大小大于1的变量，以尽早传播
+        if (sizeD > 1 && dmdd < mindmdd) {
+          minvid = vid
+          mindmdd = dmdd
+        }
       }
+
       i += 1
     }
 

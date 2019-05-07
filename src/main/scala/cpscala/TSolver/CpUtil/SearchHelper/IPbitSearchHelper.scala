@@ -36,14 +36,12 @@ class IPbitSearchHelper(override val numVars: Int, override val numTabs: Int, va
     while (i < numBitCons) {
       do {
         previousBits = tableMask.get(i)
-        if (i == x) {
-          // 因为在第cid个约束内，第vid个变量的论域被缩减，所以无需提交第cid个约束
-          tmpBits = bitSrb(vid)(i) & Constants.MASK0(y)
-        } else {
-          tmpBits = bitSrb(vid)(i)
-        }
         // Add the relevant bit
-        newBits = previousBits | tmpBits
+        newBits = previousBits | bitSrb(vid)(i)
+//        if (i == x) {
+          // 因为在第cid个约束内，第vid个变量的论域被缩减，所以无需提交第cid个约束
+//          newBits &= Constants.MASK0(y)
+//        }
         // Try to set the new bit mask, and loop round until successful
       } while (!tableMask.compareAndSet(i, previousBits, newBits))
       i += 1
@@ -86,12 +84,12 @@ class IPbitSearchHelper(override val numVars: Int, override val numTabs: Int, va
   // 被提交运行的约束个数
   val numSubCons = new AtomicLong(0L)
   // 本次传播是否有变量的论域发生改变
-  val varIsChange = new AtomicBoolean(true)
+  var varIsChange = false
 
   def submitToPool(c: IPbitPropagator): Unit = {
     numSubCons.incrementAndGet()
     pool.submit(c)
-    println(s"   cur_cid: ${c.id} submit by cur_ID: ${Thread.currentThread().getId()}")
+//    println(s"   cur_cid: ${c.id} submit by cur_ID: ${Thread.currentThread().getId()}")
   }
 
   def poolAwait(): Unit = {
@@ -99,7 +97,7 @@ class IPbitSearchHelper(override val numVars: Int, override val numTabs: Int, va
     while (numSubCons.get != 0) {
       pool.awaitQuiescence(1, TimeUnit.DAYS)
     }
-    println(s"pool quiet --------------------------")
+//    println(s"pool quiet --------------------------")
   }
 }
 

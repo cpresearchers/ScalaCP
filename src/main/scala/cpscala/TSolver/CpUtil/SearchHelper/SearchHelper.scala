@@ -32,6 +32,8 @@ class SearchHelper(val numVars: Int, val numTabs: Int) {
   var p_sum = 0L
   //约束传播次数
   var c_sum = 0L
+  //不变约束
+  var notChangedTabs = new AtomicLong(0L)
 
 
 }

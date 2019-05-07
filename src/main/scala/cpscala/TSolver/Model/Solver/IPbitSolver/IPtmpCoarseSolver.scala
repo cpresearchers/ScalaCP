@@ -17,18 +17,21 @@ class IPtmpCoarseSolver(xm: XModel, parallelism: Int, propagatorName: String, va
     while (Yevt.nonEmpty) {
 
       ClearInCevt()
+//      helper.c_sum = 0
       for (v <- Yevt) {
         for (c <- subscription(v.id)) {
           if (!inCevt(c.id)) {
             inCevt(c.id) = true
             helper.c_sum += 1
             helper.submitToPool(c)
-            //            println(s"${c.id} submit-----")
+            //            //println(s"${c.id} submit-----")
           }
         }
       }
       helper.poolAwait()
       helper.p_sum += 1
+
+      //println(s"  ${helper.p_sum} p_sum's c_sum: ${helper.c_sum}")
 
       // 论域改动的变量stamp = gstamp+1
       if (!helper.isConsistent) {
@@ -61,6 +64,7 @@ class IPtmpCoarseSolver(xm: XModel, parallelism: Int, propagatorName: String, va
     while (Yevt.size != 0) {
 
       ClearInCevt()
+//      helper.c_sum = 0
       for (v <- Yevt) {
         for (c <- subscription(v.id)) {
           if (!inCevt(c.id)) {
@@ -71,9 +75,10 @@ class IPtmpCoarseSolver(xm: XModel, parallelism: Int, propagatorName: String, va
         }
       }
       helper.poolAwait()
+      helper.p_sum += 1
+      //println(s"  ${helper.p_sum} p_sum's c_sum: ${helper.c_sum}")
 
       // 论域改动的变量stamp = gstamp+1
-      helper.p_sum += 1
       if (!helper.isConsistent) {
         return false
       }
@@ -103,6 +108,8 @@ class IPtmpCoarseSolver(xm: XModel, parallelism: Int, propagatorName: String, va
 
     while (Yevt.size != 0) {
       ClearInCevt()
+//      helper.c_sum = 0
+
       for (v <- Yevt) {
         for (c <- subscription(v.id)) {
           if (!inCevt(c.id)) {
@@ -113,9 +120,10 @@ class IPtmpCoarseSolver(xm: XModel, parallelism: Int, propagatorName: String, va
         }
       }
       helper.poolAwait()
+      helper.p_sum += 1
+      //println(s"  ${helper.p_sum} p_sum's c_sum: ${helper.c_sum}")
 
       // 论域改动的变量stamp = gstamp+1
-      helper.p_sum += 1
       if (!helper.isConsistent) {
         return false
       }

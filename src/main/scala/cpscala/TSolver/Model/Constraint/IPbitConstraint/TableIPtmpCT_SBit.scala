@@ -1,13 +1,12 @@
 package cpscala.TSolver.Model.Constraint.IPbitConstraint
 
 import cpscala.TSolver.CpUtil.{Constants, INDEX, RSBitSet}
-import cpscala.TSolver.CpUtil.SearchHelper.{IPbit2SearchHelper, IPbitSearchHelper}
+import cpscala.TSolver.CpUtil.SearchHelper.IPbitSearchHelper
 import cpscala.TSolver.Model.Variable.PVar
 
 import scala.collection.mutable.ArrayBuffer
 
-//class TableIPtmpCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[PVar], val tuples: Array[Array[Int]], val helper: IPbitSearchHelper) extends IPbitPropagator {
-class TableIPtmpCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[PVar], val tuples: Array[Array[Int]], val helper: IPbit2SearchHelper) extends IPbitPropagator {
+class TableIPtmpCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[PVar], val tuples: Array[Array[Int]], val helper: IPbitSearchHelper) extends IPbitPropagator {
   val currTab = new RSBitSet(id, tuples.length, num_vars)
   val supports = new Array[Array[Array[Long]]](arity)
   val num_bit = currTab.num_bit
@@ -216,7 +215,7 @@ class TableIPtmpCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scop
   }
 
   override def call(): Unit = {
-        println(s"${id} start  ----- cur_ID: ${Thread.currentThread().getId()}")
+//        println(s"${id} start  ----- cur_ID: ${Thread.currentThread().getId()}")
     if (helper.isConsistent) {
       propagate()
     }

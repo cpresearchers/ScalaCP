@@ -4,7 +4,7 @@
 		module="scalacp-build"
 		revision="0.1.0-SNAPSHOT"
 		status="integration"
-		publication="20190424092710"
+		publication="20190503095659"
 		e:sbtVersion="1.0" e:scalaVersion="2.12"
 	>
 		<description>

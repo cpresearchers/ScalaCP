@@ -367,5 +367,3 @@ class TableSTRbit_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
     return true
   }
 }
-
-class BitSupport(val ts: Int, var mask: Long) {}

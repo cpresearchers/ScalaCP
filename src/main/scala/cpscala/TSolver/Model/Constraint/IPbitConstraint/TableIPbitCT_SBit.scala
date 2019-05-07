@@ -1,13 +1,12 @@
 package cpscala.TSolver.Model.Constraint.IPbitConstraint
 
 import cpscala.TSolver.CpUtil.{Constants, INDEX, RSBitSet}
-import cpscala.TSolver.CpUtil.SearchHelper.{IPbit2SearchHelper, IPbitSearchHelper}
+import cpscala.TSolver.CpUtil.SearchHelper.IPbitSearchHelper
 import cpscala.TSolver.Model.Variable.PVar
 
 import scala.collection.mutable.ArrayBuffer
 
 class TableIPbitCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[PVar], val tuples: Array[Array[Int]], val helper: IPbitSearchHelper) extends IPbitPropagator {
-//class TableIPbitCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[PVar], val tuples: Array[Array[Int]], val helper: IPbit2SearchHelper) extends IPbitPropagator {
   val currTab = new RSBitSet(id, tuples.length, num_vars)
   val supports = new Array[Array[Array[Long]]](arity)
   val num_bit = currTab.num_bit
@@ -170,7 +169,6 @@ class TableIPbitCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scop
       }
 
       if (deleted) {
-        otherStartTime = System.nanoTime()
         val res = v.submitMask(localMask(vv))
         if (res) {
           // 本地线程删值
@@ -179,12 +177,13 @@ class TableIPbitCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scop
             //println(s"filter faild!!: ${Thread.currentThread().getName}, cid: ${id}, vid: ${v.id}")
             return false
           }
+          otherStartTime = System.nanoTime()
           // 提交变量对应的比特约束组
           helper.addToTableMask(id, v.id)
-          helper.varIsChange.set(true)
+          helper.varIsChange = true
+          otherEndTime = System.nanoTime()
+          helper.lockTime.addAndGet(otherEndTime - otherStartTime)
         }
-        otherEndTime = System.nanoTime()
-        helper.lockTime.addAndGet(otherEndTime - otherStartTime)
 
         var j = 0
         while (j < varNumBit(vv)) {
@@ -205,6 +204,8 @@ class TableIPbitCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scop
           return true
         }
       }
+    } else {
+      helper.notChangedTabs.incrementAndGet()
     }
     return false
   }
@@ -225,12 +226,12 @@ class TableIPbitCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scop
   }
 
   override def call(): Unit = {
-    println(s"      ${id} start  ----- cur_ID: ${Thread.currentThread().getId()}")
+//    println(s"      ${id} start  ----- cur_ID: ${Thread.currentThread().getId()}")
     if (helper.isConsistent) {
       propagate()
     }
     helper.numSubCons.decrementAndGet()
-    println(s"      ${id} end  -----  cur_ID: ${Thread.currentThread().getId()}")
+//    println(s"      ${id} end  -----  cur_ID: ${Thread.currentThread().getId()}")
   }
 
 }

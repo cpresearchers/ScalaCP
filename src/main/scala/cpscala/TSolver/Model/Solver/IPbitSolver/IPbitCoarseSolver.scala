@@ -17,7 +17,9 @@ class IPbitCoarseSolver(xm: XModel, parallelism: Int, propagatorName: String, va
     helper.isConsistent = true
 
     do {
-      helper.varIsChange.set(false)
+      helper.varIsChange = false
+      helper.clearTableMask()
+//      helper.c_sum = 0
 
       // 提交约束至线程池
       var i = 0
@@ -27,8 +29,8 @@ class IPbitCoarseSolver(xm: XModel, parallelism: Int, propagatorName: String, va
       var cid = 0
       while (i < subMask.length) {
         val a = subMask(i)
-        base = i * Constants.BITSIZE
         if (a != 0) {
+          base = i * Constants.BITSIZE
           j = Constants.FirstLeft(a)
           end = Constants.FirstRight(a)
           while (j <= end) {
@@ -44,8 +46,10 @@ class IPbitCoarseSolver(xm: XModel, parallelism: Int, propagatorName: String, va
         i += 1
       }
 
-      helper.p_sum += 1
       helper.poolAwait()
+      helper.p_sum += 1
+      //println(s"  ${helper.p_sum} p_sum's c_sum: ${helper.c_sum}")
+
 
       if (!helper.isConsistent) {
         return false
@@ -53,8 +57,7 @@ class IPbitCoarseSolver(xm: XModel, parallelism: Int, propagatorName: String, va
 
       // 获取subMask
       helper.getTableMask(subMask)
-      helper.clearTableMask()
-    } while (helper.varIsChange.get())
+    } while (helper.varIsChange)
 
     return true
   }
@@ -65,7 +68,9 @@ class IPbitCoarseSolver(xm: XModel, parallelism: Int, propagatorName: String, va
 
     helper.getSrb(ix.id, subMask)
     do {
-      helper.varIsChange.set(false)
+      helper.varIsChange = false
+      helper.clearTableMask()
+//      helper.c_sum = 0
 
       // 提交约束至线程池
       var i = 0
@@ -75,8 +80,8 @@ class IPbitCoarseSolver(xm: XModel, parallelism: Int, propagatorName: String, va
       var cid = 0
       while (i < subMask.length) {
         val a = subMask(i)
-        base = i * Constants.BITSIZE
         if (a != 0) {
+          base = i * Constants.BITSIZE
           j = Constants.FirstLeft(a)
           end = Constants.FirstRight(a)
           while (j <= end) {
@@ -91,8 +96,10 @@ class IPbitCoarseSolver(xm: XModel, parallelism: Int, propagatorName: String, va
         }
         i += 1
       }
-      helper.p_sum += 1
       helper.poolAwait()
+      helper.p_sum += 1
+      //println(s"  ${helper.p_sum} p_sum's c_sum: ${helper.c_sum}")
+
 
       if (!helper.isConsistent) {
         return false
@@ -100,9 +107,7 @@ class IPbitCoarseSolver(xm: XModel, parallelism: Int, propagatorName: String, va
 
       // 获取subMask
       helper.getTableMask(subMask)
-      helper.clearTableMask()
-
-    } while (helper.varIsChange.get())
+    } while (helper.varIsChange)
 
     return true
   }
@@ -113,7 +118,9 @@ class IPbitCoarseSolver(xm: XModel, parallelism: Int, propagatorName: String, va
 
     helper.getSrb(ix.id, subMask)
     do {
-      helper.varIsChange.set(false)
+      helper.varIsChange = false
+      helper.clearTableMask()
+//      helper.c_sum = 0
 
       // 提交约束至线程池
       var i = 0
@@ -123,8 +130,8 @@ class IPbitCoarseSolver(xm: XModel, parallelism: Int, propagatorName: String, va
       var cid = 0
       while (i < subMask.length) {
         val a = subMask(i)
-        base = i * Constants.BITSIZE
         if (a != 0) {
+          base = i * Constants.BITSIZE
           j = Constants.FirstLeft(a)
           end = Constants.FirstRight(a)
           while (j <= end) {
@@ -139,8 +146,9 @@ class IPbitCoarseSolver(xm: XModel, parallelism: Int, propagatorName: String, va
         }
         i += 1
       }
-      helper.p_sum += 1
       helper.poolAwait()
+      helper.p_sum += 1
+      //println(s"  ${helper.p_sum} p_sum's c_sum: ${helper.c_sum}")
 
       if (!helper.isConsistent) {
         return false
@@ -148,9 +156,7 @@ class IPbitCoarseSolver(xm: XModel, parallelism: Int, propagatorName: String, va
 
       // 获取subMask
       helper.getTableMask(subMask)
-      helper.clearTableMask()
-
-    } while (helper.varIsChange.get())
+    } while (helper.varIsChange)
 
     return true
   }
