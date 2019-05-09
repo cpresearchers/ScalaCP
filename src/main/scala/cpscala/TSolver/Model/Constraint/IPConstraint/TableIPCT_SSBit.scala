@@ -169,6 +169,7 @@ class TableIPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
       //传播失败
       if (currTab.isEmpty()) {
         helper.isConsistent = false
+        failWeight += 1
         return false
       }
       i += 1
@@ -220,6 +221,7 @@ class TableIPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
 
         if (v.isEmpty()) {
           helper.isConsistent = false
+          failWeight += 1
           return false
         }
 

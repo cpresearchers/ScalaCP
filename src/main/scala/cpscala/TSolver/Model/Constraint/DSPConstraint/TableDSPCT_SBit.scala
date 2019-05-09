@@ -132,6 +132,7 @@ class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
       //传播失败
       if (currTab.isEmpty()) {
         helper.isConsistent = false
+        failWeight += 1
         //println(s"update faild!!: ${Thread.currentThread().getName}, cid: ${id}")
         return false
       }
@@ -176,6 +177,7 @@ class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
           // 本地线程删值
           if (v.isEmpty()) {
             helper.isConsistent = false
+            failWeight += 1
             //println(s"filter faild!!: ${Thread.currentThread().getName}, cid: ${id}, vid: ${v.id}")
             return false
           }

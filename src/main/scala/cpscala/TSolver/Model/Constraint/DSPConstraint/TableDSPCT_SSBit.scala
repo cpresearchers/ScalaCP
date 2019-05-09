@@ -148,6 +148,7 @@ class TableDSPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope
       //传播失败
       if (currTab.isEmpty()) {
         helper.isConsistent = false
+        failWeight += 1
         return false
       }
       i += 1
@@ -197,6 +198,7 @@ class TableDSPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope
         // 提交更改，并获取新值
         if (newMask == 0L) {
           helper.isConsistent = false
+          failWeight += 1
           return false
         }
 

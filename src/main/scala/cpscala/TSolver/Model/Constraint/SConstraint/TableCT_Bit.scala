@@ -6,7 +6,7 @@ import cpscala.TSolver.Model.Variable.Var
 
 import scala.collection.mutable.ArrayBuffer
 
-class TableCT_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[Var], val tuples: Array[Array[Int]], val helper: SearchHelper) extends Propagator {
+class TableCT_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[Var], val tuples: Array[Array[Int]], val helper: SearchHelper) extends Propagator[Var] {
   val currTab = new RSBitSet(id, tuples.length, num_vars)
   val supports = new Array[Array[Array[Long]]](arity)
   val num_bit = currTab.num_bit
@@ -129,6 +129,7 @@ class TableCT_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Arr
       //传播失败
       if (currTab.isEmpty()) {
         //println(s"update faild!!: ${Thread.currentThread().getName}, cid: ${id}")
+        failWeight += 1
         return false
       }
 
@@ -167,6 +168,7 @@ class TableCT_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Arr
         // 论域删空退出
         if (v.isEmpty()) {
           //println(s"filter faild!!: ${Thread.currentThread().getName}, cid: ${id}, vid: ${v.id}")
+          failWeight += 1
           return false
         }
         //更新lastMask
@@ -182,18 +184,18 @@ class TableCT_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Arr
     //println(s"${id} cons starts ------------------>")
     //L32~L33
     initial()
-//    val utStart = System.nanoTime
+    //    val utStart = System.nanoTime
     val res = updateTable()
-//    val utEnd = System.nanoTime
-//    helper.updateTableTime += utEnd - utStart
+    //    val utEnd = System.nanoTime
+    //    helper.updateTableTime += utEnd - utStart
     if (!res) {
       return false
     }
 
-//    val fiStart = System.nanoTime
+    //    val fiStart = System.nanoTime
     val fi = filterDomains(evt)
-//    val fiEnd = System.nanoTime
-//    helper.filterDomainTime += fiEnd - fiStart
+    //    val fiEnd = System.nanoTime
+    //    helper.filterDomainTime += fiEnd - fiStart
     return fi
   }
 

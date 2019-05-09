@@ -19,7 +19,7 @@ import scala.util.control.Breaks._
   * 2.加入比特依赖表，缩减更新值集（貌似没有减少）
   */
 
-class TableSTRbit_3(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[Var], val tuples: Array[Array[Int]], val helper: SearchHelper) extends Propagator {
+class TableSTRbit_3(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[Var], val tuples: Array[Array[Int]], val helper: SearchHelper) extends Propagator[Var] {
 
   // 比特子表，三维数组，第一维变量，第二维取值，第三维比特支持
   // 初始化变量时，其论域已经被序列化，诸如[0, 1, ..., var.size()]，所以可以直接用取值作为下标
@@ -289,6 +289,7 @@ class TableSTRbit_3(val id: Int, val arity: Int, val num_vars: Int, val scope: A
         }
         // 若所有的比特元组均无效，则传播失败
         if (validBT.empty()) {
+          failWeight += 1
           return false
         }
       }
@@ -348,7 +349,10 @@ class TableSTRbit_3(val id: Int, val arity: Int, val num_vars: Int, val scope: A
             //println(s"       var:${x.id} remove new value:${a}  old: ${old}")
             evt += x
 
-            if (x.isEmpty()) return false
+            if (x.isEmpty()) {
+              failWeight += 1
+              return false
+            }
           } else {
             if (now != old) {
               // 更新变量栈顶的哈希表

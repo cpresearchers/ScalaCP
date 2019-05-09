@@ -3,8 +3,9 @@ package cpscala.TSolver.Model.Solver.IPSolver
 import java.util.ArrayList
 
 import cpscala.TSolver.CpUtil.SearchHelper.IPSearchHelper
-import cpscala.TSolver.CpUtil.{CoarseQueue, AssignedStack, Literal}
+import cpscala.TSolver.CpUtil.{AssignedStack, CoarseQueue}
 import cpscala.TSolver.Model.Constraint.IPConstraint._
+import cpscala.TSolver.Model.Heuristic.{HeuDomDdeg, HeuDomWdeg, Heuristic}
 import cpscala.TSolver.Model.Variable.{PVar, SafeBitSetVar, SafeSimpleBitVar, SparseSetVar}
 import cpscala.XModel.{XModel, XTab, XVar}
 
@@ -39,6 +40,8 @@ abstract class IPSolver(xm: XModel, parallelism: Int, propagatorName: String, va
   //时间戳
   helper.globalStamp = 0L
 
+  // 启发式对象
+  var heuristic: Heuristic[PVar] = null
 
   // 初始化变量
   varType match {
@@ -185,6 +188,17 @@ abstract class IPSolver(xm: XModel, parallelism: Int, propagatorName: String, va
     }
   }
 
+  // 初始化启发式对象
+  heuName match {
+    case "Dom/Ddeg" => {
+      heuristic = new HeuDomDdeg[PVar, IPPropagator](numVars, vars, subscription)
+    }
+
+    case "Dom/Wdeg" => {
+      heuristic = new HeuDomWdeg[PVar, IPPropagator](numVars, vars, subscription)
+    }
+  }
+
   def ClearInCevt() = {
     var i = 0
     while (i < numTabs) {
@@ -198,6 +212,10 @@ abstract class IPSolver(xm: XModel, parallelism: Int, propagatorName: String, va
   var prop_start_time = 0L
   var back_start_time = 0L
   var end_time = 0L
+
+  def shutdown(): Unit = {
+    helper.pool.shutdown()
+  }
 
   def search(timeLimit: Long): Unit = {
     var finished = false
@@ -217,8 +235,6 @@ abstract class IPSolver(xm: XModel, parallelism: Int, propagatorName: String, va
       return
     }
 
-    var literal: Literal[PVar] = null
-
     while (!finished) {
       end_time = System.nanoTime
       helper.time = end_time - start_time
@@ -226,37 +242,35 @@ abstract class IPSolver(xm: XModel, parallelism: Int, propagatorName: String, va
         return
       }
 
-      //      if (helper.nodes == 8) {
-      //                //infoShow()
+      //      if (helper.nodes == 4) {
+      //        infoShow()
       //        return
       //      }
 
+      //      infoShow()
       branch_start_time = System.nanoTime
-      literal = selectLiteral()
+      val (v, a) = heuristic.selectLiteral(helper.level, levelvdense)
       newLevel()
       helper.nodes += 1
-      //println("nodes: " + helper.nodes)
-      I.push(literal)
-      //println("push:" + literal.toString())
-      bind(literal)
+      //      println("nodes: " + helper.nodes)
 
-
+      I.push(v, a)
+      //      println(s"push:(${v.id}, ${a})")
+      bind(v, a)
       end_time = System.nanoTime
       helper.branchTime += (end_time - branch_start_time)
 
 
       prop_start_time = System.nanoTime
-      consistent = checkConsistencyAfterAssignment(literal.v.asInstanceOf[PVar])
+      consistent = checkConsistencyAfterAssignment(v)
       end_time = System.nanoTime
       helper.propTime += (end_time - prop_start_time)
-      //infoShow()
+      //            infoShow()
 
       if (consistent && I.full()) {
-        //        //成功再加0.5
-        //        for (c <- bitSrb(literal.v.name)) {
-        //          c.assignedCount += 0.5
-        //        }
-//        I.show()
+        I.show()
+        // 若想求出所有解，则将consistent设置为false，且不返回
+        //        consistent = false
         end_time = System.nanoTime
         helper.time = end_time - start_time
         return
@@ -264,16 +278,16 @@ abstract class IPSolver(xm: XModel, parallelism: Int, propagatorName: String, va
 
       while (!consistent && !I.empty()) {
         back_start_time = System.nanoTime
-        literal = I.pop()
-        //println("pop:" + literal.toString())
+        val (v, a) = I.pop()
+        //        println(s"pop:(${v.id}, ${a})")
         backLevel()
-        literal.v.remove(literal.a)
-        remove(literal)
+        v.remove(a)
+        remove(v, a)
         end_time = System.nanoTime
         helper.backTime += (end_time - back_start_time)
 
         prop_start_time = System.nanoTime
-        consistent = !literal.v.isEmpty() && checkConsistencyAfterRefutation(literal.v.asInstanceOf[PVar])
+        consistent = !v.isEmpty() && checkConsistencyAfterRefutation(v)
         end_time = System.nanoTime
         helper.propTime += (end_time - prop_start_time)
         //infoShow()
@@ -288,52 +302,11 @@ abstract class IPSolver(xm: XModel, parallelism: Int, propagatorName: String, va
     return
   }
 
-  def shutdown(): Unit = {
-    helper.pool.shutdown()
-  }
-
   def initialPropagate(): Boolean
 
   def checkConsistencyAfterAssignment(ix: PVar): Boolean
 
   def checkConsistencyAfterRefutation(ix: PVar): Boolean
-
-  //修改levelvdense
-  def selectLiteral(): Literal[PVar] = {
-    var mindmdd = Double.MaxValue
-    var minvid = 0
-
-    var i = helper.level
-    while (i < numVars) {
-      val vid = levelvdense(i)
-      val v = vars(vid)
-      var ddeg: Double = 0L
-
-      for (c <- subscription(vid)) {
-        if (c.assignedCount + 1 < c.arity) {
-          ddeg += 1
-        }
-      }
-
-      if (ddeg == 0) {
-        //                val a = v.minValue()
-        //        //println(s"(${v.id}, ${a}): ${v.simpleMask().toBinaryString}")
-        return new Literal(v, v.minValue())
-        //        return new Literal(v, v.dense(0))
-      }
-
-      val sizeD: Double = v.size.toDouble
-      val dmdd = sizeD / ddeg
-
-      if (dmdd < mindmdd) {
-        minvid = vid
-        mindmdd = dmdd
-      }
-      i += 1
-    }
-
-    return new Literal(vars(minvid), vars(minvid).minValue())
-  }
 
   def newLevel(): Unit = {
     helper.level += 1
@@ -341,15 +314,9 @@ abstract class IPSolver(xm: XModel, parallelism: Int, propagatorName: String, va
       v.newLevel()
     }
 
-    //    helper.searchState = 1
-    //    Cevt.clear()
     for (c <- tabs) {
       c.newLevel()
-      //      Cevt.add(c)
-      //      helper.pool.submit(c)
     }
-    //    helper.pool.invokeAll(Cevt)
-    //    //println("check newLevel")
   }
 
   def backLevel(): Unit = {
@@ -358,49 +325,41 @@ abstract class IPSolver(xm: XModel, parallelism: Int, propagatorName: String, va
       v.backLevel()
     }
 
-    //        helper.searchState = 3
-    //        Cevt.clear()
-
     for (c <- tabs) {
-      //            Cevt.add(c)
       c.backLevel()
     }
-
-    //        helper.pool.invokeAll(Cevt)
-    //println("check backLevel")
   }
 
-  def remove(literal: Literal[PVar]): Unit = {
+  def remove(v: PVar, a: Int): Unit = {
     //约束的已实例化变量个数减1
-    for (c <- subscription(literal.v.id)) {
+    for (c <- subscription(v.id)) {
       //      if (c.assignedCount.toInt != c.assignedCount)
       //        c.assignedCount -= 0.5
       //      else
       c.assignedCount -= 1
     }
-    literal.v.remove(literal.a)
+    v.remove(a)
     helper.globalStamp += 1
-    helper.varStamp(literal.v.id) = helper.globalStamp
+    helper.varStamp(v.id) = helper.globalStamp
   }
 
-  def bind(literal: Literal[PVar]): Unit = {
+  def bind(v: PVar, a: Int): Unit = {
     //在稀疏集上交换变量
-    val minvi = levelvsparse(literal.v.id)
-    val a = levelvdense(helper.level - 1)
+    val minvi = levelvsparse(v.id)
+    val vid = levelvdense(helper.level - 1)
     levelvdense(helper.level - 1) = levelvdense(minvi)
 
-    levelvsparse(a) = minvi
+    levelvsparse(vid) = minvi
     levelvsparse(levelvdense(minvi)) = helper.level - 1
 
-    levelvdense(minvi) = a
+    levelvdense(minvi) = vid
 
-    for (c <- subscription(literal.v.id)) {
+    for (c <- subscription(v.id)) {
       c.assignedCount += 1
     }
-    //    //println(s"bind literal is ${literal.a}")
-    literal.v.bind(literal.a)
+    v.bind(a)
     helper.globalStamp += 1
-    helper.varStamp(literal.v.id) = helper.globalStamp
+    helper.varStamp(v.id) = helper.globalStamp
   }
 
   def infoShow(): Unit = {

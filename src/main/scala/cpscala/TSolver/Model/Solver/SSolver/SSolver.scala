@@ -1,8 +1,9 @@
 package cpscala.TSolver.Model.Solver.SSolver
 
 import cpscala.TSolver.CpUtil.SearchHelper.SearchHelper
-import cpscala.TSolver.CpUtil.{AssignedStack, CoarseQueue, Literal}
+import cpscala.TSolver.CpUtil.{AssignedStack, CoarseQueue}
 import cpscala.TSolver.Model.Constraint.SConstraint._
+import cpscala.TSolver.Model.Heuristic.{HeuDomDdeg, HeuDomWdeg, Heuristic}
 import cpscala.TSolver.Model.Variable._
 import cpscala.XModel.{XModel, XTab, XVar}
 
@@ -12,7 +13,7 @@ abstract class SSolver(xm: XModel, propagatorName: String, varType: String, heuN
   val numVars: Int = xm.num_vars
   val numTabs: Int = xm.num_tabs
   val vars = new Array[Var](numVars)
-  val tabs = new Array[Propagator](numTabs)
+  val tabs = new Array[Propagator[Var]](numTabs)
   val helper = new SearchHelper(numVars, numTabs)
 
   //记录已赋值的变量
@@ -23,10 +24,13 @@ abstract class SSolver(xm: XModel, propagatorName: String, varType: String, heuN
   //  val levelcdense = Array.range(0, numTabs)
   //  val clevel = Array.fill(numVars + 1)(-1)
 
-  val subscription = new Array[ArrayBuffer[Propagator]](numVars)
+  val subscription = new Array[ArrayBuffer[Propagator[Var]]](numVars)
   for (i <- 0 until numVars) {
-    subscription(i) = new ArrayBuffer[Propagator]()
+    subscription(i) = new ArrayBuffer[Propagator[Var]]()
   }
+
+  // 启发式对象
+  var heuristic: Heuristic[Var] = null
 
   // 初始化变量
   varType match {
@@ -159,6 +163,17 @@ abstract class SSolver(xm: XModel, propagatorName: String, varType: String, heuN
     }
   }
 
+  // 初始化启发式类
+  heuName match {
+    case "Dom/Ddeg" => {
+      heuristic = new HeuDomDdeg[Var, Propagator[Var]](numVars, vars, subscription)
+    }
+
+    case "Dom/Wdeg" => {
+      heuristic = new HeuDomWdeg[Var, Propagator[Var]](numVars, vars, subscription)
+    }
+  }
+
   val Q = new CoarseQueue[Var](numVars)
   var Y_evt: ArrayBuffer[Var] = new ArrayBuffer[Var](xm.max_arity)
 
@@ -188,8 +203,6 @@ abstract class SSolver(xm: XModel, propagatorName: String, varType: String, heuN
       return
     }
 
-    var literal: Literal[Var] = null
-
     while (!finished) {
       end_time = System.nanoTime
       helper.time = end_time - start_time
@@ -197,40 +210,35 @@ abstract class SSolver(xm: XModel, propagatorName: String, varType: String, heuN
         return
       }
 
-//      if (helper.nodes == 4) {
-//        infoShow()
-//        return
-//      }
+      //      if (helper.nodes == 4) {
+      //        infoShow()
+      //        return
+      //      }
 
-      helper.nodes += 1
-      //println("nodes: " + helper.nodes)
-      infoShow()
+//      infoShow()
       branch_start_time = System.nanoTime
-      literal = selectLiteral()
+      val (v, a) = heuristic.selectLiteral(helper.level, levelvdense)
       newLevel()
-      I.push(literal)
-      //println("push:" + literal.toString())
-      bind(literal)
+      helper.nodes += 1
+//      println("nodes: " + helper.nodes)
 
-
+      I.push(v, a)
+//      println(s"push:(${v.id}, ${a})")
+      bind(v, a)
       end_time = System.nanoTime
       helper.branchTime += (end_time - branch_start_time)
 
 
       prop_start_time = System.nanoTime
-      consistent = checkConsistencyAfterAssignment(literal.v)
+      consistent = checkConsistencyAfterAssignment(v)
       end_time = System.nanoTime
       helper.propTime += (end_time - prop_start_time)
-//      infoShow()
+//            infoShow()
 
       if (consistent && I.full()) {
-        //        //成功再加0.5
-        //        for (c <- bitSrb(literal.v.name)) {
-        //          c.assignedCount += 0.5
-        //        }
         I.show()
         // 若想求出所有解，则将consistent设置为false，且不返回
-//        consistent = false
+        //        consistent = false
         end_time = System.nanoTime
         helper.time = end_time - start_time
         return
@@ -238,16 +246,16 @@ abstract class SSolver(xm: XModel, propagatorName: String, varType: String, heuN
 
       while (!consistent && !I.empty()) {
         back_start_time = System.nanoTime
-        literal = I.pop()
-        //println("pop:" + literal.toString())
+        val (v, a) = I.pop()
+//        println(s"pop:(${v.id}, ${a})")
         backLevel()
-        literal.v.remove(literal.a)
-        remove(literal)
+        v.remove(a)
+        remove(v, a)
         end_time = System.nanoTime
         helper.backTime += (end_time - back_start_time)
 
         prop_start_time = System.nanoTime
-        consistent = !literal.v.isEmpty() && checkConsistencyAfterRefutation(literal.v)
+        consistent = !v.isEmpty() && checkConsistencyAfterRefutation(v)
         end_time = System.nanoTime
         helper.propTime += (end_time - prop_start_time)
         //infoShow()
@@ -267,42 +275,6 @@ abstract class SSolver(xm: XModel, propagatorName: String, varType: String, heuN
   def checkConsistencyAfterAssignment(ix: Var): Boolean
 
   def checkConsistencyAfterRefutation(ix: Var): Boolean
-
-  //修改levelvdense
-  def selectLiteral(): Literal[Var] = {
-    var mindmdd = Double.MaxValue
-    var minvid = levelvdense(helper.level)
-
-    var i = helper.level
-    while (i < numVars) {
-      val vid = levelvdense(i)
-      val v = vars(vid)
-      var ddeg: Double = 0L
-
-      for (c <- subscription(vid)) {
-        if (c.assignedCount + 1 < c.arity) {
-          ddeg += 1
-        }
-      }
-
-      if (ddeg == 0 && mindmdd == Double.MaxValue) {
-        minvid = vid
-      } else {
-        val sizeD: Double = v.size.toDouble
-        val dmdd = sizeD / ddeg
-
-        // 变量论域若恰好为1，但又未赋值，则应先考虑论域大小大于1的变量，以尽早传播
-        if (sizeD > 1 && dmdd < mindmdd) {
-          minvid = vid
-          mindmdd = dmdd
-        }
-      }
-
-      i += 1
-    }
-
-    return new Literal(vars(minvid), vars(minvid).minValue())
-  }
 
   def newLevel(): Unit = {
     helper.level += 1
@@ -325,42 +297,41 @@ abstract class SSolver(xm: XModel, propagatorName: String, varType: String, heuN
     }
   }
 
-  def remove(literal: Literal[Var]): Unit = {
+  def remove(v: Var, a: Int): Unit = {
     //约束的已实例化变量个数减1
-    for (c <- subscription(literal.v.id)) {
+    for (c <- subscription(v.id)) {
       //      if (c.assignedCount.toInt != c.assignedCount)
       //        c.assignedCount -= 0.5
       //      else
       c.assignedCount -= 1
     }
-    literal.v.remove(literal.a)
+    v.remove(a)
     helper.globalStamp += 1
-    helper.varStamp(literal.v.id) = helper.globalStamp
+    helper.varStamp(v.id) = helper.globalStamp
   }
 
-  def bind(literal: Literal[Var]): Unit = {
+  def bind(v: Var, a: Int): Unit = {
     //在稀疏集上交换变量
-    val minvi = levelvsparse(literal.v.id)
-    val a = levelvdense(helper.level - 1)
+    val minvi = levelvsparse(v.id)
+    val vid = levelvdense(helper.level - 1)
     levelvdense(helper.level - 1) = levelvdense(minvi)
 
-    levelvsparse(a) = minvi
+    levelvsparse(vid) = minvi
     levelvsparse(levelvdense(minvi)) = helper.level - 1
 
-    levelvdense(minvi) = a
+    levelvdense(minvi) = vid
 
-    for (c <- subscription(literal.v.id)) {
+    for (c <- subscription(v.id)) {
       c.assignedCount += 1
     }
-    //    //println(s"bind literal is ${literal.a}")
-    literal.v.bind(literal.a)
+    v.bind(a)
     helper.globalStamp += 1
-    helper.varStamp(literal.v.id) = helper.globalStamp
+    helper.varStamp(v.id) = helper.globalStamp
   }
 
   def infoShow(): Unit = {
     for (x <- vars) {
-      //println(s"     var:${x.id} size:${x.size()}")
+      println(s"     var:${x.id} size:${x.size()}")
     }
   }
 

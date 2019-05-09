@@ -5,6 +5,7 @@ import java.util.concurrent.atomic.{AtomicBoolean, AtomicLong, AtomicLongArray}
 
 import cpscala.TSolver.Model.Constraint.IPbitConstraint.IPbitPropagator
 import cpscala.TSolver.CpUtil.{Constants, INDEX}
+import cpscala.TSolver.Model.Variable.PVar
 
 import scala.collection.mutable.ArrayBuffer
 

@@ -1,22 +1,14 @@
 package cpscala.TSolver.Model.Constraint.IPConstraint
 
 import java.util.concurrent.Callable
-import java.util.concurrent.atomic.AtomicBoolean
 
+import cpscala.TSolver.Model.Constraint.SConstraint.Propagator
 import cpscala.TSolver.Model.Variable.PVar
 
-abstract class IPPropagator extends Callable[Boolean] {
-  val id: Int
-  val arity: Int
-  val scope: Array[PVar]
-  var level = 0
-  var assignedCount = 0
+abstract class IPPropagator extends Propagator[PVar] with Callable[Boolean] {
 
-  def setup(): Unit = ???
+
 
   def propagate(): Boolean
 
-  def newLevel(): Unit
-
-  def backLevel(): Unit
 }

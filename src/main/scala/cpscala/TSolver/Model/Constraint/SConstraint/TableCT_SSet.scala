@@ -6,7 +6,7 @@ import cpscala.TSolver.Model.Variable.Var
 
 import scala.collection.mutable.ArrayBuffer
 
-class TableCT_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[Var], val tuples: Array[Array[Int]], val helper: SearchHelper) extends Propagator {
+class TableCT_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[Var], val tuples: Array[Array[Int]], val helper: SearchHelper) extends Propagator[Var] {
   val currTab = new RSBitSet(id, tuples.length, num_vars)
   val supports = new Array[Array[Array[Long]]](arity)
   val num_bit = currTab.num_bit
@@ -92,6 +92,7 @@ class TableCT_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope: Ar
 
       //传播失败
       if (currTab.isEmpty()) {
+        failWeight += 1
         //println(s"update faild!! cid: ${id}")
         return false
       }
@@ -137,6 +138,7 @@ class TableCT_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope: Ar
 
         y += v
         if (v.isEmpty()) {
+          failWeight += 1
           //println(s"filter faild!! cid: ${id}, vid: ${v.id}")
           return false
         }

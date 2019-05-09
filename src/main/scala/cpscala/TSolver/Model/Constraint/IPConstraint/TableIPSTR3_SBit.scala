@@ -48,7 +48,7 @@ class TableIPSTR3_SBit(val id: Int, val arity: Int, val numVars: Int, val scope:
   // 为true说明表约束初始化完成，可以进行初始删值
   private[this] var isInitial = false
 
-  override def setup(): Unit = {
+  override def setup(): Boolean = {
 
     if (!isInitial) {
 
@@ -102,6 +102,8 @@ class TableIPSTR3_SBit(val id: Int, val arity: Int, val numVars: Int, val scope:
       }
       // 表约束初始化完成
       isInitial = true
+
+      return true
     }
     else {
       //      println(s"c_id: ${id} initial delete value==========================>")
@@ -112,7 +114,7 @@ class TableIPSTR3_SBit(val id: Int, val arity: Int, val numVars: Int, val scope:
         if (v.submitMask(localMask(i))) {
           if (v.isEmpty()) {
             helper.isConsistent = false
-            return
+            return false
           }
         }
 
@@ -126,6 +128,7 @@ class TableIPSTR3_SBit(val id: Int, val arity: Int, val numVars: Int, val scope:
         i += 1
       }
     }
+    return true
   }
 
   def propagate(): Boolean = {
@@ -211,6 +214,7 @@ class TableIPSTR3_SBit(val id: Int, val arity: Int, val numVars: Int, val scope:
               //println(s"       cons: ${id}  var: ${v.id}  remove new value: ${value}")
               if (v.isEmpty()) {
                 helper.isConsistent = false
+                failWeight += 1
                 return false
               }
             }

@@ -118,6 +118,7 @@ class TableIPSTR2_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scop
         if (v.simpleMask() == 0L) {
           //          println(s"fail: cid: ${id}, vid:${v.id}")
           helper.isConsistent = false
+          failWeight += 1
           return false
         }
 

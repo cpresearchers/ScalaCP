@@ -52,7 +52,7 @@ class TableIPSTRbit_SSBit(val id: Int, val arity: Int, val num_vars: Int, val sc
   // 为true说明初始化数据结构完成，可以进行初始删值
   private[this] var isInitial = false
 
-  override def setup(): Unit = {
+  override def setup(): Boolean = {
 
     if (!isInitial) {
       //println("c_id:" + id + " ===============>")
@@ -126,6 +126,8 @@ class TableIPSTRbit_SSBit(val id: Int, val arity: Int, val num_vars: Int, val sc
       }
       // 初始化数据结构完成
       isInitial = true
+
+      return true
     }
     else {
       var i = 0
@@ -135,13 +137,14 @@ class TableIPSTRbit_SSBit(val id: Int, val arity: Int, val num_vars: Int, val sc
         x.submitMask(localMask(i))
         if (x.isEmpty()) {
           helper.isConsistent = false
-          return
+          return false
         }
         // 更新变量在该约束中的Mask（这里不能更新oldMasks，因为还未传播）
         lastMask(i) = localMask(i)
         i += 1
       }
     }
+    return true
   }
 
   // 删除无效元组
@@ -245,6 +248,7 @@ class TableIPSTRbit_SSBit(val id: Int, val arity: Int, val num_vars: Int, val sc
           v.submitMask(localMask(i))
           if (v.isEmpty()) {
             helper.isConsistent = false
+            failWeight += 1
             return false
           }
           // 更新oldMasks

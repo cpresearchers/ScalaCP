@@ -1,14 +1,15 @@
 package cpscala.TSolver.Model.Solver.DSPSolver
 
 import cpscala.TSolver.CpUtil.SearchHelper.DSPSearchHelper
-import cpscala.TSolver.CpUtil.{AssignedStack, Literal}
+import cpscala.TSolver.CpUtil.{AssignedStack}
 import cpscala.TSolver.Model.Constraint.DSPConstraint._
+import cpscala.TSolver.Model.Heuristic.{HeuDomDdeg, HeuDomWdeg, Heuristic}
 import cpscala.TSolver.Model.Variable.{PVar, SafeBitSetVar, SafeSimpleBitVar}
 import cpscala.XModel.{XModel, XTab, XVar}
 
 import scala.collection.mutable.ArrayBuffer
 
-abstract class DSPSolver(xm: XModel, val parallelism: Int, propagatorName: String, varType: String, heu_name: String) {
+abstract class DSPSolver(xm: XModel, val parallelism: Int, propagatorName: String, varType: String, heuName: String) {
   val vars = new Array[PVar](xm.num_vars)
   val tabs = new Array[DSPPropagator](xm.num_tabs)
   val numVars = xm.num_vars
@@ -21,6 +22,8 @@ abstract class DSPSolver(xm: XModel, val parallelism: Int, propagatorName: Strin
   val levelvdense = Array.range(0, numVars)
   val I = new AssignedStack[PVar](numVars)
 
+  // 启发式对象
+  var heuristic: Heuristic[PVar] = null
 
   // 初始化变量
 
@@ -101,6 +104,17 @@ abstract class DSPSolver(xm: XModel, val parallelism: Int, propagatorName: Strin
     }
   }
 
+  // 初始化启发式对象
+  heuName match {
+    case "Dom/Ddeg" => {
+      heuristic = new HeuDomDdeg[PVar, DSPPropagator](numVars, vars, helper.subscription)
+    }
+
+    case "Dom/Wdeg" => {
+      heuristic = new HeuDomWdeg[PVar, DSPPropagator](numVars, vars, helper.subscription)
+    }
+  }
+
   var start_time = 0L
   var branch_start_time = 0L
   var prop_start_time = 0L
@@ -111,22 +125,16 @@ abstract class DSPSolver(xm: XModel, val parallelism: Int, propagatorName: Strin
     helper.pool.shutdown()
   }
 
-  def initialPropagate(): Boolean
-
-  def checkConsistencyAfterAssignment(ix: PVar): Boolean
-
-  def checkConsistencyAfterRefutation(ix: PVar): Boolean
-
   def search(timeLimit: Long): Unit = {
     var finished = false
-    //infoShow()
+
     //initial propagate
-    //    //println("-----initial-----")
     var consistent = initialPropagate()
     end_time = System.nanoTime
     helper.propTime += (end_time - prop_start_time)
-//    infoShow()
-//        return
+
+    //infoShow()
+    //    return
 
     if (!consistent) {
       finished = false
@@ -134,10 +142,7 @@ abstract class DSPSolver(xm: XModel, val parallelism: Int, propagatorName: Strin
       helper.time = end_time - start_time
       return
     }
-    //
-    //
-    var literal: Literal[PVar] = null
-    //
+
     while (!finished) {
       end_time = System.nanoTime
       helper.time = end_time - start_time
@@ -145,37 +150,35 @@ abstract class DSPSolver(xm: XModel, val parallelism: Int, propagatorName: Strin
         return
       }
 
-      //      if (helper.nodes == 42) {
+      //      if (helper.nodes == 4) {
       //        infoShow()
       //        return
       //      }
 
+      //      infoShow()
       branch_start_time = System.nanoTime
-      literal = selectLiteral()
-      //println("new level --------------------------------------------")
-      //infoShow()
+      val (v, a) = heuristic.selectLiteral(helper.level, levelvdense)
       newLevel()
       helper.nodes += 1
-      //println("nodes: " + helper.nodes)
+      //      println("nodes: " + helper.nodes)
 
-      I.push(literal)
-      //println("push:" + literal.toString())
-      bind(literal)
+      I.push(v, a)
+      //      println(s"push:(${v.id}, ${a})")
+      bind(v, a)
       end_time = System.nanoTime
       helper.branchTime += (end_time - branch_start_time)
 
+
       prop_start_time = System.nanoTime
-      consistent = checkConsistencyAfterAssignment(literal.v)
+      consistent = checkConsistencyAfterAssignment(v)
       end_time = System.nanoTime
       helper.propTime += (end_time - prop_start_time)
-      //      infoShow()
+      //            infoShow()
 
       if (consistent && I.full()) {
-        //        //成功再加0.5
-        //        for (c <- bitSrb(literal.v.name)) {
-        //          c.assignedCount += 0.5
-        //        }
-//        I.show()
+        I.show()
+        // 若想求出所有解，则将consistent设置为false，且不返回
+        //        consistent = false
         end_time = System.nanoTime
         helper.time = end_time - start_time
         return
@@ -183,19 +186,19 @@ abstract class DSPSolver(xm: XModel, val parallelism: Int, propagatorName: Strin
 
       while (!consistent && !I.empty()) {
         back_start_time = System.nanoTime
-        literal = I.pop()
-        //println("pop:" + literal.toString())
+        val (v, a) = I.pop()
+        //        println(s"pop:(${v.id}, ${a})")
         backLevel()
-        literal.v.remove(literal.a)
-        remove(literal)
+        v.remove(a)
+        remove(v, a)
         end_time = System.nanoTime
         helper.backTime += (end_time - back_start_time)
 
         prop_start_time = System.nanoTime
-        consistent = !literal.v.isEmpty() && checkConsistencyAfterRefutation(literal.v)
+        consistent = !v.isEmpty() && checkConsistencyAfterRefutation(v)
         end_time = System.nanoTime
         helper.propTime += (end_time - prop_start_time)
-        //        infoShow()
+        //infoShow()
       }
 
       if (!consistent) {
@@ -207,45 +210,11 @@ abstract class DSPSolver(xm: XModel, val parallelism: Int, propagatorName: Strin
     return
   }
 
-  //修改levelvdense
-  def selectLiteral(): Literal[PVar] = {
-    var mindmdd = Double.MaxValue
-    var minv: PVar = null
+  def initialPropagate(): Boolean
 
-    var i = helper.level
-    while (i < numVars) {
-      val vid = levelvdense(i)
-      val v = vars(vid)
-      var ddeg: Double = 0L
+  def checkConsistencyAfterAssignment(ix: PVar): Boolean
 
-      for (c <- helper.subscription(vid)) {
-        if (c.assignedCount + 1 < c.arity) {
-          ddeg += 1
-        }
-      }
-
-      if (ddeg == 0) {
-        //        val a = v.minValue()
-        //        ////println(s"(${v.id}, ${a}): ${v.simpleMask().toBinaryString}")
-        return new Literal(v, v.minValue())
-        //        return new Literal(v, v.dense(0))
-      }
-
-      val sizeD: Double = v.size.toDouble
-      val dmdd = sizeD / ddeg
-
-      if (dmdd < mindmdd) {
-        minv = v
-        mindmdd = dmdd
-      }
-      i += 1
-    }
-
-    //    val a = minv.minValue()
-    //    ////println(s"(${minv.id}, ${a}): ${minv.simpleMask().toBinaryString}")
-    return new Literal(minv, minv.minValue())
-    //    return new Literal(minv, minv.dense(0))
-  }
+  def checkConsistencyAfterRefutation(ix: PVar): Boolean
 
   def newLevel(): Unit = {
     helper.level += 1
@@ -267,36 +236,32 @@ abstract class DSPSolver(xm: XModel, val parallelism: Int, propagatorName: Strin
     }
   }
 
-  def remove(literal: Literal[PVar]): Unit = {
+  def remove(v: PVar, a: Int): Unit = {
     //约束的已实例化变量个数减1
-    for (c <- helper.subscription(literal.v.id)) {
+    for (c <- helper.subscription(v.id)) {
       //      if (c.assignedCount.toInt != c.assignedCount)
       //        c.assignedCount -= 0.5
       //      else
       c.assignedCount -= 1
     }
-    literal.v.remove(literal.a)
-    //    helper.globalStamp += 1
-    //    helper.varStamp(literal.v.id) = helper.globalStamp
+    v.remove(a)
   }
 
-  def bind(literal: Literal[PVar]): Unit = {
+  def bind(v: PVar, a: Int): Unit = {
     //在稀疏集上交换变量
-    val minvi = levelvsparse(literal.v.id)
-    val a = levelvdense(helper.level - 1)
+    val minvi = levelvsparse(v.id)
+    val vid = levelvdense(helper.level - 1)
     levelvdense(helper.level - 1) = levelvdense(minvi)
 
-    levelvsparse(a) = minvi
+    levelvsparse(vid) = minvi
     levelvsparse(levelvdense(minvi)) = helper.level - 1
 
-    levelvdense(minvi) = a
+    levelvdense(minvi) = vid
 
-    for (c <- helper.subscription(literal.v.id)) {
+    for (c <- helper.subscription(v.id)) {
       c.assignedCount += 1
     }
-    literal.v.bind(literal.a)
-    //    helper.globalStamp += 1
-    //    helper.varStamp(literal.v.id) = helper.globalStamp
+    v.bind(a)
   }
 
   def infoShow(): Unit = {

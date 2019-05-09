@@ -50,7 +50,7 @@ class TableIPSTRbit_SSet(val id: Int, val arity: Int, val num_vars: Int, val sco
   // 为true说明初始化数据结构完成，可以进行初始删值
   private[this] var isInitial = false
 
-  override def setup(): Unit = {
+  override def setup(): Boolean = {
 
     if (!isInitial) {
       //println("c_id:" + id + " ===============>")
@@ -118,6 +118,8 @@ class TableIPSTRbit_SSet(val id: Int, val arity: Int, val num_vars: Int, val sco
       }
       // 初始化数据结构完成
       isInitial = true
+
+      return true
     }
     else {
       //println("c_id:" + id + " ===============>")
@@ -139,10 +141,11 @@ class TableIPSTRbit_SSet(val id: Int, val arity: Int, val num_vars: Int, val sco
         i += 1
         if(x.isEmpty()) {
           helper.isConsistent = false
-          return
+          return false
         }
       }
     }
+    return true
   }
 
   // 删除无效元组
@@ -209,6 +212,7 @@ class TableIPSTRbit_SSet(val id: Int, val arity: Int, val num_vars: Int, val sco
 
             if (v.isEmpty()) {
               helper.isConsistent = false
+              failWeight += 1
               return false
             }
           } else {

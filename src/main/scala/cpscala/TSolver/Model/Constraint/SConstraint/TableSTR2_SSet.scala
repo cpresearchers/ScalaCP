@@ -6,7 +6,7 @@ import cpscala.TSolver.Model.Variable.Var
 
 import scala.collection.mutable.ArrayBuffer
 
-class TableSTR2_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[Var], val tuples: Array[Array[Int]], val helper: SearchHelper) extends Propagator {
+class TableSTR2_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[Var], val tuples: Array[Array[Int]], val helper: SearchHelper) extends Propagator[Var] {
   val position = Array.range(0, tuples.length)
 
   val levelLimits = Array.fill(num_vars + 1)(-1)
@@ -98,6 +98,7 @@ class TableSTR2_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope: 
       v.restrict()
       if (v.size == 0) {
         evt += v
+        failWeight += 1
         return false
       }
 

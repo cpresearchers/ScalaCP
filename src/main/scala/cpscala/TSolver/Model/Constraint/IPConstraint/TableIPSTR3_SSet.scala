@@ -37,7 +37,7 @@ class TableIPSTR3_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
   // 为true说明表约束初始化完成，可以进行初始删值
   private[this] var isInitial = false
 
-  override def setup(): Unit = {
+  override def setup(): Boolean = {
 
     if (!isInitial) {
 
@@ -83,6 +83,8 @@ class TableIPSTR3_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
       }
       // 表约束初始化完成
       isInitial = true
+
+      return true
     }
     // 初始删值
     else {
@@ -104,11 +106,12 @@ class TableIPSTR3_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
         }
         if (x.isEmpty()) {
           helper.isConsistent = false
-          return
+          return false
         }
         i += 1
       }
     }
+    return true
   }
 
 
@@ -177,6 +180,7 @@ class TableIPSTR3_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope
             helper.varStamp(v.id) = helper.globalStamp + 1
             if (v.isEmpty()) {
               helper.isConsistent = false
+              failWeight += 1
               return false
             }
           } else {

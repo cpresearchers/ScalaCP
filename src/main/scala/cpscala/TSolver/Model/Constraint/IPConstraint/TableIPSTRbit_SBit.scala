@@ -57,7 +57,7 @@ class TableIPSTRbit_SBit(val id: Int, val arity: Int, val num_vars: Int, val sco
   // 为true说明初始化数据结构完成，可以进行初始删值
   private[this] var isInitial = false
 
-  override def setup(): Unit = {
+  override def setup(): Boolean = {
 
     if (!isInitial) {
       //println("c_id:" + id + " ===============>")
@@ -134,6 +134,8 @@ class TableIPSTRbit_SBit(val id: Int, val arity: Int, val num_vars: Int, val sco
       }
       // 初始化数据结构完成
       isInitial = true
+
+      return true
     }
     else {
       var i = 0
@@ -143,7 +145,7 @@ class TableIPSTRbit_SBit(val id: Int, val arity: Int, val num_vars: Int, val sco
         v.submitMask(localMask(i))
         if (v.isEmpty()) {
           helper.isConsistent = false
-          return
+          return false
         }
 
         // 更新lastMask
@@ -156,6 +158,7 @@ class TableIPSTRbit_SBit(val id: Int, val arity: Int, val num_vars: Int, val sco
         i += 1
       }
     }
+    return true
   }
 
   // 删除无效元组
@@ -251,6 +254,7 @@ class TableIPSTRbit_SBit(val id: Int, val arity: Int, val num_vars: Int, val sco
           if (v.submitMask(localMask(i))) {
             if (v.isEmpty()) {
               helper.isConsistent = false
+              failWeight += 1
               return false
             }
             // 论域若被修改，则全局时间戳加1

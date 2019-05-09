@@ -3,14 +3,11 @@ package cpscala.TSolver.Model.Constraint.DSPConstraint
 import java.util.concurrent.atomic.{AtomicBoolean, AtomicInteger}
 import java.util.concurrent.locks.ReentrantLock
 
+import cpscala.TSolver.Model.Constraint.SConstraint.Propagator
 import cpscala.TSolver.Model.Variable.PVar
 
-abstract class DSPPropagator extends Runnable {
-  val id: Int
-  val arity: Int
-  val scope: Array[PVar]
-  var level = 0
-  var assignedCount = 0
+abstract class DSPPropagator extends Propagator[PVar] with Runnable {
+
   //  val loopContinue = new AtomicBoolean(false)
   var loopContinue: Boolean = false
   // 运行状态
@@ -24,15 +21,10 @@ abstract class DSPPropagator extends Runnable {
   val lock = new ReentrantLock()
   val isLock = new AtomicBoolean(false)
 
-  def setup(): Unit = ???
-
   def domainChanged(v: PVar, mask: Array[Long]): Boolean
 
   def domainChanged(v: PVar): Boolean
 
   def propagate(): Boolean
 
-  def newLevel(): Unit
-
-  def backLevel(): Unit
 }

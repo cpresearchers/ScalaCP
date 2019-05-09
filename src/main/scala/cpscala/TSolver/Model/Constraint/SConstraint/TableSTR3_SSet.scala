@@ -15,7 +15,7 @@ import scala.collection.{mutable => m}
   * 参考论文：2015_AI_STR3 A path-optimal filtering algorithm for table constraints
   * 参考OscaR的代码实现
   */
-class TableSTR3_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[Var], val tuples: Array[Array[Int]], val helper: SearchHelper) extends Propagator {
+class TableSTR3_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[Var], val tuples: Array[Array[Int]], val helper: SearchHelper) extends Propagator[Var] {
 
   // 子表，三维数组，第一维变量，第二维取值，第三维元组
   // 初始化变量时，其论域已经被序列化，诸如[0, 1, ..., var.size()]，所以可以直接用取值作为下标
@@ -180,6 +180,7 @@ class TableSTR3_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope: 
             evt += v
 
             if (v.isEmpty()) {
+              failWeight += 1
               //println(s"       var:${v.id} is empty")
               return false
             }

@@ -13,7 +13,7 @@ import scala.util.control.Breaks._
   * 在搜索过程中也采用STRbit维持网络GAC，
   */
 
-class TableSTRbit_Bit(val id: Int, val arity: Int, val numVars: Int, val scope: Array[Var], val tuples: Array[Array[Int]], val helper: SearchHelper) extends Propagator {
+class TableSTRbit_Bit(val id: Int, val arity: Int, val numVars: Int, val scope: Array[Var], val tuples: Array[Array[Int]], val helper: SearchHelper) extends Propagator[Var] {
 
   // 比特子表，三维数组，第一维变量，第二维取值，第三维元组
   // 初始化变量时，其论域已经被序列化，诸如[0, 1, ..., var.size()]，所以可以直接用取值作为下标
@@ -238,6 +238,7 @@ class TableSTRbit_Bit(val id: Int, val arity: Int, val numVars: Int, val scope: 
         }
         if (deleted) {
           if (v.isEmpty()) {
+            failWeight += 1
             return false
           }
           //更新lastMask
