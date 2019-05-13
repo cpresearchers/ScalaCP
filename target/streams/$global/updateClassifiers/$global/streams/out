@@ -1872,127 +1872,31 @@
 [debug] == resolving dependencies default#scalacp$sources;0.1->jline#jline;2.14.6 [scala-tool->master]
 [debug] 	resolved ivy file produced in cache
 [debug] :: downloading artifacts ::
-[debug] 	[NOT REQUIRED] net.sf.trove4j#core;3.1.0!core.jar(src)
-[debug] 	[NOT REQUIRED] org.scala-lang#scala-library;2.12.8!scala-library.jar(src)
-[debug] 	[NOT REQUIRED] javax.json#javax.json-api;1.1.2!javax.json-api.jar(src)
-[debug] 	[NOT REQUIRED] org.msgpack#msgpack-core;0.8.16!msgpack-core.jar(src)
 [debug] 	[NOT REQUIRED] org.xcsp#xcsp3-tools;1.1.0!xcsp3-tools.jar(src)
-[debug] no default ivy user dir defined: set to C:\Users\cpxiaozu-2\.ivy2
-[debug] no default ivy user dir defined: set to C:\Users\cpxiaozu-2\.ivy2
-[debug] no default ivy user dir defined: set to C:\Users\cpxiaozu-2\.ivy2
-[debug] no default ivy user dir defined: set to C:\Users\cpxiaozu-2\.ivy2
-[debug] no default ivy user dir defined: set to C:\Users\cpxiaozu-2\.ivy2
+[debug] 	[NOT REQUIRED] org.msgpack#msgpack-core;0.8.16!msgpack-core.jar(src)
 [debug] 	[NOT REQUIRED] com.alibaba#fastjson;1.2.57!fastjson.jar(src)
-[debug] no default ivy user dir defined: set to C:\Users\cpxiaozu-2\.ivy2
-[debug] including url: jar:file:/C:/Users/cpxiaozu-2/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-public.xml
-[debug] including url: jar:file:/C:/Users/cpxiaozu-2/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-public.xml
-[debug] including url: jar:file:/C:/Users/cpxiaozu-2/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-public.xml
-[debug] including url: jar:file:/C:/Users/cpxiaozu-2/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-public.xml
-[debug] including url: jar:file:/C:/Users/cpxiaozu-2/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-public.xml
-[debug] including url: jar:file:/C:/Users/cpxiaozu-2/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-public.xml
-[debug] no default cache defined: set to C:\Users\cpxiaozu-2\.ivy2\cache
-[debug] no default cache defined: set to C:\Users\cpxiaozu-2\.ivy2\cache
-[debug] no default cache defined: set to C:\Users\cpxiaozu-2\.ivy2\cache
-[debug] no default cache defined: set to C:\Users\cpxiaozu-2\.ivy2\cache
-[debug] no default cache defined: set to C:\Users\cpxiaozu-2\.ivy2\cache
-[debug] no default cache defined: set to C:\Users\cpxiaozu-2\.ivy2\cache
-[debug] including url: jar:file:/C:/Users/cpxiaozu-2/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-shared.xml
-[debug] including url: jar:file:/C:/Users/cpxiaozu-2/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-shared.xml
-[debug] including url: jar:file:/C:/Users/cpxiaozu-2/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-shared.xml
-[debug] including url: jar:file:/C:/Users/cpxiaozu-2/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-shared.xml
-[debug] including url: jar:file:/C:/Users/cpxiaozu-2/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-shared.xml
-[debug] including url: jar:file:/C:/Users/cpxiaozu-2/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-shared.xml
-[debug] including url: jar:file:/C:/Users/cpxiaozu-2/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-local.xml
-[debug] including url: jar:file:/C:/Users/cpxiaozu-2/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-local.xml
-[debug] including url: jar:file:/C:/Users/cpxiaozu-2/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-local.xml
-[debug] including url: jar:file:/C:/Users/cpxiaozu-2/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-local.xml
-[debug] including url: jar:file:/C:/Users/cpxiaozu-2/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-local.xml
-[debug] including url: jar:file:/C:/Users/cpxiaozu-2/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-local.xml
-[debug] including url: jar:file:/C:/Users/cpxiaozu-2/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-main-chain.xml
-[debug] including url: jar:file:/C:/Users/cpxiaozu-2/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-main-chain.xml
-[debug] including url: jar:file:/C:/Users/cpxiaozu-2/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-main-chain.xml
-[debug] including url: jar:file:/C:/Users/cpxiaozu-2/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-main-chain.xml
-[debug] including url: jar:file:/C:/Users/cpxiaozu-2/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-main-chain.xml
-[debug] including url: jar:file:/C:/Users/cpxiaozu-2/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-main-chain.xml
-[debug] including url: jar:file:/C:/Users/cpxiaozu-2/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-default-chain.xml
-[debug] including url: jar:file:/C:/Users/cpxiaozu-2/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-default-chain.xml
-[debug] including url: jar:file:/C:/Users/cpxiaozu-2/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-default-chain.xml
-[debug] including url: jar:file:/C:/Users/cpxiaozu-2/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-default-chain.xml
-[debug] including url: jar:file:/C:/Users/cpxiaozu-2/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-default-chain.xml
-[debug] including url: jar:file:/C:/Users/cpxiaozu-2/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-default-chain.xml
-[debug] settings loaded (47ms)
-[debug] 	default cache: C:\Users\cpxiaozu-2\.ivy2\cache
-[debug] 	default resolver: default
-[debug] 	-- 5 resolvers:
-[debug] 	shared [file]
-[debug] 	default [chain] [local, main]
-[debug] settings loaded (47ms)
-[debug] 	public [ibiblio]
-[debug] 	default cache: C:\Users\cpxiaozu-2\.ivy2\cache
-[debug] 	default resolver: default
-[debug] 	-- 5 resolvers:
-[debug] 	shared [file]
-[debug] 	default [chain] [local, main]
-[debug] 	main [chain] [shared, public]
-[debug] 	public [ibiblio]
-[debug] 	local [file]
-[debug] 	main [chain] [shared, public]
-[debug] 	local [file]
-[debug] settings loaded (47ms)
-[debug] 	default cache: C:\Users\cpxiaozu-2\.ivy2\cache
-[debug] 	default resolver: default
-[debug] 	-- 5 resolvers:
-[debug] 	shared [file]
-[debug] 	default [chain] [local, main]
-[debug] 	public [ibiblio]
-[debug] 	main [chain] [shared, public]
-[debug] 	local [file]
-[debug] settings loaded (47ms)
-[debug] 	default cache: C:\Users\cpxiaozu-2\.ivy2\cache
-[debug] 	default resolver: default
-[debug] 	-- 5 resolvers:
-[debug] 	shared [file]
-[debug] 	default [chain] [local, main]
-[debug] 	public [ibiblio]
-[debug] 	main [chain] [shared, public]
-[debug] 	local [file]
-[debug] settings loaded (47ms)
-[debug] 	default cache: C:\Users\cpxiaozu-2\.ivy2\cache
-[debug] 	default resolver: default
-[debug] 	-- 5 resolvers:
-[debug] 	shared [file]
-[debug] 	default [chain] [local, main]
-[debug] 	public [ibiblio]
-[debug] 	main [chain] [shared, public]
-[debug] 	local [file]
+[debug] 	[NOT REQUIRED] net.sf.trove4j#core;3.1.0!core.jar(src)
+[debug] 	[NOT REQUIRED] javax.json#javax.json-api;1.1.2!javax.json-api.jar(src)
+[debug] 	[NOT REQUIRED] org.scala-lang#scala-library;2.12.8!scala-library.jar(src)
+[debug] 	[NOT REQUIRED] org.scala-lang.modules#scala-xml_2.12;1.0.6!scala-xml_2.12.jar(src)
+[debug] 	[NOT REQUIRED] junit#junit;4.12!junit.jar(src)
+[debug] 	[NOT REQUIRED] org.glassfish#javax.json;1.1.2!javax.json.jar(src)
 [debug] 	[NOT REQUIRED] org.hamcrest#hamcrest-core;1.3!hamcrest-core.jar(src)
 [debug] 	[NOT REQUIRED] com.github.tototoshi#scala-csv_2.12;1.3.5!scala-csv_2.12.jar(src)
-[debug] 	[NOT REQUIRED] junit#junit;4.12!junit.jar(src)
-[debug] 	[NOT REQUIRED] org.scala-lang.modules#scala-xml_2.12;1.0.6!scala-xml_2.12.jar(src)
-[debug] 	[NOT REQUIRED] org.glassfish#javax.json;1.1.2!javax.json.jar(src)
-[debug] settings loaded (47ms)
-[debug] 	default cache: C:\Users\cpxiaozu-2\.ivy2\cache
-[debug] 	default resolver: default
-[debug] 	-- 5 resolvers:
-[debug] 	shared [file]
-[debug] 	default [chain] [local, main]
-[debug] 	public [ibiblio]
-[debug] 	main [chain] [shared, public]
+[debug] 	[NOT REQUIRED] org.scala-lang.modules#scala-xml_2.12.0-RC1;1.0.6!scala-xml_2.12.0-RC1.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-lang#scala-compiler;2.12.8!scala-compiler.jar(src)
-[debug] 	local [file]
 [debug] 	[NOT REQUIRED] org.scala-lang#scala-reflect;2.12.8!scala-reflect.jar(src)
 [debug] 	[NOT REQUIRED] jline#jline;2.14.6!jline.jar(src)
-[debug] 	[NOT REQUIRED] org.scala-lang.modules#scala-xml_2.12.0-RC1;1.0.6!scala-xml_2.12.0-RC1.jar(src)
-[debug] :: resolution report :: resolve 1457ms :: artifacts dl 47ms
-[debug] 	report for default#scalacp$sources;0.1 compile produced in C:\Users\cpxiaozu-2\IdeaProjects\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp$sources-compile.xml
-[debug] 	report for default#scalacp$sources;0.1 runtime produced in C:\Users\cpxiaozu-2\IdeaProjects\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp$sources-runtime.xml
-[debug] 	report for default#scalacp$sources;0.1 test produced in C:\Users\cpxiaozu-2\IdeaProjects\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp$sources-test.xml
-[debug] 	report for default#scalacp$sources;0.1 provided produced in C:\Users\cpxiaozu-2\IdeaProjects\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp$sources-provided.xml
-[debug] 	report for default#scalacp$sources;0.1 optional produced in C:\Users\cpxiaozu-2\IdeaProjects\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp$sources-optional.xml
-[debug] 	report for default#scalacp$sources;0.1 compile-internal produced in C:\Users\cpxiaozu-2\IdeaProjects\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp$sources-compile-internal.xml
-[debug] 	report for default#scalacp$sources;0.1 runtime-internal produced in C:\Users\cpxiaozu-2\IdeaProjects\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp$sources-runtime-internal.xml
-[debug] 	report for default#scalacp$sources;0.1 test-internal produced in C:\Users\cpxiaozu-2\IdeaProjects\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp$sources-test-internal.xml
-[debug] 	report for default#scalacp$sources;0.1 plugin produced in C:\Users\cpxiaozu-2\IdeaProjects\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp$sources-plugin.xml
-[debug] 	report for default#scalacp$sources;0.1 pom produced in C:\Users\cpxiaozu-2\IdeaProjects\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp$sources-pom.xml
-[debug] 	report for default#scalacp$sources;0.1 scala-tool produced in C:\Users\cpxiaozu-2\IdeaProjects\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp$sources-scala-tool.xml
-[debug] 	resolve done (1457ms resolve - 47ms download)
+[debug] :: resolution report :: resolve 214ms :: artifacts dl 4ms
+[debug] 	report for default#scalacp$sources;0.1 compile produced in D:\java\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp$sources-compile.xml
+[debug] 	report for default#scalacp$sources;0.1 runtime produced in D:\java\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp$sources-runtime.xml
+[debug] 	report for default#scalacp$sources;0.1 test produced in D:\java\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp$sources-test.xml
+[debug] 	report for default#scalacp$sources;0.1 provided produced in D:\java\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp$sources-provided.xml
+[debug] 	report for default#scalacp$sources;0.1 optional produced in D:\java\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp$sources-optional.xml
+[debug] 	report for default#scalacp$sources;0.1 compile-internal produced in D:\java\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp$sources-compile-internal.xml
+[debug] 	report for default#scalacp$sources;0.1 runtime-internal produced in D:\java\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp$sources-runtime-internal.xml
+[debug] 	report for default#scalacp$sources;0.1 test-internal produced in D:\java\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp$sources-test-internal.xml
+[debug] 	report for default#scalacp$sources;0.1 plugin produced in D:\java\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp$sources-plugin.xml
+[debug] 	report for default#scalacp$sources;0.1 pom produced in D:\java\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp$sources-pom.xml
+[debug] 	report for default#scalacp$sources;0.1 scala-tool produced in D:\java\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp$sources-scala-tool.xml
+[debug] 	resolve done (214ms resolve - 4ms download)

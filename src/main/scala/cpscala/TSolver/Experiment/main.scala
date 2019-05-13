@@ -5,6 +5,7 @@ import cpscala.TSolver.Model.Constraint.SConstraint.TableCT_Bit
 import cpscala.TSolver.Model.Solver.DSPSolver._
 import cpscala.TSolver.Model.Solver.IPSolver._
 import cpscala.TSolver.Model.Solver.IPbitSolver._
+import cpscala.TSolver.Model.Solver.PWSolver.PWCoarseSolver
 import cpscala.TSolver.Model.Solver.SSolver._
 import cpscala.TSolver.Model.Variable.BitSetVar
 import cpscala.XModel.XModel
@@ -34,7 +35,7 @@ object main {
     var pType = " "
     var ppType = " "
     var varType = ""
-    var heuName = " "
+    var heuName = "Dom/Ddeg"
     var exe = 1
     var p_sum = 0L
     var c_sum = 0L
@@ -55,31 +56,91 @@ object main {
     //        println("search time = " + (time / exe).toDouble * 1e-9 + "s")
     //        println("c_sum = " + c_sum)
 
-    //    time = 0L
-    //    branchTime = 0L
-    //    backTime = 0L
-    //    propTime = 0L
+    time = 0L
+    branchTime = 0L
+    backTime = 0L
+    propTime = 0L
     //    pType = "CT_Bit"
-    //    varType = "BitSet"
-    //    println(s"${pType} ===============>")
-    //    i = 2
-    //    while (i < exe) {
-    //      val ct = new SCoarseSolver(xm, pType, varType, "")
-    //      ct.search(Constants.TIME)
-    //      node = ct.helper.nodes
-    //      time += ct.helper.time
-    //      branchTime += ct.helper.branchTime
-    //      propTime += ct.helper.propTime
-    //      backTime += ct.helper.backTime
-    //      c_sum = ct.helper.c_sum
-    //      i += 1
-    //    }
-    //    println("node = " + node)
-    //    println("search time = " + (time / exe).toDouble * 1e-9 + "s")
-    //    println("branch time = " + (branchTime / exe).toDouble * 1e-9 + "s")
-    //    println("propagate time = " + (propTime / exe).toDouble * 1e-9 + "s")
-    //    println("backtrack time = " + (backTime / exe).toDouble * 1e-9 + "s")
-    //    println("c_sum = " + c_sum)
+    pType = "PW-CT"
+    varType = "BitSet"
+    println(s"${pType} ===============>")
+    i = 0
+    while (i < exe) {
+      //                val ct = new SCoarseSolver(xm, pType, varType, "")
+      val ct = new PWCoarseSolver(xm, pType, varType, heuName)
+      ct.search(Constants.TIME)
+      node = ct.helper.nodes
+      time += ct.helper.time
+      branchTime += ct.helper.branchTime
+      propTime += ct.helper.propTime
+      backTime += ct.helper.backTime
+      c_sum = ct.helper.c_sum
+      p_sum = ct.helper.p_sum
+      i += 1
+    }
+    println("node = " + node)
+    println("search time = " + (time / exe).toDouble * 1e-9 + "s")
+    println("branch time = " + (branchTime / exe).toDouble * 1e-9 + "s")
+    println("propagate time = " + (propTime / exe).toDouble * 1e-9 + "s")
+    println("backtrack time = " + (backTime / exe).toDouble * 1e-9 + "s")
+    println("c_sum = " + c_sum)
+    println("p_sum = " + p_sum)
+
+    time = 0L
+    branchTime = 0L
+    backTime = 0L
+    propTime = 0L
+    //    pType = "CT_Bit"
+    pType = "PW-CT1"
+    varType = "BitSet"
+    println(s"${pType} ===============>")
+    i = 0
+    while (i < exe) {
+      //                val ct = new SCoarseSolver(xm, pType, varType, "")
+      val ct = new PWCoarseSolver(xm, pType, varType, heuName)
+      ct.search(Constants.TIME)
+      node = ct.helper.nodes
+      time += ct.helper.time
+      branchTime += ct.helper.branchTime
+      propTime += ct.helper.propTime
+      backTime += ct.helper.backTime
+      c_sum = ct.helper.c_sum
+      p_sum = ct.helper.p_sum
+      i += 1
+    }
+    println("node = " + node)
+    println("search time = " + (time / exe).toDouble * 1e-9 + "s")
+    println("branch time = " + (branchTime / exe).toDouble * 1e-9 + "s")
+    println("propagate time = " + (propTime / exe).toDouble * 1e-9 + "s")
+    println("backtrack time = " + (backTime / exe).toDouble * 1e-9 + "s")
+    println("c_sum = " + c_sum)
+    println("p_sum = " + p_sum)
+//
+//    time = 0L
+//    branchTime = 0L
+//    backTime = 0L
+//    propTime = 0L
+//    pType = "CT_Bit"
+//    varType = "BitSet"
+//    println(s"${pType} ===============>")
+//    i = 0
+//    while (i < exe) {
+//      val ct = new SCoarseSolver(xm, pType, varType, heuName)
+//      ct.search(Constants.TIME)
+//      node = ct.helper.nodes
+//      time += ct.helper.time
+//      branchTime += ct.helper.branchTime
+//      propTime += ct.helper.propTime
+//      backTime += ct.helper.backTime
+//      c_sum = ct.helper.c_sum
+//      i += 1
+//    }
+//    println("node = " + node)
+//    println("search time = " + (time / exe).toDouble * 1e-9 + "s")
+//    println("branch time = " + (branchTime / exe).toDouble * 1e-9 + "s")
+//    println("propagate time = " + (propTime / exe).toDouble * 1e-9 + "s")
+//    println("backtrack time = " + (backTime / exe).toDouble * 1e-9 + "s")
+//    println("c_sum = " + c_sum)
     //
     //    time = 0L
     //    branchTime = 0L
@@ -327,165 +388,165 @@ object main {
 //      parallelism += 1
 //    }
 //
-    ppType = "IPCT_SBit"
-    varType = "SafeBitSet"
-    heuName = "Dom/Ddeg"
-    parallelism = 3
-    while (parallelism <= maxPara) {
-      time = 0L
-      branchTime = 0L
-      propTime = 0L
-      otherTime = 0L
-      backTime = 0L
-      println(s"${parallelism}线程 ${ppType} ${heuName}===============>")
-      for (i <- 1 to exe) {
-        val pct = new IPCoarseSolver(xm, parallelism, ppType, varType, heuName)
-        pct.search(Constants.TIME)
-        pct.shutdown()
-        node = pct.helper.nodes
-        time += pct.helper.time
-        branchTime += pct.helper.branchTime
-        propTime += pct.helper.propTime
-        //            otherTime += pct.helper.lockTime
-        backTime += pct.helper.backTime
-        p_sum = pct.helper.p_sum
-        c_sum = pct.helper.c_sum
-      }
-      println("node = " + node)
-      println("search time = " + (time / exe).toDouble * 1e-9 + "s")
-      println("branch time = " + (branchTime / exe).toDouble * 1e-9 + "s")
-      println("propagate time = " + (propTime / exe).toDouble * 1e-9 + "s")
-      println("other time = " + (otherTime / exe).toDouble * 1e-9 + "s")
-      println("backtrack time = " + (backTime / exe).toDouble * 1e-9 + "s")
-      println("p_sum = " + p_sum)
-      println("c_sum = " + c_sum)
-      parallelism += 1
-    }
-//
-    ppType = "DSPCT_SBit"
-    varType = "SafeBitSet"
-    heuName = "Dom/Ddeg"
-    parallelism = 3
-    while (parallelism <= maxPara) {
-      time = 0L
-      branchTime = 0L
-      backTime = 0L
-      propTime = 0L
-      println(s"${parallelism}线程 ${ppType} ${heuName}===============>")
-      for (i <- 1 to exe) {
-        val pct = new DSPCoarseSolver(xm, parallelism, ppType, varType, heuName)
-        pct.search(Constants.TIME)
-        pct.shutdown()
-        node = pct.helper.nodes
-        time += pct.helper.time
-        branchTime += pct.helper.branchTime
-        propTime += pct.helper.propTime
-        backTime += pct.helper.backTime
-        p_sum = pct.helper.c_prop.get()
-        c_sum = pct.helper.c_sub.get()
-      }
-      println("node = " + node)
-      println("search time = " + (time / exe).toDouble * 1e-9 + "s")
-      println("branch time = " + (branchTime / exe).toDouble * 1e-9 + "s")
-      println("propagate time = " + (propTime / exe).toDouble * 1e-9 + "s")
-      println("backtrack time = " + (backTime / exe).toDouble * 1e-9 + "s")
-      println("p_sum = " + p_sum)
-      println("c_sum = " + c_sum)
-      parallelism += 1
-    }
-//
-    ppType = "IPbitCT_SBit"
-    varType = "SafeBitSet"
-    heuName = "Dom/Ddeg"
-    parallelism = 3
-    while (parallelism <= maxPara) {
-      time = 0L
-      branchTime = 0L
-      propTime = 0L
-      otherTime = 0L
-      backTime = 0L
-      c_sum = 0L
-      notChangedTabs = 0L
-      println(s"${parallelism}线程 ${ppType} ${heuName}===============>")
-      for (i <- 1 to exe) {
-        val pct = new IPbitCoarseSolver(xm, parallelism, ppType, varType, heuName)
-        pct.search(Constants.TIME)
-        pct.shutdown()
-        node = pct.helper.nodes
-        time += pct.helper.time
-        branchTime += pct.helper.branchTime
-        propTime += pct.helper.propTime
-        otherTime += pct.helper.lockTime.get()
-        backTime += pct.helper.backTime
-        p_sum = pct.helper.p_sum
-        c_sum += pct.helper.c_sum
-        notChangedTabs += pct.helper.notChangedTabs.get()
-      }
-      println("node = " + node)
-      println("search time = " + (time / exe).toDouble * 1e-9 + "s")
-      println("branch time = " + (branchTime / exe).toDouble * 1e-9 + "s")
-      println("propagate time = " + (propTime.toDouble / exe * 1e-9).formatted("%.2f") + "s")
-      println("other time = " + (otherTime / exe).toDouble * 1e-9 + "s")
-      println("backtrack time = " + (backTime / exe).toDouble * 1e-9 + "s")
-      println("p_sum = " + p_sum)
-      println("c_sum = " + c_sum / exe)
-      println("notChangedTabs = " + notChangedTabs / exe)
-      parallelism += 1
-    }
-//
-    time = 0L
-    branchTime = 0L
-    backTime = 0L
-    propTime = 0L
-    pType = "CT_Bit"
-    varType = "BitSet"
-    heuName = "Dom/Wdeg"
-    println(s"${pType} ${heuName}===============>")
-    i = 0
-    while (i < exe) {
-      val ct = new SCoarseSolver(xm, pType, varType, heuName)
-      ct.search(Constants.TIME)
-      node = ct.helper.nodes
-      time += ct.helper.time
-      branchTime += ct.helper.branchTime
-      propTime += ct.helper.propTime
-      backTime += ct.helper.backTime
-      c_sum = ct.helper.c_sum
-      i += 1
-    }
-    println("node = " + node)
-    println("search time = " + (time / exe).toDouble * 1e-9 + "s")
-    println("branch time = " + (branchTime / exe).toDouble * 1e-9 + "s")
-    println("propagate time = " + (propTime.toDouble / exe * 1e-9).formatted("%.2f") + "s")
-    println("backtrack time = " + (backTime / exe).toDouble * 1e-9 + "s")
-    println("c_sum = " + c_sum)
-//
-    time = 0L
-    branchTime = 0L
-    backTime = 0L
-    propTime = 0L
-    pType = "CT_Bit"
-    varType = "BitSet"
-    heuName = "Dom/Ddeg"
-    println(s"${pType} ${heuName}===============>")
-    i = 0
-    while (i < exe) {
-      val ct = new SCoarseSolver(xm, pType, varType, heuName)
-      ct.search(Constants.TIME)
-      node = ct.helper.nodes
-      time += ct.helper.time
-      branchTime += ct.helper.branchTime
-      propTime += ct.helper.propTime
-      backTime += ct.helper.backTime
-      c_sum = ct.helper.c_sum
-      i += 1
-    }
-    println("node = " + node)
-    println("search time = " + (time / exe).toDouble * 1e-9 + "s")
-    println("branch time = " + (branchTime / exe).toDouble * 1e-9 + "s")
-    println("propagate time = " + (propTime.toDouble / exe * 1e-9).formatted("%.2f") + "s")
-    println("backtrack time = " + (backTime / exe).toDouble * 1e-9 + "s")
-    println("c_sum = " + c_sum)
+//    ppType = "IPCT_SBit"
+//    varType = "SafeBitSet"
+//    heuName = "Dom/Ddeg"
+//    parallelism = 3
+//    while (parallelism <= maxPara) {
+//      time = 0L
+//      branchTime = 0L
+//      propTime = 0L
+//      otherTime = 0L
+//      backTime = 0L
+//      println(s"${parallelism}线程 ${ppType} ${heuName}===============>")
+//      for (i <- 1 to exe) {
+//        val pct = new IPCoarseSolver(xm, parallelism, ppType, varType, heuName)
+//        pct.search(Constants.TIME)
+//        pct.shutdown()
+//        node = pct.helper.nodes
+//        time += pct.helper.time
+//        branchTime += pct.helper.branchTime
+//        propTime += pct.helper.propTime
+//        //            otherTime += pct.helper.lockTime
+//        backTime += pct.helper.backTime
+//        p_sum = pct.helper.p_sum
+//        c_sum = pct.helper.c_sum
+//      }
+//      println("node = " + node)
+//      println("search time = " + (time / exe).toDouble * 1e-9 + "s")
+//      println("branch time = " + (branchTime / exe).toDouble * 1e-9 + "s")
+//      println("propagate time = " + (propTime / exe).toDouble * 1e-9 + "s")
+//      println("other time = " + (otherTime / exe).toDouble * 1e-9 + "s")
+//      println("backtrack time = " + (backTime / exe).toDouble * 1e-9 + "s")
+//      println("p_sum = " + p_sum)
+//      println("c_sum = " + c_sum)
+//      parallelism += 1
+//    }
+////
+//    ppType = "DSPCT_SBit"
+//    varType = "SafeBitSet"
+//    heuName = "Dom/Ddeg"
+//    parallelism = 3
+//    while (parallelism <= maxPara) {
+//      time = 0L
+//      branchTime = 0L
+//      backTime = 0L
+//      propTime = 0L
+//      println(s"${parallelism}线程 ${ppType} ${heuName}===============>")
+//      for (i <- 1 to exe) {
+//        val pct = new DSPCoarseSolver(xm, parallelism, ppType, varType, heuName)
+//        pct.search(Constants.TIME)
+//        pct.shutdown()
+//        node = pct.helper.nodes
+//        time += pct.helper.time
+//        branchTime += pct.helper.branchTime
+//        propTime += pct.helper.propTime
+//        backTime += pct.helper.backTime
+//        p_sum = pct.helper.c_prop.get()
+//        c_sum = pct.helper.c_sub.get()
+//      }
+//      println("node = " + node)
+//      println("search time = " + (time / exe).toDouble * 1e-9 + "s")
+//      println("branch time = " + (branchTime / exe).toDouble * 1e-9 + "s")
+//      println("propagate time = " + (propTime / exe).toDouble * 1e-9 + "s")
+//      println("backtrack time = " + (backTime / exe).toDouble * 1e-9 + "s")
+//      println("p_sum = " + p_sum)
+//      println("c_sum = " + c_sum)
+//      parallelism += 1
+//    }
+////
+//    ppType = "IPbitCT_SBit"
+//    varType = "SafeBitSet"
+//    heuName = "Dom/Ddeg"
+//    parallelism = 3
+//    while (parallelism <= maxPara) {
+//      time = 0L
+//      branchTime = 0L
+//      propTime = 0L
+//      otherTime = 0L
+//      backTime = 0L
+//      c_sum = 0L
+//      notChangedTabs = 0L
+//      println(s"${parallelism}线程 ${ppType} ${heuName}===============>")
+//      for (i <- 1 to exe) {
+//        val pct = new IPbitCoarseSolver(xm, parallelism, ppType, varType, heuName)
+//        pct.search(Constants.TIME)
+//        pct.shutdown()
+//        node = pct.helper.nodes
+//        time += pct.helper.time
+//        branchTime += pct.helper.branchTime
+//        propTime += pct.helper.propTime
+//        otherTime += pct.helper.lockTime.get()
+//        backTime += pct.helper.backTime
+//        p_sum = pct.helper.p_sum
+//        c_sum += pct.helper.c_sum
+//        notChangedTabs += pct.helper.notChangedTabs.get()
+//      }
+//      println("node = " + node)
+//      println("search time = " + (time / exe).toDouble * 1e-9 + "s")
+//      println("branch time = " + (branchTime / exe).toDouble * 1e-9 + "s")
+//      println("propagate time = " + (propTime.toDouble / exe * 1e-9).formatted("%.2f") + "s")
+//      println("other time = " + (otherTime / exe).toDouble * 1e-9 + "s")
+//      println("backtrack time = " + (backTime / exe).toDouble * 1e-9 + "s")
+//      println("p_sum = " + p_sum)
+//      println("c_sum = " + c_sum / exe)
+//      println("notChangedTabs = " + notChangedTabs / exe)
+//      parallelism += 1
+//    }
+////
+//    time = 0L
+//    branchTime = 0L
+//    backTime = 0L
+//    propTime = 0L
+//    pType = "CT_Bit"
+//    varType = "BitSet"
+//    heuName = "Dom/Wdeg"
+//    println(s"${pType} ${heuName}===============>")
+//    i = 0
+//    while (i < exe) {
+//      val ct = new SCoarseSolver(xm, pType, varType, heuName)
+//      ct.search(Constants.TIME)
+//      node = ct.helper.nodes
+//      time += ct.helper.time
+//      branchTime += ct.helper.branchTime
+//      propTime += ct.helper.propTime
+//      backTime += ct.helper.backTime
+//      c_sum = ct.helper.c_sum
+//      i += 1
+//    }
+//    println("node = " + node)
+//    println("search time = " + (time / exe).toDouble * 1e-9 + "s")
+//    println("branch time = " + (branchTime / exe).toDouble * 1e-9 + "s")
+//    println("propagate time = " + (propTime.toDouble / exe * 1e-9).formatted("%.2f") + "s")
+//    println("backtrack time = " + (backTime / exe).toDouble * 1e-9 + "s")
+//    println("c_sum = " + c_sum)
+////
+//    time = 0L
+//    branchTime = 0L
+//    backTime = 0L
+//    propTime = 0L
+//    pType = "CT_Bit"
+//    varType = "BitSet"
+//    heuName = "Dom/Ddeg"
+//    println(s"${pType} ${heuName}===============>")
+//    i = 0
+//    while (i < exe) {
+//      val ct = new SCoarseSolver(xm, pType, varType, heuName)
+//      ct.search(Constants.TIME)
+//      node = ct.helper.nodes
+//      time += ct.helper.time
+//      branchTime += ct.helper.branchTime
+//      propTime += ct.helper.propTime
+//      backTime += ct.helper.backTime
+//      c_sum = ct.helper.c_sum
+//      i += 1
+//    }
+//    println("node = " + node)
+//    println("search time = " + (time / exe).toDouble * 1e-9 + "s")
+//    println("branch time = " + (branchTime / exe).toDouble * 1e-9 + "s")
+//    println("propagate time = " + (propTime.toDouble / exe * 1e-9).formatted("%.2f") + "s")
+//    println("backtrack time = " + (backTime / exe).toDouble * 1e-9 + "s")
+//    println("c_sum = " + c_sum)
 //
 //    ppType = "IPtmpCT_SBit"
 //    varType = "SafeBitSet"
