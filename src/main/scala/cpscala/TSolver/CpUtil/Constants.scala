@@ -21,8 +21,8 @@ object Constants {
     30, 22, 20, 15, 25, 17, 4, 8, 31, 27, 13, 23, 21, 19,
     16, 7, 26, 12, 18, 6, 11, 5, 10, 9)
 
-  //  val TIME: Long = 1800000000000L
-  val TIME: Long = 900000000000L
+    val TIME: Long = 1800000000000L
+//  val TIME: Long = 900000000000L
 
   val WARMUP: Long = 30000000000L
 
@@ -112,6 +112,20 @@ object Constants {
         }
       }
       i += 1
+    }
+  }
+
+  //通过mask表示获取值存入values
+  @inline def addValues(a: Long, base: Int, values: ArrayBuffer[Int]): Unit = {
+    if (a != 0L) {
+      var i =  FirstLeft(a)
+      val end = FirstRight(a)
+      while (i <= end) {
+        if ((a & MASK1(i)) != 0) {
+          values += (i + base)
+        }
+        i += 1
+      }
     }
   }
 
