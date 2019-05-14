@@ -8,10 +8,10 @@
 //  * 细粒度队列，其中的元素是（变量_值）对。
 //  */
 //
-//class FineQueue[VT <: Var :ClassTag](val num_vars: Int, val max_domin_size: Int) {
-//  val max_size: Int = num_vars * max_domin_size + 1
+//class FineQueue[VT <: Var :ClassTag](val numVars: Int, val max_domin_size: Int) {
+//  val max_size: Int = numVars * max_domin_size + 1
 //  val table = new Array[Literal[VT]](max_size)
-//  val inStack = Array.ofDim[Boolean](num_vars, max_domin_size)
+//  val inStack = Array.ofDim[Boolean](numVars, max_domin_size)
 //  var front: Int = 0
 //  var rear: Int = 0
 //  var size: Int = 0
@@ -60,7 +60,7 @@
 //
 //    var i = 0
 //    var j = 0
-//    while (i < num_vars) {
+//    while (i < numVars) {
 //      while (j < max_domin_size) {
 //        inStack(i)(j) = false
 //        j += 1

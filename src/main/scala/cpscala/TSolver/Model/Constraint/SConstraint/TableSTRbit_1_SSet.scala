@@ -7,7 +7,7 @@ import cpscala.TSolver.Model.Variable.Var
 import scala.collection.mutable.ArrayBuffer
 import scala.util.control.Breaks.{break, breakable}
 
-class TableSTRbit_1_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[Var], val tuples: Array[Array[Int]], val helper: SearchHelper) extends Propagator[Var] {
+class TableSTRbit_1_SSet(val id: Int, val arity: Int, val numVars: Int, val scope: Array[Var], val tuples: Array[Array[Int]], val helper: SearchHelper) extends Propagator[Var] {
 
   // 比特子表，三维数组，第一维变量，第二维取值，第三维元组
   // 初始化变量时，其论域已经被序列化，诸如[0, 1, ..., var.size()]，所以可以直接用取值作为下标
@@ -20,7 +20,7 @@ class TableSTRbit_1_SSet(val id: Int, val arity: Int, val num_vars: Int, val sco
   // HashMap传入的范型中第一个Int为value，第二个Int为last
   //  private[this] val StackL = Array.fill(arity)(new RestoreStack[Int, Int](numVars))
   // 尝试一下Array是否比HashMap快（确实快一点）
-  private[this] val lastLevel = Array.fill[Array[Array[Int]]](num_vars + 1)(Array.tabulate(arity)(i => Array.fill[Int](scope(i).size())(-1)))
+  private[this] val lastLevel = Array.fill[Array[Array[Int]]](numVars + 1)(Array.tabulate(arity)(i => Array.fill[Int](scope(i).size())(-1)))
 
   private[this] val lengthTuple = tuples.length
   // 下面两种计算方式相同
@@ -37,8 +37,8 @@ class TableSTRbit_1_SSet(val id: Int, val arity: Int, val num_vars: Int, val sco
   // HashMap传入的范型中Int为ts，Long为mask
   //  private[this] val stackV = new RestoreStack[Int, Long](numVars)
   // 尝试一下Array是否比HashMap快（确实快一点）
-//  private[this] val bitLevel = Array.fill[Long](num_vars + 1, numBit)(0L)
-  private[this] val bitLevel = Array.fill[Long](num_vars + 1, numBit)(-1L)
+//  private[this] val bitLevel = Array.fill[Long](numVars + 1, numBit)(0L)
+  private[this] val bitLevel = Array.fill[Long](numVars + 1, numBit)(-1L)
   bitLevel(0)(numBit - 1) <<= Constants.BITSIZE - lengthTuple % Constants.BITSIZE
 
   // oldSize与变量size之间的值是该约束两次传播之间被过滤的值（delta）

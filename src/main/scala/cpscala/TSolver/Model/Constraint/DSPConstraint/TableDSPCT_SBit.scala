@@ -10,7 +10,7 @@ import scala.collection.mutable.ArrayBuffer
 class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[PVar], val tuples: Array[Array[Int]], val helper: DSPSearchHelper) extends DSPPropagator {
   val currTab = new RSBitSet(id, tuples.length, num_vars)
   val supports = new Array[Array[Array[Long]]](arity)
-  val numBit = currTab.num_bit
+  val numBit = currTab.numBit
   val residues = new Array[Array[Int]](arity)
   // 活动变量
   val Xevt = new ArrayBuffer[PVar](arity)
@@ -28,11 +28,6 @@ class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
     for (j <- 0 until t.length) {
       supports(j)(t(j))(x) |= Constants.MASK1(y)
     }
-  }
-
-  val scopeMap = new mutable.HashMap[PVar, Int]()
-  for (i <- 0 until arity) {
-    scopeMap.put(scope(i), i)
   }
 
   //存变量Index
@@ -63,6 +58,7 @@ class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
     while (i < arity) {
       var diff = false
       val v = scope(i)
+      scopeStamp(i) = helper.pVarStamp.get(v.id)
       v.mask(localMask(i))
 
       // 本地论域快照与全局论域不同
@@ -173,7 +169,12 @@ class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
       }
 
       if (deleted) {
-        if (v.submitMask(localMask(vv))) {
+        val (changed, same) = v.submitMaskAndIsSame(localMask(vv))
+        if (changed) {
+          helper.pVarStamp.set(v.id, helper.pGlobalStamp.incrementAndGet())
+          if (same) {
+            scopeStamp(vv) = helper.pVarStamp.get(v.id)
+          }
           // 本地线程删值
           if (v.isEmpty()) {
             helper.isConsistent = false
@@ -203,6 +204,8 @@ class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
           return true
         }
       }
+    } else {
+      helper.notChangedTabs.incrementAndGet()
     }
     return false
   }
@@ -214,43 +217,20 @@ class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
     for (x <- Xevt) {
       if (helper.isConsistent) {
         for (c <- helper.subscription(x.id)) {
-          // !!这里可以加限制条件c.v.simpleMask!=x.simpleMask
-          if (c.id != id) {
+          val index = c.scopeMap(x.id)
+          if (c.id != id && helper.pVarStamp.get(x.id) > c.scopeStamp(index)) {
+//          if (c.id != id) {
             helper.submitToPool(c)
           }
         }
       }
     }
 
-    // 提交其它约束
-    //
-    //    for (vv <- Xevt) {
-    //      val x = scope(vv)
-    //      if (helper.isConsistent) {
-    //        for (c <- helper.bitSrb(x.id)) {
-    //          // !!这里可以加限制条件c.v.simpleMask!=x.simpleMask
-    //          //          if (c.domainChanged(x)) {
-    //          //          if (c.domainChanged(x, localMask(vv))) {
-    //          //          if (c.id != id && c.domainChanged(x)) {
-    //          if (c.id != id) {
-    //            //            println(s"cid:${id}, vid: %${x.id}, changed: ${c.domainChanged(x)}")
-    //            helper.submitToCevt(c)
-    //            //          if (c.runningStatus.getAndIncrement() == 0) {
-    //            ////            c_sub.incrementAndGet()
-    //            //            c.reinitialize()
-    //            //            c.fork()
-    //          }
-    //          //          }
-    //          //          }
-    //          //          }
-    //        }
-    //      }
-    //    }
     return false
   }
 
   override def run(): Unit = {
-//    println(s"${id} start  ----- cur_ID: ${Thread.currentThread().getId()}")
+    //    println(s"${id} start  ----- cur_ID: ${Thread.currentThread().getId()}")
     do {
       helper.c_prop.incrementAndGet()
       runningStatus.set(1)
@@ -259,7 +239,7 @@ class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
       }
     } while (!runningStatus.compareAndSet(1, 0))
     helper.counter.decrementAndGet()
-//    println(s"${id} end-----")
+    //    println(s"${id} end-----")
   }
 
   override def newLevel(): Unit = {
@@ -281,17 +261,4 @@ class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
     runningStatus.set(0)
   }
 
-  override def domainChanged(v: PVar): Boolean = v.isChanged(localMask(scopeMap(v)))
-
-  override def domainChanged(v: PVar, mask: Array[Long]): Boolean = {
-    val index = scopeMap(v)
-    var ii = 0
-    while (ii < v.getNumBit()) {
-      if (localMask(index)(ii) != mask(ii)) {
-        return true
-      }
-      ii += 1
-    }
-    return false
-  }
 }

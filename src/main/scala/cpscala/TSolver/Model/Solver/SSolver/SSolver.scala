@@ -136,6 +136,19 @@ abstract class SSolver(xm: XModel, propagatorName: String, varType: String, heuN
       }
     }
 
+    case "STRbit_1_Bit" => {
+      for (i <- 0 until numTabs) {
+        val xc: XTab = xm.tabs.get(i)
+        val ts: Array[Array[Int]] = xc.tuples
+        val scope: Array[Var] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
+        tabs(i) = new TableSTRbit_1_Bit(xc.id, xc.arity, numVars, scope, ts, helper)
+
+        for (v <- scope) {
+          subscription(v.id) += tabs(i)
+        }
+      }
+    }
+
     case "CT_SSet" => {
       for (i <- 0 until numTabs) {
         val xc: XTab = xm.tabs.get(i)

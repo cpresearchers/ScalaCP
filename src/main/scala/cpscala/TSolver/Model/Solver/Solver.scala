@@ -10,7 +10,7 @@
 //import scala.reflect.ClassTag
 //
 //abstract class Solver[VT <: Var :ClassTag, PT <: Propagator[VT] :ClassTag](xm: XModel, propagatorName: String, varType: String, heuName: String) {
-//  val numVars: Int = xm.num_vars
+//  val numVars: Int = xm.numVars
 //  val numTabs: Int = xm.num_tabs
 //  val vars = new Array[VT](numVars)
 //  val tabs = new Array[PT](numTabs)
@@ -32,7 +32,7 @@
 //  val Q = new CoarseQueue[VT](numVars)
 //  var Y_evt: ArrayBuffer[VT] = new ArrayBuffer[VT](xm.max_arity)
 //
-//  val I = new AssignedStack[VT](xm.num_vars)
+//  val I = new AssignedStack[VT](xm.numVars)
 //
 //  var start_time = 0L
 //  var branch_start_time = 0L

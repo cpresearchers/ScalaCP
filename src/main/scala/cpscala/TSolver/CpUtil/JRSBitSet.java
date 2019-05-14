@@ -6,7 +6,7 @@
 //    // array of int,  index.length = p
 //    int index[];
 //    // number of long
-//    int num_bit;
+//    int numBit;
 //    // rint
 //    int limit[];
 //    // array of long, mask.length = p
@@ -31,12 +31,12 @@
 //        numLevel = numVars + 1;
 //        this.numTuples = numTuples;
 //
-//        num_bit = (int) Math.ceil((double) numTuples / (double) Constants.BITSIZE());
+//        numBit = (int) Math.ceil((double) numTuples / (double) Constants.BITSIZE());
 //        lastLimits = numTuples % Constants.BITSIZE();
 //
-//        words = new long[numLevel][num_bit];
+//        words = new long[numLevel][numBit];
 //
-//        for (int i = 0; i < num_bit; ++i) {
+//        for (int i = 0; i < numBit; ++i) {
 //            words[0][i] = 0xFFFFFFFFFFFFFFFFL;
 //        }
 //
@@ -44,21 +44,21 @@
 //        //若lastLimit = 0, lastWord不改变
 //        //otherwise, lastWord <<= 64 - lastLimit
 //        if (lastLimits != 0) {
-//            words[0][num_bit - 1] <<= 64 - lastLimits;
+//            words[0][numBit - 1] <<= 64 - lastLimits;
 //        }
 //        //初始化limit, index, mask
 //        limit = new int[numLevel];
 //        for (int i = 0; i < numLevel; i++) {
 //            limit[i] = -1;
 //        }
-//        limit[0] = num_bit - 1;
+//        limit[0] = numBit - 1;
 //
-//        index = new int[num_bit];
-//        for (int i = 0; i < num_bit; i++) {
+//        index = new int[numBit];
+//        for (int i = 0; i < numBit; i++) {
 //            index[i] = i;
 //        }
 //
-//        mask = new long[num_bit];
+//        mask = new long[numBit];
 //    }
 //
 //
@@ -202,7 +202,7 @@
 //
 //    public void show() {
 //        System.out.print("id = " + id + ", level = " + currentLevel + " ");
-//        for (int i = 0; i < num_bit; i++) {
+//        for (int i = 0; i < numBit; i++) {
 //            System.out.printf("%x ", words[currentLevel][i]);
 //        }
 //        System.out.println();

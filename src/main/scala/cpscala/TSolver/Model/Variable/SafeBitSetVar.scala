@@ -220,6 +220,33 @@ class SafeBitSetVar(val name: String, val id: Int, num_vars: Int, vals: Array[In
     return changed
   }
 
+  override def submitMaskAndIsSame(mask: Array[Long]): (Boolean, Boolean) = {
+    var previousBits: Long = 0L
+    var newBits: Long = 0L
+    var changed = false
+    var same = true
+    var i = 0
+    while (i < numBit) {
+      do {
+        previousBits = bitDoms(curLevel).get(i)
+        // Clear the relevant bit
+        newBits = previousBits & mask(i)
+        // Try to set the new bit mask, and loop round until successful
+      } while (!bitDoms(curLevel).compareAndSet(i, previousBits, newBits))
+
+      if (previousBits != newBits) {
+        changed = true
+      }
+
+      if (mask(i) != newBits) {
+        same = false
+      }
+
+      i += 1
+    }
+    return (changed, same)
+  }
+
   override def submitMaskAndGet(mask: Array[Long]): Long = ???
 
   override def getAndSubmitMask(mask: Array[Long]): Long = ???

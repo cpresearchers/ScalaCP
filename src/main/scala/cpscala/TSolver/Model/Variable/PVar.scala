@@ -16,6 +16,8 @@ abstract class PVar extends Var {
 
   def submitMask(mask: Array[Long]): Boolean = ???
 
+  def submitMaskAndIsSame(mask: Array[Long]): (Boolean, Boolean) = ???
+
   def submitMaskAndGet(mask: Array[Long]): Long = ???
 
   def getAndSubmitMask(mask: Array[Long]): Long = ???
