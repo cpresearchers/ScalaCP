@@ -9,7 +9,7 @@ import scala.collection.mutable.ArrayBuffer
 class TableCT_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[Var], val tuples: Array[Array[Int]], val helper: SearchHelper) extends Propagator[Var] {
   val currTab = new RSBitSet(id, tuples.length, num_vars)
   val supports = new Array[Array[Array[Long]]](arity)
-  val num_bit = currTab.num_bit
+  val num_bit = currTab.numBit
   val residues = new Array[Array[Int]](arity)
   level = 0
 

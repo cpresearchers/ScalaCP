@@ -225,7 +225,7 @@ class TableSTRbit_Bit(val id: Int, val arity: Int, val numVars: Int, val scope: 
           if (now == -1) {
             deleted = true
             v.remove(a)
-            //            println(s"    cur_cid: ${id}, var: ${v.id}, remove val: ${a}")
+//                        println(s"    cur_cid: ${id}, var: ${v.id}, remove val: ${a}")
           } else {
             if (now != old) {
               // 将第一次改变之前的last记录下来
@@ -253,15 +253,15 @@ class TableSTRbit_Bit(val id: Int, val arity: Int, val numVars: Int, val scope: 
 
   override def propagate(evt: ArrayBuffer[Var]): Boolean = {
 
-    val ditStart = System.nanoTime
+//    val ditStart = System.nanoTime
     deleteInvalidTuple()
-    val ditEnd = System.nanoTime
-    helper.updateTableTime += ditEnd - ditStart
+//    val ditEnd = System.nanoTime
+//    helper.updateTableTime += ditEnd - ditStart
 
-    val ssStart = System.nanoTime
+//    val ssStart = System.nanoTime
     val ss = searchSupport(evt)
-    val ssEnd = System.nanoTime
-    helper.filterDomainTime += ssEnd - ssStart
+//    val ssEnd = System.nanoTime
+//    helper.filterDomainTime += ssEnd - ssStart
 
     return ss
   }

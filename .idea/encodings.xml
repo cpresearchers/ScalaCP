@@ -13,7 +13,7 @@
     <file url="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/CpUtil/RestoreStack.scala" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/CpUtil/SearchHelper/DSPSearchHelper.scala" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/CpUtil/SearchHelper/IPSearchHelper.scala" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/CpUtil/SearchHelper/IPbitSearchHelper.scala" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/CpUtil/SearchHelper/IPplusSearchHelper.scala" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/CpUtil/SearchHelper/SearchHelper.scala" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/main.scala" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/test_ct.scala" charset="UTF-8" />

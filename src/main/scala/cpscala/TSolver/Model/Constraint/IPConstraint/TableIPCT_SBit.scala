@@ -9,7 +9,7 @@ import scala.collection.mutable.ArrayBuffer
 class TableIPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[PVar], val tuples: Array[Array[Int]], val helper: IPSearchHelper) extends IPPropagator {
   val currTab = new RSBitSet(id, tuples.length, num_vars)
   val supports = new Array[Array[Array[Long]]](arity)
-  val num_bit = currTab.num_bit
+  val num_bit = currTab.numBit
   val residues = new Array[Array[Int]](arity)
 
   for (i <- 0 until arity) {

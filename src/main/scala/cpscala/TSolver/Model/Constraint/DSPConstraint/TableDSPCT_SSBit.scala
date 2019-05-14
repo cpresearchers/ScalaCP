@@ -10,7 +10,7 @@ import scala.collection.mutable.ArrayBuffer
 class TableDSPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[PVar], val tuples: Array[Array[Int]], val helper: DSPSearchHelper) extends DSPPropagator {
   val currTab = new RSBitSet(id, tuples.length, num_vars)
   val supports = new Array[Array[Array[Long]]](arity)
-  val num_bit = currTab.num_bit
+  val num_bit = currTab.numBit
   val residues = new Array[Array[Int]](arity)
   // 活动变量
   val Xevt = new ArrayBuffer[PVar](arity)
@@ -30,10 +30,10 @@ class TableDSPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope
     }
   }
 
-  val scopeMap = new mutable.HashMap[PVar, Int]()
-  for (i <- 0 until arity) {
-    scopeMap.put(scope(i), i)
-  }
+//  val scopeMap = new mutable.HashMap[PVar, Int]()
+//  for (i <- 0 until arity) {
+//    scopeMap.put(scope(i), i)
+//  }
 
   //存变量Index
   val Ssup = new ArrayBuffer[Int](arity)
@@ -295,5 +295,4 @@ class TableDSPCT_SSBit(val id: Int, val arity: Int, val num_vars: Int, val scope
     runningStatus.set(0)
   }
 
-  override def domainChanged(v: PVar): Boolean = ???
 }

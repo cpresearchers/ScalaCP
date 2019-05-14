@@ -5,20 +5,28 @@
         <!--<BMFile name="0" format="3">benchmarks/test2.xml</BMFile>-->
 <!--        <BMFile name="0" format="3">benchmarks/queen4.xml</BMFile>-->
 <!--        <BMFile name="0" format="3">benchmarks/queen12.xml</BMFile>-->
-        <BMFile name="0" format="3">benchmarks/rand-5-12-12-200-12442-01.xml</BMFile>
+<!--        <BMFile name="0" format="3">benchmarks/rand-5-12-12-200-12442-01.xml</BMFile>-->
 <!--        <BMFile name="0" format="2">C:/XBench/Data/rand-5-12-12_total50/rand-5-12-12-200-p12442-0_ext_glb.xml</BMFile>-->
 <!--        <BMFile name ="0" format="2">C:/XBench/Data/X2Bench/modifiedRenault_600s26/renault-mod-20_ext.xml</BMFile>-->
         <!--<BMFile name="0" format="3">C:/XBench/Random/Random-RB-3-24-24/rand-3-24-24-76-632-01.xml</BMFile>-->
 <!--        <BMFile name="0" format="3">C:/XBench/Random/Random-RB-3-20-20f/rand-3-20-20-60-632f-01.xml</BMFile>-->
 <!--        <BMFile name="0" format="2">C:/XBench/Queens/queen/queens-10_ext.xml</BMFile>-->
 <!--        <BMFile name="0" format="2">C:/XBench/Data/travellingSalesman-20_total15/tsp-20-901_ext.xml</BMFile>-->
-<!--        <BMFile name="0" format="2">C:/XBench/Data/X2Bench/wordsVg_total65/crossword-m1c-words-vg6-6_ext.xml</BMFile>-->
+<!--        <BMFile name="0" format="2">C:/XBench/Data/travellingSalesman-25_total15/tsp-25-48_ext.xml</BMFile>-->
+<!--        <BMFile name="0" format="2">C:/XBench/Data/MDD0_7_600s8/a7-v24-d5-ps0_5-psh0_7-1.xml</BMFile>-->
+<!--        <BMFile name="0" format="2">C:/Experiment/XCSP2/varDimacs_total9/bf-0432-007_ext.xml</BMFile>-->
+        <BMFile name="0" format="2">C:/Experiment/XCSP2/varDimacs_total9/hole-06_ext.xml</BMFile>
+<!--        <BMFile name="0" format="2">C:/XBench/Data/X2Bench/wordsVg_total65/crossword-m1c-words-vg6-10_ext.xml</BMFile>-->
 <!--        <BMFile name="0" format="2">C:/XBench/Data/zzbddSmall/bdd-21-133-18-78-10_ext.xml</BMFile>-->
 <!--        <BMFile name ="0" format="2">C:/XBench/Data/zzdubois/dubois-20_ext.xml</BMFile>-->
 <!--        <BMFile name ="0" format="2">C:/XBench/Data/X2Bench/lexVg_total63/crossword-m1c-lex-vg6-6_ext.xml</BMFile>-->
 <!--        <BMFile name ="0" format="2">C:/XBench/Data/X2Bench/modifiedRenault_600s26/renault-mod-20_ext.xml</BMFile>-->
-        <!--<BMFile name="0">F:/output/rand-10-10-2-15-370-0_ext-merged.xml</BMFile>-->
 <!--        <BMFile name="0" format="2">C:/XBench/Data/rand-8-20-5_total20/rand-8-20-5-18-800-0_ext.xml</BMFile>-->
+<!--        <BMFile name="0" format="2">C:/XBench/Data/aarand-10-20-10_total20/rand-10-20-10-5-10000-0_ext.xml</BMFile>-->
+<!--        <BMFile name="0" format="2">C:/XBench/Data/aim-50_total24/aim-50-1-6-sat-1_ext.xml</BMFile>-->
+<!--        <BMFile name="0" format="2">C:/XBench/Data/aim-200_600s8/aim-200-3-4-sat-1_ext.xml</BMFile>-->
+<!--        <BMFile name="0" format="2">C:/XBench/Data/jnhSat_total16/jnh01_ext.xml</BMFile>-->
+<!--        <BMFile name="0" format="2">C:/XBench/Data/jnhUnsat_total34/jnh02_ext.xml</BMFile>-->
         <!--<BMFile name="0">E:/X3Benchmarks/Random-m1-15-23-3/rand-15-23-3-16-150000-01.xml</BMFile>-->
         <!--<BMFile name="0">/F:/output/rand-13-60-2-20-775-fcd-2_ext-merged.xml</BMFile>-->
         <!--<BMFile name="0">E:/X3Benchmarks/Renault-m1-s1/Renault.xml</BMFile>-->

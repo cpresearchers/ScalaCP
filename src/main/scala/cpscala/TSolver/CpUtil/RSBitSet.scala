@@ -2,7 +2,7 @@ package cpscala.TSolver.CpUtil
 
 class RSBitSet(id: Int, numTuples: Int, numVars: Int) {
   val numLevel = numVars + 1
-  val num_bit = Math.ceil(numTuples.toDouble / Constants.BITSIZE.asInstanceOf[Double]).toInt
+  val numBit = Math.ceil(numTuples.toDouble / Constants.BITSIZE.asInstanceOf[Double]).toInt
   val lastLimits = numTuples % Constants.BITSIZE
   // array of rlong, words.length = p
   //lastLimit 取值为[0, 63]
@@ -10,18 +10,18 @@ class RSBitSet(id: Int, numTuples: Int, numVars: Int) {
   //otherwise, lastWord <<= 64 - lastLimit
   // array of int,  index.length = p
   // array of rlong, words.length = p
-  val words = Array.ofDim[Long](numLevel, num_bit)
-  words(0) = Array.fill(num_bit)(Constants.ALLONELONG);
-  if (lastLimits != 0) words(0)(num_bit - 1) <<= 64 - lastLimits
+  val words = Array.ofDim[Long](numLevel, numBit)
+  words(0) = Array.fill(numBit)(Constants.ALLONELONG);
+  if (lastLimits != 0) words(0)(numBit - 1) <<= 64 - lastLimits
   //初始化limit, index, mask
   // rint
   val limit = Array.fill(numLevel)(-1)
-  limit(0) = num_bit - 1
+  limit(0) = numBit - 1
   // array of int,  index.length = p
-  val index = Array.range(0, num_bit)
+  val index = Array.range(0, numBit)
   //  val map = Array.range(0, numBit)
   // array of long, mask.length = p
-  val mask = new Array[Long](num_bit)
+  val mask = new Array[Long](numBit)
   var currentLevel = 0
   var preLevel = 0
 
@@ -177,7 +177,7 @@ class RSBitSet(id: Int, numTuples: Int, numVars: Int) {
 
   def show(): Unit = {
     print("name = " + id + ", level = " + currentLevel + " ")
-    for (i <- 0 until num_bit) {
+    for (i <- 0 until numBit) {
       printf("%x ", words(currentLevel)(i))
     }
     println()

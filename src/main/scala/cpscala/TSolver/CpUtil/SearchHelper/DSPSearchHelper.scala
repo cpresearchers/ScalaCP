@@ -1,6 +1,6 @@
 package cpscala.TSolver.CpUtil.SearchHelper
 
-import java.util.concurrent.atomic.{AtomicBoolean, AtomicLong}
+import java.util.concurrent.atomic.{AtomicBoolean, AtomicLong, AtomicLongArray}
 import java.util.concurrent.{ForkJoinPool, TimeUnit}
 
 import cpscala.TSolver.Model.Constraint.DSPConstraint.DSPPropagator
@@ -32,6 +32,9 @@ class DSPSearchHelper(override val numVars: Int, override val numTabs: Int, val 
     ii += 1
   }
 
+  var pGlobalStamp = new AtomicLong(0L)
+  val pVarStamp = new AtomicLongArray(varStamp)
+
   @inline def submitToPool(c: DSPPropagator): Unit = {
     if (c.runningStatus.getAndIncrement() == 0) {
       counter.incrementAndGet()
@@ -62,8 +65,9 @@ class DSPSearchHelper(override val numVars: Int, override val numTabs: Int, val 
   //  }
 
   @inline def poolAwait() = {
-    pool.awaitQuiescence(1, TimeUnit.DAYS)
-    while (counter.get != 0) {}
+    while (counter.get != 0) {
+      pool.awaitQuiescence(1, TimeUnit.DAYS)
+    }
     //    Await(f.result())
     //    Await.ready(f, Duration.Inf)
   }
