@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BenchMark>
+    <BMFiles nbBMFiles="1">
+
+        <!--<BMFile name="0" format="2">D:/optiSTRpackage/csptools/rand-4-10-3-10-667-fcd-15_ext-merged.xml</BMFile>-->
+        <!--<BMFile name="0" format="2">D:/optiSTRpackage/csptools/rand-4-10-2-10-500-fcd-5_ext-merged.xml</BMFile>-->
+        <BMFile name="0" format="2">D:/optiSTRpackage/rand-8-20-5_total20/rand-8-20-5-18-800-0_ext.xml</BMFile>
+        <!--<BMFile name="0" format="3">benchmarks/test2.xml</BMFile>-->
+        <!--<BMFile name="0" format="3">benchmarks/queen4.xml</BMFile>-->
+        <!--<BMFile name="0" format="3">benchmarks/queen12.xml</BMFile>-->
+        <!--<BMFile name="0" format="3">benchmarks/rand-5-12-12-200-12442-01.xml</BMFile>-->
+        <!--<BMFile name="0" format="2">D:/optiSTRpackage/aim-200_600s8/aim-200-3-4-sat-1_ext.xml</BMFile>-->
+        <!--<BMFile name ="0" format="2">D:/optiSTRpackage/aim-100_part17/aim-100-1-6-sat-1_ext.xml</BMFile>-->
+        <!--<BMFile name="0" format="3">D:/data3/rand-10-20-10-5-10000-01.xml</BMFile>-->
+        <!--<BMFile name="0" format="2">D:/optiSTRpackage/rand-3-20-20_total50/rand-3-20-20-60-632-1_ext.xml</BMFile>-->
+        <!--<BMFile name="0" format="2">D:/optiSTRpackage/X2Bench/modifiedRenault_600s26/renault-mod-0_ext.xml</BMFile>-->
+        <!--<BMFile name="0" format="2">D:/optiSTRpackage/rand-10-60-20_600s32/rand-10-60-20-30-p51200-0_ext_glb.xml</BMFile>-->
+        <!--<BMFile name="0" format="2">D:/optiSTRpackage/rand5-2X-0.5c/rand5-2X-0.5c-0-p0.xml</Bmod-0_ext.xml</BMFile>-->
+        <!--<BMFile name="0" format="2">D:/optiSTRpackage/radar-8-24-3-2/normalized-radar-8-24-3-2-0.xml</BMFile>-->
+        <!--<BMFile name ="0" format="2">D:/optiSTRpackage/dubois/normalized-dubois-20_ext.xml</BMFile>-->
+        <!--<BMFile name ="0" format="2">C:/XBench/Data/X2Bench/lexVg_total63/crossword-m1c-lex-vg6-10_ext.xml</BMFile>-->
+        <!--<BMFile name="0">F:/output/rand-10-10-2-15-370-0_ext-merged.xml</BMFile>-->
+        <!--<BMFile name="0" format="2">C:/XBench/Data/rand-8-20-5_total20/rand-8-20-5-18-800-0_ext.xml</BMFile>-->
+        <!--<BMFile name="0">E:/X3Benchmarks/Random-m1-15-23-3/rand-15-23-3-16-150000-01.xml</BMFile>-->
+        <!--<BMFile name="0">/F:/output/rand-13-60-2-20-775-fcd-2_ext-merged.xml</BMFile>-->
+        <!--<BMFile name="0">E:/X3Benchmarks/Renault-m1-s1/Renault.xml</BMFile>-->
+        <!--<BMFile name="0" format="3">E:/X3Benchmarks/Random-m1-10-60-20/rand-10-60-20-30-51200-01.xml</BMFile>-->
+        <!--<BMFile name ="0">E:/X3Benchmarks/QRandom-mdd-7-25-5-p9/mdd-7-25-5-ps05-psh09-5.xml</BMFile>-->
+        <!--<BMFile name="0" format="3">C:/Users/leeze/Downloads/xcsp3Download-Aug-01-2018-10_15_49/Crossword/Crossword-m1-lex-herald/Crossword-lex-h0502.xml</BMFile>-->
+        <!--<BMFile name="0" format="3">E:/X3Benchmarks/Random-m1-7-40-8t/rand-7-40-8-40-02500-0.xml</BMFile>-->
+        <!--<BMFile name="0" format="3">/home/leezear/X3Bench/Random-RB-3-20-20/rand-3-20-20-60-632-01.xml</BMFile>-->
+        <!--<BMFile name="0" format="3">/home/leezear/X3Bench/Random-m1-5-2X-05c/rand-5-2X-05c-01.xml</BMFile>-->
+        <!--<BMFile name="0" format="3">/home/leezear/X3Bench/Random-m1-5-12-12/rand-5-12-12-200-12442-01.xml</BMFile>-->
+        <!--<BMFile name="0" format="3">/home/leezear/X3Bench/Random-m1-5-10-10/rand-5-10-10-15-08-0.xml</BMFile>-->
+        <!--<BMFile name="0" format="2">E:/benckmarks/optiSTRpackage/zzbddSmall/bdd-21-133-18-78-1_ext.xml</BMFile>-->
+        <!--<BMFile name="0" format="2">E:/benckmarks/optiSTRpackage/zzdubois/dubois-20_ext.xml</BMFile>-->
+        <!--<BMFile name="0" format="2">E:/benckmarks/optiSTRpackage/varDimacs_total9/bf-1355-075_ext.xml</BMFile>-->
+        <!--<BMFile name="0" format="2">E:/benckmarks/optiSTRpackage/ukVg_600s42/crossword-m1c-uk-vg11-13_ext.xml</BMFile>-->
+        <!--<BMFile name="0" format="2">E:/benckmarks/optiSTRpackage/travellingSalesman-20_total15/tsp-20-1_ext.xml</BMFile>-->
+        <!--<BMFile name="0" format="2">E:/benckmarks/optiSTRpackage/travellingSalesman-20_total15/tsp-20-8_ext.xml</BMFile>-->
+        <!--<BMFile name="0" format="2">E:/benckmarks/optiSTRpackage/ogdVg_600s43/crossword-m1c-ogd-vg12-13_ext.xml</BMFile>-->
+        <!--<BMFile name="0" format="2">E:/benckmarks/optiSTRpackage/ogdVg_600s43/crossword-m1c-ogd-vg16-20_ext.xml</BMFile>-->
+        <!--<BMFile name="0" format="2">E:/benckmarks/optiSTRpackage/ogdVg_600s43/crossword-m1c-ogd-vg16-16_ext.xml</BMFile>-->
+        <!--<BMFile name="0" format="2">E:/benckmarks/optiSTRpackage/modifiedRenault_600s26/renault-mod-0_ext.xml</BMFile>-->
+        <!--<BMFile name="0" format="2">E:/benckmarks/optiSTRpackage/MDD0.9_total9/a7-v24-d5-ps0.5-psh0.9-1.xml</BMFile>-->
+        <!--<BMFile name="0" format="2">E:/benckmarks/optiSTRpackage/MDD0.7_600s8/a7-v24-d5-ps0.5-psh0.7-1.xml</BMFile>-->
+        <!--<BMFile name="0" format="2">E:/benckmarks/optiSTRpackage/travellingSalesman-20_total15/tsp-20-8_ext.xml</BMFile>-->
+
+    </BMFiles>
+</BenchMark>
