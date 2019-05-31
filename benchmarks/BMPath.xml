@@ -15,9 +15,10 @@
 <!--        <BMFile name="0" format="2">C:/XBench/Data/travellingSalesman-25_total15/tsp-25-48_ext.xml</BMFile>-->
 <!--        <BMFile name="0" format="2">C:/XBench/Data/MDD0_7_600s8/a7-v24-d5-ps0_5-psh0_7-1.xml</BMFile>-->
 <!--        <BMFile name="0" format="2">C:/Experiment/XCSP2/varDimacs_total9/bf-0432-007_ext.xml</BMFile>-->
-        <BMFile name="0" format="2">C:/Experiment/XCSP2/varDimacs_total9/hole-06_ext.xml</BMFile>
+<!--        <BMFile name="0" format="2">C:/Experiment/XCSP2/varDimacs_total9/hole-06_ext.xml</BMFile>-->
 <!--        <BMFile name="0" format="2">C:/XBench/Data/X2Bench/wordsVg_total65/crossword-m1c-words-vg6-10_ext.xml</BMFile>-->
-<!--        <BMFile name="0" format="2">C:/XBench/Data/zzbddSmall/bdd-21-133-18-78-10_ext.xml</BMFile>-->
+        <BMFile name="0" format="2">C:/Experiment/XCSP2/zzbddSmall/bdd-21-133-18-78-21_ext.xml</BMFile>
+<!--        <BMFile name="0" format="2">C:/Experiment/XCSP2/half_600s20/half-n25-d5-e56-r7-1.xml</BMFile>-->
 <!--        <BMFile name ="0" format="2">C:/XBench/Data/zzdubois/dubois-20_ext.xml</BMFile>-->
 <!--        <BMFile name ="0" format="2">C:/XBench/Data/X2Bench/lexVg_total63/crossword-m1c-lex-vg6-6_ext.xml</BMFile>-->
 <!--        <BMFile name ="0" format="2">C:/XBench/Data/X2Bench/modifiedRenault_600s26/renault-mod-20_ext.xml</BMFile>-->
