@@ -1,11 +1,11 @@
 <component name="libraryTable">
   <library name="sbt: org.glassfish:javax.json:1.1.2:jar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.ivy2/cache/org.glassfish/javax.json/bundles/javax.json-1.1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../.ivy2/cache/org.glassfish/javax.json/bundles/javax.json-1.1.2.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$USER_HOME$/.ivy2/cache/org.glassfish/javax.json/srcs/javax.json-1.1.2-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../.ivy2/cache/org.glassfish/javax.json/srcs/javax.json-1.1.2-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
