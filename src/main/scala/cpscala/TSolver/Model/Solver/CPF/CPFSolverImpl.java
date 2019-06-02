@@ -54,7 +54,7 @@ public class CPFSolverImpl extends CPFSolver {
     HashMap<int[], Integer> Check_Map = new HashMap<int[], Integer>();
     ArrayList<Trie> Filter = new ArrayList<>();
     ArrayList<Trie> Path_Index = new ArrayList<>();
-    int [] s = new int[vsize];
+    ArrayList<Integer>  s = new ArrayList<Integer> (vsize);
     boolean flag_for_Solution;
 
     private ArrayList<Integer> Select_Path()
@@ -277,49 +277,132 @@ public class CPFSolverImpl extends CPFSolver {
         return true;
     }
 
+    private void SetTableFlag(int [] table_flag,int level)
+    {
+        int i = level;
+        for(;i < Path.size();++i)
+            table_flag[i] = 0;
+
+    }
+
 
     @Override
-    public  void Srearch() {
+    public  boolean Srearch() {
 
             int[] table_flag = new int[Path.size()];
             table_flag[0] = 0;
-             ArrayList<Integer> solution = new ArrayList<Integer>(vsize);
-             ArrayList<Integer> for_check = new ArrayList<Integer>(vsize);
+             //ArrayList<Integer> solution = new ArrayList<Integer>(vsize);
+            int[] solution = new int[vsize];
+            // ArrayList<Integer> for_check = new ArrayList<Integer>(vsize);
              //ArrayList< ArrayList<Integer>> for_find = new ArrayList(vsize);
               int [][] for_find = new int[vsize][];
               for(int i = 0; i < Path.size();++i)
                   for_find[i] = new int[Path_Diff.get(i).same_id.size()];
               flag_for_Solution = false;
-              while(table_flag[0] < hm.tabs.get(0).tuples.length && flag_for_Solution != false)
+              int level = 0;
+              int lastlevel = 0;
+              ArrayList<Integer> p = null;
+             while(table_flag[0] < hm.tabs.get(0).tuples.length && flag_for_Solution == false)
               {
+                  print(level);
+                  if(lastlevel != level && level != 0 && level != Path.size())
+                  {
+                      for(int i = 0; i < Path_Diff.get(level).same_id.size();++i)
+                         for_find[level][i] = solution[Path.get(level).scope.get(Path_Diff.get(level).same_id.get(i))];
+                      p = Path_Index.get(level - 1).Find(for_find[level]);
+
+                  }
+                  if(Assignment(level,solution,table_flag,p) == false)
+                  {
+                      if(level > 0 && (p == null || table_flag[level] >= p.size()))
+                      {
+                          SetTableFlag(table_flag,level);
+                          lastlevel = level;
+                          level--;
 
 
+                      }
+                      continue;
 
+                  }
+                  if(Check_Filter(solution,level) == true)
+                  {
+                      lastlevel = level;
+                      level++;
+                      if(level == Path.size())
+                      {
+                          flag_for_Solution = true;
+                          for (var v:solution
+                               ) {
+                              s.add(v);
 
+                          }
+                      }
+                      break;
+                  }
 
 
 
               }
-
-
-
+             return flag_for_Solution;
 
     }
     @Override
-    public boolean Assignment(int level, ArrayList<Integer> solution, int[] table_flag,ArrayList<Integer> p) {
+    public boolean Assignment(int level, int[] solution, int[] table_flag,ArrayList<Integer> p) {
 
-        return true;
+        if(level == 0)
+        {
+            for(int i = 0;i < Path.get(level).scope.size();++i)
+               solution[Path.get(level).scope.get(i)] = hm.tabs.get(Path.get(level).id).tuples[table_flag[level]][i];
+
+            table_flag[level]++;
+            return true;
+        }
+        if(p == null)
+            return false;
+        int j = table_flag[level];
+        if(j < p.size())
+        {
+            for(var i : Path_Diff.get(level).diff)
+            {
+                solution[Path.get(level).scope.get(i)] = hm.tabs.get(Path.get(level).id).tuples[p.get(j)][i];
+            }
+            table_flag[level] = j + 1;
+            return true;
+        }
+        else
+            return false;
+
+
     }
 
     @Override
-    public boolean Check(ArrayList<Integer> solution, final  int level, ArrayList<Integer> tt)
+    public boolean Check_Filter(int[] solution, final  int level)
     {
+
+        ArrayList<Integer> tt = new ArrayList<Integer>(vsize);
+        for(var i : Check_Map_Address.get(level))
+        {
+            for(int j = 0;j < i.scope.size();++j)
+                tt.add(solution[i.scope.get(j)]);
+            if(Filter.get(i.id-1).Contain(tt) == false)
+                return false;
+        }
+
         return true;
     }
 
     @Override
     public boolean Answer(){
-        return true;
+        if(flag_for_Solution == true)
+        {
+            println("Solution is :");
+            print_All(s);
+        }
+        else
+            println("no Solution!");
+
+        return flag_for_Solution;
     }
 
 

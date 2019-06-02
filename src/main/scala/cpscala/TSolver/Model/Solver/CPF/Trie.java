@@ -106,7 +106,7 @@ public class Trie {
         return null;
     }
 
-    public Boolean Contain(int[] t)
+    public Boolean Contain(ArrayList<Integer> t)
     {
         node head = root;
         for (var i:t

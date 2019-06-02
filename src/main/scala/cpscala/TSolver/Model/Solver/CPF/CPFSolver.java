@@ -62,19 +62,20 @@ public abstract class CPFSolver {
     }
 
 
-    public  void Srearch() {
+    public  boolean Srearch() {
 
+        return true;
 
 
     }
 
-    public boolean Assignment(int level, ArrayList<Integer> solution, int[] table_flag,ArrayList<Integer> p) {
+    public boolean Assignment(int level, int[] solution, int[] table_flag,ArrayList<Integer> p) {
 
         return true;
     }
 
 
-    public boolean Check(ArrayList<Integer> solution, final  int level, ArrayList<Integer> tt)
+    public boolean Check_Filter(int[] solution, final  int level)
     {
         return true;
     }
