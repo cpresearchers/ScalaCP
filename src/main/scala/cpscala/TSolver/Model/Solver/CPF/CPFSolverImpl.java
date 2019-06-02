@@ -174,7 +174,7 @@ public class CPFSolverImpl extends CPFSolver {
         tabsize = hm.num_tabs;
         searchhelper = new CPFSearchHelper(hm.num_vars, hm.num_tabs);
         ArrayList<Integer> p = Select_Path();
-
+        //print_All(p);
         int temp_f[] = new int[tabsize];
         for (var k : p) {
             temp_f[k] = 1;
@@ -256,6 +256,7 @@ public class CPFSolverImpl extends CPFSolver {
 
                 Check_Map.remove(key);
                 Check_Map.put(key, 0);
+                print(val);
 
             }
         }
@@ -302,7 +303,7 @@ public class CPFSolverImpl extends CPFSolver {
               int level = 0;
               int lastlevel = 0;
               ArrayList<Integer> p = null;
-             while(table_flag[0] < hm.tabs.get(0).tuples.length && flag_for_Solution == false)
+             while(table_flag[0] < hm.tabs.get(Path.get(0).id).tuples.length && flag_for_Solution == false)
               {
                   print(level);
                   if(lastlevel != level && level != 0 && level != Path.size())
