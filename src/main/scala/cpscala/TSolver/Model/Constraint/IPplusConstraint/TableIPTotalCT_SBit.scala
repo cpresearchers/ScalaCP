@@ -159,7 +159,7 @@ class TableIPTotalCT_SBit(val id: Int, val arity: Int, val numVars: Int, val sco
           else {
             deleted = true
             //无法找到支持, 删除(v, a)
-//            println(s"      cons:${id} var:${v.id} remove new value:${a}")
+            //            println(s"      cons:${id} var:${v.id} remove new value:${a}")
             val (x, y) = INDEX.getXY(a)
             localMask(vv)(x) &= Constants.MASK0(y)
           }
@@ -167,7 +167,20 @@ class TableIPTotalCT_SBit(val id: Int, val arity: Int, val numVars: Int, val sco
       }
 
       if (deleted) {
-        if(v.submitMask(localMask(vv))){
+                var empty = true
+                var j = 0
+                while (j < varNumBit(vv)) {
+                  lastMask(vv)(j) = localMask(vv)(j)
+                  if (localMask(vv)(j) != 0L) {
+                    empty = false
+                  }
+                  j += 1
+                }
+                if (empty) {
+                  failWeight += 1
+                }
+
+        if (v.submitMask(localMask(vv))) {
           helper.varStamp(v.id) = helper.globalStamp + 1
           // 本地线程删值
           if (v.isEmpty()) {
@@ -178,11 +191,11 @@ class TableIPTotalCT_SBit(val id: Int, val arity: Int, val numVars: Int, val sco
           }
         }
 
-        var j = 0
-        while (j < varNumBit(vv)) {
-          lastMask(vv)(j) = localMask(vv)(j)
-          j += 1
-        }
+//        var j = 0
+//        while (j < varNumBit(vv)) {
+//          lastMask(vv)(j) = localMask(vv)(j)
+//          j += 1
+//        }
       }
       i += 1
     }
@@ -197,9 +210,10 @@ class TableIPTotalCT_SBit(val id: Int, val arity: Int, val numVars: Int, val sco
           return true
         }
       }
-    } else {
-      helper.notChangedTabs.incrementAndGet()
     }
+    //    else {
+    //      helper.notChangedTabs.incrementAndGet()
+    //    }
     return false
   }
 
@@ -219,7 +233,7 @@ class TableIPTotalCT_SBit(val id: Int, val arity: Int, val numVars: Int, val sco
   }
 
   override def call(): Unit = {
-//        println(s"${id} start  ----- cur_ID: ${Thread.currentThread().getId()}")
+    //        println(s"${id} start  ----- cur_ID: ${Thread.currentThread().getId()}")
     if (helper.isConsistent) {
       propagate()
     }

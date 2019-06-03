@@ -169,12 +169,13 @@ class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
       }
 
       if (deleted) {
-        val (changed, same) = v.submitMaskAndIsSame(localMask(vv))
+        val changed = v.submitMask(localMask(vv))
+//        val (changed, same) = v.submitMaskAndIsSame(localMask(vv))
         if (changed) {
-          helper.pVarStamp.set(v.id, helper.pGlobalStamp.incrementAndGet())
-          if (same) {
-            scopeStamp(vv) = helper.pVarStamp.get(v.id)
-          }
+//          helper.pVarStamp.set(v.id, helper.pGlobalStamp.incrementAndGet())
+//          if (same) {
+//            scopeStamp(vv) = helper.pVarStamp.get(v.id)
+//          }
           // 本地线程删值
           if (v.isEmpty()) {
             helper.isConsistent = false
@@ -204,9 +205,10 @@ class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
           return true
         }
       }
-    } else {
-      helper.notChangedTabs.incrementAndGet()
     }
+//    else {
+//      helper.notChangedTabs.incrementAndGet()
+//    }
     return false
   }
 
@@ -217,9 +219,9 @@ class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
     for (x <- Xevt) {
       if (helper.isConsistent) {
         for (c <- helper.subscription(x.id)) {
-          val index = c.scopeMap(x.id)
-          if (c.id != id && helper.pVarStamp.get(x.id) > c.scopeStamp(index)) {
-//          if (c.id != id) {
+//          val index = c.scopeMap(x.id)
+//          if (c.id != id && helper.pVarStamp.get(x.id) > c.scopeStamp(index)) {
+          if (c.id != id) {
             helper.submitToPool(c)
           }
         }

@@ -1,6 +1,6 @@
 package cpscala.TSolver.CpUtil.SearchHelper
 
-import java.util.concurrent.{ForkJoinPool, TimeUnit}
+import java.util.concurrent.{Executors, ExecutorService, ForkJoinPool, TimeUnit}
 import java.util.concurrent.atomic.{AtomicLong, AtomicLongArray}
 
 import cpscala.TSolver.Model.Constraint.IPplusConstraint.IPplusPropagator
@@ -46,7 +46,7 @@ class IPplusSearchHelper(override val numVars: Int, override val numTabs: Int, v
     var i = 0
     while (i < numBitCons) {
       mask(i) = tableMask.get(i)
-//      numTabs += java.lang.Long.bitCount(mask(i))
+      numTabs += java.lang.Long.bitCount(mask(i))
       i += 1
     }
     return numTabs
@@ -80,6 +80,7 @@ class IPplusSearchHelper(override val numVars: Int, override val numTabs: Int, v
 
   // 线程池
   val pool = if (parallelism == -1) new ForkJoinPool() else new ForkJoinPool(parallelism)
+  //  val pool: ExecutorService = Executors.newFixedThreadPool(parallelism)
   // 被提交运行的约束个数
   val numSubCons = new AtomicLong(0L)
   // 本次传播是否有变量的论域发生改变
@@ -87,16 +88,17 @@ class IPplusSearchHelper(override val numVars: Int, override val numTabs: Int, v
 
   def submitToPool(c: IPplusPropagator): Unit = {
     numSubCons.incrementAndGet()
-//    println(s"${c.id} cons submit")
+    //    println(s"${c.id} cons submit")
     pool.submit(c)
-//    println(s"   cur_cid: ${c.id} submit by cur_ID: ${Thread.currentThread().getId()}")
+    //    println(s"   cur_cid: ${c.id} submit by cur_ID: ${Thread.currentThread().getId()}")
   }
 
   def poolAwait(): Unit = {
     while (numSubCons.get != 0) {
       pool.awaitQuiescence(1, TimeUnit.DAYS)
+      //      pool.awaitTermination(1, TimeUnit.DAYS)
     }
-//    println(s"pool quiet --------------------------")
+    //    println(s"pool quiet --------------------------")
   }
 }
 

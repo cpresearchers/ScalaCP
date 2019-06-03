@@ -1,11 +1,11 @@
 <component name="libraryTable">
   <library name="sbt: org.xcsp:xcsp3-tools:1.1.0:jar">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../.ivy2/cache/org.xcsp/xcsp3-tools/jars/xcsp3-tools-1.1.0.jar!/" />
+      <root url="jar://$USER_HOME$/.ivy2/cache/org.xcsp/xcsp3-tools/jars/xcsp3-tools-1.1.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/../.ivy2/cache/org.xcsp/xcsp3-tools/srcs/xcsp3-tools-1.1.0-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.ivy2/cache/org.xcsp/xcsp3-tools/srcs/xcsp3-tools-1.1.0-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

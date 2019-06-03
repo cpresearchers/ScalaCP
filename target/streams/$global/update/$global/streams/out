@@ -9,8 +9,20 @@
 [debug] dependency descriptor has been mediated: dependency: org.scala-lang#scala-compiler;2.12.8 {scala-tool=[default, optional(default)]} => dependency: org.scala-lang#scala-compiler;2.12.8 {scala-tool=[default, optional(default)]}
 [debug] dependency descriptor has been mediated: MergedDescriptors(dependency: org.scala-lang#scala-library;2.12.8 {scala-tool=[default, optional(default)]},dependency: org.scala-lang#scala-library;2.12.8 {compile=[default(compile)]}) => dependency: org.scala-lang#scala-library;2.12.8 {scala-tool=[default, optional(default)], compile=[default(compile)]}
 [debug] sbt-chain: Checking cache for: dependency: org.scala-lang#scala-library;2.12.8 {scala-tool=[default, optional(default)], compile=[default(compile)]}
-[debug] sbt-chain: module revision found in cache: org.scala-lang#scala-library;2.12.8
-[debug] 	found org.scala-lang#scala-library;2.12.8 in sbt-chain
+[debug] sbt-chain-delegate: Checking cache for: dependency: org.scala-lang#scala-library;2.12.8 {scala-tool=[default, optional(default)], compile=[default(compile)]}
+[debug] 		tried C:\Users\chenj\.ivy2\local\org.scala-lang\scala-library\2.12.8\ivys\ivy.xml
+[debug] 	local: no ivy file found for org.scala-lang#scala-library;2.12.8
+[debug] 		tried https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.8/scala-library-2.12.8.pom
+[debug] 	public: found md file for org.scala-lang#scala-library;2.12.8
+[debug] 		=> https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.8/scala-library-2.12.8.pom (2.12.8)
+[debug] downloading https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.8/scala-library-2.12.8.pom ...
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.8/scala-library-2.12.8.pom
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.8/scala-library-2.12.8.pom.sha1
+[debug] sha1 OK for https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.8/scala-library-2.12.8.pom
+[debug] 	[SUCCESSFUL ] org.scala-lang#scala-library;2.12.8!scala-library.pom(pom.original) (1422ms)
+[debug] 		tried C:\Users\chenj\.ivy2\local\org.scala-lang\scala-library\2.12.8\jars\scala-library.jar
+[debug] 		tried https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.8/scala-library-2.12.8.jar
+[debug] 	found org.scala-lang#scala-library;2.12.8 in public
 [debug] 	[2.12.8] org.scala-lang#scala-library;2.12.8
 [debug] == resolving dependencies default#scalacp_2.12;0.1->org.scala-lang#scala-library;2.12.8 [compile->runtime]
 [debug] == resolving dependencies default#scalacp_2.12;0.1->org.scala-lang#scala-library;2.12.8 [compile->compile]
@@ -19,16 +31,40 @@
 [debug] dependency descriptor has been mediated: dependency: org.scala-lang#scala-compiler;2.12.8 {scala-tool=[default, optional(default)]} => dependency: org.scala-lang#scala-compiler;2.12.8 {scala-tool=[default, optional(default)]}
 [debug] dependency descriptor has been mediated: MergedDescriptors(dependency: org.scala-lang#scala-library;2.12.8 {scala-tool=[default, optional(default)]},dependency: org.scala-lang#scala-library;2.12.8 {compile=[default(compile)]}) => dependency: org.scala-lang#scala-library;2.12.8 {scala-tool=[default, optional(default)], compile=[default(compile)]}
 [debug] sbt-chain: Checking cache for: dependency: com.alibaba#fastjson;1.2.57 {compile=[default(compile)]}
-[debug] sbt-chain: module revision found in cache: com.alibaba#fastjson;1.2.57
-[debug] 	found com.alibaba#fastjson;1.2.57 in sbt-chain
+[debug] sbt-chain-delegate: Checking cache for: dependency: com.alibaba#fastjson;1.2.57 {compile=[default(compile)]}
+[debug] 		tried C:\Users\chenj\.ivy2\local\com.alibaba\fastjson\1.2.57\ivys\ivy.xml
+[debug] 	local: no ivy file found for com.alibaba#fastjson;1.2.57
+[debug] 		tried https://repo1.maven.org/maven2/com/alibaba/fastjson/1.2.57/fastjson-1.2.57.pom
+[debug] 	public: found md file for com.alibaba#fastjson;1.2.57
+[debug] 		=> https://repo1.maven.org/maven2/com/alibaba/fastjson/1.2.57/fastjson-1.2.57.pom (1.2.57)
+[debug] downloading https://repo1.maven.org/maven2/com/alibaba/fastjson/1.2.57/fastjson-1.2.57.pom ...
+[debug] 	public: downloading https://repo1.maven.org/maven2/com/alibaba/fastjson/1.2.57/fastjson-1.2.57.pom
+[debug] 	public: downloading https://repo1.maven.org/maven2/com/alibaba/fastjson/1.2.57/fastjson-1.2.57.pom.sha1
+[debug] sha1 OK for https://repo1.maven.org/maven2/com/alibaba/fastjson/1.2.57/fastjson-1.2.57.pom
+[debug] 	[SUCCESSFUL ] com.alibaba#fastjson;1.2.57!fastjson.pom(pom.original) (1469ms)
+[debug] 		tried C:\Users\chenj\.ivy2\local\com.alibaba\fastjson\1.2.57\jars\fastjson.jar
+[debug] 		tried https://repo1.maven.org/maven2/com/alibaba/fastjson/1.2.57/fastjson-1.2.57.jar
+[debug] 	found com.alibaba#fastjson;1.2.57 in public
 [debug] == resolving dependencies default#scalacp_2.12;0.1->com.alibaba#fastjson;1.2.57 [compile->runtime]
 [debug] == resolving dependencies default#scalacp_2.12;0.1->com.alibaba#fastjson;1.2.57 [compile->compile]
 [debug] == resolving dependencies com.alibaba#fastjson;1.2.57->net.sf.trove4j#core;3.1.0 [compile->master(compile)]
 [debug] dependency descriptor has been mediated: dependency: org.scala-lang#scala-compiler;2.12.8 {scala-tool=[default, optional(default)]} => dependency: org.scala-lang#scala-compiler;2.12.8 {scala-tool=[default, optional(default)]}
 [debug] dependency descriptor has been mediated: MergedDescriptors(dependency: org.scala-lang#scala-library;2.12.8 {scala-tool=[default, optional(default)]},dependency: org.scala-lang#scala-library;2.12.8 {compile=[default(compile)]}) => dependency: org.scala-lang#scala-library;2.12.8 {scala-tool=[default, optional(default)], compile=[default(compile)]}
 [debug] sbt-chain: Checking cache for: dependency: net.sf.trove4j#core;3.1.0 {compile=[compile(*), master(compile)], runtime=[runtime(*)]}
-[debug] sbt-chain: module revision found in cache: net.sf.trove4j#core;3.1.0
-[debug] 	found net.sf.trove4j#core;3.1.0 in sbt-chain
+[debug] sbt-chain-delegate: Checking cache for: dependency: net.sf.trove4j#core;3.1.0 {compile=[compile(*), master(compile)], runtime=[runtime(*)]}
+[debug] 		tried C:\Users\chenj\.ivy2\local\net.sf.trove4j\core\3.1.0\ivys\ivy.xml
+[debug] 	local: no ivy file found for net.sf.trove4j#core;3.1.0
+[debug] 		tried https://repo1.maven.org/maven2/net/sf/trove4j/core/3.1.0/core-3.1.0.pom
+[debug] 	public: found md file for net.sf.trove4j#core;3.1.0
+[debug] 		=> https://repo1.maven.org/maven2/net/sf/trove4j/core/3.1.0/core-3.1.0.pom (3.1.0)
+[debug] downloading https://repo1.maven.org/maven2/net/sf/trove4j/core/3.1.0/core-3.1.0.pom ...
+[debug] 	public: downloading https://repo1.maven.org/maven2/net/sf/trove4j/core/3.1.0/core-3.1.0.pom
+[debug] 	public: downloading https://repo1.maven.org/maven2/net/sf/trove4j/core/3.1.0/core-3.1.0.pom.sha1
+[debug] sha1 OK for https://repo1.maven.org/maven2/net/sf/trove4j/core/3.1.0/core-3.1.0.pom
+[debug] 	[SUCCESSFUL ] net.sf.trove4j#core;3.1.0!core.pom(pom.original) (1063ms)
+[debug] 		tried C:\Users\chenj\.ivy2\local\net.sf.trove4j\core\3.1.0\jars\core.jar
+[debug] 		tried https://repo1.maven.org/maven2/net/sf/trove4j/core/3.1.0/core-3.1.0.jar
+[debug] 	found net.sf.trove4j#core;3.1.0 in public
 [debug] == resolving dependencies com.alibaba#fastjson;1.2.57->net.sf.trove4j#core;3.1.0 [compile->compile(*)]
 [debug] == resolving dependencies com.alibaba#fastjson;1.2.57->net.sf.trove4j#core;3.1.0 [compile->runtime(*)]
 [debug] == resolving dependencies com.alibaba#fastjson;1.2.57->net.sf.trove4j#core;3.1.0 [compile->compile]
@@ -39,8 +75,20 @@
 [debug] dependency descriptor has been mediated: dependency: org.scala-lang#scala-compiler;2.12.8 {scala-tool=[default, optional(default)]} => dependency: org.scala-lang#scala-compiler;2.12.8 {scala-tool=[default, optional(default)]}
 [debug] dependency descriptor has been mediated: MergedDescriptors(dependency: org.scala-lang#scala-library;2.12.8 {scala-tool=[default, optional(default)]},dependency: org.scala-lang#scala-library;2.12.8 {compile=[default(compile)]}) => dependency: org.scala-lang#scala-library;2.12.8 {scala-tool=[default, optional(default)], compile=[default(compile)]}
 [debug] sbt-chain: Checking cache for: dependency: com.github.tototoshi#scala-csv_2.12;1.3.5 {compile=[default(compile)]}
-[debug] sbt-chain: module revision found in cache: com.github.tototoshi#scala-csv_2.12;1.3.5
-[debug] 	found com.github.tototoshi#scala-csv_2.12;1.3.5 in sbt-chain
+[debug] sbt-chain-delegate: Checking cache for: dependency: com.github.tototoshi#scala-csv_2.12;1.3.5 {compile=[default(compile)]}
+[debug] 		tried C:\Users\chenj\.ivy2\local\com.github.tototoshi\scala-csv_2.12\1.3.5\ivys\ivy.xml
+[debug] 	local: no ivy file found for com.github.tototoshi#scala-csv_2.12;1.3.5
+[debug] 		tried https://repo1.maven.org/maven2/com/github/tototoshi/scala-csv_2.12/1.3.5/scala-csv_2.12-1.3.5.pom
+[debug] 	public: found md file for com.github.tototoshi#scala-csv_2.12;1.3.5
+[debug] 		=> https://repo1.maven.org/maven2/com/github/tototoshi/scala-csv_2.12/1.3.5/scala-csv_2.12-1.3.5.pom (1.3.5)
+[debug] downloading https://repo1.maven.org/maven2/com/github/tototoshi/scala-csv_2.12/1.3.5/scala-csv_2.12-1.3.5.pom ...
+[debug] 	public: downloading https://repo1.maven.org/maven2/com/github/tototoshi/scala-csv_2.12/1.3.5/scala-csv_2.12-1.3.5.pom
+[debug] 	public: downloading https://repo1.maven.org/maven2/com/github/tototoshi/scala-csv_2.12/1.3.5/scala-csv_2.12-1.3.5.pom.sha1
+[debug] sha1 OK for https://repo1.maven.org/maven2/com/github/tototoshi/scala-csv_2.12/1.3.5/scala-csv_2.12-1.3.5.pom
+[debug] 	[SUCCESSFUL ] com.github.tototoshi#scala-csv_2.12;1.3.5!scala-csv_2.12.pom(pom.original) (1125ms)
+[debug] 		tried C:\Users\chenj\.ivy2\local\com.github.tototoshi\scala-csv_2.12\1.3.5\jars\scala-csv_2.12.jar
+[debug] 		tried https://repo1.maven.org/maven2/com/github/tototoshi/scala-csv_2.12/1.3.5/scala-csv_2.12-1.3.5.jar
+[debug] 	found com.github.tototoshi#scala-csv_2.12;1.3.5 in public
 [debug] == resolving dependencies default#scalacp_2.12;0.1->com.github.tototoshi#scala-csv_2.12;1.3.5 [compile->runtime]
 [debug] == resolving dependencies default#scalacp_2.12;0.1->com.github.tototoshi#scala-csv_2.12;1.3.5 [compile->compile]
 [debug] dependency descriptor has been mediated: dependency: org.scala-lang#scala-library;2.12.2 {compile=[compile(*), master(compile)], runtime=[runtime(*)]} => dependency: org.scala-lang#scala-library;2.12.8 {compile=[compile(*), master(compile)], runtime=[runtime(*)]}
@@ -63,8 +111,20 @@
 [debug] dependency descriptor has been mediated: dependency: org.scala-lang#scala-compiler;2.12.8 {scala-tool=[default, optional(default)]} => dependency: org.scala-lang#scala-compiler;2.12.8 {scala-tool=[default, optional(default)]}
 [debug] dependency descriptor has been mediated: MergedDescriptors(dependency: org.scala-lang#scala-library;2.12.8 {scala-tool=[default, optional(default)]},dependency: org.scala-lang#scala-library;2.12.8 {compile=[default(compile)]}) => dependency: org.scala-lang#scala-library;2.12.8 {scala-tool=[default, optional(default)], compile=[default(compile)]}
 [debug] sbt-chain: Checking cache for: dependency: org.msgpack#msgpack-core;0.8.16 {compile=[default(compile)]}
-[debug] sbt-chain: module revision found in cache: org.msgpack#msgpack-core;0.8.16
-[debug] 	found org.msgpack#msgpack-core;0.8.16 in sbt-chain
+[debug] sbt-chain-delegate: Checking cache for: dependency: org.msgpack#msgpack-core;0.8.16 {compile=[default(compile)]}
+[debug] 		tried C:\Users\chenj\.ivy2\local\org.msgpack\msgpack-core\0.8.16\ivys\ivy.xml
+[debug] 	local: no ivy file found for org.msgpack#msgpack-core;0.8.16
+[debug] 		tried https://repo1.maven.org/maven2/org/msgpack/msgpack-core/0.8.16/msgpack-core-0.8.16.pom
+[debug] 	public: found md file for org.msgpack#msgpack-core;0.8.16
+[debug] 		=> https://repo1.maven.org/maven2/org/msgpack/msgpack-core/0.8.16/msgpack-core-0.8.16.pom (0.8.16)
+[debug] downloading https://repo1.maven.org/maven2/org/msgpack/msgpack-core/0.8.16/msgpack-core-0.8.16.pom ...
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/msgpack/msgpack-core/0.8.16/msgpack-core-0.8.16.pom
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/msgpack/msgpack-core/0.8.16/msgpack-core-0.8.16.pom.sha1
+[debug] sha1 OK for https://repo1.maven.org/maven2/org/msgpack/msgpack-core/0.8.16/msgpack-core-0.8.16.pom
+[debug] 	[SUCCESSFUL ] org.msgpack#msgpack-core;0.8.16!msgpack-core.pom(pom.original) (1140ms)
+[debug] 		tried C:\Users\chenj\.ivy2\local\org.msgpack\msgpack-core\0.8.16\jars\msgpack-core.jar
+[debug] 		tried https://repo1.maven.org/maven2/org/msgpack/msgpack-core/0.8.16/msgpack-core-0.8.16.jar
+[debug] 	found org.msgpack#msgpack-core;0.8.16 in public
 [debug] == resolving dependencies default#scalacp_2.12;0.1->org.msgpack#msgpack-core;0.8.16 [compile->runtime]
 [debug] == resolving dependencies default#scalacp_2.12;0.1->org.msgpack#msgpack-core;0.8.16 [compile->compile]
 [debug] == resolving dependencies default#scalacp_2.12;0.1->org.msgpack#msgpack-core;0.8.16 [compile->master]
@@ -72,8 +132,20 @@
 [debug] dependency descriptor has been mediated: dependency: org.scala-lang#scala-compiler;2.12.8 {scala-tool=[default, optional(default)]} => dependency: org.scala-lang#scala-compiler;2.12.8 {scala-tool=[default, optional(default)]}
 [debug] dependency descriptor has been mediated: MergedDescriptors(dependency: org.scala-lang#scala-library;2.12.8 {scala-tool=[default, optional(default)]},dependency: org.scala-lang#scala-library;2.12.8 {compile=[default(compile)]}) => dependency: org.scala-lang#scala-library;2.12.8 {scala-tool=[default, optional(default)], compile=[default(compile)]}
 [debug] sbt-chain: Checking cache for: dependency: org.scala-lang.modules#scala-xml_2.12.0-RC1;1.0.6 {compile=[default(compile)]}
-[debug] sbt-chain: module revision found in cache: org.scala-lang.modules#scala-xml_2.12.0-RC1;1.0.6
-[debug] 	found org.scala-lang.modules#scala-xml_2.12.0-RC1;1.0.6 in sbt-chain
+[debug] sbt-chain-delegate: Checking cache for: dependency: org.scala-lang.modules#scala-xml_2.12.0-RC1;1.0.6 {compile=[default(compile)]}
+[debug] 		tried C:\Users\chenj\.ivy2\local\org.scala-lang.modules\scala-xml_2.12.0-RC1\1.0.6\ivys\ivy.xml
+[debug] 	local: no ivy file found for org.scala-lang.modules#scala-xml_2.12.0-RC1;1.0.6
+[debug] 		tried https://repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12.0-RC1/1.0.6/scala-xml_2.12.0-RC1-1.0.6.pom
+[debug] 	public: found md file for org.scala-lang.modules#scala-xml_2.12.0-RC1;1.0.6
+[debug] 		=> https://repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12.0-RC1/1.0.6/scala-xml_2.12.0-RC1-1.0.6.pom (1.0.6)
+[debug] downloading https://repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12.0-RC1/1.0.6/scala-xml_2.12.0-RC1-1.0.6.pom ...
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12.0-RC1/1.0.6/scala-xml_2.12.0-RC1-1.0.6.pom
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12.0-RC1/1.0.6/scala-xml_2.12.0-RC1-1.0.6.pom.sha1
+[debug] sha1 OK for https://repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12.0-RC1/1.0.6/scala-xml_2.12.0-RC1-1.0.6.pom
+[debug] 	[SUCCESSFUL ] org.scala-lang.modules#scala-xml_2.12.0-RC1;1.0.6!scala-xml_2.12.0-RC1.pom(pom.original) (1172ms)
+[debug] 		tried C:\Users\chenj\.ivy2\local\org.scala-lang.modules\scala-xml_2.12.0-RC1\1.0.6\bundles\scala-xml_2.12.0-RC1.jar
+[debug] 		tried https://repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12.0-RC1/1.0.6/scala-xml_2.12.0-RC1-1.0.6.jar
+[debug] 	found org.scala-lang.modules#scala-xml_2.12.0-RC1;1.0.6 in public
 [debug] == resolving dependencies default#scalacp_2.12;0.1->org.scala-lang.modules#scala-xml_2.12.0-RC1;1.0.6 [compile->runtime]
 [debug] == resolving dependencies default#scalacp_2.12;0.1->org.scala-lang.modules#scala-xml_2.12.0-RC1;1.0.6 [compile->compile]
 [debug] dependency descriptor has been mediated: dependency: org.scala-lang#scala-compiler;2.12.0-RC1 {test=[runtime(*), master(compile)]} => dependency: org.scala-lang#scala-compiler;2.12.8 {test=[runtime(*), master(compile)]}
@@ -103,16 +175,74 @@
 [debug] dependency descriptor has been mediated: dependency: org.scala-lang#scala-compiler;2.12.8 {scala-tool=[default, optional(default)]} => dependency: org.scala-lang#scala-compiler;2.12.8 {scala-tool=[default, optional(default)]}
 [debug] dependency descriptor has been mediated: MergedDescriptors(dependency: org.scala-lang#scala-library;2.12.8 {scala-tool=[default, optional(default)]},dependency: org.scala-lang#scala-library;2.12.8 {compile=[default(compile)]}) => dependency: org.scala-lang#scala-library;2.12.8 {scala-tool=[default, optional(default)], compile=[default(compile)]}
 [debug] sbt-chain: Checking cache for: dependency: org.xcsp#xcsp3-tools;1.1.0 {compile=[default(compile)]}
-[debug] sbt-chain: module revision found in cache: org.xcsp#xcsp3-tools;1.1.0
-[debug] 	found org.xcsp#xcsp3-tools;1.1.0 in sbt-chain
+[debug] sbt-chain-delegate: Checking cache for: dependency: org.xcsp#xcsp3-tools;1.1.0 {compile=[default(compile)]}
+[debug] 		tried C:\Users\chenj\.ivy2\local\org.xcsp\xcsp3-tools\1.1.0\ivys\ivy.xml
+[debug] 	local: no ivy file found for org.xcsp#xcsp3-tools;1.1.0
+[debug] 		tried https://repo1.maven.org/maven2/org/xcsp/xcsp3-tools/1.1.0/xcsp3-tools-1.1.0.pom
+[debug] 	public: found md file for org.xcsp#xcsp3-tools;1.1.0
+[debug] 		=> https://repo1.maven.org/maven2/org/xcsp/xcsp3-tools/1.1.0/xcsp3-tools-1.1.0.pom (1.1.0)
+[debug] downloading https://repo1.maven.org/maven2/org/xcsp/xcsp3-tools/1.1.0/xcsp3-tools-1.1.0.pom ...
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/xcsp/xcsp3-tools/1.1.0/xcsp3-tools-1.1.0.pom
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/xcsp/xcsp3-tools/1.1.0/xcsp3-tools-1.1.0.pom.sha1
+[debug] sha1 OK for https://repo1.maven.org/maven2/org/xcsp/xcsp3-tools/1.1.0/xcsp3-tools-1.1.0.pom
+[debug] 	[SUCCESSFUL ] org.xcsp#xcsp3-tools;1.1.0!xcsp3-tools.pom(pom.original) (1141ms)
+[debug] 		tried C:\Users\chenj\.ivy2\local\org.xcsp\xcsp3-tools\1.1.0\jars\xcsp3-tools.jar
+[debug] 		tried https://repo1.maven.org/maven2/org/xcsp/xcsp3-tools/1.1.0/xcsp3-tools-1.1.0.jar
+[debug] 	found org.xcsp#xcsp3-tools;1.1.0 in public
 [debug] == resolving dependencies default#scalacp_2.12;0.1->org.xcsp#xcsp3-tools;1.1.0 [compile->runtime]
 [debug] == resolving dependencies default#scalacp_2.12;0.1->org.xcsp#xcsp3-tools;1.1.0 [compile->compile]
 [debug] == resolving dependencies org.xcsp#xcsp3-tools;1.1.0->javax.json#javax.json-api;1.1.2 [compile->master(compile)]
 [debug] dependency descriptor has been mediated: dependency: org.scala-lang#scala-compiler;2.12.8 {scala-tool=[default, optional(default)]} => dependency: org.scala-lang#scala-compiler;2.12.8 {scala-tool=[default, optional(default)]}
 [debug] dependency descriptor has been mediated: MergedDescriptors(dependency: org.scala-lang#scala-library;2.12.8 {scala-tool=[default, optional(default)]},dependency: org.scala-lang#scala-library;2.12.8 {compile=[default(compile)]}) => dependency: org.scala-lang#scala-library;2.12.8 {scala-tool=[default, optional(default)], compile=[default(compile)]}
 [debug] sbt-chain: Checking cache for: dependency: javax.json#javax.json-api;1.1.2 {compile=[compile(*), master(compile)], runtime=[runtime(*)]}
-[debug] sbt-chain: module revision found in cache: javax.json#javax.json-api;1.1.2
-[debug] 	found javax.json#javax.json-api;1.1.2 in sbt-chain
+[debug] sbt-chain-delegate: Checking cache for: dependency: javax.json#javax.json-api;1.1.2 {compile=[compile(*), master(compile)], runtime=[runtime(*)]}
+[debug] 		tried C:\Users\chenj\.ivy2\local\javax.json\javax.json-api\1.1.2\ivys\ivy.xml
+[debug] 	local: no ivy file found for javax.json#javax.json-api;1.1.2
+[debug] 		tried https://repo1.maven.org/maven2/javax/json/javax.json-api/1.1.2/javax.json-api-1.1.2.pom
+[debug] 	public: found md file for javax.json#javax.json-api;1.1.2
+[debug] 		=> https://repo1.maven.org/maven2/javax/json/javax.json-api/1.1.2/javax.json-api-1.1.2.pom (1.1.2)
+[debug] downloading https://repo1.maven.org/maven2/javax/json/javax.json-api/1.1.2/javax.json-api-1.1.2.pom ...
+[debug] 	public: downloading https://repo1.maven.org/maven2/javax/json/javax.json-api/1.1.2/javax.json-api-1.1.2.pom
+[debug] 	public: downloading https://repo1.maven.org/maven2/javax/json/javax.json-api/1.1.2/javax.json-api-1.1.2.pom.sha1
+[debug] sha1 OK for https://repo1.maven.org/maven2/javax/json/javax.json-api/1.1.2/javax.json-api-1.1.2.pom
+[debug] 	[SUCCESSFUL ] javax.json#javax.json-api;1.1.2!javax.json-api.pom(pom.original) (1172ms)
+[debug] sbt-chain: Checking cache for: dependency: org.glassfish#json;1.1.2 {}
+[debug] sbt-chain-delegate: Checking cache for: dependency: org.glassfish#json;1.1.2 {}
+[debug] 		tried C:\Users\chenj\.ivy2\local\org.glassfish\json\1.1.2\ivys\ivy.xml
+[debug] 	local: no ivy file found for org.glassfish#json;1.1.2
+[debug] 		tried https://repo1.maven.org/maven2/org/glassfish/json/1.1.2/json-1.1.2.pom
+[debug] 	public: found md file for org.glassfish#json;1.1.2
+[debug] 		=> https://repo1.maven.org/maven2/org/glassfish/json/1.1.2/json-1.1.2.pom (1.1.2)
+[debug] downloading https://repo1.maven.org/maven2/org/glassfish/json/1.1.2/json-1.1.2.pom ...
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/glassfish/json/1.1.2/json-1.1.2.pom
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/glassfish/json/1.1.2/json-1.1.2.pom.sha1
+[debug] sha1 OK for https://repo1.maven.org/maven2/org/glassfish/json/1.1.2/json-1.1.2.pom
+[debug] 	[SUCCESSFUL ] org.glassfish#json;1.1.2!json.pom(pom.original) (1402ms)
+[debug] sbt-chain: Checking cache for: dependency: net.java#jvnet-parent;5 {}
+[debug] sbt-chain-delegate: Checking cache for: dependency: net.java#jvnet-parent;5 {}
+[debug] 		tried C:\Users\chenj\.ivy2\local\net.java\jvnet-parent\5\ivys\ivy.xml
+[debug] 	local: no ivy file found for net.java#jvnet-parent;5
+[debug] 		tried https://repo1.maven.org/maven2/net/java/jvnet-parent/5/jvnet-parent-5.pom
+[debug] 	public: found md file for net.java#jvnet-parent;5
+[debug] 		=> https://repo1.maven.org/maven2/net/java/jvnet-parent/5/jvnet-parent-5.pom (5)
+[debug] downloading https://repo1.maven.org/maven2/net/java/jvnet-parent/5/jvnet-parent-5.pom ...
+[debug] 	public: downloading https://repo1.maven.org/maven2/net/java/jvnet-parent/5/jvnet-parent-5.pom
+[debug] 	public: downloading https://repo1.maven.org/maven2/net/java/jvnet-parent/5/jvnet-parent-5.pom.sha1
+[debug] sha1 OK for https://repo1.maven.org/maven2/net/java/jvnet-parent/5/jvnet-parent-5.pom
+[debug] 	[SUCCESSFUL ] net.java#jvnet-parent;5!jvnet-parent.pom(pom.original) (1099ms)
+[debug] 		tried C:\Users\chenj\.ivy2\local\net.java\jvnet-parent\5\jars\jvnet-parent.jar
+[debug] 		tried https://repo1.maven.org/maven2/net/java/jvnet-parent/5/jvnet-parent-5.jar
+[debug] CLIENT ERROR:  url=https://repo1.maven.org/maven2/net/java/jvnet-parent/5/jvnet-parent-5.jar
+[debug] 		tried C:\Users\chenj\.sbt\preloaded\net.java\jvnet-parent\5\jars\jvnet-parent.jar
+[debug] 		tried file:/C:/Users/chenj/.sbt/preloaded/net/java/jvnet-parent/5/jvnet-parent-5.jar
+[debug] 		tried C:\Users\chenj\.ivy2\local\org.glassfish\json\1.1.2\jars\json.jar
+[debug] 		tried https://repo1.maven.org/maven2/org/glassfish/json/1.1.2/json-1.1.2.jar
+[debug] CLIENT ERROR:  url=https://repo1.maven.org/maven2/org/glassfish/json/1.1.2/json-1.1.2.jar
+[debug] 		tried C:\Users\chenj\.sbt\preloaded\org.glassfish\json\1.1.2\jars\json.jar
+[debug] 		tried file:/C:/Users/chenj/.sbt/preloaded/org/glassfish/json/1.1.2/json-1.1.2.jar
+[debug] 		tried C:\Users\chenj\.ivy2\local\javax.json\javax.json-api\1.1.2\bundles\javax.json-api.jar
+[debug] 		tried https://repo1.maven.org/maven2/javax/json/javax.json-api/1.1.2/javax.json-api-1.1.2.jar
+[debug] 	found javax.json#javax.json-api;1.1.2 in public
 [debug] == resolving dependencies org.xcsp#xcsp3-tools;1.1.0->javax.json#javax.json-api;1.1.2 [compile->compile(*)]
 [debug] == resolving dependencies org.xcsp#xcsp3-tools;1.1.0->javax.json#javax.json-api;1.1.2 [compile->runtime(*)]
 [debug] == resolving dependencies org.xcsp#xcsp3-tools;1.1.0->javax.json#javax.json-api;1.1.2 [compile->compile]
@@ -120,8 +250,22 @@
 [debug] dependency descriptor has been mediated: dependency: org.scala-lang#scala-compiler;2.12.8 {scala-tool=[default, optional(default)]} => dependency: org.scala-lang#scala-compiler;2.12.8 {scala-tool=[default, optional(default)]}
 [debug] dependency descriptor has been mediated: MergedDescriptors(dependency: org.scala-lang#scala-library;2.12.8 {scala-tool=[default, optional(default)]},dependency: org.scala-lang#scala-library;2.12.8 {compile=[default(compile)]}) => dependency: org.scala-lang#scala-library;2.12.8 {scala-tool=[default, optional(default)], compile=[default(compile)]}
 [debug] sbt-chain: Checking cache for: dependency: org.glassfish#javax.json;1.1.2 {compile=[compile(*), master(compile)], runtime=[runtime(*)]}
-[debug] sbt-chain: module revision found in cache: org.glassfish#javax.json;1.1.2
-[debug] 	found org.glassfish#javax.json;1.1.2 in sbt-chain
+[debug] sbt-chain-delegate: Checking cache for: dependency: org.glassfish#javax.json;1.1.2 {compile=[compile(*), master(compile)], runtime=[runtime(*)]}
+[debug] 		tried C:\Users\chenj\.ivy2\local\org.glassfish\javax.json\1.1.2\ivys\ivy.xml
+[debug] 	local: no ivy file found for org.glassfish#javax.json;1.1.2
+[debug] 		tried https://repo1.maven.org/maven2/org/glassfish/javax.json/1.1.2/javax.json-1.1.2.pom
+[debug] 	public: found md file for org.glassfish#javax.json;1.1.2
+[debug] 		=> https://repo1.maven.org/maven2/org/glassfish/javax.json/1.1.2/javax.json-1.1.2.pom (1.1.2)
+[debug] downloading https://repo1.maven.org/maven2/org/glassfish/javax.json/1.1.2/javax.json-1.1.2.pom ...
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/glassfish/javax.json/1.1.2/javax.json-1.1.2.pom
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/glassfish/javax.json/1.1.2/javax.json-1.1.2.pom.sha1
+[debug] sha1 OK for https://repo1.maven.org/maven2/org/glassfish/javax.json/1.1.2/javax.json-1.1.2.pom
+[debug] 	[SUCCESSFUL ] org.glassfish#javax.json;1.1.2!javax.json.pom(pom.original) (1607ms)
+[debug] sbt-chain: Checking cache for: dependency: org.glassfish#json;1.1.2 {}
+[debug] sbt-chain: module revision found in cache: org.glassfish#json;1.1.2
+[debug] 		tried C:\Users\chenj\.ivy2\local\org.glassfish\javax.json\1.1.2\bundles\javax.json.jar
+[debug] 		tried https://repo1.maven.org/maven2/org/glassfish/javax.json/1.1.2/javax.json-1.1.2.jar
+[debug] 	found org.glassfish#javax.json;1.1.2 in public
 [debug] == resolving dependencies org.xcsp#xcsp3-tools;1.1.0->org.glassfish#javax.json;1.1.2 [compile->compile(*)]
 [debug] == resolving dependencies org.glassfish#javax.json;1.1.2->javax.json#javax.json-api;1.1.2 [compile->master(compile)]
 [debug] == resolving dependencies org.glassfish#javax.json;1.1.2->javax.json#javax.json-api;1.1.2 [compile->compile(*)]
@@ -133,15 +277,56 @@
 [debug] dependency descriptor has been mediated: dependency: org.scala-lang#scala-compiler;2.12.8 {scala-tool=[default, optional(default)]} => dependency: org.scala-lang#scala-compiler;2.12.8 {scala-tool=[default, optional(default)]}
 [debug] dependency descriptor has been mediated: MergedDescriptors(dependency: org.scala-lang#scala-library;2.12.8 {scala-tool=[default, optional(default)]},dependency: org.scala-lang#scala-library;2.12.8 {compile=[default(compile)]}) => dependency: org.scala-lang#scala-library;2.12.8 {scala-tool=[default, optional(default)], compile=[default(compile)]}
 [debug] sbt-chain: Checking cache for: dependency: junit#junit;4.12 {compile=[compile(*), master(compile)], runtime=[runtime(*)]}
-[debug] sbt-chain: module revision found in cache: junit#junit;4.12
-[debug] 	found junit#junit;4.12 in sbt-chain
+[debug] sbt-chain-delegate: Checking cache for: dependency: junit#junit;4.12 {compile=[compile(*), master(compile)], runtime=[runtime(*)]}
+[debug] 		tried C:\Users\chenj\.ivy2\local\junit\junit\4.12\ivys\ivy.xml
+[debug] 	local: no ivy file found for junit#junit;4.12
+[debug] 		tried https://repo1.maven.org/maven2/junit/junit/4.12/junit-4.12.pom
+[debug] 	public: found md file for junit#junit;4.12
+[debug] 		=> https://repo1.maven.org/maven2/junit/junit/4.12/junit-4.12.pom (4.12)
+[debug] downloading https://repo1.maven.org/maven2/junit/junit/4.12/junit-4.12.pom ...
+[debug] 	public: downloading https://repo1.maven.org/maven2/junit/junit/4.12/junit-4.12.pom
+[debug] 	public: downloading https://repo1.maven.org/maven2/junit/junit/4.12/junit-4.12.pom.sha1
+[debug] sha1 OK for https://repo1.maven.org/maven2/junit/junit/4.12/junit-4.12.pom
+[debug] 	[SUCCESSFUL ] junit#junit;4.12!junit.pom(pom.original) (1657ms)
+[debug] 		tried C:\Users\chenj\.ivy2\local\junit\junit\4.12\jars\junit.jar
+[debug] 		tried https://repo1.maven.org/maven2/junit/junit/4.12/junit-4.12.jar
+[debug] 	found junit#junit;4.12 in public
 [debug] == resolving dependencies org.xcsp#xcsp3-tools;1.1.0->junit#junit;4.12 [compile->compile(*)]
 [debug] == resolving dependencies junit#junit;4.12->org.hamcrest#hamcrest-core;1.3 [compile->master(compile)]
 [debug] dependency descriptor has been mediated: dependency: org.scala-lang#scala-compiler;2.12.8 {scala-tool=[default, optional(default)]} => dependency: org.scala-lang#scala-compiler;2.12.8 {scala-tool=[default, optional(default)]}
 [debug] dependency descriptor has been mediated: MergedDescriptors(dependency: org.scala-lang#scala-library;2.12.8 {scala-tool=[default, optional(default)]},dependency: org.scala-lang#scala-library;2.12.8 {compile=[default(compile)]}) => dependency: org.scala-lang#scala-library;2.12.8 {scala-tool=[default, optional(default)], compile=[default(compile)]}
 [debug] sbt-chain: Checking cache for: dependency: org.hamcrest#hamcrest-core;1.3 {compile=[compile(*), master(compile)], runtime=[runtime(*)]}
-[debug] sbt-chain: module revision found in cache: org.hamcrest#hamcrest-core;1.3
-[debug] 	found org.hamcrest#hamcrest-core;1.3 in sbt-chain
+[debug] sbt-chain-delegate: Checking cache for: dependency: org.hamcrest#hamcrest-core;1.3 {compile=[compile(*), master(compile)], runtime=[runtime(*)]}
+[debug] 		tried C:\Users\chenj\.ivy2\local\org.hamcrest\hamcrest-core\1.3\ivys\ivy.xml
+[debug] 	local: no ivy file found for org.hamcrest#hamcrest-core;1.3
+[debug] 		tried https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.pom
+[debug] 	public: found md file for org.hamcrest#hamcrest-core;1.3
+[debug] 		=> https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.pom (1.3)
+[debug] downloading https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.pom ...
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.pom
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.pom.sha1
+[debug] sha1 OK for https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.pom
+[debug] 	[SUCCESSFUL ] org.hamcrest#hamcrest-core;1.3!hamcrest-core.pom(pom.original) (1156ms)
+[debug] sbt-chain: Checking cache for: dependency: org.hamcrest#hamcrest-parent;1.3 {}
+[debug] sbt-chain-delegate: Checking cache for: dependency: org.hamcrest#hamcrest-parent;1.3 {}
+[debug] 		tried C:\Users\chenj\.ivy2\local\org.hamcrest\hamcrest-parent\1.3\ivys\ivy.xml
+[debug] 	local: no ivy file found for org.hamcrest#hamcrest-parent;1.3
+[debug] 		tried https://repo1.maven.org/maven2/org/hamcrest/hamcrest-parent/1.3/hamcrest-parent-1.3.pom
+[debug] 	public: found md file for org.hamcrest#hamcrest-parent;1.3
+[debug] 		=> https://repo1.maven.org/maven2/org/hamcrest/hamcrest-parent/1.3/hamcrest-parent-1.3.pom (1.3)
+[debug] downloading https://repo1.maven.org/maven2/org/hamcrest/hamcrest-parent/1.3/hamcrest-parent-1.3.pom ...
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/hamcrest/hamcrest-parent/1.3/hamcrest-parent-1.3.pom
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/hamcrest/hamcrest-parent/1.3/hamcrest-parent-1.3.pom.sha1
+[debug] sha1 OK for https://repo1.maven.org/maven2/org/hamcrest/hamcrest-parent/1.3/hamcrest-parent-1.3.pom
+[debug] 	[SUCCESSFUL ] org.hamcrest#hamcrest-parent;1.3!hamcrest-parent.pom(pom.original) (1110ms)
+[debug] 		tried C:\Users\chenj\.ivy2\local\org.hamcrest\hamcrest-parent\1.3\jars\hamcrest-parent.jar
+[debug] 		tried https://repo1.maven.org/maven2/org/hamcrest/hamcrest-parent/1.3/hamcrest-parent-1.3.jar
+[debug] CLIENT ERROR:  url=https://repo1.maven.org/maven2/org/hamcrest/hamcrest-parent/1.3/hamcrest-parent-1.3.jar
+[debug] 		tried C:\Users\chenj\.sbt\preloaded\org.hamcrest\hamcrest-parent\1.3\jars\hamcrest-parent.jar
+[debug] 		tried file:/C:/Users/chenj/.sbt/preloaded/org/hamcrest/hamcrest-parent/1.3/hamcrest-parent-1.3.jar
+[debug] 		tried C:\Users\chenj\.ivy2\local\org.hamcrest\hamcrest-core\1.3\jars\hamcrest-core.jar
+[debug] 		tried https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
+[debug] 	found org.hamcrest#hamcrest-core;1.3 in public
 [debug] == resolving dependencies junit#junit;4.12->org.hamcrest#hamcrest-core;1.3 [compile->compile(*)]
 [debug] == resolving dependencies org.xcsp#xcsp3-tools;1.1.0->junit#junit;4.12 [compile->runtime(*)]
 [debug] == resolving dependencies org.xcsp#xcsp3-tools;1.1.0->junit#junit;4.12 [compile->compile]
@@ -1025,8 +1210,20 @@
 [debug] dependency descriptor has been mediated: dependency: org.scala-lang#scala-compiler;2.12.8 {scala-tool=[default, optional(default)]} => dependency: org.scala-lang#scala-compiler;2.12.8 {scala-tool=[default, optional(default)]}
 [debug] dependency descriptor has been mediated: MergedDescriptors(dependency: org.scala-lang#scala-library;2.12.8 {scala-tool=[default, optional(default)]},dependency: org.scala-lang#scala-library;2.12.8 {compile=[default(compile)]}) => dependency: org.scala-lang#scala-library;2.12.8 {scala-tool=[default, optional(default)], compile=[default(compile)]}
 [debug] sbt-chain: Checking cache for: dependency: org.scala-lang#scala-compiler;2.12.8 {scala-tool=[default, optional(default)]}
-[debug] sbt-chain: module revision found in cache: org.scala-lang#scala-compiler;2.12.8
-[debug] 	found org.scala-lang#scala-compiler;2.12.8 in sbt-chain
+[debug] sbt-chain-delegate: Checking cache for: dependency: org.scala-lang#scala-compiler;2.12.8 {scala-tool=[default, optional(default)]}
+[debug] 		tried C:\Users\chenj\.ivy2\local\org.scala-lang\scala-compiler\2.12.8\ivys\ivy.xml
+[debug] 	local: no ivy file found for org.scala-lang#scala-compiler;2.12.8
+[debug] 		tried https://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.8/scala-compiler-2.12.8.pom
+[debug] 	public: found md file for org.scala-lang#scala-compiler;2.12.8
+[debug] 		=> https://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.8/scala-compiler-2.12.8.pom (2.12.8)
+[debug] downloading https://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.8/scala-compiler-2.12.8.pom ...
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.8/scala-compiler-2.12.8.pom
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.8/scala-compiler-2.12.8.pom.sha1
+[debug] sha1 OK for https://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.8/scala-compiler-2.12.8.pom
+[debug] 	[SUCCESSFUL ] org.scala-lang#scala-compiler;2.12.8!scala-compiler.pom(pom.original) (1141ms)
+[debug] 		tried C:\Users\chenj\.ivy2\local\org.scala-lang\scala-compiler\2.12.8\jars\scala-compiler.jar
+[debug] 		tried https://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.8/scala-compiler-2.12.8.jar
+[debug] 	found org.scala-lang#scala-compiler;2.12.8 in public
 [debug] == resolving dependencies default#scalacp_2.12;0.1->org.scala-lang#scala-compiler;2.12.8 [scala-tool->runtime]
 [debug] == resolving dependencies default#scalacp_2.12;0.1->org.scala-lang#scala-compiler;2.12.8 [scala-tool->compile]
 [debug] dependency descriptor has been mediated: dependency: org.scala-lang#scala-library;2.12.8 {compile=[compile(*), master(compile)], runtime=[runtime(*)]} => dependency: org.scala-lang#scala-library;2.12.8 {compile=[compile(*), master(compile)], runtime=[runtime(*)]}
@@ -1064,8 +1261,20 @@
 [debug] dependency descriptor has been mediated: dependency: org.scala-lang#scala-compiler;2.12.8 {scala-tool=[default, optional(default)]} => dependency: org.scala-lang#scala-compiler;2.12.8 {scala-tool=[default, optional(default)]}
 [debug] dependency descriptor has been mediated: MergedDescriptors(dependency: org.scala-lang#scala-library;2.12.8 {scala-tool=[default, optional(default)]},dependency: org.scala-lang#scala-library;2.12.8 {compile=[default(compile)]}) => dependency: org.scala-lang#scala-library;2.12.8 {scala-tool=[default, optional(default)], compile=[default(compile)]}
 [debug] sbt-chain: Checking cache for: dependency: org.scala-lang#scala-reflect;2.12.8 {compile=[compile(*), master(compile)], runtime=[runtime(*)]}
-[debug] sbt-chain: module revision found in cache: org.scala-lang#scala-reflect;2.12.8
-[debug] 	found org.scala-lang#scala-reflect;2.12.8 in sbt-chain
+[debug] sbt-chain-delegate: Checking cache for: dependency: org.scala-lang#scala-reflect;2.12.8 {compile=[compile(*), master(compile)], runtime=[runtime(*)]}
+[debug] 		tried C:\Users\chenj\.ivy2\local\org.scala-lang\scala-reflect\2.12.8\ivys\ivy.xml
+[debug] 	local: no ivy file found for org.scala-lang#scala-reflect;2.12.8
+[debug] 		tried https://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.8/scala-reflect-2.12.8.pom
+[debug] 	public: found md file for org.scala-lang#scala-reflect;2.12.8
+[debug] 		=> https://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.8/scala-reflect-2.12.8.pom (2.12.8)
+[debug] downloading https://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.8/scala-reflect-2.12.8.pom ...
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.8/scala-reflect-2.12.8.pom
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.8/scala-reflect-2.12.8.pom.sha1
+[debug] sha1 OK for https://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.8/scala-reflect-2.12.8.pom
+[debug] 	[SUCCESSFUL ] org.scala-lang#scala-reflect;2.12.8!scala-reflect.pom(pom.original) (1109ms)
+[debug] 		tried C:\Users\chenj\.ivy2\local\org.scala-lang\scala-reflect\2.12.8\jars\scala-reflect.jar
+[debug] 		tried https://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.8/scala-reflect-2.12.8.jar
+[debug] 	found org.scala-lang#scala-reflect;2.12.8 in public
 [debug] 	[2.12.8] org.scala-lang#scala-reflect;2.12.8
 [debug] dependency descriptor has been mediated: dependency: org.scala-lang#scala-library;2.12.8 {compile=[compile(*), master(compile)], runtime=[runtime(*)]} => dependency: org.scala-lang#scala-library;2.12.8 {compile=[compile(*), master(compile)], runtime=[runtime(*)]}
 [debug] == resolving dependencies org.scala-lang#scala-compiler;2.12.8->org.scala-lang#scala-reflect;2.12.8 [compile->compile(*)]
@@ -1164,22 +1373,87 @@
 [debug] ignoring unhandled DependencyDescriptorMediator: class sbt.internal.librarymanagement.IvyScalaUtil$OverrideScalaMediator
 [debug] 	resolved ivy file produced in cache
 [debug] :: downloading artifacts ::
-[debug] 	[NOT REQUIRED] com.github.tototoshi#scala-csv_2.12;1.3.5!scala-csv_2.12.jar
-[debug] 	[NOT REQUIRED] org.scala-lang.modules#scala-xml_2.12.0-RC1;1.0.6!scala-xml_2.12.0-RC1.jar(bundle)
-[debug] 	[NOT REQUIRED] org.xcsp#xcsp3-tools;1.1.0!xcsp3-tools.jar
-[debug] 	[NOT REQUIRED] net.sf.trove4j#core;3.1.0!core.jar
-[debug] 	[NOT REQUIRED] javax.json#javax.json-api;1.1.2!javax.json-api.jar(bundle)
-[debug] 	[NOT REQUIRED] org.glassfish#javax.json;1.1.2!javax.json.jar(bundle)
-[debug] 	[NOT REQUIRED] org.msgpack#msgpack-core;0.8.16!msgpack-core.jar
-[debug] 	[NOT REQUIRED] org.scala-lang#scala-library;2.12.8!scala-library.jar
-[debug] 	[NOT REQUIRED] com.alibaba#fastjson;1.2.57!fastjson.jar
-[debug] 	[NOT REQUIRED] org.hamcrest#hamcrest-core;1.3!hamcrest-core.jar
-[debug] 	[NOT REQUIRED] org.scala-lang#scala-reflect;2.12.8!scala-reflect.jar
-[debug] 	[NOT REQUIRED] org.scala-lang#scala-compiler;2.12.8!scala-compiler.jar
-[debug] 	[NOT REQUIRED] jline#jline;2.14.6!jline.jar
+[debug] 		tried https://repo1.maven.org/maven2/org/msgpack/msgpack-core/0.8.16/msgpack-core-0.8.16.jar
+[debug] 		tried https://repo1.maven.org/maven2/com/github/tototoshi/scala-csv_2.12/1.3.5/scala-csv_2.12-1.3.5.jar
+[debug] 		tried https://repo1.maven.org/maven2/org/xcsp/xcsp3-tools/1.1.0/xcsp3-tools-1.1.0.jar
+[debug] 		tried https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.8/scala-library-2.12.8.jar
+[debug] 		tried https://repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12.0-RC1/1.0.6/scala-xml_2.12.0-RC1-1.0.6.jar
+[debug] 		tried https://repo1.maven.org/maven2/com/alibaba/fastjson/1.2.57/fastjson-1.2.57.jar
+[info] downloading https://repo1.maven.org/maven2/org/msgpack/msgpack-core/0.8.16/msgpack-core-0.8.16.jar ...
+[info] downloading https://repo1.maven.org/maven2/com/github/tototoshi/scala-csv_2.12/1.3.5/scala-csv_2.12-1.3.5.jar ...
+[info] downloading https://repo1.maven.org/maven2/com/alibaba/fastjson/1.2.57/fastjson-1.2.57.jar ...
+[info] downloading https://repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12.0-RC1/1.0.6/scala-xml_2.12.0-RC1-1.0.6.jar ...
+[info] downloading https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.8/scala-library-2.12.8.jar ...
+[info] downloading https://repo1.maven.org/maven2/org/xcsp/xcsp3-tools/1.1.0/xcsp3-tools-1.1.0.jar ...
+[debug] 	public: downloading https://repo1.maven.org/maven2/com/github/tototoshi/scala-csv_2.12/1.3.5/scala-csv_2.12-1.3.5.jar
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.8/scala-library-2.12.8.jar
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/msgpack/msgpack-core/0.8.16/msgpack-core-0.8.16.jar
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/xcsp/xcsp3-tools/1.1.0/xcsp3-tools-1.1.0.jar
+[debug] 	public: downloading https://repo1.maven.org/maven2/com/alibaba/fastjson/1.2.57/fastjson-1.2.57.jar
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12.0-RC1/1.0.6/scala-xml_2.12.0-RC1-1.0.6.jar
+[debug] 	public: downloading https://repo1.maven.org/maven2/com/github/tototoshi/scala-csv_2.12/1.3.5/scala-csv_2.12-1.3.5.jar.sha1
+[debug] sha1 OK for https://repo1.maven.org/maven2/com/github/tototoshi/scala-csv_2.12/1.3.5/scala-csv_2.12-1.3.5.jar
+[info] 	[SUCCESSFUL ] com.github.tototoshi#scala-csv_2.12;1.3.5!scala-csv_2.12.jar (20520ms)
+[debug] 		tried https://repo1.maven.org/maven2/net/sf/trove4j/core/3.1.0/core-3.1.0.jar
+[info] downloading https://repo1.maven.org/maven2/net/sf/trove4j/core/3.1.0/core-3.1.0.jar ...
+[debug] 	public: downloading https://repo1.maven.org/maven2/net/sf/trove4j/core/3.1.0/core-3.1.0.jar
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/msgpack/msgpack-core/0.8.16/msgpack-core-0.8.16.jar.sha1
+[debug] sha1 OK for https://repo1.maven.org/maven2/org/msgpack/msgpack-core/0.8.16/msgpack-core-0.8.16.jar
+[info] 	[SUCCESSFUL ] org.msgpack#msgpack-core;0.8.16!msgpack-core.jar (27070ms)
+[debug] 		tried https://repo1.maven.org/maven2/javax/json/javax.json-api/1.1.2/javax.json-api-1.1.2.jar
+[info] downloading https://repo1.maven.org/maven2/javax/json/javax.json-api/1.1.2/javax.json-api-1.1.2.jar ...
+[debug] 	public: downloading https://repo1.maven.org/maven2/javax/json/javax.json-api/1.1.2/javax.json-api-1.1.2.jar
+[debug] 	public: downloading https://repo1.maven.org/maven2/javax/json/javax.json-api/1.1.2/javax.json-api-1.1.2.jar.sha1
+[debug] sha1 OK for https://repo1.maven.org/maven2/javax/json/javax.json-api/1.1.2/javax.json-api-1.1.2.jar
+[info] 	[SUCCESSFUL ] javax.json#javax.json-api;1.1.2!javax.json-api.jar(bundle) (11141ms)
+[debug] 		tried https://repo1.maven.org/maven2/org/glassfish/javax.json/1.1.2/javax.json-1.1.2.jar
+[info] downloading https://repo1.maven.org/maven2/org/glassfish/javax.json/1.1.2/javax.json-1.1.2.jar ...
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/glassfish/javax.json/1.1.2/javax.json-1.1.2.jar
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12.0-RC1/1.0.6/scala-xml_2.12.0-RC1-1.0.6.jar.sha1
+[debug] sha1 OK for https://repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12.0-RC1/1.0.6/scala-xml_2.12.0-RC1-1.0.6.jar
+[info] 	[SUCCESSFUL ] org.scala-lang.modules#scala-xml_2.12.0-RC1;1.0.6!scala-xml_2.12.0-RC1.jar(bundle) (49539ms)
+[debug] 		tried https://repo1.maven.org/maven2/junit/junit/4.12/junit-4.12.jar
+[info] downloading https://repo1.maven.org/maven2/junit/junit/4.12/junit-4.12.jar ...
+[debug] 	public: downloading https://repo1.maven.org/maven2/junit/junit/4.12/junit-4.12.jar
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/xcsp/xcsp3-tools/1.1.0/xcsp3-tools-1.1.0.jar.sha1
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/glassfish/javax.json/1.1.2/javax.json-1.1.2.jar.sha1
+[debug] 	public: downloading https://repo1.maven.org/maven2/com/alibaba/fastjson/1.2.57/fastjson-1.2.57.jar.sha1
+[debug] sha1 OK for https://repo1.maven.org/maven2/org/glassfish/javax.json/1.1.2/javax.json-1.1.2.jar
+[info] 	[SUCCESSFUL ] org.glassfish#javax.json;1.1.2!javax.json.jar(bundle) (20047ms)
+[debug] 		tried https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
+[info] downloading https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar ...
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
+[debug] sha1 OK for https://repo1.maven.org/maven2/org/xcsp/xcsp3-tools/1.1.0/xcsp3-tools-1.1.0.jar
+[info] 	[SUCCESSFUL ] org.xcsp#xcsp3-tools;1.1.0!xcsp3-tools.jar (58273ms)
+[debug] 		tried https://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.8/scala-compiler-2.12.8.jar
+[info] downloading https://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.8/scala-compiler-2.12.8.jar ...
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.8/scala-compiler-2.12.8.jar
+[debug] sha1 OK for https://repo1.maven.org/maven2/com/alibaba/fastjson/1.2.57/fastjson-1.2.57.jar
+[info] 	[SUCCESSFUL ] com.alibaba#fastjson;1.2.57!fastjson.jar (60164ms)
+[debug] 		tried https://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.8/scala-reflect-2.12.8.jar
+[info] downloading https://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.8/scala-reflect-2.12.8.jar ...
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.8/scala-reflect-2.12.8.jar
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar.sha1
+[debug] 	public: downloading https://repo1.maven.org/maven2/junit/junit/4.12/junit-4.12.jar.sha1
+[debug] sha1 OK for https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
+[info] 	[SUCCESSFUL ] org.hamcrest#hamcrest-core;1.3!hamcrest-core.jar (6749ms)
 [debug] 	[NOT REQUIRED] org.scala-lang.modules#scala-xml_2.12;1.0.6!scala-xml_2.12.jar(bundle)
-[debug] 	[NOT REQUIRED] junit#junit;4.12!junit.jar
-[debug] :: resolution report :: resolve 235ms :: artifacts dl 0ms
+[debug] 	[NOT REQUIRED] jline#jline;2.14.6!jline.jar
+[debug] sha1 OK for https://repo1.maven.org/maven2/junit/junit/4.12/junit-4.12.jar
+[info] 	[SUCCESSFUL ] junit#junit;4.12!junit.jar (16781ms)
+[debug] 	public: downloading https://repo1.maven.org/maven2/net/sf/trove4j/core/3.1.0/core-3.1.0.jar.sha1
+[debug] sha1 OK for https://repo1.maven.org/maven2/net/sf/trove4j/core/3.1.0/core-3.1.0.jar
+[info] 	[SUCCESSFUL ] net.sf.trove4j#core;3.1.0!core.jar (96958ms)
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.8/scala-reflect-2.12.8.jar.sha1
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.8/scala-library-2.12.8.jar.sha1
+[debug] sha1 OK for https://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.8/scala-reflect-2.12.8.jar
+[info] 	[SUCCESSFUL ] org.scala-lang#scala-reflect;2.12.8!scala-reflect.jar (134786ms)
+[debug] sha1 OK for https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.8/scala-library-2.12.8.jar
+[info] 	[SUCCESSFUL ] org.scala-lang#scala-library;2.12.8!scala-library.jar (202449ms)
+[debug] 	public: downloading https://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.8/scala-compiler-2.12.8.jar.sha1
+[debug] sha1 OK for https://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.8/scala-compiler-2.12.8.jar
+[info] 	[SUCCESSFUL ] org.scala-lang#scala-compiler;2.12.8!scala-compiler.jar (224366ms)
+[debug] :: resolution report :: resolve 33441ms :: artifacts dl 282639ms
 [debug] 	report for default#scalacp_2.12;0.1 compile produced in F:\chenj\project\ideaProject\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp_2.12-compile.xml
 [debug] 	report for default#scalacp_2.12;0.1 runtime produced in F:\chenj\project\ideaProject\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp_2.12-runtime.xml
 [debug] 	report for default#scalacp_2.12;0.1 test produced in F:\chenj\project\ideaProject\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp_2.12-test.xml
@@ -1191,5 +1465,5 @@
 [debug] 	report for default#scalacp_2.12;0.1 plugin produced in F:\chenj\project\ideaProject\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp_2.12-plugin.xml
 [debug] 	report for default#scalacp_2.12;0.1 pom produced in F:\chenj\project\ideaProject\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp_2.12-pom.xml
 [debug] 	report for default#scalacp_2.12;0.1 scala-tool produced in F:\chenj\project\ideaProject\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp_2.12-scala-tool.xml
-[debug] 	resolve done (235ms resolve - 0ms download)
+[debug] 	resolve done (33441ms resolve - 282639ms download)
 [info] Done updating.

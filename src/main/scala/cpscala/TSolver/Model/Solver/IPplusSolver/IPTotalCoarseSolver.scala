@@ -36,7 +36,7 @@ class IPTotalCoarseSolver(xm: XModel, parallelism: Int, propagatorName: String, 
             inCevt(c.id) = true
             helper.c_sum += 1
             helper.submitToPool(c)
-            //            //println(s"${c.id} submit-----")
+                        //println(s"${c.id} submit-----")
           }
         }
       }
