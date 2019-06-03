@@ -62,7 +62,7 @@ public abstract class CPFSolver {
     }
 
 
-    public  boolean Srearch() {
+    public  boolean Search() {
 
         return true;
 

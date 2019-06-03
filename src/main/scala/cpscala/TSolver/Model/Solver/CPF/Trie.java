@@ -27,6 +27,7 @@ public class Trie {
     int id = 0;
     int count;
     int dom_size;
+    int data_size;
 
     public Trie(int n,int i)
     {
@@ -34,6 +35,7 @@ public class Trie {
         count = 0;
         root = null;
         dom_size = n;
+        data_size = 0;
     }
 
     public  void Insert(int[] t)
@@ -56,8 +58,9 @@ public class Trie {
 
         }
         head.isEnd = true;
-
         ++count;
+
+
     }
 
     public void Insert_With_Data(ArrayList<Integer> t,int data)
@@ -83,6 +86,7 @@ public class Trie {
             p.Data = new ArrayList<Integer>();
         p.Data.add(data);
         ++count;
+        data_size++;
 
     }
 
