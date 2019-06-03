@@ -14,6 +14,8 @@ import cpscala.XModel.XModel
 import scala.xml.XML
 
 object main {
+
+
   def main(args: Array[String]): Unit = {
 
     val xf = XML.loadFile("benchmarks/BMPath.xml")
@@ -22,7 +24,7 @@ object main {
     val fmt = (fileNode \\ "@format").text.toInt
     println(path)
     val xm = new XModel(path, true, fmt)
-    var CPF = new CPFSolverImpl(xm,null,null)
+    var CPF = new CPFSolverImpl(xm,null,null,null)
    // CPF.Show()
     CPF.Search()
     CPF.Answer()

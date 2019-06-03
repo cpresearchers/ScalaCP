@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <folders>
-    <inputRoot>/home/lee/benckmarks/X2</inputRoot>
+    <inputRoot>F:\csp_XML2</inputRoot>
 <!--    <folder format="2">rand-3-20-20_total50</folder>-->
     <!--    <folder format="2">rand-3-20-20-fcd_total50</folder>-->
     <!--    <folder format="2">rand-3-24-24_600s15</folder>-->
@@ -32,9 +32,9 @@
 <!--    <folder format="2">aim-100_part17</folder>-->
 <!--    <folder format="2">zzbddSmall</folder>-->
     <folder format="2">zzdubois</folder>
-    <folder format="2">cril_600s2</folder>
-    <folder format="2">rand-3-24-24-fcd_600s17</folder>
-    <outputRoot>/home/lee/exp/pct</outputRoot>
+<!--    <folder format="2">cril_600s2</folder>-->
+<!--    <folder format="2">rand-3-24-24-fcd_600s17</folder>-->
+    <outputRoot>F://</outputRoot>
 </folders>
 
 

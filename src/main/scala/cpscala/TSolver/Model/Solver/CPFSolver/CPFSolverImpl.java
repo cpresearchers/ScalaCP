@@ -1,6 +1,7 @@
 package cpscala.TSolver.Model.Solver.CPFSolver;
 
 import cpscala.TSolver.CpUtil.SearchHelper.CPFSearchHelper;
+import cpscala.TSolver.CpUtil.SearchHelper.SearchHelper;
 import cpscala.XModel.XModel;
 
 import java.util.*;
@@ -46,9 +47,12 @@ public class CPFSolverImpl extends CPFSolver {
 
 
 
-    CPFSearchHelper searchhelper;
+
     int vsize;
     int tabsize;
+
+    long node = 0L;
+
     ArrayList<_table> Path = new ArrayList<_table>();
     ArrayList<_dif> Path_Diff = new ArrayList<_dif>();
     ArrayList<ArrayList<_info>> Check_Map_Address = new ArrayList();
@@ -171,8 +175,10 @@ public class CPFSolverImpl extends CPFSolver {
 
     }
 
-    public CPFSolverImpl(XModel xm , String varType,  String heuName) {
-        super(xm, varType, heuName);
+    public CPFSolverImpl(XModel xm , String varType, String heuName, SearchHelper sear) {
+
+
+        super(xm, varType, heuName,sear);
         vsize = hm.num_vars;
         tabsize = hm.num_tabs;
         searchhelper = new CPFSearchHelper(hm.num_vars, hm.num_tabs);
@@ -205,7 +211,7 @@ public class CPFSolverImpl extends CPFSolver {
                 int index[] = new int[hm.tabs.get(i).arity];
                 for (int j = 0; j < hm.tabs.get(i).scope.length; ++j)
                     index[j] = hm.tabs.get(i).scope[j].id;
-               // print_All(index);
+
                 Check_Map.put(index, Filter.size() + 1);
                 check_map_flag[Filter.size() + 1] = 1;
 
@@ -214,6 +220,7 @@ public class CPFSolverImpl extends CPFSolver {
         }
 
         int f[] = new int[vsize];
+
         int varf[] = new int[vsize];
 
         for (var P : Path) {
@@ -249,9 +256,9 @@ public class CPFSolverImpl extends CPFSolver {
         for (var it = Check_Map.entrySet().iterator(); it.hasNext(); ) {
             Map.Entry<int[], Integer> item = it.next();
             int[] key = item.getKey();
-            // print_All(key);
+
             int val = item.getValue();
-            // print(val);
+
             if (IsExitTable(key, varf) == true && check_map_flag[val] != 0) {
                 _info _tt = new _info();
                 _tt.id = val - 1;
@@ -259,21 +266,13 @@ public class CPFSolverImpl extends CPFSolver {
                     _tt.scope.add(v);
                 _t.add(_tt);
                 check_map_flag[val] = 0;
-                //Check_Map.remove(key);
-                //Check_Map.put(key, 0);
-                //print("------------");
-              // print(Check_Map.size());
+
 
             }
         }
         Check_Map_Address.add(_t);
 
-
-
     }
-
-
-
 
     }
 
@@ -285,10 +284,9 @@ public class CPFSolverImpl extends CPFSolver {
 
             int[] table_flag = new int[Path.size()];
             table_flag[0] = 0;
-             //ArrayList<Integer> solution = new ArrayList<Integer>(vsize);
+
             int[] solution = new int[vsize];
-            // ArrayList<Integer> for_check = new ArrayList<Integer>(vsize);
-             //ArrayList< ArrayList<Integer>> for_find = new ArrayList(vsize);
+
               int [][] for_find = new int[vsize][];
               for(int i = 0; i < Path.size();++i)
                   for_find[i] = new int[Path_Diff.get(i).same_id.size()];
@@ -297,7 +295,7 @@ public class CPFSolverImpl extends CPFSolver {
               int lastlevel = 0;
               ArrayList<Integer> p = null;
               ArrayList<Integer> for_check = new ArrayList<Integer>();
-             // print(hm.tabs.get(Path.get(0).id).tuples.length);
+
              while(table_flag[0] < hm.tabs.get(Path.get(0).id).tuples.length && !flag_for_Solution)
               {
 
@@ -308,11 +306,10 @@ public class CPFSolverImpl extends CPFSolver {
                       p = Path_Index.get(level - 1).Find(for_find[level]);
 
                   }
-              //   if(p != null)
-                  //    print_All(p);
+
                   if(!Assignment(level,solution,table_flag,p))
                   {
-                  //    println("f");
+
                       if(level > 0 && (p == null || table_flag[level] >= p.size()))
                       {
                           SetTableFlag(table_flag,level);
@@ -326,12 +323,11 @@ public class CPFSolverImpl extends CPFSolver {
                   }
                   if(Check_Filter(solution,level,for_check))
                   {
-                   //   println("pass");
-                    //  print_All(solution);
+
+                      node++;
                       lastlevel = level;
                       level++;
-                    //  print("level == ");
-                     // println(level);
+
                       if(level == Path.size())
                       {
                           flag_for_Solution = true;
@@ -383,7 +379,6 @@ public class CPFSolverImpl extends CPFSolver {
     public boolean Check_Filter(int[] solution, final  int level, ArrayList<Integer> tt)
     {
 
-      //  ArrayList<Integer> tt = new ArrayList<>(vsize);
 
         for(var i : Check_Map_Address.get(level))
         {
@@ -391,8 +386,7 @@ public class CPFSolverImpl extends CPFSolver {
             tt.clear();
             for(int j = 0;j < i.scope.size();++j)
                 tt.add(solution[i.scope.get(j)]);
-           // print("check-id = ");
-           // println(i.id-1);
+
             if(!Filter.get(i.id-1).Contain(tt))
                 return false;
         }
@@ -415,6 +409,11 @@ public class CPFSolverImpl extends CPFSolver {
     }
 
 
+
+    public Long Get_Node()
+    {
+        return node;
+    }
 
     public void Show()
     {
@@ -463,8 +462,7 @@ public class CPFSolverImpl extends CPFSolver {
         {
             print("filter : ");
             println(d.id);
-          //  print("diff : ");
-          //  print_All(d.diff);
+
         }
 
 
@@ -488,6 +486,7 @@ public class CPFSolverImpl extends CPFSolver {
             table_flag[i] = 0;
 
     }
+
 
 
 }

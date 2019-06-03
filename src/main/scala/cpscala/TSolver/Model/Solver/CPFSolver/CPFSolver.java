@@ -1,5 +1,7 @@
 package cpscala.TSolver.Model.Solver.CPFSolver;
 
+import cpscala.TSolver.CpUtil.SearchHelper.CPFSearchHelper;
+import cpscala.TSolver.CpUtil.SearchHelper.SearchHelper;
 import cpscala.XModel.XModel;
 
 import java.util.ArrayList;
@@ -7,7 +9,7 @@ import java.util.ArrayList;
 public abstract class CPFSolver {
 
     XModel hm;
-
+    CPFSearchHelper searchhelper;
     interface MathOperation {
         int operation(int[] in);
 
@@ -27,9 +29,12 @@ public abstract class CPFSolver {
         return m.operation(in);
     }
 
-    public CPFSolver(XModel xm , String varType, String heuName)
+
+    public CPFSolver(XModel xm , String varType, String heuName, SearchHelper s)
     {
         hm = xm;
+        searchhelper = (CPFSearchHelper) s;
+
     }
 
 

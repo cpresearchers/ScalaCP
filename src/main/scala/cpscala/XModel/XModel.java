@@ -138,6 +138,22 @@ public class XModel implements XCallbacks2 {
     }
 
 
+    public double Get_Looseness()  //by zhenluhan 6.3
+    {
+        double s = 0;
+        for(var i : tabs)
+        {
+            s += i.Looseness();
+        }
+        return s / (double)tabs.size();
+    }
+
+    public double Get_Tightness() //by zhenluhan 6.3
+    {
+        return 1- Get_Looseness();
+    }
+
+
     public void show() {
 //        for (XVar x:vars){
 //            x.show();

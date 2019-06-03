@@ -1,16 +1,18 @@
-package cpscala.TSolver.Experiment
+package cpscala.TSolver
 
 import java.io.File
 
 import com.github.tototoshi.csv.CSVWriter
-
+import cpscala.TSolver.Model.Solver.CPFSolver.CPFSolverImpl
 import cpscala.XModel.XModel
 
 import scala.collection.mutable.ArrayBuffer
 import scala.util.Sorting
 import scala.xml.XML
 
-class CPF_Test {
+object CPF_Tester {
+
+
 
   def main(args: Array[String]): Unit = {
 
@@ -39,21 +41,25 @@ class CPF_Test {
       var dataLine = new ArrayBuffer[String](titleLine.length)
 
       for (f <- files) {
-        println(f)
+        //println(f)
         val xm = new XModel(f.getPath, true, fmt)
+        var CPF = new CPFSolverImpl(xm,null,null,null)
+
+        CPF.Search()
+        CPF.Answer()
+
 
       }
 
     }
   }
 
-    //获取指定单个目录下所有文件
-    def getFiles(dir: File): Array[File] = {
-      dir.listFiles.filter(_.isFile) ++
-        dir.listFiles.filter(_.isDirectory).flatMap(getFiles)
-    }
+  //获取指定单个目录下所有文件
 
 
-
+  def getFiles(dir: File): Array[File] = {
+    dir.listFiles.filter(_.isFile) ++
+      dir.listFiles.filter(_.isDirectory).flatMap(getFiles)
+  }
 
 }
