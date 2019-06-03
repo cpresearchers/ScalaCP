@@ -75,7 +75,7 @@ public abstract class CPFSolver {
     }
 
 
-    public boolean Check_Filter(int[] solution, final  int level)
+    public boolean Check_Filter(int[] solution, final  int level, ArrayList<Integer> tt)
     {
         return true;
     }

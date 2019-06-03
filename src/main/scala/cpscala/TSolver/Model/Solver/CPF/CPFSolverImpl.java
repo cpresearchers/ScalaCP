@@ -178,7 +178,7 @@ public class CPFSolverImpl extends CPFSolver {
         tabsize = hm.num_tabs;
         searchhelper = new CPFSearchHelper(hm.num_vars, hm.num_tabs);
         ArrayList<Integer> p = Select_Path();
-        print_All(p);
+      //  print_All(p);
         int temp_f[] = new int[tabsize];
         for (var k : p) {
             temp_f[k] = 1;
@@ -297,6 +297,7 @@ public class CPFSolverImpl extends CPFSolver {
               int level = 0;
               int lastlevel = 0;
               ArrayList<Integer> p = null;
+              ArrayList<Integer> for_check = new ArrayList<Integer>();
              // print(hm.tabs.get(Path.get(0).id).tuples.length);
              while(table_flag[0] < hm.tabs.get(Path.get(0).id).tuples.length && !flag_for_Solution)
               {
@@ -308,10 +309,11 @@ public class CPFSolverImpl extends CPFSolver {
                       p = Path_Index.get(level - 1).Find(for_find[level]);
 
                   }
-                // if(p != null)
-                      //print_All(p);
+              //   if(p != null)
+                  //    print_All(p);
                   if(!Assignment(level,solution,table_flag,p))
                   {
+                  //    println("f");
                       if(level > 0 && (p == null || table_flag[level] >= p.size()))
                       {
                           SetTableFlag(table_flag,level);
@@ -323,13 +325,14 @@ public class CPFSolverImpl extends CPFSolver {
                       continue;
 
                   }
-                  if(Check_Filter(solution,level))
+                  if(Check_Filter(solution,level,for_check))
                   {
-                      print_All(solution);
+                   //   println("pass");
+                    //  print_All(solution);
                       lastlevel = level;
                       level++;
-                      print("level == ");
-                      println(level);
+                    //  print("level == ");
+                     // println(level);
                       if(level == Path.size())
                       {
                           flag_for_Solution = true;
@@ -378,20 +381,20 @@ public class CPFSolverImpl extends CPFSolver {
     }
 
     @Override
-    public boolean Check_Filter(int[] solution, final  int level)
+    public boolean Check_Filter(int[] solution, final  int level, ArrayList<Integer> tt)
     {
 
-        ArrayList<Integer> tt = new ArrayList<>(vsize);
+      //  ArrayList<Integer> tt = new ArrayList<>(vsize);
 
         for(var i : Check_Map_Address.get(level))
         {
 
-
+            tt.clear();
             for(int j = 0;j < i.scope.size();++j)
                 tt.add(solution[i.scope.get(j)]);
            // print("check-id = ");
            // println(i.id-1);
-            if(Filter.get(i.id-1).Contain(tt) == false)
+            if(!Filter.get(i.id-1).Contain(tt))
                 return false;
         }
 

@@ -23,7 +23,7 @@ object main {
     println(path)
     val xm = new XModel(path, true, fmt)
     var CPF = new CPFSolverImpl(xm,null,null)
-    CPF.Show()
+   // CPF.Show()
     CPF.Search()
     CPF.Answer()
 
