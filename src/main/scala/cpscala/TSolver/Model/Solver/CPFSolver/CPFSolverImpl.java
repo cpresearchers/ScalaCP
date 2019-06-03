@@ -1,8 +1,7 @@
-package cpscala.TSolver.Model.Solver.CPF;
+package cpscala.TSolver.Model.Solver.CPFSolver;
 
 import cpscala.TSolver.CpUtil.SearchHelper.CPFSearchHelper;
 import cpscala.XModel.XModel;
-import cpscala.XModel.XVar;
 
 import java.util.*;
 

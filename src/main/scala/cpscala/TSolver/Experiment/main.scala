@@ -2,7 +2,7 @@ package cpscala.TSolver.Experiment
 
 import cpscala.TSolver.CpUtil.Constants
 import cpscala.TSolver.Model.Constraint.SConstraint.TableCT_Bit
-import cpscala.TSolver.Model.Solver.CPF.CPFSolverImpl
+import cpscala.TSolver.Model.Solver.CPFSolver.CPFSolverImpl
 import cpscala.TSolver.Model.Solver.DSPSolver._
 import cpscala.TSolver.Model.Solver.IPSolver._
 import cpscala.TSolver.Model.Solver.IPplusSolver._

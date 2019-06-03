@@ -1,6 +1,4 @@
-package cpscala.TSolver.Model.Solver.CPF;
-
-import org.xcsp.common.domains.Domains;
+package cpscala.TSolver.Model.Solver.CPFSolver;
 
 import java.util.ArrayList;
 

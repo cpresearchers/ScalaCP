@@ -3,6 +3,7 @@
 [debug] Other repositories:
 [debug] Default repositories:
 [debug] Using inline dependencies specified in Scala.
+[debug] no default cache defined: set to C:\Users\zhenl\.ivy2\cache
 [debug] :: resolving dependencies :: default#scalacp$sbt_2.12;0.1
 [debug] 	confs: [compile, runtime, test, provided, optional]
 [debug] 	validate = true
@@ -260,7 +261,6 @@
 [debug] dependency descriptor has been mediated: dependency: org.scala-lang#scala-reflect;2.12.7 {compile=[compile(*), master(*)], runtime=[runtime(*)]} => dependency: org.scala-lang#scala-reflect;2.12.7 {compile=[compile(*), master(*)], runtime=[runtime(*)]}
 [debug] == resolving dependencies org.scala-sbt#collections_2.12;1.2.8->org.scala-sbt#util-position_2.12;1.2.4 [compile->compile(*)]
 [debug] dependency descriptor has been mediated: dependency: org.scala-lang#scala-library;2.12.7 {compile=[compile(*), master(*)], runtime=[runtime(*)]} => dependency: org.scala-lang#scala-library;2.12.7 {compile=[compile(*), master(*)], runtime=[runtime(*)]}
-[debug] no default cache defined: set to C:\Users\zhenl\.ivy2\cache
 [debug] dependency descriptor has been mediated: dependency: org.scala-lang#scala-reflect;2.12.7 {compile=[compile(*), master(*)], runtime=[runtime(*)]} => dependency: org.scala-lang#scala-reflect;2.12.7 {compile=[compile(*), master(*)], runtime=[runtime(*)]}
 [debug] == resolving dependencies org.scala-sbt#util-position_2.12;1.2.4->org.scala-lang#scala-library;2.12.7 [compile->master(*)]
 [debug] dependency descriptor has been mediated: dependency: org.scala-lang#scala-library;2.12.7 {compile=[compile(*), master(*)], runtime=[runtime(*)]} => dependency: org.scala-lang#scala-library;2.12.7 {compile=[compile(*), master(*)], runtime=[runtime(*)]}
@@ -12634,13 +12634,13 @@
 [debug] ignoring unhandled DependencyDescriptorMediator: class sbt.internal.librarymanagement.IvyScalaUtil$OverrideScalaMediator
 [debug] 	resolved ivy file produced in cache
 [debug] :: downloading artifacts ::
-[debug] :: resolution report :: resolve 1156ms :: artifacts dl 0ms
+[debug] :: resolution report :: resolve 3323ms :: artifacts dl 105ms
 [debug] 	report for default#scalacp$sbt_2.12;0.1 compile produced in C:\Users\zhenl\IdeaProjects\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp$sbt_2.12-compile.xml
 [debug] 	report for default#scalacp$sbt_2.12;0.1 runtime produced in C:\Users\zhenl\IdeaProjects\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp$sbt_2.12-runtime.xml
 [debug] 	report for default#scalacp$sbt_2.12;0.1 test produced in C:\Users\zhenl\IdeaProjects\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp$sbt_2.12-test.xml
 [debug] 	report for default#scalacp$sbt_2.12;0.1 provided produced in C:\Users\zhenl\IdeaProjects\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp$sbt_2.12-provided.xml
 [debug] 	report for default#scalacp$sbt_2.12;0.1 optional produced in C:\Users\zhenl\IdeaProjects\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp$sbt_2.12-optional.xml
-[debug] 	resolve done (1156ms resolve - 0ms download)
+[debug] 	resolve done (3323ms resolve - 105ms download)
 [debug] Using inline dependencies specified in Scala.
 [debug] :: resolving dependencies :: default#scalacp$sources_2.12;0.1
 [debug] 	confs: [default, compile, runtime, test, provided, optional]
@@ -18350,12 +18350,38 @@
 [debug] :: downloading artifacts ::
 [debug] 	[NOT REQUIRED] com.eed3si9n#shaded-scalajson_2.12;1.0.0-M4!shaded-scalajson_2.12.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#util-position_2.12;1.2.4!util-position_2.12.jar(src)
-[debug] 	[NOT REQUIRED] org.apache.logging.log4j#log4j-core;2.11.1!log4j-core.jar(src)
+[debug] no default ivy user dir defined: set to C:\Users\zhenl\.ivy2
+[debug] no default ivy user dir defined: set to C:\Users\zhenl\.ivy2
+[debug] including url: jar:file:/C:/Users/zhenl/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-public.xml
 [debug] 	[NOT REQUIRED] org.scala-sbt#zinc-ivy-integration_2.12;1.2.5!zinc-ivy-integration_2.12.jar(src)
+[debug] no default ivy user dir defined: set to C:\Users\zhenl\.ivy2
+[debug] including url: jar:file:/C:/Users/zhenl/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-public.xml
+[debug] no default cache defined: set to C:\Users\zhenl\.ivy2\cache
+[debug] including url: jar:file:/C:/Users/zhenl/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-shared.xml
+[debug] 	[NOT REQUIRED] org.apache.logging.log4j#log4j-core;2.11.1!log4j-core.jar(src)
+[debug] including url: jar:file:/C:/Users/zhenl/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-local.xml
+[debug] no default ivy user dir defined: set to C:\Users\zhenl\.ivy2
+[debug] including url: jar:file:/C:/Users/zhenl/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-public.xml
+[debug] including url: jar:file:/C:/Users/zhenl/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-main-chain.xml
+[debug] no default cache defined: set to C:\Users\zhenl\.ivy2\cache
+[debug] including url: jar:file:/C:/Users/zhenl/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-shared.xml
+[debug] including url: jar:file:/C:/Users/zhenl/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-default-chain.xml
+[debug] including url: jar:file:/C:/Users/zhenl/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-local.xml
+[debug] settings loaded (22ms)
+[debug] 	default cache: C:\Users\zhenl\.ivy2\cache
+[debug] 	default resolver: default
+[debug] 	-- 5 resolvers:
+[debug] 	shared [file]
+[debug] including url: jar:file:/C:/Users/zhenl/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-main-chain.xml
+[debug] 	default [chain] [local, main]
+[debug] 	public [ibiblio]
+[debug] 	main [chain] [shared, public]
+[debug] 	local [file]
 [debug] 	[NOT REQUIRED] org.spire-math#jawn-parser_2.12;0.10.4!jawn-parser_2.12.jar(src)
+[debug] including url: jar:file:/C:/Users/zhenl/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-default-chain.xml
 [debug] 	[NOT REQUIRED] org.apache.logging.log4j#log4j-slf4j-impl;2.11.1!log4j-slf4j-impl.jar(src)
-[debug] 	[NOT REQUIRED] org.scala-sbt#zinc-compile-core_2.12;1.2.5!zinc-compile-core_2.12.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#launcher-interface;1.0.4!launcher-interface.jar(src)
+[debug] 	[NOT REQUIRED] org.scala-sbt#zinc-compile-core_2.12;1.2.5!zinc-compile-core_2.12.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#logic_2.12;1.2.8!logic_2.12.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt.ipcsocket#ipcsocket;1.0.0!ipcsocket.jar(src)
 [debug] 	[NOT REQUIRED] com.eed3si9n#gigahorse-core_2.12;0.3.0!gigahorse-core_2.12.jar(src)
@@ -18364,17 +18390,55 @@
 [debug] 	[NOT REQUIRED] org.scala-sbt#core-macros_2.12;1.2.8!core-macros_2.12.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#io_2.12;1.2.2!io_2.12.jar(src)
 [debug] 	[NOT REQUIRED] net.java.dev.jna#jna;4.5.0!jna.jar(src)
-[debug] 	[NOT REQUIRED] org.scala-sbt#librarymanagement-core_2.12;1.2.4!librarymanagement-core_2.12.jar(src)
+[debug] including url: jar:file:/C:/Users/zhenl/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-public.xml
+[debug] no default cache defined: set to C:\Users\zhenl\.ivy2\cache
+[debug] including url: jar:file:/C:/Users/zhenl/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-shared.xml
 [debug] 	[NOT REQUIRED] org.scala-sbt#completion_2.12;1.2.8!completion_2.12.jar(src)
+[debug] no default ivy user dir defined: set to C:\Users\zhenl\.ivy2
+[debug] including url: jar:file:/C:/Users/zhenl/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-local.xml
+[debug] including url: jar:file:/C:/Users/zhenl/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-public.xml
+[debug] including url: jar:file:/C:/Users/zhenl/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-main-chain.xml
+[debug] no default cache defined: set to C:\Users\zhenl\.ivy2\cache
+[debug] including url: jar:file:/C:/Users/zhenl/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-shared.xml
+[debug] including url: jar:file:/C:/Users/zhenl/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-default-chain.xml
+[debug] 	[NOT REQUIRED] org.scala-sbt#librarymanagement-core_2.12;1.2.4!librarymanagement-core_2.12.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#tasks_2.12;1.2.8!tasks_2.12.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#task-system_2.12;1.2.8!task-system_2.12.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#compiler-bridge_2.12;1.2.5!compiler-bridge_2.12.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-lang.modules#scala-xml_2.12;1.0.6!scala-xml_2.12.jar(src)
-[debug] 	[NOT REQUIRED] org.scala-sbt#zinc-compile_2.12;1.2.5!zinc-compile_2.12.jar(src)
+[debug] including url: jar:file:/C:/Users/zhenl/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-local.xml
 [debug] 	[NOT REQUIRED] org.scala-sbt#zinc-classpath_2.12;1.2.5!zinc-classpath_2.12.jar(src)
+[debug] no default ivy user dir defined: set to C:\Users\zhenl\.ivy2
+[debug] including url: jar:file:/C:/Users/zhenl/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-public.xml
+[debug] no default cache defined: set to C:\Users\zhenl\.ivy2\cache
+[debug] including url: jar:file:/C:/Users/zhenl/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-shared.xml
+[debug] including url: jar:file:/C:/Users/zhenl/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-local.xml
+[debug] including url: jar:file:/C:/Users/zhenl/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-main-chain.xml
+[debug] including url: jar:file:/C:/Users/zhenl/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-main-chain.xml
+[debug] including url: jar:file:/C:/Users/zhenl/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-default-chain.xml
+[debug] no default cache defined: set to C:\Users\zhenl\.ivy2\cache
+[debug] including url: jar:file:/C:/Users/zhenl/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-shared.xml
+[debug] settings loaded (14ms)
+[debug] 	default cache: C:\Users\zhenl\.ivy2\cache
+[debug] 	default resolver: default
+[debug] 	-- 5 resolvers:
+[debug] 	shared [file]
+[debug] 	default [chain] [local, main]
+[debug] settings loaded (55ms)
+[debug] 	public [ibiblio]
+[debug] 	default cache: C:\Users\zhenl\.ivy2\cache
+[debug] 	default resolver: default
+[debug] 	main [chain] [shared, public]
+[debug] 	-- 5 resolvers:
+[debug] 	local [file]
+[debug] 	shared [file]
+[debug] 	default [chain] [local, main]
 [debug] 	[NOT REQUIRED] com.squareup.okio#okio;1.12.0!okio.jar(src)
+[debug] 	public [ibiblio]
+[debug] 	main [chain] [shared, public]
+[debug] 	local [file]
+[debug] 	[NOT REQUIRED] org.scala-sbt#run_2.12;1.2.8!run_2.12.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-lang.modules#scala-parser-combinators_2.12;1.0.5!scala-parser-combinators_2.12.jar(src)
-[debug] 	[NOT REQUIRED] com.eed3si9n#sjson-new-scalajson_2.12;0.8.2!sjson-new-scalajson_2.12.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#main-settings_2.12;1.2.8!main-settings_2.12.jar(src)
 [debug] 	[NOT REQUIRED] com.eed3si9n#gigahorse-okhttp_2.12;0.3.0!gigahorse-okhttp_2.12.jar(src)
 [debug] 	[NOT REQUIRED] com.squareup.okhttp3#okhttp;3.7.0!okhttp.jar(src)
@@ -18386,21 +18450,33 @@
 [debug] 	[NOT REQUIRED] org.scala-sbt#collections_2.12;1.2.8!collections_2.12.jar(src)
 [debug] 	[NOT REQUIRED] com.github.cb372#scalacache-core_2.12;0.20.0!scalacache-core_2.12.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#zinc_2.12;1.2.5!zinc_2.12.jar(src)
+[debug] including url: jar:file:/C:/Users/zhenl/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-local.xml
 [debug] 	[NOT REQUIRED] org.slf4j#slf4j-api;1.7.25!slf4j-api.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#sbinary_2.12;0.5.0!sbinary_2.12.jar(src)
 [debug] 	[NOT REQUIRED] org.apache.logging.log4j#log4j-api;2.11.1!log4j-api.jar(src)
+[debug] including url: jar:file:/C:/Users/zhenl/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-main-chain.xml
 [debug] 	[NOT REQUIRED] org.scala-sbt#protocol_2.12;1.2.8!protocol_2.12.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#scripted-sbt-redux_2.12;1.2.8!scripted-sbt-redux_2.12.jar(src)
 [debug] 	[NOT REQUIRED] com.eed3si9n#sjson-new-murmurhash_2.12;0.8.2!sjson-new-murmurhash_2.12.jar(src)
+[debug] including url: jar:file:/C:/Users/zhenl/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-default-chain.xml
 [debug] 	[NOT REQUIRED] org.scala-sbt#testing_2.12;1.2.8!testing_2.12.jar(src)
 [debug] 	[NOT REQUIRED] com.lihaoyi#sourcecode_2.12;0.1.3!sourcecode_2.12.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#util-control_2.12;1.2.4!util-control_2.12.jar(src)
+[debug] settings loaded (81ms)
+[debug] 	default cache: C:\Users\zhenl\.ivy2\cache
+[debug] 	default resolver: default
+[debug] 	-- 5 resolvers:
+[debug] 	shared [file]
+[debug] 	default [chain] [local, main]
+[debug] 	public [ibiblio]
+[debug] 	main [chain] [shared, public]
+[debug] 	local [file]
 [debug] 	[NOT REQUIRED] net.java.dev.jna#jna-platform;4.5.0!jna-platform.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#main_2.12;1.2.8!main_2.12.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#template-resolver;0.1!template-resolver.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#zinc-persist_2.12;1.2.5!zinc-persist_2.12.jar(src)
-[debug] 	[NOT REQUIRED] org.scala-sbt#util-relation_2.12;1.2.4!util-relation_2.12.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#zinc-core_2.12;1.2.5!zinc-core_2.12.jar(src)
+[debug] 	[NOT REQUIRED] org.scala-sbt#util-relation_2.12;1.2.4!util-relation_2.12.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#zinc-classfile_2.12;1.2.5!zinc-classfile_2.12.jar(src)
 [debug] 	[NOT REQUIRED] com.lmax#disruptor;3.4.2!disruptor.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#zinc-apiinfo_2.12;1.2.5!zinc-apiinfo_2.12.jar(src)
@@ -18418,10 +18494,10 @@
 [debug] 	[NOT REQUIRED] com.typesafe#config;1.2.0!config.jar(src)
 [debug] 	[NOT REQUIRED] com.trueaccord.scalapb#scalapb-runtime_2.12;0.6.0!scalapb-runtime_2.12.jar(src)
 [debug] 	[NOT REQUIRED] com.github.ben-manes.caffeine#caffeine;2.5.6!caffeine.jar(src)
+[debug] 	[NOT REQUIRED] com.eed3si9n#sjson-new-scalajson_2.12;0.8.2!sjson-new-scalajson_2.12.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#util-cache_2.12;1.2.4!util-cache_2.12.jar(src)
-[debug] 	[NOT REQUIRED] org.scala-sbt#test-agent;1.2.8!test-agent.jar(src)
-[debug] 	[NOT REQUIRED] com.lihaoyi#fastparse_2.12;0.4.2!fastparse_2.12.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#test-interface;1.0!test-interface.jar(src)
+[debug] 	[NOT REQUIRED] com.lihaoyi#fastparse_2.12;0.4.2!fastparse_2.12.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#util-scripted_2.12;1.2.4!util-scripted_2.12.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#actions_2.12;1.2.8!actions_2.12.jar(src)
 [debug] 	[NOT REQUIRED] com.github.cb372#scalacache-caffeine_2.12;0.20.0!scalacache-caffeine_2.12.jar(src)
@@ -18429,12 +18505,32 @@
 [debug] 	[NOT REQUIRED] org.reactivestreams#reactive-streams;1.0.0!reactive-streams.jar(src)
 [debug] 	[NOT REQUIRED] com.eed3si9n#sjson-new-core_2.12;0.8.2!sjson-new-core_2.12.jar(src)
 [debug] 	[NOT REQUIRED] org.scala-sbt#util-tracking_2.12;1.2.4!util-tracking_2.12.jar(src)
-[debug] 	[NOT REQUIRED] org.scala-sbt#run_2.12;1.2.8!run_2.12.jar(src)
-[debug] :: resolution report :: resolve 860ms :: artifacts dl 31ms
+[debug] settings loaded (104ms)
+[debug] 	default cache: C:\Users\zhenl\.ivy2\cache
+[debug] 	default resolver: default
+[debug] 	-- 5 resolvers:
+[debug] 	shared [file]
+[debug] 	default [chain] [local, main]
+[debug] 	public [ibiblio]
+[debug] 	main [chain] [shared, public]
+[debug] 	local [file]
+[debug] including url: jar:file:/C:/Users/zhenl/.sbt/boot/scala-2.12.7/org.scala-sbt/sbt/1.2.8/ivy-2.3.0-sbt-cb9cc189e9f3af519f9f102e6c5d446488ff6832.jar!/org/apache/ivy/core/settings/ivysettings-default-chain.xml
+[debug] 	[NOT REQUIRED] org.scala-sbt#zinc-compile_2.12;1.2.5!zinc-compile_2.12.jar(src)
+[debug] 	[NOT REQUIRED] org.scala-sbt#test-agent;1.2.8!test-agent.jar(src)
+[debug] settings loaded (65ms)
+[debug] 	default cache: C:\Users\zhenl\.ivy2\cache
+[debug] 	default resolver: default
+[debug] 	-- 5 resolvers:
+[debug] 	shared [file]
+[debug] 	default [chain] [local, main]
+[debug] 	public [ibiblio]
+[debug] 	main [chain] [shared, public]
+[debug] 	local [file]
+[debug] :: resolution report :: resolve 1285ms :: artifacts dl 121ms
 [debug] 	report for default#scalacp$sources_2.12;0.1 default produced in C:\Users\zhenl\IdeaProjects\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp$sources_2.12-default.xml
 [debug] 	report for default#scalacp$sources_2.12;0.1 compile produced in C:\Users\zhenl\IdeaProjects\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp$sources_2.12-compile.xml
 [debug] 	report for default#scalacp$sources_2.12;0.1 runtime produced in C:\Users\zhenl\IdeaProjects\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp$sources_2.12-runtime.xml
 [debug] 	report for default#scalacp$sources_2.12;0.1 test produced in C:\Users\zhenl\IdeaProjects\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp$sources_2.12-test.xml
 [debug] 	report for default#scalacp$sources_2.12;0.1 provided produced in C:\Users\zhenl\IdeaProjects\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp$sources_2.12-provided.xml
 [debug] 	report for default#scalacp$sources_2.12;0.1 optional produced in C:\Users\zhenl\IdeaProjects\ScalaCP\target\scala-2.12\resolution-cache\reports\default-scalacp$sources_2.12-optional.xml
-[debug] 	resolve done (860ms resolve - 31ms download)
+[debug] 	resolve done (1285ms resolve - 121ms download)

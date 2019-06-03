@@ -1,4 +1,4 @@
-package cpscala.TSolver.Model.Solver.CPF;
+package cpscala.TSolver.Model.Solver.CPFSolver;
 
 import cpscala.XModel.XModel;
 
