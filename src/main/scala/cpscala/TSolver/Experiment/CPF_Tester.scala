@@ -5,6 +5,11 @@ import java.io.File
 import com.github.tototoshi.csv.CSVWriter
 import cpscala.TSolver.Model.Solver.CPFSolver.CPFSolverImpl
 import cpscala.XModel.XModel
+import java.util.Date
+import java.text.SimpleDateFormat
+
+import cpscala.TSolver.Experiment.test_ct.{name, pType, varType}
+import cpscala.TSolver.Model.Solver.SSolver.SCoarseSolver
 
 import scala.collection.mutable.ArrayBuffer
 import scala.util.Sorting
@@ -13,8 +18,11 @@ import scala.xml.XML
 object CPF_Tester {
 
 
+  var Time_Limit : Long = 1800000000000L
 
   def main(args: Array[String]): Unit = {
+
+
 
     val file = XML.loadFile("benchmarks/Folders.xml")
     val inputRoot = (file \\ "inputRoot").text
@@ -28,35 +36,160 @@ object CPF_Tester {
       val inputPath = inputRoot + "/" + folderStr
       val files = getFiles(new File(inputPath))
       Sorting.quickSort(files)
-      println("exp files:")
-      files.foreach(f => println(f.getName))
+      //println("exp files:")
+     // files.foreach(f => println(f.getName))
       val resFile = new File(outputRoot + "/" + outputFolder + folderStr + ".csv")
       val writer = CSVWriter.open(resFile)
       val titleLine = ArrayBuffer[String]()
-      titleLine += "name"
-      titleLine ++= Array("algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum")
 
+      titleLine ++= Array(
+        "id","instance",
+        "algorithm 1","init_time","search_time","nodes","answer", //CPF
+        "algorithm 2","init_time","search_time","nodes","answer",  //CT dom/ddeg
+        "algorithm 3","init_time","search_time","nodes","answer",   //CT dom/wdeg
+        "algorithm 4","init_time","search_time","nodes","answer",   //PWCT
+        "num_var","num_constraint","Looseness","Tightness",
+        "max_arity","max_domain_size","max_tuples_size","avg_tuples_size","ave_domain_size","date")
 
       writer.writeRow(titleLine)
       var dataLine = new ArrayBuffer[String](titleLine.length)
-
+      var i = 1
       for (f <- files) {
-        //println(f)
+        dataLine += i.toString()
+        dataLine += f.toString()
+
+        println(f)
         val xm = new XModel(f.getPath, true, fmt)
-        var CPF = new CPFSolverImpl(xm,null,null,null)
 
-        CPF.Search()
-        CPF.Answer()
 
+        dataLine ++= CPF_Test(xm)
+        dataLine ++= CT_Test_Wdeg(xm)
+        dataLine ++= CT_Test_Ddeg(xm)
+        dataLine ++= PW_CT_Test(xm)
+
+
+
+        dataLine += xm.vars.size().toString()
+        dataLine += xm.tabs.size().toString()
+        dataLine += xm.Get_Looseness().toString()
+        dataLine += xm.Get_Tightness().toString()
+        dataLine += xm.max_arity.toString()
+        dataLine += xm.max_domain_size.toString()
+        dataLine += xm.max_tuples_size.toString()
+        dataLine += xm.avg_tuples_size.toString()
+        dataLine += xm.Get_Ave_Domain_Size().toString()
+
+
+        var day=new Date()               //时间戳
+        var df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+
+        dataLine += df.format(day).toString()
+
+        i += 1
+        println(dataLine)
+        writer.writeRow(dataLine)
+        dataLine.clear()
 
       }
 
     }
   }
 
+
+
+
+  def CT_Test_Wdeg(hm : XModel ): ArrayBuffer[String] =
+  {
+
+    var line  = new ArrayBuffer[String](5)
+
+    var name:String = "CT_Test_Wdeg"
+    line += name.toString()
+    var init_time_start = System.nanoTime()
+    val ct = new SCoarseSolver(hm, "CT_Bit", "BitSet", "Dom/Wdeg")
+    var init_time_end = System.nanoTime()
+    line += ((init_time_end-init_time_start).toDouble * 1e-9).toString()
+    var search_time_start = System.nanoTime()
+    ct.search(Time_Limit)
+    var search_time_end = System.nanoTime()
+    line += ((search_time_end-search_time_start).toDouble * 1e-9).toString()
+    line += ct.helper.nodes.toString()
+    line += "-".toString()
+    return line
+
+
+
+
+  }
+
+
+  def CT_Test_Ddeg(hm : XModel ): ArrayBuffer[String]  =
+  {
+
+
+
+    var line  = new ArrayBuffer[String](5)
+
+    var name:String = "CT_Test_Ddeg"
+    line += name.toString()
+    var init_time_start = System.nanoTime()
+    val ct = new SCoarseSolver(hm, "CT_Bit", "BitSet", "Dom/Ddeg")
+    var init_time_end = System.nanoTime()
+    line += ((init_time_end-init_time_start).toDouble * 1e-9).toString()
+    var search_time_start = System.nanoTime()
+    ct.search(Time_Limit)
+    var search_time_end = System.nanoTime()
+    line += ((search_time_end-search_time_start).toDouble * 1e-9).toString()
+    line += ct.helper.nodes.toString()
+    line += "-".toString()
+    return line
+
+
+
+
+  }
+
+  def CPF_Test(hm : XModel): ArrayBuffer[String]  =
+  {
+
+    var line  = new ArrayBuffer[String](5)
+    var name = "CPF"
+    line += name.toString()
+    var init_time_start = System.nanoTime()
+    var CPF = new CPFSolverImpl(hm,null,null,null)
+    var init_time_end = System.nanoTime()
+    line += ((init_time_end-init_time_start).toDouble * 1e-9).toString()
+    var search_time_start = System.nanoTime()
+    var ans = CPF.Search(Time_Limit)
+    var search_time_end = System.nanoTime()
+    line += ((search_time_end-search_time_start).toDouble * 1e-9).toString()
+    line += CPF.Get_Node().toString()
+    line += ans.toString()
+    return line
+
+  }
+
+  def PW_CT_Test(hm : XModel): ArrayBuffer[String]  =
+  {
+
+    var line  = new ArrayBuffer[String](5)
+
+
+    line += "".toString()
+    line += "".toString()
+    line += "".toString()
+    line += "".toString()
+    line += "".toString()
+
+    return line
+
+
+
+
+  }
+
+
   //获取指定单个目录下所有文件
-
-
   def getFiles(dir: File): Array[File] = {
     dir.listFiles.filter(_.isFile) ++
       dir.listFiles.filter(_.isDirectory).flatMap(getFiles)

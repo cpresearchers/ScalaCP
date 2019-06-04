@@ -67,7 +67,7 @@ public abstract class CPFSolver {
     }
 
 
-    public  boolean Search() {
+    public  boolean Search(long limit_time) {
 
         return true;
 

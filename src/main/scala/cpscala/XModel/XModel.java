@@ -128,6 +128,8 @@ public class XModel implements XCallbacks2 {
             XTab t = new XTab(num_tabs++, "", true, r.rvs, v, need_positive, false);
             tabs.add(t);
             max_arity = Math.max(max_arity, t.arity);
+            max_tuples_size = Math.max(max_tuples_size, t.tuples.length);
+            avg_tuples_size = (avg_tuples_size * (tabs.size() - 1) + t.tuples.length) / tabs.size();
         }
     }
 
@@ -153,6 +155,15 @@ public class XModel implements XCallbacks2 {
         return 1- Get_Looseness();
     }
 
+    public double Get_Ave_Domain_Size() //by zhenluhan 6.4
+    {
+        int sum = 0;
+        for (var a:vars) {
+            sum += a.values.length;
+
+        }
+        return sum / (double)vars.size();
+    }
 
     public void show() {
 //        for (XVar x:vars){

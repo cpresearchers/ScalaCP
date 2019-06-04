@@ -26,7 +26,7 @@ object main {
     val xm = new XModel(path, true, fmt)
     var CPF = new CPFSolverImpl(xm,null,null,null)
    // CPF.Show()
-    CPF.Search()
+    CPF.Search(1800000000000L)
     CPF.Answer()
 
 

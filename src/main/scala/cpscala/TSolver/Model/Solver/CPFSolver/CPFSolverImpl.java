@@ -280,7 +280,10 @@ public class CPFSolverImpl extends CPFSolver {
 
 
     @Override
-    public  boolean Search() {
+    public  boolean Search(long limit_time) {
+
+            long start_time = System.nanoTime();
+
 
             int[] table_flag = new int[Path.size()];
             table_flag[0] = 0;
@@ -295,9 +298,15 @@ public class CPFSolverImpl extends CPFSolver {
               int lastlevel = 0;
               ArrayList<Integer> p = null;
               ArrayList<Integer> for_check = new ArrayList<Integer>();
-
+                long current_Time = 0;
              while(table_flag[0] < hm.tabs.get(Path.get(0).id).tuples.length && !flag_for_Solution)
               {
+
+                  current_Time = System.nanoTime();
+                  if(current_Time - start_time > limit_time)
+                  {
+                      return false;
+                  }
 
                   if(lastlevel != level && level != 0 && level != Path.size())
                   {
@@ -347,7 +356,7 @@ public class CPFSolverImpl extends CPFSolver {
 
     }
     @Override
-    public boolean Assignment(int level, int[] solution, int[] table_flag,ArrayList<Integer> p) {
+    public boolean Assignment(final int level, int[] solution, int[] table_flag,ArrayList<Integer> p) {
 
         if(level == 0)
         {
@@ -376,7 +385,7 @@ public class CPFSolverImpl extends CPFSolver {
     }
 
     @Override
-    public boolean Check_Filter(int[] solution, final  int level, ArrayList<Integer> tt)
+    public boolean Check_Filter( final int[] solution, final  int level, ArrayList<Integer> tt)
     {
 
 

@@ -5,7 +5,7 @@
         <!--<BMFile name="0" format="2">D:/optiSTRpackage/csptools/rand-4-10-3-10-667-fcd-15_ext-merged.xml</BMFile>-->
         <!--<BMFile name="0" format="2">D:/optiSTRpackage/csptools/rand-4-10-2-10-500-fcd-5_ext-merged.xml</BMFile>-->
 <!--        <BMFile name="0" format="2">F:/cspxmlpast/rand5-2X-0.5c/rand5-2X-0.5c-8-p0.xml</BMFile>-->
-        <BMFile name="0" format="2">C:/Users/zhenl/IdeaProjects/ScalaCP/benchmarks/queens-12_ext.xml</BMFile>
+        <BMFile name="0" format="2">C:/Users/zhenl/Downloads/jnhUnsat/jnh02_ext.xml</BMFile>
         <!--<BMFile name="0" format="3">benchmarks/test2.xml</BMFile>-->
         <!--<BMFile name="0" format="3">benchmarks/queen4.xml</BMFile>-->
         <!--<BMFile name="0" format="3">benchmarks/queen12.xml</BMFile>-->
