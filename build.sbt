@@ -14,4 +14,4 @@ libraryDependencies += "org.msgpack" % "msgpack-core" % "0.8.16"
 libraryDependencies += "org.scala-lang.modules" % "scala-xml_2.12.0-RC1" % "1.0.6"
 libraryDependencies += "org.xcsp" % "xcsp3-tools" % "1.1.0"
 
-mainClass in (Compile, run) := Some("cpscala.TSolver.Experiment.CPF_Tester")
+mainClass in (Compile, run) := Some("cpscala.TSolver.CPF_Tester")

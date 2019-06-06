@@ -23,6 +23,7 @@ object CPF_Tester {
 
   def main(args: Array[String]): Unit = {
 
+
     val file = XML.loadFile("benchmarks/Folders" + args(0) + ".xml")
     val inputRoot = (file \\ "inputRoot").text
     val outputRoot = (file \\ "outputRoot").text
@@ -62,10 +63,10 @@ object CPF_Tester {
         val xm = new XModel(f.getPath, true, fmt)
 
 
-      //  dataLine ++= CPF_Test(xm)
-        //dataLine ++= CT_Test_Wdeg(xm)
-        //dataLine ++= CT_Test_Ddeg(xm)
-        //dataLine ++= PW_CT_Test(xm)
+        dataLine ++= CPF_Test(xm)
+        dataLine ++= CT_Test_Wdeg(xm)
+        dataLine ++= CT_Test_Ddeg(xm)
+        dataLine ++= PW_CT_Test(xm)
 
 
 
@@ -86,10 +87,10 @@ object CPF_Tester {
         dataLine += df.format(day).toString()
 
         i += 1
-        println(dataLine)
-        val inwriter = CSVWriter.open(resFile,true)
-        inwriter.writeRow(dataLine)
-        inwriter.close()
+       // println(dataLine)
+        val inner_writer = CSVWriter.open(resFile,true)
+        inner_writer.writeRow(dataLine)
+        inner_writer.close()
         dataLine.clear()
 
       }
@@ -134,13 +135,13 @@ object CPF_Tester {
 
     val name:String = "CT_Test_Ddeg"
     line += name.toString()
-    var init_time_start = System.nanoTime()
+    val init_time_start = System.nanoTime()
     val ct = new SCoarseSolver(hm, "CT_Bit", "BitSet", "Dom/Ddeg")
-    var init_time_end = System.nanoTime()
+    val init_time_end = System.nanoTime()
     line += ((init_time_end-init_time_start).toDouble * 1e-9).toString()
-    var search_time_start = System.nanoTime()
+    val search_time_start = System.nanoTime()
     ct.search(Time_Limit)
-    var search_time_end = System.nanoTime()
+    val search_time_end = System.nanoTime()
     line += ((search_time_end-search_time_start).toDouble * 1e-9).toString()
     line += ct.helper.nodes.toString()
     line += "-".toString()
@@ -155,15 +156,15 @@ object CPF_Tester {
   {
 
     var line  = new ArrayBuffer[String](5)
-    var name = "CPF"
+    val name = "CPF"
     line += name.toString()
-    var init_time_start = System.nanoTime()
-    var CPF = new CPFSolverImpl(hm,null,null,null)
-    var init_time_end = System.nanoTime()
+    val init_time_start = System.nanoTime()
+    val CPF = new CPFSolverImpl(hm,null,null,null)
+    val init_time_end = System.nanoTime()
     line += ((init_time_end-init_time_start).toDouble * 1e-9).toString()
-    var search_time_start = System.nanoTime()
-    var ans = CPF.Search(Time_Limit)
-    var search_time_end = System.nanoTime()
+    val search_time_start = System.nanoTime()
+    val ans = CPF.Search(Time_Limit)
+    val search_time_end = System.nanoTime()
     line += ((search_time_end-search_time_start).toDouble * 1e-9).toString()
     line += CPF.Get_Node().toString()
     line += ans.toString()
@@ -176,17 +177,17 @@ object CPF_Tester {
 
     var line  = new ArrayBuffer[String](5)
 
-    var name:String = "PW-CT"
+    val name:String = "PW-CT"
     line += name.toString()
-    var init_time_start = System.nanoTime()
+    val init_time_start = System.nanoTime()
 
     val ct = new PWCoarseSolver(hm, "PW-CT", "BitSet", "Dom/Wdeg")
 
-    var init_time_end = System.nanoTime()
+    val init_time_end = System.nanoTime()
     line += ((init_time_end-init_time_start).toDouble * 1e-9).toString()
-    var search_time_start = System.nanoTime()
+    val search_time_start = System.nanoTime()
     ct.search(Time_Limit)
-    var search_time_end = System.nanoTime()
+    val search_time_end = System.nanoTime()
     line += ((search_time_end-search_time_start).toDouble * 1e-9).toString()
     line += ct.helper.nodes.toString()
     line += "-".toString()

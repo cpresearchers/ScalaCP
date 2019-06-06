@@ -1,5 +1,7 @@
 package cpscala.TSolver.Model.Solver.CPFSolver;
 
+import cpscala.XModel.XVar;
+
 import java.util.ArrayList;
 
 public class Trie {
@@ -14,9 +16,11 @@ public class Trie {
         public node(int Dom_size)
         {
             next = new node[Dom_size];
+
             Data = null;
             next_size = 0;
             isEnd = false;
+
         }
     }
 
@@ -26,34 +30,49 @@ public class Trie {
     int count;
     int dom_size;
     int data_size;
+    int[] size;
 
-    public Trie(int n,int i)
+    public Trie( int ii, XVar[] scope)
     {
-        id = i;
+        id = ii;
         count = 0;
         root = null;
-        dom_size = n;
+       // dom_size = n;
         data_size = 0;
+        size = new int[scope.length];
+        for(int i = 0; i < scope.length;++i)
+            size[i] = scope[i].values.length;
+
     }
 
     public  void Insert(int[] t)
     {
 
         if(root == null)
-            root = new node(dom_size);
+            root = new node(size[0]);
 
         node head = root;
 
-        for (var i:t) {
-           // System.out.println(p.next.size());
-            if(head.next[i] == null)
+//        for (var i:t) {
+//           // System.out.println(p.next.size());
+//            if(head.next[i] == null)
+//            {
+//                //p.next.set(i,new node(dom_size));
+//                head.next[i] = new node(dom_size);
+//                head.next_size++;
+//            }
+//            head = head.next[i];
+//
+//        }
+        for(int i = 0; i < t.length;++i)
+        {
+            if(head.next[t[i]] == null)
             {
-                //p.next.set(i,new node(dom_size));
-                head.next[i] = new node(dom_size);
+
+                head.next[t[i]] = new node(size[i]);
                 head.next_size++;
             }
-            head = head.next[i];
-
+            head = head.next[t[i]];
         }
         head.isEnd = true;
         ++count;
@@ -64,25 +83,36 @@ public class Trie {
     public void Insert_With_Data(ArrayList<Integer> t,int data)
     {
         if(root == null)
+            root = new node(size[0]);
+
+        node head = root;
+
+//        for (var i:t) {
+//           // System.out.println(p.next.size());
+//            if(head.next[i] == null)
+//            {
+//                //p.next.set(i,new node(dom_size));
+//                head.next[i] = new node(dom_size);
+//                head.next_size++;
+//            }
+//            head = head.next[i];
+//
+//        }
+        for(int i = 0; i < t.size();++i)
         {
-            root = new node(dom_size);
-        }
-        node p = root;
-        for (var i:t
-        ) {
-            if(p.next[i] == null)
+            if(head.next[t.get(i)] == null)
             {
-                p.next[i] = new node(dom_size);
-                p.next_size++;
+
+                head.next[t.get(i)] = new node(size[i]);
+                head.next_size++;
             }
-            p =  p.next[i];
-
+            head = head.next[t.get(i)];
         }
-        p.isEnd = true;
+        head.isEnd = true;
 
-        if(p.Data == null)
-            p.Data = new ArrayList<Integer>();
-        p.Data.add(data);
+        if(head.Data == null)
+            head.Data = new ArrayList<>();
+        head.Data.add(data);
         ++count;
         data_size++;
 

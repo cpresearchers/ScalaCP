@@ -31,7 +31,7 @@
 <!--    <folder format="2">aim-50_total24</folder>-->
 <!--    <folder format="2">aim-100_part17</folder>-->
 <!--    <folder format="2">zzbddSmall</folder>-->
-    <inputRoot>~/home/b522/zlh/Tester_For_ALL/benchmark/</inputRoot>
+    <inputRoot>/home/b522/zlh/Tester_For_ALL/benchmark/</inputRoot>
 
     <folder format="2">aim-100</folder>
     <folder format="2">aim-200</folder>
@@ -45,31 +45,33 @@
     <folder format="2">coloring</folder>
     <folder format="2">completeLoose</folder>
     <folder format="2">completeTight</folder>
-    <folder format="2">cril</folder>
-    <folder format="2">denseTight</folder>
-    <folder format="2">driver</folder>
-    <folder format="2">dubois</folder>
-    <folder format="2">half</folder>
-
-<!--    <folder format="2">hos</folder>-->
-<!--    <folder format="2">insertion</folder>-->
+    <folder format="2">composed-25-1-2</folder>
+    <folder format="2">composed-25-1-25</folder>
+    <folder format="2">composed-25-10-20</folder>
+    <folder format="2">composed-25-1-40</folder>
+    <folder format="2">composed-25-1-80</folder>
+<!--    -->
+<!--    <folder format="2">cril</folder>-->
+<!--    <folder format="2">denseTight</folder>-->
+<!--    <folder format="2">driver</folder>-->
+<!--    <folder format="2">dubois</folder>-->
+<!--    <folder format="2">ehi-85</folder>-->
+<!--    <folder format="2">ehi-90</folder>-->
+<!--    <folder format="2">frb35-17</folder>-->
+<!--    <folder format="2">frb30-15</folder>-->
+<!--    <folder format="2">geom</folder>-->
+<!--    <folder format="2">half</folder>-->
+<!--    <folder format="2">hanoi</folder>-->
 <!--    <folder format="2">jnhSat</folder>-->
 <!--    <folder format="2">jnhUnsat</folder>-->
-<!--    <folder format="2">jobShop-e0ddr1</folder>-->
-<!--    <folder format="2">jobShop-e0ddr2</folder>-->
-<!--    <folder format="2">jobShop-enddr1</folder>-->
-<!--    <folder format="2">jobShop-enddr2</folder>-->
-<!--    <folder format="2">jobShop-ewddr2</folder>-->
 <!--    <folder format="2">kbtree-5-2-4-5</folder>-->
+<!--    <folder format="2">langford</folder>-->
 <!--    <folder format="2">lard</folder>-->
 <!--    <folder format="2">leighton</folder>-->
-
 <!--    <folder format="2">lexVg</folder>-->
 <!--    <folder format="2">marc</folder>-->
 <!--    <folder format="2">maxcut-30</folder>-->
 <!--    <folder format="2">modifiedRenault</folder>-->
-<!--    <folder format="2">mug</folder>-->
-<!--    <folder format="2">myciel</folder>-->
 <!--    <folder format="2">ogdVg</folder>-->
 <!--    <folder format="2">pedigree</folder>-->
 <!--    <folder format="2">QCP-10</folder>-->
@@ -81,6 +83,7 @@
 <!--    <folder format="2">QWH-20</folder>-->
 <!--    <folder format="2">QWH-25</folder>-->
 <!--    <folder format="2">rand-10-20-10</folder>-->
+<!--    <folder format="2">rand-10-60-20_600s32</folder>-->
 <!--    <folder format="2">rand-2-30-15</folder>-->
 <!--    <folder format="2">rand-2-30-15-fcd</folder>-->
 <!--    <folder format="2">rand-2-40-19</folder>-->
@@ -89,21 +92,19 @@
 <!--    <folder format="2">rand-2-50-23-fcd</folder>-->
 <!--    <folder format="2">rand-3-20-20</folder>-->
 <!--    <folder format="2">rand-3-20-20-fcd</folder>-->
+<!--    <folder format="2">rand-3-24-24-fcd</folder>-->
 <!--    <folder format="2">rand-8-20-5</folder>-->
-
-<!--    <folder format="2">register</folder>-->
 <!--    <folder format="2">renault</folder>-->
-<!--    <folder format="2">rlfapGraphs</folder>-->
-<!--    <folder format="2">rlfapGraphsMod</folder>-->
-<!--    <folder format="2">rlfapScens</folder>-->
-<!--    <folder format="2">rlfapScens11</folder>-->
-<!--    <folder format="2">rlfapScensMod</folder>-->
-<!--    <folder format="2">school</folder>-->
-<!--    <folder format="2">sgb</folder>-->
 <!--    <folder format="2">sparseTight</folder>-->
 <!--    <folder format="2">spot5</folder>-->
-<!--    <folder format="2">subs</folder>-->
-
+<!--    <folder format="2">subs6</folder>-->
+<!--    <folder format="2">tightness0.1</folder>-->
+<!--    <folder format="2">tightness0.2</folder>-->
+<!--    <folder format="2">tightness0.35</folder>-->
+<!--    <folder format="2">tightness0.5</folder>-->
+<!--    <folder format="2">tightness0.65</folder>-->
+<!--    <folder format="2">tightness0.8</folder>-->
+<!--    <folder format="2">tightness0.9</folder>-->
 <!--    <folder format="2">travellingSalesman-20</folder>-->
 <!--    <folder format="2">travellingSalesman-25</folder>-->
 <!--    <folder format="2">ukVg</folder>-->
@@ -111,7 +112,8 @@
 <!--    <folder format="2">warehouses</folder>-->
 <!--    <folder format="2">wordsVg</folder>-->
 
-    <outputRoot>~/home/b522/zlh/Tester_For_ALL/output</outputRoot>
+
+    <outputRoot>/home/b522/zlh/Tester_For_ALL/output/1</outputRoot>
 </folders>
 
 

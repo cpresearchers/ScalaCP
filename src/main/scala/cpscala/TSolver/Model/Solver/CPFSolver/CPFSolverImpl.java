@@ -204,7 +204,8 @@ public class CPFSolverImpl extends CPFSolver {
 
             if (temp_f[i] != 1) {
 
-                Trie T = new Trie(hm.max_domain_size, i);
+                //Trie T = new Trie(hm.max_domain_size, i);
+                Trie T = new Trie( i,hm.tabs.get(i).scope);
                 for (var tuple : hm.tabs.get(i).tuples)
                     T.Insert(tuple);
                 Filter.add(T);
@@ -238,7 +239,8 @@ public class CPFSolverImpl extends CPFSolver {
             }
             Path_Diff.add(_d);
             if (P.id != p.get(0)) {
-                Trie T = new Trie(hm.max_domain_size, -P.id);
+               // Trie T = new Trie(hm.max_domain_size, -P.id);
+                Trie T = new Trie( -P.id,hm.tabs.get(P.id).scope);
                 for (int i = 0; i < hm.tabs.get(P.id).tuples.length; ++i) {
                     ArrayList<Integer> s = new ArrayList<>();
                     for (var same : Path_Diff.get(Path_Diff.size() - 1).same_id) {

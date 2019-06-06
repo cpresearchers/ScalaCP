@@ -1,5 +1,5 @@
 package cpscala.TSolver.Experiment
-
+import cpscala.TSolver.Model.Solver.CPFSolver.DoubleArrayTrie
 import cpscala.TSolver.CpUtil.Constants
 import cpscala.TSolver.Model.Constraint.SConstraint.TableCT_Bit
 import cpscala.TSolver.Model.Solver.CPFSolver.CPFSolverImpl
@@ -18,16 +18,17 @@ object main {
 
   def main(args: Array[String]): Unit = {
 
-    val xf = XML.loadFile("benchmarks/BMPath.xml")
-    val fileNode = xf \\ "BMFile"
-    val path = fileNode.text
-    val fmt = (fileNode \\ "@format").text.toInt
-    println(path)
-    val xm = new XModel(path, true, fmt)
-    var CPF = new CPFSolverImpl(xm,null,null,null)
-   // CPF.Show()
-    CPF.Search(1800000000000L)
-    CPF.Answer()
+//    val xf = XML.loadFile("benchmarks/BMPath.xml")
+//    val fileNode = xf \\ "BMFile"
+//    val path = fileNode.text
+//    val fmt = (fileNode \\ "@format").text.toInt
+//    println(path)
+//    val xm = new XModel(path, true, fmt)
+//    var CPF = new CPFSolverImpl(xm,null,null,null)
+//   // CPF.Show()
+//    CPF.Search(1800000000000L)
+//    CPF.Answer()
+
 
 
 //    var i = 0
