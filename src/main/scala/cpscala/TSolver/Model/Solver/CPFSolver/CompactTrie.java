@@ -65,10 +65,17 @@ public class CompactTrie {
         {
             if(head.address[t[i]] == -1)
             {
-
-                head.next.add(new node(size[i+1]));
-                head.address[t[i]] = head.next_size;
-                head.next_size++;
+                if(i != t.length -1) {
+                    head.next.add(new node(size[i + 1]));
+                    head.address[t[i]] = head.next_size;
+                    head.next_size++;
+                }
+                else
+                {
+                    head.address[t[i]] = -2;
+                   // head.isEnd = true;
+                    break;
+                }
             }
             head = head.next.get(head.address[t[i]]);
 
@@ -97,6 +104,8 @@ public class CompactTrie {
             }
             else
             {
+                if (head.address[i] == -2)
+                    return true;
                 head = head.next.get(head.address[i]);
             }
 
