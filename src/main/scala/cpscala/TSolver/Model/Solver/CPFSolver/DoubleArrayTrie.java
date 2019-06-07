@@ -1,4 +1,4 @@
-//package cpscala.TSolver.Model.Solver.CPFSolver;
+package cpscala.TSolver.Model.Solver.CPFSolver;
 //
 //
 ////
@@ -9,6 +9,32 @@
 ////Date:   6.6.2019
 ////
 //// */
+
+
+public class DoubleArrayTrie {
+
+
+
+    public DoubleArrayTrie()
+    {
+
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //
 //import java.util.ArrayList;
 //import java.util.Arrays;

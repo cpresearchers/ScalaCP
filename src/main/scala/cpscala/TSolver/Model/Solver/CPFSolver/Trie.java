@@ -49,7 +49,7 @@ public class Trie {
     {
 
         if(root == null)
-            root = new node(size[0]);
+            root = new node(size[0] + 1);
 
         node head = root;
 
@@ -69,7 +69,7 @@ public class Trie {
             if(head.next[t[i]] == null)
             {
 
-                head.next[t[i]] = new node(size[i]);
+                head.next[t[i]] = new node(size[i]+1);
                 head.next_size++;
             }
             head = head.next[t[i]];
@@ -77,13 +77,12 @@ public class Trie {
         head.isEnd = true;
         ++count;
 
-
     }
 
     public void Insert_With_Data(ArrayList<Integer> t,int data)
     {
         if(root == null)
-            root = new node(size[0]);
+            root = new node(size[0] + 1);
 
         node head = root;
 
@@ -103,7 +102,7 @@ public class Trie {
             if(head.next[t.get(i)] == null)
             {
 
-                head.next[t.get(i)] = new node(size[i]);
+                head.next[t.get(i)] = new node(size[i]+1);
                 head.next_size++;
             }
             head = head.next[t.get(i)];

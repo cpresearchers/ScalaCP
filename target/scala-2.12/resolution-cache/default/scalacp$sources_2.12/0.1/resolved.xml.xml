@@ -4,7 +4,7 @@
 		module="scalacp$sources_2.12"
 		revision="0.1"
 		status="integration"
-		publication="20190606104250"
+		publication="20190607095619"
 	/>
 	<configurations>
 		<conf name="default" visibility="public" description=""/>

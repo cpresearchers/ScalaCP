@@ -1,4 +1,6 @@
 package cpscala.TSolver.Experiment
+import java.util
+
 import cpscala.TSolver.Model.Solver.CPFSolver.DoubleArrayTrie
 import cpscala.TSolver.CpUtil.Constants
 import cpscala.TSolver.Model.Constraint.SConstraint.TableCT_Bit
@@ -10,7 +12,9 @@ import cpscala.TSolver.Model.Solver.PWSolver.PWCoarseSolver
 import cpscala.TSolver.Model.Solver.SSolver._
 import cpscala.TSolver.Model.Variable.BitSetVar
 import cpscala.XModel.XModel
+import cpscala.TSolver.Model.Solver.CPFSolver._
 
+import scala.collection.mutable
 import scala.xml.XML
 
 object main {
@@ -18,16 +22,32 @@ object main {
 
   def main(args: Array[String]): Unit = {
 
-//    val xf = XML.loadFile("benchmarks/BMPath.xml")
-//    val fileNode = xf \\ "BMFile"
-//    val path = fileNode.text
-//    val fmt = (fileNode \\ "@format").text.toInt
-//    println(path)
-//    val xm = new XModel(path, true, fmt)
-//    var CPF = new CPFSolverImpl(xm,null,null,null)
-//   // CPF.Show()
-//    CPF.Search(1800000000000L)
-//    CPF.Answer()
+    val xf = XML.loadFile("benchmarks/BMPath.xml")
+    val fileNode = xf \\ "BMFile"
+    val path = fileNode.text
+    val fmt = (fileNode \\ "@format").text.toInt
+    println(path)
+    val xm = new XModel(path, true, fmt)
+
+//    val Trie = new  CompactTrie (1,xm.tabs.get(0).scope)
+//
+//    for( i <- xm.tabs.get(0).tuples)
+//    {
+//      Trie.Insert(i)
+//
+//    }
+//    for( i <- xm.tabs.get(0).tuples)
+//    {
+//     // println(Trie.Contain(i))
+//      //assert(Trie.Contain(i))
+//
+//    }
+
+
+        var CPF = new CPFSolverImpl(xm,null,null,null)
+   // CPF.Show()
+    CPF.Search(1800000000000L)
+    CPF.Answer()
 
 
 

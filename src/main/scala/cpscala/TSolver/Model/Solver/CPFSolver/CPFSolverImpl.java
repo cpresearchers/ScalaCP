@@ -59,7 +59,7 @@ public class CPFSolverImpl extends CPFSolver {
 
 
     HashMap<int[], Integer> Check_Map = new HashMap<>();
-    ArrayList<Trie> Filter = new ArrayList<>();
+    ArrayList<CompactTrie> Filter = new ArrayList<>();
     ArrayList<Trie> Path_Index = new ArrayList<>();
     ArrayList<Integer>  s = new ArrayList<Integer> (vsize);
     boolean flag_for_Solution;
@@ -205,9 +205,10 @@ public class CPFSolverImpl extends CPFSolver {
             if (temp_f[i] != 1) {
 
                 //Trie T = new Trie(hm.max_domain_size, i);
-                Trie T = new Trie( i,hm.tabs.get(i).scope);
-                for (var tuple : hm.tabs.get(i).tuples)
-                    T.Insert(tuple);
+                CompactTrie T = new CompactTrie( i,hm.tabs.get(i).scope);
+                //for (var tuple : hm.tabs.get(i).tuples)
+                   // T.Insert(tuple);
+                T.Build(hm.tabs.get(i).tuples);
                 Filter.add(T);
                 int index[] = new int[hm.tabs.get(i).arity];
                 for (int j = 0; j < hm.tabs.get(i).scope.length; ++j)

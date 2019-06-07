@@ -5,25 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="48a296e1-df47-41ca-bb68-ee7d758e3d3e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/DoubleArrayTrie.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CompactTrie.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules/ScalaCP.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/ScalaCP.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/benchmarks/BMPath.xml" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/BMPath.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/benchmarks/Folders1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/Folders1.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/benchmarks/Folders2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/Folders2.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/benchmarks/Folders3.xml" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/Folders3.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/benchmarks/Folders4.xml" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/Folders4.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.sbt" beforeDir="false" afterPath="$PROJECT_DIR$/build.sbt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$de035186712af54f02ee$.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$de035186712af54f02ee.cache" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$de035186712af54f02ee.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/CPF_Tester.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/CPF_Tester.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/exp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/exp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/main.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/main.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/DoubleArrayTrie.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/DoubleArrayTrie.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/Trie.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/Trie.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/PWSolver/PWSolver.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/PWSolver/PWSolver.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/CPF_Tester$.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/CPF_Tester$.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/SSolver/SSolver.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/SSolver/SSolver.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Experiment/exp.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Experiment/exp.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Experiment/main$.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Experiment/main$.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/Trie$node.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/Trie$node.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/Trie.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/Trie.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/PWSolver/PWSolver.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/PWSolver/PWSolver.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sbt_2.12/0.1/resolved.xml.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sbt_2.12/0.1/resolved.xml.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sbt_2.12/0.1/resolved.xml.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sbt_2.12/0.1/resolved.xml.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sources/0.1/resolved.xml.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sources/0.1/resolved.xml.properties" afterDir="false" />
@@ -92,8 +90,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/CPF_Tester.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-555">
-              <caret line="52" column="42" lean-forward="true" selection-start-line="52" selection-start-column="42" selection-end-line="52" selection-end-column="42" />
+            <state relative-caret-position="339">
+              <caret line="196" column="13" lean-forward="true" selection-start-line="196" selection-start-column="13" selection-end-line="196" selection-end-column="13" />
               <folding>
                 <element signature="e#25#44#0" expanded="true" />
               </folding>
@@ -104,26 +102,32 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/DoubleArrayTrie.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="117" column="7" lean-forward="true" selection-start-column="2" selection-end-line="754" selection-end-column="5" />
+            <state relative-caret-position="221">
+              <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/exp.java">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CompactTrie.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" selection-start-line="2" selection-end-line="2" />
+            <state relative-caret-position="-222">
+              <caret line="41" column="22" selection-start-line="41" selection-start-column="11" selection-end-line="41" selection-end-column="22" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/benchmarks/Folders1.xml">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/Trie.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="186">
-              <caret line="51" column="32" lean-forward="true" selection-start-line="51" selection-start-column="32" selection-end-line="51" selection-end-column="32" />
+            <state relative-caret-position="238">
+              <caret line="84" column="39" selection-start-line="84" selection-start-column="39" selection-end-line="84" selection-end-column="39" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -131,15 +135,16 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="769">
-              <caret line="182" column="9" selection-start-line="182" selection-start-column="9" selection-end-line="182" selection-end-column="9" />
+            <state relative-caret-position="182">
+              <caret line="210" column="47" lean-forward="true" selection-start-line="210" selection-start-column="47" selection-end-line="210" selection-end-column="47" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="class#_table#0;class#CPFSolverImpl#0" />
                 <element signature="class#_dif#0;class#CPFSolverImpl#0" />
                 <element signature="class#_info#0;class#CPFSolverImpl#0" />
                 <element signature="method#Select_Path#0;class#CPFSolverImpl#0" />
-                <element signature="method#Check_Filter#0;class#CPFSolverImpl#0" />
+                <element signature="method#Search#0;class#CPFSolverImpl#0" />
+                <element signature="method#Assignment#0;class#CPFSolverImpl#0" />
                 <element signature="method#Answer#0;class#CPFSolverImpl#0" />
                 <element signature="method#Show#0;class#CPFSolverImpl#0" />
                 <element signature="method#IsExitTable#0;class#CPFSolverImpl#0" />
@@ -150,40 +155,22 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/benchmarks/Folders3.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-86">
-              <caret line="69" column="44" lean-forward="true" selection-start-line="69" selection-start-column="44" selection-end-line="69" selection-end-column="44" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/benchmarks/Folders4.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="118">
-              <caret line="34" column="5" lean-forward="true" selection-start-line="34" selection-start-column="5" selection-end-line="83" selection-end-column="56" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/benchmarks/Folders2.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="284">
-              <caret line="68" selection-start-line="68" selection-end-line="68" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/main.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="18" column="30" selection-start-line="18" selection-start-column="11" selection-end-line="18" selection-end-column="30" />
+            <state relative-caret-position="243">
+              <caret line="38" column="38" lean-forward="true" selection-start-line="38" selection-start-column="38" selection-end-line="38" selection-end-column="38" />
               <folding>
-                <element signature="e#35#96#0" expanded="true" />
+                <element signature="e#35#51#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/benchmarks/BMPath.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="272">
+              <caret line="16" column="50" lean-forward="true" selection-start-line="16" selection-start-column="50" selection-end-line="16" selection-end-column="50" />
             </state>
           </provider>
         </entry>
@@ -191,8 +178,26 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/expReader.scala">
           <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="14" column="1" lean-forward="true" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/main_fdetest.scala">
+          <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="68">
               <caret line="6" column="7" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/exp.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="15" column="44" selection-start-line="15" selection-start-column="33" selection-end-line="15" selection-end-column="44" />
             </state>
           </provider>
         </entry>
@@ -230,6 +235,7 @@
       <find>file = XML.loadFile(&quot;benchmarks/Folders4.xml&quot;)</find>
       <find>GetChildList</find>
       <find>GetAllChildWord</find>
+      <find>Filter</find>
     </findStrings>
     <replaceStrings>
       <replace>c_sub</replace>
@@ -252,7 +258,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Constraint/DSPConstraint/TableDSPSTRbit_SBit.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Solver.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/CpUtil/AssignedStack1.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Heuristic/HeuDomWdeg1.scala" />
@@ -287,22 +292,23 @@
         <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/package.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/cpscala/XModel/XTab.java" />
         <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolver.java" />
-        <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/SSolver/SSolver.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/cpscala/XModel/XModel.java" />
         <option value="$PROJECT_DIR$/benchmarks/Folders.xml" />
         <option value="$PROJECT_DIR$/build.sbt" />
         <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/PWSolver/PWSolver.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/CPF_Tester.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.java" />
-        <option value="$PROJECT_DIR$/benchmarks/BMPath.xml" />
-        <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/Trie.java" />
-        <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/main.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/DoubleArrayTrie.java" />
-        <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/exp.java" />
         <option value="$PROJECT_DIR$/benchmarks/Folders1.xml" />
         <option value="$PROJECT_DIR$/benchmarks/Folders2.xml" />
         <option value="$PROJECT_DIR$/benchmarks/Folders3.xml" />
         <option value="$PROJECT_DIR$/benchmarks/Folders4.xml" />
+        <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/SSolver/SSolver.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/DoubleArrayTrie.java" />
+        <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/exp.java" />
+        <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CompactTrie.java" />
+        <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/main.scala" />
+        <option value="$PROJECT_DIR$/benchmarks/BMPath.xml" />
+        <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/CPF_Tester.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/Trie.java" />
       </list>
     </option>
   </component>
@@ -321,7 +327,6 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -421,6 +426,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -468,7 +474,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.exp">
+  <component name="RunManager" selected="Application.main (1)">
     <configuration name="Experiment" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="cpscala.TSolver.CPF_Tester" />
       <module name="ScalaCP" />
@@ -534,14 +540,14 @@
     <list>
       <item itemvalue="Application.main" />
       <item itemvalue="Application.Experiment" />
-      <item itemvalue="Scala Console.Scala Console" />
       <item itemvalue="Application.main (1)" />
       <item itemvalue="Application.exp" />
+      <item itemvalue="Scala Console.Scala Console" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.exp" />
         <item itemvalue="Application.main (1)" />
+        <item itemvalue="Application.exp" />
         <item itemvalue="Application.main" />
         <item itemvalue="Application.Experiment" />
         <item itemvalue="Scala Console.Scala Console" />
@@ -633,7 +639,8 @@
       <workItem from="1559548067059" duration="8097000" />
       <workItem from="1559615352538" duration="19504000" />
       <workItem from="1559718723413" duration="10518000" />
-      <workItem from="1559788883613" duration="17166000" />
+      <workItem from="1559788883613" duration="21777000" />
+      <workItem from="1559872546792" duration="2792000" />
     </task>
     <task id="LOCAL-00001" summary="1">
       <created>1555836982265</created>
@@ -789,11 +796,18 @@
       <option name="project" value="LOCAL" />
       <updated>1559738684572</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="CPF - 6.6,测试">
+      <created>1559817591488</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1559817591488</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="231637000" />
+    <option name="totallyTimeSpent" value="239040000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -808,7 +822,7 @@
     <frame x="1432" y="-8" width="1696" height="1026" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20782396" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21026894" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -903,34 +917,14 @@
     <MESSAGE value="CPF - 6.4,还差一点点测试部分" />
     <MESSAGE value="CPF - 6.4,测试" />
     <MESSAGE value="CPF - 6.5,测试" />
-    <option name="LAST_COMMIT_MESSAGE" value="CPF - 6.5,测试" />
+    <MESSAGE value="CPF - 6.6,测试" />
+    <option name="LAST_COMMIT_MESSAGE" value="CPF - 6.6,测试" />
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/main_fdetest.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="6" column="7" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/DSPSolver/DSPCoarseSolver.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="5" column="6" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.xcsp/xcsp3-tools/srcs/xcsp3-tools-1.1.0-sources.jar!/org/xcsp/parser/callbacks/XCallbacks2.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="49" column="39" selection-start-line="49" selection-start-column="37" selection-end-line="49" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.ivy2/cache/org.xcsp/xcsp3-tools/srcs/xcsp3-tools-1.1.0-sources.jar!/org/xcsp/parser/callbacks/XCallbacks.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="353">
@@ -959,16 +953,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-49">
           <caret line="160" lean-forward="true" selection-start-line="160" selection-end-line="160" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="69" column="42" selection-start-line="69" selection-start-column="42" selection-end-line="69" selection-end-column="42" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1013,20 +997,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1156">
           <caret line="79" column="67" selection-start-line="79" selection-start-column="67" selection-end-line="79" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/SSolver/SCoarseSolver.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="9" column="102" selection-start-line="9" selection-start-column="102" selection-end-line="9" selection-end-column="102" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/SSolver/SSolver.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2635">
-          <caret line="32" column="38" selection-start-line="32" selection-start-column="38" selection-end-line="32" selection-end-column="38" />
         </state>
       </provider>
     </entry>
@@ -1090,13 +1060,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="9" column="6" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/CpUtil/AssignedStack.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="31" column="6" selection-start-line="31" selection-start-column="6" selection-end-line="31" selection-end-column="6" />
         </state>
       </provider>
     </entry>
@@ -1177,13 +1140,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/benchmarks/BMPath.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="96" selection-start-line="7" selection-start-column="96" selection-end-line="7" selection-end-column="96" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/CpUtil/MDD/Node.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
@@ -1198,80 +1154,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/Trie.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/testIPbitCT.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="14" column="7" selection-start-line="14" selection-start-column="7" selection-end-line="14" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/expReader.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="6" column="7" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="769">
-          <caret line="182" column="9" selection-start-line="182" selection-start-column="9" selection-end-line="182" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="class#_table#0;class#CPFSolverImpl#0" />
-            <element signature="class#_dif#0;class#CPFSolverImpl#0" />
-            <element signature="class#_info#0;class#CPFSolverImpl#0" />
-            <element signature="method#Select_Path#0;class#CPFSolverImpl#0" />
-            <element signature="method#Check_Filter#0;class#CPFSolverImpl#0" />
-            <element signature="method#Answer#0;class#CPFSolverImpl#0" />
-            <element signature="method#Show#0;class#CPFSolverImpl#0" />
-            <element signature="method#IsExitTable#0;class#CPFSolverImpl#0" />
-            <element signature="method#SetTableFlag#0;class#CPFSolverImpl#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/DoubleArrayTrie.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="117" column="7" lean-forward="true" selection-start-column="2" selection-end-line="754" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/main.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="18" column="30" selection-start-line="18" selection-start-column="11" selection-end-line="18" selection-end-column="30" />
-          <folding>
-            <element signature="e#35#96#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/exp.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" selection-start-line="2" selection-end-line="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/CPF_Tester.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-555">
-          <caret line="52" column="42" lean-forward="true" selection-start-line="52" selection-start-column="42" selection-end-line="52" selection-end-column="42" />
-          <folding>
-            <element signature="e#25#44#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1296,10 +1182,143 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/SSolver/SCoarseSolver.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="9" column="101" selection-start-line="9" selection-start-column="101" selection-end-line="9" selection-end-column="101" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/CpUtil/AssignedStack.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="31" column="6" selection-start-line="31" selection-start-column="6" selection-end-line="31" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Constraint/SConstraint/TableSTRbit_SSet.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="16" column="22" selection-start-line="16" selection-start-column="22" selection-end-line="16" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/benchmarks/Folders4.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="118">
-          <caret line="34" column="5" lean-forward="true" selection-start-line="34" selection-start-column="5" selection-end-line="83" selection-end-column="56" />
+        <state relative-caret-position="578">
+          <caret line="34" column="5" selection-start-line="34" selection-start-column="5" selection-end-line="83" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/SSolver/SSolver.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="249" selection-start-line="249" selection-end-line="249" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="458">
+          <caret line="69" column="42" selection-start-line="69" selection-start-column="42" selection-end-line="69" selection-end-column="42" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/main_fdetest.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="6" column="7" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/expReader.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="14" column="1" lean-forward="true" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/DoubleArrayTrie.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="182">
+          <caret line="210" column="47" lean-forward="true" selection-start-line="210" selection-start-column="47" selection-end-line="210" selection-end-column="47" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="class#_table#0;class#CPFSolverImpl#0" />
+            <element signature="class#_dif#0;class#CPFSolverImpl#0" />
+            <element signature="class#_info#0;class#CPFSolverImpl#0" />
+            <element signature="method#Select_Path#0;class#CPFSolverImpl#0" />
+            <element signature="method#Search#0;class#CPFSolverImpl#0" />
+            <element signature="method#Assignment#0;class#CPFSolverImpl#0" />
+            <element signature="method#Answer#0;class#CPFSolverImpl#0" />
+            <element signature="method#Show#0;class#CPFSolverImpl#0" />
+            <element signature="method#IsExitTable#0;class#CPFSolverImpl#0" />
+            <element signature="method#SetTableFlag#0;class#CPFSolverImpl#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/main.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="38" column="38" lean-forward="true" selection-start-line="38" selection-start-column="38" selection-end-line="38" selection-end-column="38" />
+          <folding>
+            <element signature="e#35#51#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/benchmarks/BMPath.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" column="50" lean-forward="true" selection-start-line="16" selection-start-column="50" selection-end-line="16" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/exp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="44" selection-start-line="15" selection-start-column="33" selection-end-line="15" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/CPF_Tester.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="339">
+          <caret line="196" column="13" lean-forward="true" selection-start-line="196" selection-start-column="13" selection-end-line="196" selection-end-column="13" />
+          <folding>
+            <element signature="e#25#44#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CompactTrie.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-222">
+          <caret line="41" column="22" selection-start-line="41" selection-start-column="11" selection-end-line="41" selection-end-column="22" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/Trie.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="84" column="39" selection-start-line="84" selection-start-column="39" selection-end-line="84" selection-end-column="39" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
