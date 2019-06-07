@@ -46,9 +46,9 @@ public class CompactTrie {
         root = null;
         // dom_size = n;
         data_size = 0;
-        size = new int[scope.length];
+        size = new int[scope.length+1];
         for(int i = 0; i < scope.length;++i)
-            size[i] = scope[i].values.length;
+            size[i+1] = scope[i].values.length + 1;
 
     }
 
@@ -56,20 +56,21 @@ public class CompactTrie {
     {
         if(root == null)
         {
-            root = new node(size[0] +1);
+            root = new node(size[1]);
         }
 
         node head = root;
-        for(var i : t)
+        //for(var i : t)
+        for(int i = 0;i < t.length;++i)
         {
-            if(head.address[i] == -1)
+            if(head.address[t[i]] == -1)
             {
-               // head.next.set(head.next_size)
-                head.next.add(new node(size[i]+1));
-                head.address[i] = head.next_size;
+
+                head.next.add(new node(size[i+1]));
+                head.address[t[i]] = head.next_size;
                 head.next_size++;
             }
-            head = head.next.get(head.address[i]);
+            head = head.next.get(head.address[t[i]]);
 
         }
         head.isEnd = true;

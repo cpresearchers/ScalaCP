@@ -39,12 +39,12 @@ public class Trie {
         root = null;
        // dom_size = n;
         data_size = 0;
-        size = new int[scope.length];
+        size = new int[scope.length+1];
         for(int i = 0; i < scope.length;++i)
-            size[i] = scope[i].values.length;
+            size[i+1] = scope[i].values.length+1;
 
     }
-
+/*
     public  void Insert(int[] t)
     {
 
@@ -78,11 +78,11 @@ public class Trie {
         ++count;
 
     }
-
+*/
     public void Insert_With_Data(ArrayList<Integer> t,int data)
     {
         if(root == null)
-            root = new node(size[0] + 1);
+            root = new node(size[1]);
 
         node head = root;
 
@@ -102,7 +102,7 @@ public class Trie {
             if(head.next[t.get(i)] == null)
             {
 
-                head.next[t.get(i)] = new node(size[i]+1);
+                head.next[t.get(i)] = new node(size[i+1]);
                 head.next_size++;
             }
             head = head.next[t.get(i)];
@@ -136,7 +136,7 @@ public class Trie {
         }
         return null;
     }
-
+/*
     public Boolean Contain(ArrayList<Integer> t)
     {
         node head = root;
@@ -160,7 +160,7 @@ public class Trie {
 
     }
 
-
+*/
 
 
 
