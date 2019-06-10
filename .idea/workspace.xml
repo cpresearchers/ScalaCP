@@ -5,102 +5,61 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="48a296e1-df47-41ca-bb68-ee7d758e3d3e" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$00d80bf21cacb67be924$.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$00d80bf21cacb67be924.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$00d80bf21cacb67be924.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$02901a6437c27baffa3c$.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$02901a6437c27baffa3c.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$02901a6437c27baffa3c.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$0f987854aa3d81a98f2c$.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$0f987854aa3d81a98f2c.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$0f987854aa3d81a98f2c.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$307d557866673fb5fa48$.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$307d557866673fb5fa48.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$307d557866673fb5fa48.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$440c9433f7db2612cc6a$.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$440c9433f7db2612cc6a.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$440c9433f7db2612cc6a.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$65da5207cfb07b4d8b9c$.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$65da5207cfb07b4d8b9c.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$65da5207cfb07b4d8b9c.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$7bb19c772b7a12a0cf43$.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$7bb19c772b7a12a0cf43.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$7bb19c772b7a12a0cf43.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$95d143208e6805d61796$.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$95d143208e6805d61796.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$95d143208e6805d61796.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$9d2b1fb25f3749c4e2a7$.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$9d2b1fb25f3749c4e2a7.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$9d2b1fb25f3749c4e2a7.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$ad89f9483cc1405513b3$.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$ad89f9483cc1405513b3.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$ad89f9483cc1405513b3.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$bb20bb4c499ed6d13e19$.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$bb20bb4c499ed6d13e19.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$bb20bb4c499ed6d13e19.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$c81120d1708cf9185807$.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$c81120d1708cf9185807.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$c81120d1708cf9185807.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$f2ea05d6b39a4c19899a$.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$f2ea05d6b39a4c19899a.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project/target/config-classes/$f2ea05d6b39a4c19899a.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/CompactTrie$node.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/CompactTrie.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/DoubleArrayTrie.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/benchmarks/BMPath.xml" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/BMPath.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$0a3f4a480df10cdf9db3$.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$0a3f4a480df10cdf9db3.cache" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$0a3f4a480df10cdf9db3.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$1b322e406dbc29576521$.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$1b322e406dbc29576521.cache" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$1b322e406dbc29576521.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$1b44653acf9054e0503a$.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$1b44653acf9054e0503a.cache" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$1b44653acf9054e0503a.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$21807f6c9d54d1a35f89$.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$21807f6c9d54d1a35f89.cache" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$21807f6c9d54d1a35f89.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$2c130176ced50c6b0f9d$.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$2c130176ced50c6b0f9d.cache" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$2c130176ced50c6b0f9d.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$651b8fbce14a85857d07$.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$651b8fbce14a85857d07.cache" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$651b8fbce14a85857d07.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$769ef18ffa68a58bb016$.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$769ef18ffa68a58bb016.cache" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$769ef18ffa68a58bb016.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$7d46ca188a75c87eee00$.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$7d46ca188a75c87eee00.cache" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$7d46ca188a75c87eee00.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$9d6e6ea81d5c026a1acb$.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$9d6e6ea81d5c026a1acb.cache" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$9d6e6ea81d5c026a1acb.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$c5e8c93ca069d907c3d1$.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$c5e8c93ca069d907c3d1.cache" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$c5e8c93ca069d907c3d1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$e462fd35d4b5cadbb470$.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$e462fd35d4b5cadbb470.cache" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$e462fd35d4b5cadbb470.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$f85b5d3b99860383ef5a$.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$f85b5d3b99860383ef5a.cache" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$f85b5d3b99860383ef5a.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/default/scalacp-build/scala_2.12/sbt_1.0/0.1.0-SNAPSHOT/resolved.xml.properties" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/default/scalacp-build/scala_2.12/sbt_1.0/0.1.0-SNAPSHOT/resolved.xml.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/default/scalacp-build/scala_2.12/sbt_1.0/0.1.0-SNAPSHOT/resolved.xml.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/default/scalacp-build/scala_2.12/sbt_1.0/0.1.0-SNAPSHOT/resolved.xml.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-compile-internal.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-compile-internal.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-compile.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-compile.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-optional.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-optional.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-plugin.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-provided.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-provided.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-runtime-internal.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-runtime-internal.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-runtime.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-runtime.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-scala-tool.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-scala-tool.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-test-internal.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-test-internal.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-test.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-test.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/streams/$global/update/$global/streams/out" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/streams/$global/update/$global/streams/out" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/streams/$global/update/$global/streams/update_cache_2.12/output" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/streams/$global/update/$global/streams/update_cache_2.12/output" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/streams/compile/dependencyClasspath/$global/streams/export" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/streams/compile/dependencyClasspath/$global/streams/export" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/streams/compile/externalDependencyClasspath/$global/streams/export" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/streams/compile/externalDependencyClasspath/$global/streams/export" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/streams/compile/managedClasspath/$global/streams/export" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/streams/compile/managedClasspath/$global/streams/export" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/streams/runtime/dependencyClasspath/$global/streams/export" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/streams/runtime/dependencyClasspath/$global/streams/export" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/streams/runtime/externalDependencyClasspath/$global/streams/export" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/streams/runtime/externalDependencyClasspath/$global/streams/export" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/streams/runtime/fullClasspath/$global/streams/export" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/streams/runtime/fullClasspath/$global/streams/export" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/streams/runtime/managedClasspath/$global/streams/export" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/streams/runtime/managedClasspath/$global/streams/export" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/CPF_Tester.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/CPF_Tester.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/main.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/main.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CompactTrie.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CompactTrie.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/XModel/Constraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/XModel/Constraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/XModel/Model.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/XModel/Model.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/XModel/XModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/XModel/XModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/XModel/XTab.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/XModel/XTab.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sbt_2.12/0.1/resolved.xml.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sbt_2.12/0.1/resolved.xml.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sbt_2.12/0.1/resolved.xml.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sbt_2.12/0.1/resolved.xml.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sources/0.1/resolved.xml.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sources/0.1/resolved.xml.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sources/0.1/resolved.xml.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sources/0.1/resolved.xml.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sources_2.12/0.1/resolved.xml.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sources_2.12/0.1/resolved.xml.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sources_2.12/0.1/resolved.xml.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sources_2.12/0.1/resolved.xml.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sbt_2.12-compile.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sbt_2.12-compile.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sbt_2.12-optional.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sbt_2.12-optional.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sbt_2.12-provided.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sbt_2.12-provided.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sbt_2.12-runtime.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sbt_2.12-runtime.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sbt_2.12-test.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sbt_2.12-test.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-compile-internal.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-compile-internal.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-compile.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-compile.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-optional.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-optional.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-plugin.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-provided.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-provided.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-runtime-internal.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-runtime-internal.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-runtime.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-runtime.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-scala-tool.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-scala-tool.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-test-internal.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-test-internal.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-test.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-test.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources_2.12-compile.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources_2.12-compile.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources_2.12-default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources_2.12-default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources_2.12-optional.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources_2.12-optional.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources_2.12-provided.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources_2.12-provided.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources_2.12-runtime.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources_2.12-runtime.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources_2.12-test.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources_2.12-test.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/streams/$global/updateClassifiers/$global/streams/out" beforeDir="false" afterPath="$PROJECT_DIR$/target/streams/$global/updateClassifiers/$global/streams/out" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/streams/$global/updateSbtClassifiers/$global/streams/out" beforeDir="false" afterPath="$PROJECT_DIR$/target/streams/$global/updateSbtClassifiers/$global/streams/out" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/CPF_Tester$.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/CPF_Tester$.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Experiment/main$.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Experiment/main$.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/Constraint.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/Constraint.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/Model.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/Model.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/XModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/XModel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/XTab.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/XTab.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -137,67 +96,22 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CompactTrie.java">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/CPF_Tester.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-217">
-              <caret line="51" lean-forward="true" selection-start-line="51" selection-end-line="51" />
+            <state relative-caret-position="326">
+              <caret line="94" column="19" lean-forward="true" selection-start-line="94" selection-start-column="19" selection-end-line="94" selection-end-column="19" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#25#44#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/XModel/XModel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="147" column="31" lean-forward="true" selection-start-line="147" selection-start-column="31" selection-end-line="147" selection-end-column="31" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/XModel/Relation.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="34" column="42" selection-start-line="34" selection-start-column="36" selection-end-line="34" selection-end-column="42" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/XModel/Model.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-9">
-              <caret line="126" selection-start-line="126" selection-end-line="126" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="jar://C:/Program Files/Java/jdk-12/lib/src.zip!/java.xml/org/w3c/dom/Node.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="234" column="14" selection-start-line="234" selection-start-column="14" selection-end-line="234" selection-end-column="14" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="jar://C:/Program Files/Java/jdk-12/lib/src.zip!/java.xml/org/w3c/dom/NamedNodeMap.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-340">
-              <caret line="55" column="17" selection-start-line="55" selection-start-column="17" selection-end-line="55" selection-end-column="17" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/XModel/Constraint.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="20" selection-start-line="20" selection-end-line="20" />
+            <state relative-caret-position="-406">
+              <caret line="127" selection-start-line="127" selection-end-line="127" />
             </state>
           </provider>
         </entry>
@@ -205,8 +119,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/XModel/XTab.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="112" column="13" lean-forward="true" selection-start-line="112" selection-start-column="13" selection-end-line="112" selection-end-column="13" />
+            <state relative-caret-position="-2018">
+              <caret line="18" selection-start-line="18" selection-end-line="18" />
               <folding>
                 <element signature="method#XTab#1;class#XTab#0" />
                 <element signature="method#XTab#2;class#XTab#0" />
@@ -217,10 +131,36 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/XModel/XVar.java">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CompactTrie.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="26" column="21" selection-start-line="26" selection-start-column="16" selection-end-line="26" selection-end-column="21" />
+            <state relative-caret-position="-653">
+              <caret line="52" column="13" selection-start-line="52" selection-start-column="13" selection-end-line="52" selection-end-column="13" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="class#node#0;class#CompactTrie#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="333">
+              <caret line="348" column="25" selection-start-line="348" selection-start-column="25" selection-end-line="348" selection-end-column="25" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="class#_table#0;class#CPFSolverImpl#0" />
+                <element signature="class#_dif#0;class#CPFSolverImpl#0" />
+                <element signature="class#_info#0;class#CPFSolverImpl#0" />
+                <element signature="method#Select_Path#0;class#CPFSolverImpl#0" />
+                <element signature="method#Answer#0;class#CPFSolverImpl#0" />
+                <element signature="e#11815#11816#0" expanded="true" />
+                <element signature="e#11842#11843#0" expanded="true" />
+                <element signature="method#Show#0;class#CPFSolverImpl#0" />
+                <element signature="method#IsExitTable#0;class#CPFSolverImpl#0" />
+                <element signature="method#SetTableFlag#0;class#CPFSolverImpl#0" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -228,13 +168,39 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/main.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="209">
-              <caret line="30" column="11" selection-start-line="30" selection-start-column="7" selection-end-line="30" selection-end-column="11" />
+            <state relative-caret-position="107">
+              <caret line="30" column="5" selection-start-line="30" selection-start-column="5" selection-end-line="30" selection-end-column="5" />
               <folding>
                 <element signature="e#35#51#0" expanded="true" />
               </folding>
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolver.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="458">
+              <caret line="69" column="42" selection-start-line="69" selection-start-column="42" selection-end-line="69" selection-end-column="42" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/benchmarks/BMPath.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="221">
+              <caret line="13" column="54" selection-start-line="13" selection-start-column="54" selection-end-line="13" selection-end-column="54" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/benchmarks/queen12.xml">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -333,17 +299,17 @@
         <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/SSolver/SSolver.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/DoubleArrayTrie.java" />
         <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/exp.java" />
-        <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.java" />
-        <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/CPF_Tester.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/Trie.java" />
-        <option value="$PROJECT_DIR$/benchmarks/BMPath.xml" />
-        <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CompactTrie.java" />
-        <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/main.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/cpscala/XModel/XVar.java" />
         <option value="$PROJECT_DIR$/src/main/scala/cpscala/XModel/Constraint.java" />
         <option value="$PROJECT_DIR$/src/main/scala/cpscala/XModel/Model.java" />
         <option value="$PROJECT_DIR$/src/main/scala/cpscala/XModel/XModel.java" />
         <option value="$PROJECT_DIR$/src/main/scala/cpscala/XModel/XTab.java" />
+        <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/main.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/CPF_Tester.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CompactTrie.java" />
+        <option value="$PROJECT_DIR$/benchmarks/BMPath.xml" />
+        <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.java" />
       </list>
     </option>
   </component>
@@ -417,6 +383,16 @@
               <item name="scala" type="462c0819:PsiDirectoryNode" />
               <item name="cpscala" type="462c0819:PsiDirectoryNode" />
               <item name="TSolver" type="462c0819:PsiDirectoryNode" />
+              <item name="Experiment" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ScalaCP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ScalaCP" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="scala" type="462c0819:PsiDirectoryNode" />
+              <item name="cpscala" type="462c0819:PsiDirectoryNode" />
+              <item name="TSolver" type="462c0819:PsiDirectoryNode" />
               <item name="Model" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -437,7 +413,18 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="scala" type="462c0819:PsiDirectoryNode" />
               <item name="cpscala" type="462c0819:PsiDirectoryNode" />
-              <item name="XModel" type="462c0819:PsiDirectoryNode" />
+              <item name="TSolver" type="462c0819:PsiDirectoryNode" />
+              <item name="Model" type="462c0819:PsiDirectoryNode" />
+              <item name="Solver" type="462c0819:PsiDirectoryNode" />
+              <item name="CPFSolver" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ScalaCP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ScalaCP" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="scala" type="462c0819:PsiDirectoryNode" />
+              <item name="META-INF" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ScalaCP" type="b2602c69:ProjectViewProjectNode" />
@@ -664,7 +651,7 @@
       <workItem from="1559788883613" duration="21777000" />
       <workItem from="1559872546792" duration="5524000" />
       <workItem from="1560153152897" duration="523000" />
-      <workItem from="1560154137630" duration="4106000" />
+      <workItem from="1560154137630" duration="12177000" />
     </task>
     <task id="LOCAL-00001" summary="1">
       <created>1555836982265</created>
@@ -848,11 +835,18 @@
       <option name="project" value="LOCAL" />
       <updated>1559887093303</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="修复了XModel读XCSP2的一些bug">
+      <created>1560160984949</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1560160984949</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="246401000" />
+    <option name="totallyTimeSpent" value="254472000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -963,31 +957,10 @@
     <MESSAGE value="CPF - 6.5,测试" />
     <MESSAGE value="CPF - 6.6,测试" />
     <MESSAGE value="CPF - 6.7,适当压缩了CPF的字典树，虽然还不是理想的DoubleArrayTrie，希望内存消耗少一些" />
-    <option name="LAST_COMMIT_MESSAGE" value="CPF - 6.7,适当压缩了CPF的字典树，虽然还不是理想的DoubleArrayTrie，希望内存消耗少一些" />
+    <MESSAGE value="修复了XModel读XCSP2的一些bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="修复了XModel读XCSP2的一些bug" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/scala/cpscala/XModel/XModel.java</url>
-          <line>127</line>
-          <properties />
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/scala/cpscala/XModel/XTab.java</url>
-          <line>116</line>
-          <properties />
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/scala/cpscala/XModel/XTab.java</url>
-          <line>18</line>
-          <properties />
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
         <watch expression="c" />
@@ -1002,27 +975,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Constraint/SConstraint/TableCT_Bit.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="18" column="3" selection-start-line="18" selection-start-column="3" selection-end-line="18" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/test_ct.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1156">
-          <caret line="79" column="67" selection-start-line="79" selection-start-column="67" selection-end-line="79" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/com.github.tototoshi/scala-csv_2.12/srcs/scala-csv_2.12-1.3.5-sources.jar!/com/github/tototoshi/csv/CSVWriter.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="123" column="26" selection-start-line="123" selection-start-column="26" selection-end-line="123" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.12.8-sources.jar!/scala/collection/Iterable.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="329">
@@ -1200,16 +1152,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="458">
-          <caret line="69" column="42" selection-start-line="69" selection-start-column="42" selection-end-line="69" selection-end-column="42" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/main_fdetest.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -1228,36 +1170,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
           <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="210" column="47" lean-forward="true" selection-start-line="210" selection-start-column="47" selection-end-line="210" selection-end-column="47" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="class#_table#0;class#CPFSolverImpl#0" />
-            <element signature="class#_dif#0;class#CPFSolverImpl#0" />
-            <element signature="class#_info#0;class#CPFSolverImpl#0" />
-            <element signature="method#Select_Path#0;class#CPFSolverImpl#0" />
-            <element signature="method#Search#0;class#CPFSolverImpl#0" />
-            <element signature="method#Assignment#0;class#CPFSolverImpl#0" />
-            <element signature="method#Answer#0;class#CPFSolverImpl#0" />
-            <element signature="method#Show#0;class#CPFSolverImpl#0" />
-            <element signature="method#IsExitTable#0;class#CPFSolverImpl#0" />
-            <element signature="method#SetTableFlag#0;class#CPFSolverImpl#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/CPF_Tester.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3094">
-          <caret line="196" column="13" selection-start-line="196" selection-start-column="13" selection-end-line="196" selection-end-column="13" />
-          <folding>
-            <element signature="e#25#44#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1290,13 +1202,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/benchmarks/BMPath.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="77" selection-start-line="7" selection-start-column="77" selection-end-line="7" selection-end-column="77" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/benchmarks/Folders4.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1479">
@@ -1315,26 +1220,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="15" column="44" selection-start-line="15" selection-start-column="33" selection-end-line="15" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CompactTrie.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-217">
-          <caret line="51" lean-forward="true" selection-start-line="51" selection-end-line="51" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/main.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="30" column="11" selection-start-line="30" selection-start-column="7" selection-end-line="30" selection-end-column="11" />
-          <folding>
-            <element signature="e#35#51#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1366,13 +1251,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/XModel/Relation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="34" column="42" selection-start-line="34" selection-start-column="36" selection-end-line="34" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/XModel/Constraint.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
@@ -1380,10 +1258,38 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/XModel/Domain.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/XModel/ConverterTest.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/XModel/Relation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="22" lean-forward="true" selection-start-line="17" selection-start-column="22" selection-end-line="17" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/XModel/XModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-406">
+          <caret line="127" selection-start-line="127" selection-end-line="127" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/XModel/XTab.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="112" column="13" lean-forward="true" selection-start-line="112" selection-start-column="13" selection-end-line="112" selection-end-column="13" />
+        <state relative-caret-position="-2018">
+          <caret line="18" selection-start-line="18" selection-end-line="18" />
           <folding>
             <element signature="method#XTab#1;class#XTab#0" />
             <element signature="method#XTab#2;class#XTab#0" />
@@ -1392,10 +1298,74 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/XModel/XModel.java">
+    <entry file="file://$PROJECT_DIR$/benchmarks/queen12.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/CPF_Tester.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="147" column="31" lean-forward="true" selection-start-line="147" selection-start-column="31" selection-end-line="147" selection-end-column="31" />
+        <state relative-caret-position="326">
+          <caret line="94" column="19" lean-forward="true" selection-start-line="94" selection-start-column="19" selection-end-line="94" selection-end-column="19" />
+          <folding>
+            <element signature="e#25#44#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/main.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="107">
+          <caret line="30" column="5" selection-start-line="30" selection-start-column="5" selection-end-line="30" selection-end-column="5" />
+          <folding>
+            <element signature="e#35#51#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="458">
+          <caret line="69" column="42" selection-start-line="69" selection-start-column="42" selection-end-line="69" selection-end-column="42" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/benchmarks/BMPath.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="54" selection-start-line="13" selection-start-column="54" selection-end-line="13" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CompactTrie.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-653">
+          <caret line="52" column="13" selection-start-line="52" selection-start-column="13" selection-end-line="52" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="class#node#0;class#CompactTrie#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="333">
+          <caret line="348" column="25" selection-start-line="348" selection-start-column="25" selection-end-line="348" selection-end-column="25" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="class#_table#0;class#CPFSolverImpl#0" />
+            <element signature="class#_dif#0;class#CPFSolverImpl#0" />
+            <element signature="class#_info#0;class#CPFSolverImpl#0" />
+            <element signature="method#Select_Path#0;class#CPFSolverImpl#0" />
+            <element signature="method#Answer#0;class#CPFSolverImpl#0" />
+            <element signature="e#11815#11816#0" expanded="true" />
+            <element signature="e#11842#11843#0" expanded="true" />
+            <element signature="method#Show#0;class#CPFSolverImpl#0" />
+            <element signature="method#IsExitTable#0;class#CPFSolverImpl#0" />
+            <element signature="method#SetTableFlag#0;class#CPFSolverImpl#0" />
+          </folding>
         </state>
       </provider>
     </entry>

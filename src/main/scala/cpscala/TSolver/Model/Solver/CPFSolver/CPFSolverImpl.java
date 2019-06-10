@@ -205,6 +205,10 @@ public class CPFSolverImpl extends CPFSolver {
             if (temp_f[i] != 1) {
 
                 //Trie T = new Trie(hm.max_domain_size, i);
+               // println("ttttttttttttttttttttttttttttttt "+i);
+                //println(hm.tabs.get(i).scope.length);
+               // for(var J: hm.tabs.get(i).scope)
+                  //  print(J.name);
                 CompactTrie T = new CompactTrie( i,hm.tabs.get(i).scope);
                 //for (var tuple : hm.tabs.get(i).tuples)
                    // T.Insert(tuple);
@@ -302,7 +306,7 @@ public class CPFSolverImpl extends CPFSolver {
               ArrayList<Integer> p = null;
               ArrayList<Integer> for_check = new ArrayList<Integer>();
                 long current_Time = 0;
-             while(table_flag[0] < hm.tabs.get(Path.get(0).id).tuples.length && !flag_for_Solution)
+             while(table_flag[0] <= hm.tabs.get(Path.get(0).id).tuples.length && !flag_for_Solution)
               {
 
                   current_Time = System.nanoTime();
@@ -342,12 +346,18 @@ public class CPFSolverImpl extends CPFSolver {
 
                       if(level == Path.size())
                       {
-                          flag_for_Solution = true;
+                         flag_for_Solution = true;
                           for (var v:solution
                                ) {
                               s.add(v);
                           }
                           break;
+
+                          /*level--;
+
+                          print_All(solution);
+                          if(solution[0] == 11 && solution[1] == 9 && solution[2] == 7 && solution[3] == 4 )
+                              flag_for_Solution = true;*/
                       }
 
                   }

@@ -5,10 +5,13 @@
         <!--<BMFile name="0" format="2">D:/optiSTRpackage/csptools/rand-4-10-3-10-667-fcd-15_ext-merged.xml</BMFile>-->
         <!--<BMFile name="0" format="2">D:/optiSTRpackage/csptools/rand-4-10-2-10-500-fcd-5_ext-merged.xml</BMFile>-->
 <!--        <BMFile name="0" format="2">F:/cspxmlpast/rand5-2X-0.5c/rand5-2X-0.5c-8-p0.xml</BMFile>-->
-        <BMFile name="0" format="2">G:/XML2/QCP-10/QCP-10/qcp-10-67-0_ext.xml</BMFile>
+<!--        <BMFile name="0" format="2">G:/XML2/QCP-10/QCP-10/qcp-10-67-7_ext.xml</BMFile>-->
+<!--        <BMFile name="0" format="3">C:/Users/zhenl/IdeaProjects/ScalaCP/benchmarks/queen12.xml</BMFile>-->
+<!--        <BMFile name="0" format="2">G:/XML2/rand-8-20-5/rand-8-20-5/rand-8-20-5-18-800-0_ext.xml</BMFile>-->
+<!--        <BMFile name="0" format="2">G:/XML2/QCP-10/QCP-10/qcp-10-67-0_ext.xml</BMFile>-->
 <!--        <BMFile name="0" format="2">G:/XML2/marc/large-80-sat_ext.xml</BMFile>-->
         <!--<BMFile name="0" format="3">benchmarks/test2.xml</BMFile>-->
-        <!--<BMFile name="0" format="3">benchmarks/queen4.xml</BMFile>-->
+        <BMFile name="0" format="3">benchmarks/queen12.xml</BMFile>
         <!--<BMFile name="0" format="3">benchmarks/queen12.xml</BMFile>-->
         <!--<BMFile name="0" format="3">benchmarks/rand-5-12-12-200-12442-01.xml</BMFile>-->
         <!--<BMFile name="0" format="2">D:/optiSTRpackage/aim-200_600s8/aim-200-3-4-sat-1_ext.xml</BMFile>-->

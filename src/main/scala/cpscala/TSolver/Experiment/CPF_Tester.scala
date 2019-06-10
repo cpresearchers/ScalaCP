@@ -92,6 +92,7 @@ object CPF_Tester {
         inner_writer.writeRow(dataLine)
         inner_writer.close()
         dataLine.clear()
+        System.gc()
 
       }
 

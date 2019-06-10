@@ -28,7 +28,7 @@ object main {
     val fmt = (fileNode \\ "@format").text.toInt
     println(path)
     val xm = new XModel(path, true, fmt)
-    xm.show()
+   // xm.show()
 
 //    val Trie = new  CompactTrie (1,xm.tabs.get(0).scope)
 //
@@ -45,10 +45,10 @@ object main {
 //    }
 
 
-       // var CPF = new CPFSolverImpl(xm,null,null,null)
+    var CPF = new CPFSolverImpl(xm,null,null,null)
    // CPF.Show()
-    //CPF.Search(1800000000000L)
-   // CPF.Answer()
+    CPF.Search(1800000000000L)
+   CPF.Answer()
 
 
 
