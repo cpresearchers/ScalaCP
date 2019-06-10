@@ -113,7 +113,7 @@ public class XModel implements XCallbacks2 {
         for (int i = 0; i < m.vnum; ++i) {
             var v = m.vs[i];
             var d = v.d;
-            XVar var = new XVar(num_vars++, "", 0, d.num - 1);
+            XVar var = new XVar(num_vars++, v.name, d.vals);
             vars.add(var);
             max_domain_size = Math.max(max_arity, var.size);
         }
@@ -125,7 +125,7 @@ public class XModel implements XCallbacks2 {
             for (int j = 0; j < c.vnum; ++j) {
                 v[j] = vars.get(c.vs[j].me);
             }
-            XTab t = new XTab(num_tabs++, "", true, r.rvs, v, need_positive, false);
+            XTab t = new XTab(num_tabs++, c.name, true, r.rvs, v, need_positive, true);
             tabs.add(t);
             max_arity = Math.max(max_arity, t.arity);
             max_tuples_size = Math.max(max_tuples_size, t.tuples.length);

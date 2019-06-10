@@ -50,10 +50,13 @@ public class CompactTrie {
         for(int i = 0; i < scope.length;++i)
             size[i+1] = scope[i].values.length + 1;
 
+          //  size[i+1] = scope[i].values[scope[i].values.length-1] + 2;
+
     }
 
     public  void Insert(int[] t)
     {
+
         if(root == null)
         {
             root = new node(size[1]);
@@ -63,6 +66,7 @@ public class CompactTrie {
         //for(var i : t)
         for(int i = 0;i < t.length;++i)
         {
+            System.out.print(t[i] + "  ");
             if(head.address[t[i]] == -1)
             {
                 if(i != t.length -1) {
@@ -80,6 +84,7 @@ public class CompactTrie {
             head = head.next.get(head.address[t[i]]);
 
         }
+        System.out.print("\n");
         head.isEnd = true;
         ++count;
 
@@ -87,7 +92,9 @@ public class CompactTrie {
     public void Build(int[][] tuples)
     {
         for(var i : tuples)
+
             this.Insert(i);
+
 
     }
 

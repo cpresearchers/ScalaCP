@@ -112,6 +112,7 @@ public class XTab {
                 }
             }
         } else {
+            tuples = new int[ts.length][arity];
             for (int i = 0; i < ts.length; ++i) {
                 tuples[i] = Arrays.copyOf(ts[i], arity);
             }
