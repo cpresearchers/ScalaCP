@@ -4,7 +4,7 @@
 		module="scalacp$sbt_2.12"
 		revision="0.1"
 		status="integration"
-		publication="20190610160929"
+		publication="20190618120458"
 	/>
 	<configurations>
 		<conf name="compile" visibility="public" description=""/>

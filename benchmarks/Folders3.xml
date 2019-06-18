@@ -69,9 +69,9 @@
 <!--    <folder format="2">leighton</folder>-->
 <!--    <folder format="2">lexVg</folder>-->
     <folder format="2">marc</folder>
-    <folder format="2">maxcut-30</folder>
+<!--    <folder format="2">maxcut-30</folder>-->
     <folder format="2">modifiedRenault</folder>
-    <folder format="2">ogdVg</folder>
+<!--    <folder format="2">ogdVg</folder>-->
     <folder format="2">pedigree</folder>
     <folder format="2">QCP-10</folder>
     <folder format="2">QCP-15</folder>
@@ -81,8 +81,8 @@
     <folder format="2">QWH-15</folder>
     <folder format="2">QWH-20</folder>
     <folder format="2">QWH-25</folder>
-    <folder format="2">rand-10-20-10</folder>
-    <folder format="2">rand-10-60-20_600s32</folder>
+<!--    <folder format="2">rand-10-20-10</folder>-->
+<!--    <folder format="2">rand-10-60-20_600s32</folder>-->
 <!--    <folder format="2">rand-2-30-15</folder>-->
 <!--    <folder format="2">rand-2-30-15-fcd</folder>-->
 <!--    <folder format="2">rand-2-40-19</folder>-->
