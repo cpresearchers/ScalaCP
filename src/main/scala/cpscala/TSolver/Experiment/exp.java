@@ -13,7 +13,7 @@ public class exp {
 //    val fmt = (fileNode \\ "@format").text.toInt
 //    println(path)
 //    val xm = new XModel(path, true, fmt)
-//        CompactTrie Trie = new CompactTrie();
+//        CompactTrie Trie_Data = new CompactTrie();
 
 //        System.out.println('a');
 //        DoubleArrayTrie dat = new DoubleArrayTrie(100);

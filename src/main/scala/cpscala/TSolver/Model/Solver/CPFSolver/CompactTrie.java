@@ -4,6 +4,8 @@ import cpscala.XModel.XVar;
 
 import java.util.ArrayList;
 
+
+
 public class CompactTrie {
 
 

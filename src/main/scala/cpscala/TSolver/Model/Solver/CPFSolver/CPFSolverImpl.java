@@ -60,7 +60,7 @@ public class CPFSolverImpl extends CPFSolver {
 
     HashMap<int[], Integer> Check_Map = new HashMap<>();
     ArrayList<CompactTrie> Filter = new ArrayList<>();
-    ArrayList<Trie> Path_Index = new ArrayList<>();
+    ArrayList<Trie_Data> Path_Index = new ArrayList<>();
     ArrayList<Integer>  s = new ArrayList<Integer> (vsize);
     boolean flag_for_Solution;
 
@@ -204,7 +204,7 @@ public class CPFSolverImpl extends CPFSolver {
 
             if (temp_f[i] != 1) {
 
-                //Trie T = new Trie(hm.max_domain_size, i);
+                //Trie_Data T = new Trie_Data(hm.max_domain_size, i);
                // println("ttttttttttttttttttttttttttttttt "+i);
                 //println(hm.tabs.get(i).scope.length);
                // for(var J: hm.tabs.get(i).scope)
@@ -244,8 +244,8 @@ public class CPFSolverImpl extends CPFSolver {
             }
             Path_Diff.add(_d);
             if (P.id != p.get(0)) {
-               // Trie T = new Trie(hm.max_domain_size, -P.id);
-                Trie T = new Trie( -P.id,hm.tabs.get(P.id).scope);
+               // Trie_Data T = new Trie_Data(hm.max_domain_size, -P.id);
+                Trie_Data T = new Trie_Data( -P.id,hm.tabs.get(P.id).scope);
                 for (int i = 0; i < hm.tabs.get(P.id).tuples.length; ++i) {
                     ArrayList<Integer> s = new ArrayList<>();
                     for (var same : Path_Diff.get(Path_Diff.size() - 1).same_id) {

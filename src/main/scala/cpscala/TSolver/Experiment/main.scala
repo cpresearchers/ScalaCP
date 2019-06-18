@@ -30,17 +30,17 @@ object main {
     val xm = new XModel(path, true, fmt)
    // xm.show()
 
-//    val Trie = new  CompactTrie (1,xm.tabs.get(0).scope)
+//    val Trie_Data = new  CompactTrie (1,xm.tabs.get(0).scope)
 //
 //    for( i <- xm.tabs.get(0).tuples)
 //    {
-//      Trie.Insert(i)
+//      Trie_Data.Insert(i)
 //
 //    }
 //    for( i <- xm.tabs.get(0).tuples)
 //    {
-//     // println(Trie.Contain(i))
-//      //assert(Trie.Contain(i))
+//     // println(Trie_Data.Contain(i))
+//      //assert(Trie_Data.Contain(i))
 //
 //    }
 

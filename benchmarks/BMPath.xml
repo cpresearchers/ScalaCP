@@ -11,6 +11,7 @@
 <!--        <BMFile name="0" format="2">G:/XML2/QCP-10/QCP-10/qcp-10-67-0_ext.xml</BMFile>-->
 <!--        <BMFile name="0" format="2">G:/XML2/marc/large-80-sat_ext.xml</BMFile>-->
         <!--<BMFile name="0" format="3">benchmarks/test2.xml</BMFile>-->
+<!--        <BMFile name="0" format="2">G:/XML2/driver/driver/driverlogw-02c-sat_ext.xml</BMFile>-->
         <BMFile name="0" format="3">benchmarks/queen12.xml</BMFile>
         <!--<BMFile name="0" format="3">benchmarks/queen12.xml</BMFile>-->
         <!--<BMFile name="0" format="3">benchmarks/rand-5-12-12-200-12442-01.xml</BMFile>-->
