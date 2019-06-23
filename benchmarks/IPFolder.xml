@@ -7,12 +7,13 @@
     <!--        <folder format="2">rand-3-24-24-fcd_600s17</folder>-->
     <!--            <folder format="2">rand-5-12-12_total50</folder>-->
     <!--            <folder format="2">rand-8-20-5_total20</folder>-->
-    <folder format="2">rand-10-20-10_total20</folder>
+    <!--    <folder format="2">rand-10-20-10_total20</folder>-->
     <!--            <folder format="2">rand-10-60-20_600s32</folder>-->
     <!--    <folder format="2">MDD0_7_600s8</folder>-->
     <!--    <folder format="2">MDD0_9_total9</folder>-->
     <!--    <folder format="2">half_600s20</folder>-->
-    <!--    <folder format="2">zzbddSmall</folder>-->
+    <!--    <folder format="2">bddSmall</folder>-->
+    <folder format="2">bddLarge</folder>
     <!--    <folder format="2">rand_total25</folder>-->
 
     <!--    <folder format="2">modifiedRenault_600s26</folder>-->
@@ -30,6 +31,6 @@
     <!--        <folder format="2">aim-50_total24</folder>-->
     <!--    <folder format="2">aim-100_part17</folder>-->
     <!--    <folder format="2">aim-200_600s8</folder>-->
-    <!--    <folder format="2">zzdubois</folder>-->
+    <!--    <folder format="2">dubois</folder>-->
     <outputRoot>D:\Experiment\XCSP2_Result\CT</outputRoot>
 </folders>

@@ -37,7 +37,7 @@ object amtf {
     var p_sum = 0L
     var c_sum = 0L
     var notChangedTabs = 0L
-    val maxPara = 3
+    val maxPara = 6
 
     //        pType = "STR2"
     //        varType = "SparseSet"
@@ -373,32 +373,32 @@ object amtf {
       parallelism += 1
     }
 
-    time = 0L
-    branchTime = 0L
-    backTime = 0L
-    propTime = 0L
-    pType = "CT_Bit"
-    varType = "BitSet"
-    heuName = "Dom/Ddeg"
-    println(s"${pType} ${heuName}===============>")
-    i = 0
-    while (i < exe) {
-      val ct = new SCoarseSolver(xm, pType, varType, heuName)
-      ct.search(Constants.TIME)
-      node = ct.helper.nodes
-      time += ct.helper.time
-      branchTime += ct.helper.branchTime
-      propTime += ct.helper.propTime
-      backTime += ct.helper.backTime
-      c_sum = ct.helper.c_sum
-      i += 1
-    }
-    println("node = " + node)
-    println("search time = " + (time / exe).toDouble * 1e-9 + "s")
-    println("branch time = " + (branchTime / exe).toDouble * 1e-9 + "s")
-    println("propagate time = " + (propTime.toDouble / exe * 1e-9).formatted("%.2f") + "s")
-    println("backtrack time = " + (backTime / exe).toDouble * 1e-9 + "s")
-    println("c_sum = " + c_sum)
+//    time = 0L
+//    branchTime = 0L
+//    backTime = 0L
+//    propTime = 0L
+//    pType = "CT_Bit"
+//    varType = "BitSet"
+//    heuName = "Dom/Ddeg"
+//    println(s"${pType} ${heuName}===============>")
+//    i = 0
+//    while (i < exe) {
+//      val ct = new SCoarseSolver(xm, pType, varType, heuName)
+//      ct.search(Constants.TIME)
+//      node = ct.helper.nodes
+//      time += ct.helper.time
+//      branchTime += ct.helper.branchTime
+//      propTime += ct.helper.propTime
+//      backTime += ct.helper.backTime
+//      c_sum = ct.helper.c_sum
+//      i += 1
+//    }
+//    println("node = " + node)
+//    println("search time = " + (time / exe).toDouble * 1e-9 + "s")
+//    println("branch time = " + (branchTime / exe).toDouble * 1e-9 + "s")
+//    println("propagate time = " + (propTime.toDouble / exe * 1e-9).formatted("%.2f") + "s")
+//    println("backtrack time = " + (backTime / exe).toDouble * 1e-9 + "s")
+//    println("c_sum = " + c_sum)
 
     ppType = "DSPCT_SBit"
     varType = "SafeBitSet"
@@ -462,32 +462,32 @@ object amtf {
     //    println("backtrack time = " + (backTime / exe).toDouble * 1e-9 + "s")
     //    println("c_sum = " + c_sum)
 
-    time = 0L
-    branchTime = 0L
-    backTime = 0L
-    propTime = 0L
-    pType = "CT_Bit"
-    varType = "BitSet"
-    heuName = "Dom/Ddeg"
-    println(s"${pType} ${heuName}===============>")
-    i = 0
-    while (i < exe) {
-      val ct = new SCoarseSolver(xm, pType, varType, heuName)
-      ct.search(Constants.TIME)
-      node = ct.helper.nodes
-      time += ct.helper.time
-      branchTime += ct.helper.branchTime
-      propTime += ct.helper.propTime
-      backTime += ct.helper.backTime
-      c_sum = ct.helper.c_sum
-      i += 1
-    }
-    println("node = " + node)
-    println("search time = " + (time / exe).toDouble * 1e-9 + "s")
-    println("branch time = " + (branchTime / exe).toDouble * 1e-9 + "s")
-    println("propagate time = " + (propTime.toDouble / exe * 1e-9).formatted("%.2f") + "s")
-    println("backtrack time = " + (backTime / exe).toDouble * 1e-9 + "s")
-    println("c_sum = " + c_sum)
+//    time = 0L
+//    branchTime = 0L
+//    backTime = 0L
+//    propTime = 0L
+//    pType = "CT_Bit"
+//    varType = "BitSet"
+//    heuName = "Dom/Ddeg"
+//    println(s"${pType} ${heuName}===============>")
+//    i = 0
+//    while (i < exe) {
+//      val ct = new SCoarseSolver(xm, pType, varType, heuName)
+//      ct.search(Constants.TIME)
+//      node = ct.helper.nodes
+//      time += ct.helper.time
+//      branchTime += ct.helper.branchTime
+//      propTime += ct.helper.propTime
+//      backTime += ct.helper.backTime
+//      c_sum = ct.helper.c_sum
+//      i += 1
+//    }
+//    println("node = " + node)
+//    println("search time = " + (time / exe).toDouble * 1e-9 + "s")
+//    println("branch time = " + (branchTime / exe).toDouble * 1e-9 + "s")
+//    println("propagate time = " + (propTime.toDouble / exe * 1e-9).formatted("%.2f") + "s")
+//    println("backtrack time = " + (backTime / exe).toDouble * 1e-9 + "s")
+//    println("c_sum = " + c_sum)
     //
     ppType = "IPTotalCT_SBit"
     varType = "SafeBitSet"
@@ -530,46 +530,7 @@ object amtf {
     ppType = "IPbitCT_SBit"
     varType = "SafeBitSet"
     heuName = "Dom/Ddeg"
-    parallelism = 8
-    while (parallelism <= maxPara) {
-      time = 0L
-      branchTime = 0L
-      propTime = 0L
-      otherTime = 0L
-      backTime = 0L
-      c_sum = 0L
-      notChangedTabs = 0L
-      println(s"${parallelism}线程 ${ppType} degree ${heuName}===============>")
-      for (i <- 1 to exe) {
-        val pct = new IPbitDegreeCoarseSolver(xm, parallelism, ppType, varType, heuName)
-        pct.search(Constants.TIME)
-        pct.shutdown()
-        node = pct.helper.nodes
-        time += pct.helper.time
-        branchTime += pct.helper.branchTime
-        propTime += pct.helper.propTime
-        otherTime += pct.helper.lockTime.get()
-        backTime += pct.helper.backTime
-        p_sum = pct.helper.p_sum
-        c_sum += pct.helper.c_sum
-        notChangedTabs += pct.helper.notChangedTabs.get()
-      }
-      println("node = " + node)
-      println("search time = " + (time / exe).toDouble * 1e-9 + "s")
-      println("branch time = " + (branchTime / exe).toDouble * 1e-9 + "s")
-      println("propagate time = " + (propTime.toDouble / exe * 1e-9).formatted("%.2f") + "s")
-      println("other time = " + (otherTime / exe).toDouble * 1e-9 + "s")
-      println("backtrack time = " + (backTime / exe).toDouble * 1e-9 + "s")
-      println("p_sum = " + p_sum)
-      println("c_sum = " + c_sum / exe)
-      println("notChangedTabs = " + notChangedTabs / exe)
-      parallelism += 1
-    }
-
-    ppType = "IPbitCT_SBit"
-    varType = "SafeBitSet"
-    heuName = "Dom/Ddeg"
-    parallelism = 1
+    parallelism = 6
     while (parallelism <= maxPara) {
       time = 0L
       branchTime = 0L
