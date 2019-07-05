@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <folders>
-    <inputRoot>/home/lee/benckmarks/X2</inputRoot>
+
 <!--    <folder format="2">rand-3-20-20_total50</folder>-->
     <!--    <folder format="2">rand-3-20-20-fcd_total50</folder>-->
     <!--    <folder format="2">rand-3-24-24_600s15</folder>-->
@@ -31,10 +31,87 @@
 <!--    <folder format="2">aim-50_total24</folder>-->
 <!--    <folder format="2">aim-100_part17</folder>-->
 <!--    <folder format="2">zzbddSmall</folder>-->
-    <folder format="2">zzdubois</folder>
-    <folder format="2">cril_600s2</folder>
-    <folder format="2">rand-3-24-24-fcd_600s17</folder>
-    <outputRoot>/home/lee/exp/pct</outputRoot>
+    <inputRoot>G:\XML2\</inputRoot>
+
+    <folder format="2">aim-100</folder>
+    <folder format="2">aim-200</folder>
+    <folder format="2">aim-50</folder>
+    <folder format="2">bddSmall</folder>
+    <folder format="2">BH-4-13</folder>
+    <folder format="2">BH-4-4</folder>
+    <folder format="2">BH-4-7</folder>
+    <folder format="2">bqwh-15-106</folder>
+    <folder format="2">bqwh-18-141</folder>
+    <folder format="2">coloring</folder>
+    <folder format="2">completeLoose</folder>
+    <folder format="2">completeTight</folder>
+    <folder format="2">cril</folder>
+    <folder format="2">denseTight</folder>
+    <folder format="2">driver</folder>
+    <folder format="2">dubois</folder>
+    <folder format="2">half</folder>
+
+    <folder format="2">hos</folder>
+    <folder format="2">insertion</folder>
+    <folder format="2">jnhSat</folder>
+    <folder format="2">jnhUnsat</folder>
+    <folder format="2">jobShop-e0ddr1</folder>
+    <folder format="2">jobShop-e0ddr2</folder>
+    <folder format="2">jobShop-enddr1</folder>
+    <folder format="2">jobShop-enddr2</folder>
+    <folder format="2">jobShop-ewddr2</folder>
+    <folder format="2">kbtree-5-2-4-5</folder>
+    <folder format="2">lard</folder>
+    <folder format="2">leighton</folder>
+
+    <folder format="2">lexVg</folder>
+    <folder format="2">marc</folder>
+    <folder format="2">maxcut-30</folder>
+    <folder format="2">modifiedRenault</folder>
+    <folder format="2">mug</folder>
+    <folder format="2">myciel</folder>
+    <folder format="2">ogdVg</folder>
+    <folder format="2">pedigree</folder>
+    <folder format="2">QCP-10</folder>
+    <folder format="2">QCP-15</folder>
+    <folder format="2">QCP-20</folder>
+    <folder format="2">QCP-25</folder>
+    <folder format="2">QWH-10</folder>
+    <folder format="2">QWH-15</folder>
+    <folder format="2">QWH-20</folder>
+    <folder format="2">QWH-25</folder>
+    <folder format="2">rand-10-20-10</folder>
+    <folder format="2">rand-2-30-15</folder>
+    <folder format="2">rand-2-30-15-fcd</folder>
+    <folder format="2">rand-2-40-19</folder>
+    <folder format="2">rand-2-40-19-fcd</folder>
+    <folder format="2">rand-2-50-23</folder>
+    <folder format="2">rand-2-50-23-fcd</folder>
+    <folder format="2">rand-3-20-20</folder>
+    <folder format="2">rand-3-20-20-fcd</folder>
+    <folder format="2">rand-8-20-5</folder>
+
+    <folder format="2">register</folder>
+    <folder format="2">renault</folder>
+    <folder format="2">rlfapGraphs</folder>
+    <folder format="2">rlfapGraphsMod</folder>
+    <folder format="2">rlfapScens</folder>
+    <folder format="2">rlfapScens11</folder>
+    <folder format="2">rlfapScensMod</folder>
+    <folder format="2">school</folder>
+    <folder format="2">sgb</folder>
+    <folder format="2">sparseTight</folder>
+    <folder format="2">spot5</folder>
+    <folder format="2">subs</folder>
+
+    <folder format="2">travellingSalesman-20</folder>
+    <folder format="2">travellingSalesman-25</folder>
+    <folder format="2">ukVg</folder>
+    <folder format="2">varDimacs</folder>
+    <folder format="2">warehouses</folder>
+    <folder format="2">wordsVg</folder>
+
+    <outputRoot>C://Users//zhenl//Desktop//JAVA_Test</outputRoot>
 </folders>
 
 

@@ -260,7 +260,7 @@ abstract class PWSolver(xm: XModel, propagatorName: String, varType: String, heu
       //            infoShow()
 
       if (consistent && I.full()) {
-        I.show()
+       // I.show()
         // 若想求出所有解，则将consistent设置为false，且不返回
         //        consistent = false
         end_time = System.nanoTime

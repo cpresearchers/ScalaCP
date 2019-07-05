@@ -112,6 +112,7 @@ public class XTab {
                 }
             }
         } else {
+            tuples = new int[ts.length][arity];
             for (int i = 0; i < ts.length; ++i) {
                 tuples[i] = Arrays.copyOf(ts[i], arity);
             }
@@ -186,21 +187,19 @@ public class XTab {
         return tuples[index][getVarIndex(vid)];
     }
 
-    public double Looseness()
-    {
+    public double Looseness() {
         int p = 1;
-        for (var t:scope
-             ) {
+        for (var t : scope
+        ) {
             p *= t.size;
         }
 
-        return (double)tuples.length / (double)p;
+        return (double) tuples.length / (double) p;
     }
 
-    public double Tightness()
-    {
+    public double Tightness() {
 
-        return 1 - Looseness() ;
+        return 1 - Looseness();
     }
 
 }

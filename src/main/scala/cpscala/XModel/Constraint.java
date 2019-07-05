@@ -9,6 +9,7 @@ public class Constraint {
     int vmark[] = null;
     int deg = 0;
     int mind = 0;
+    String name = null;
 
     Relation r = null;
 
@@ -16,13 +17,13 @@ public class Constraint {
     Constraint() {
     }
 
-    public Constraint(int invnum, Relation inr, Variable invs[], int inme, Model m) {
+    public Constraint(int invnum, Relation inr, Variable invs[], int inme, String n, Model m) {
         vnum = invnum;
         vs = invs;
         r = inr;
         rnum = r.rnum;
         me = inme;
-
+        name = n;
         vmark = new int[vnum];
 
         int s[] = new int[vs.length + 1];
