@@ -306,7 +306,7 @@ public class CPFSolverImpl extends CPFSolver {
               ArrayList<Integer> p = null;
               ArrayList<Integer> for_check = new ArrayList<Integer>();
                 long current_Time = 0;
-             while(table_flag[0] <= hm.tabs.get(Path.get(0).id).tuples.length && !flag_for_Solution)
+             while(table_flag[0] < hm.tabs.get(Path.get(0).id).tuples.length && !flag_for_Solution)
               {
 
                   current_Time = System.nanoTime();

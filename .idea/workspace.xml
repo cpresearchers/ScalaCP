@@ -7,13 +7,12 @@
     <list default="true" id="48a296e1-df47-41ca-bb68-ee7d758e3d3e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/modules/ScalaCP.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/ScalaCP.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/benchmarks/BMPath.xml" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/BMPath.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/streams/$global/update/$global/streams/update_cache_2.12/output" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/streams/$global/update/$global/streams/update_cache_2.12/output" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/exp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/exp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/main.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/main.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CompactTrie.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CompactTrie.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/Trie.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/Trie_Data.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/CompactTrie$node.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/CompactTrie$node.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/CompactTrie.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/CompactTrie.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/Trie$node.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/Trie.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sbt_2.12/0.1/resolved.xml.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sbt_2.12/0.1/resolved.xml.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sbt_2.12/0.1/resolved.xml.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sbt_2.12/0.1/resolved.xml.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sources/0.1/resolved.xml.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sources/0.1/resolved.xml.properties" afterDir="false" />
@@ -82,17 +81,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/benchmarks/Folders1.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="632">
+            <state relative-caret-position="799">
               <caret line="47" column="47" selection-start-line="47" selection-start-column="47" selection-end-line="47" selection-end-column="47" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/benchmarks/Folders3.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="71" column="40" lean-forward="true" selection-start-line="71" selection-start-column="40" selection-end-line="71" selection-end-column="40" />
+            <state relative-caret-position="200">
+              <caret line="66" column="47" selection-start-line="66" selection-start-column="47" selection-end-line="66" selection-end-column="47" />
             </state>
           </provider>
         </entry>
@@ -100,7 +99,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/benchmarks/Folders4.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="166">
+            <state relative-caret-position="1326">
               <caret line="78" column="32" selection-start-line="78" selection-start-column="32" selection-end-line="78" selection-end-column="32" />
             </state>
           </provider>
@@ -109,11 +108,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CompactTrie.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1547">
-              <caret line="124" lean-forward="true" selection-start-line="124" selection-end-line="124" />
+            <state relative-caret-position="2074">
+              <caret line="124" selection-start-line="124" selection-end-line="124" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#140#576#0" />
               </folding>
             </state>
           </provider>
@@ -122,21 +120,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/Trie_Data.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="95">
+            <state relative-caret-position="3468">
               <caret line="206" column="55" selection-start-line="206" selection-start-column="55" selection-end-line="206" selection-end-column="55" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="class#node#0;class#CompactTrie#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="412">
-              <caret line="247" column="74" selection-start-line="247" selection-start-column="69" selection-end-line="247" selection-end-column="74" />
+            <state relative-caret-position="276">
+              <caret line="305" column="42" lean-forward="true" selection-start-line="305" selection-start-column="42" selection-end-line="305" selection-end-column="42" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="class#_table#0;class#CPFSolverImpl#0" />
@@ -288,7 +285,6 @@
         <option value="$PROJECT_DIR$/src/main/scala/cpscala/XModel/XTab.java" />
         <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/main.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/CPF_Tester.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.java" />
         <option value="$PROJECT_DIR$/benchmarks/Folders1.xml" />
         <option value="$PROJECT_DIR$/benchmarks/Folders2.xml" />
         <option value="$PROJECT_DIR$/benchmarks/Folders4.xml" />
@@ -297,12 +293,13 @@
         <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/Trie_Data.java" />
         <option value="$PROJECT_DIR$/benchmarks/BMPath.xml" />
         <option value="$PROJECT_DIR$/benchmarks/Folders3.xml" />
+        <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1599" />
-    <option name="y" value="161" />
+    <option name="x" value="-38" />
+    <option name="y" value="43" />
     <option name="width" value="1454" />
     <option name="height" value="874" />
   </component>
@@ -314,6 +311,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -421,7 +419,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -640,7 +637,8 @@
       <workItem from="1560153152897" duration="523000" />
       <workItem from="1560154137630" duration="12708000" />
       <workItem from="1560830657233" duration="1069000" />
-      <workItem from="1560835504187" duration="1852000" />
+      <workItem from="1560835504187" duration="2599000" />
+      <workItem from="1560905556255" duration="736000" />
     </task>
     <task id="LOCAL-00001" summary="1">
       <created>1555836982265</created>
@@ -845,11 +843,18 @@
       <option name="project" value="LOCAL" />
       <updated>1560831119043</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="需要重新测试部分例子">
+      <created>1560837496678</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1560837496678</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="257924000" />
+    <option name="totallyTimeSpent" value="259407000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -861,10 +866,9 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1432" y="-8" width="1696" height="1026" extended-state="6" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1456" height="876" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2200489" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2234957" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -873,7 +877,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.5246637" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49946696" visible="true" weight="0.22085202" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49946696" weight="0.22085202" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.30941704" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -1281,23 +1285,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolver.java">
+    <entry file="file://$PROJECT_DIR$/benchmarks/Folders1.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1003">
-          <caret line="69" column="42" selection-start-line="69" selection-start-column="42" selection-end-line="69" selection-end-column="42" />
+        <state relative-caret-position="799">
+          <caret line="47" column="47" selection-start-line="47" selection-start-column="47" selection-end-line="47" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/benchmarks/Folders4.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1326">
+          <caret line="78" column="32" selection-start-line="78" selection-start-column="32" selection-end-line="78" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CompactTrie.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2074">
+          <caret line="124" selection-start-line="124" selection-end-line="124" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/benchmarks/queen12.xml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/benchmarks/Folders4.xml">
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/Trie_Data.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="166">
-          <caret line="78" column="32" selection-start-line="78" selection-start-column="32" selection-end-line="78" selection-end-column="32" />
+        <state relative-caret-position="3468">
+          <caret line="206" column="55" selection-start-line="206" selection-start-column="55" selection-end-line="206" selection-end-column="55" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1311,42 +1329,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CompactTrie.java">
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolver.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1547">
-          <caret line="124" lean-forward="true" selection-start-line="124" selection-end-line="124" />
+        <state relative-caret-position="1003">
+          <caret line="69" column="42" selection-start-line="69" selection-start-column="42" selection-end-line="69" selection-end-column="42" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#140#576#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="412">
-          <caret line="247" column="74" selection-start-line="247" selection-start-column="69" selection-end-line="247" selection-end-column="74" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="class#_table#0;class#CPFSolverImpl#0" />
-            <element signature="class#_dif#0;class#CPFSolverImpl#0" />
-            <element signature="class#_info#0;class#CPFSolverImpl#0" />
-            <element signature="method#Select_Path#0;class#CPFSolverImpl#0" />
-            <element signature="method#Answer#0;class#CPFSolverImpl#0" />
-            <element signature="method#Show#0;class#CPFSolverImpl#0" />
-            <element signature="method#IsExitTable#0;class#CPFSolverImpl#0" />
-            <element signature="method#SetTableFlag#0;class#CPFSolverImpl#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/Trie_Data.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="206" column="55" selection-start-line="206" selection-start-column="55" selection-end-line="206" selection-end-column="55" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="class#node#0;class#CompactTrie#0" />
           </folding>
         </state>
       </provider>
@@ -1358,17 +1346,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/benchmarks/Folders1.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="632">
-          <caret line="47" column="47" selection-start-line="47" selection-start-column="47" selection-end-line="47" selection-end-column="47" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/benchmarks/queen12.xml">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/benchmarks/Folders3.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="71" column="40" lean-forward="true" selection-start-line="71" selection-start-column="40" selection-end-line="71" selection-end-column="40" />
+        <state relative-caret-position="200">
+          <caret line="66" column="47" selection-start-line="66" selection-start-column="47" selection-end-line="66" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="305" column="42" lean-forward="true" selection-start-line="305" selection-start-column="42" selection-end-line="305" selection-end-column="42" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="class#_table#0;class#CPFSolverImpl#0" />
+            <element signature="class#_dif#0;class#CPFSolverImpl#0" />
+            <element signature="class#_info#0;class#CPFSolverImpl#0" />
+            <element signature="method#Select_Path#0;class#CPFSolverImpl#0" />
+            <element signature="method#Answer#0;class#CPFSolverImpl#0" />
+            <element signature="method#Show#0;class#CPFSolverImpl#0" />
+            <element signature="method#IsExitTable#0;class#CPFSolverImpl#0" />
+            <element signature="method#SetTableFlag#0;class#CPFSolverImpl#0" />
+          </folding>
         </state>
       </provider>
     </entry>
