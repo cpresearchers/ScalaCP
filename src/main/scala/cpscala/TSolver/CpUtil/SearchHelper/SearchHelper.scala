@@ -17,6 +17,8 @@ class SearchHelper(val numVars: Int, val numTabs: Int) {
   var filterDomainTime = 0L
   var backTime = 0L
   var lockTime = new AtomicLong(0L)
+  var inconsistentTime = 0L
+  var stopTime = 0L
 //  var lockTime = 0L
   var nodes: Long = 0L
 //  @volatile var isConsistent: Boolean = true

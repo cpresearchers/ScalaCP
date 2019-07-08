@@ -26,6 +26,7 @@ object amtf {
     var branchTime = 0L
     var propTime = 0L
     var otherTime = 0L
+    var stopTime = 0L
     var updateTableTime = 0L
     var filterDomainTime = 0L
     var backTime = 0L
@@ -403,12 +404,13 @@ object amtf {
     ppType = "DSPCT_SBit"
     varType = "SafeBitSet"
     heuName = "Dom/Ddeg"
-    parallelism = 8
+    parallelism = 1
     while (parallelism <= maxPara) {
       time = 0L
       branchTime = 0L
       backTime = 0L
       propTime = 0L
+      stopTime = 0L
       notChangedTabs = 0L
       println(s"${parallelism}线程 ${ppType} ${heuName}===============>")
       for (i <- 1 to exe) {
@@ -420,6 +422,7 @@ object amtf {
         branchTime += pct.helper.branchTime
         propTime += pct.helper.propTime
         backTime += pct.helper.backTime
+        stopTime += pct.helper.stopTime
         p_sum = pct.helper.c_prop.get()
         c_sum = pct.helper.c_sub.get()
         notChangedTabs += pct.helper.notChangedTabs.get()
@@ -429,6 +432,7 @@ object amtf {
       println("branch time = " + (branchTime / exe).toDouble * 1e-9 + "s")
       println("propagate time = " + (propTime / exe).toDouble * 1e-9 + "s")
       println("backtrack time = " + (backTime / exe).toDouble * 1e-9 + "s")
+      println("stop time = " + (stopTime / exe).toDouble * 1e-9 + "s")
       println("p_sum = " + p_sum)
       println("c_sum = " + c_sum)
       println("notChangedTabs = " + notChangedTabs / exe)
@@ -530,7 +534,7 @@ object amtf {
     ppType = "IPbitCT_SBit"
     varType = "SafeBitSet"
     heuName = "Dom/Ddeg"
-    parallelism = 6
+    parallelism = 8
     while (parallelism <= maxPara) {
       time = 0L
       branchTime = 0L

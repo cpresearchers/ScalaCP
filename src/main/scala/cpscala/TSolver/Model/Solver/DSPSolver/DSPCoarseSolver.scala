@@ -3,7 +3,7 @@ package cpscala.TSolver.Model.Solver.DSPSolver
 import cpscala.TSolver.Model.Variable.PVar
 import cpscala.XModel.XModel
 
-class DSPCoarseSolver(xm: XModel, parallelism: Int, propagator_name: String, var_type: String, heu_name: String) extends DSPSolver(xm, parallelism, propagator_name, var_type, heu_name){
+class DSPCoarseSolver(xm: XModel, parallelism: Int, propagator_name: String, var_type: String, heu_name: String) extends DSPSolver(xm, parallelism, propagator_name, var_type, heu_name) {
 
   def initialPropagate(): Boolean = {
     helper.isConsistent = true
@@ -14,6 +14,9 @@ class DSPCoarseSolver(xm: XModel, parallelism: Int, propagator_name: String, var
       helper.submitToPool(c)
     }
     helper.poolAwait()
+    if (!helper.isConsistent) {
+      helper.stopTime += System.nanoTime - helper.inconsistentTime
+    }
     return helper.isConsistent
   }
 
@@ -24,6 +27,9 @@ class DSPCoarseSolver(xm: XModel, parallelism: Int, propagator_name: String, var
       helper.submitToPool(c)
     }
     helper.poolAwait()
+    if (!helper.isConsistent) {
+      helper.stopTime += System.nanoTime - helper.inconsistentTime
+    }
     return helper.isConsistent
   }
 
@@ -32,8 +38,10 @@ class DSPCoarseSolver(xm: XModel, parallelism: Int, propagator_name: String, var
     for (c <- helper.subscription(x.id)) {
       helper.submitToPool(c)
     }
-
     helper.poolAwait()
+    if (!helper.isConsistent) {
+      helper.stopTime += System.nanoTime - helper.inconsistentTime
+    }
     return helper.isConsistent
   }
 
