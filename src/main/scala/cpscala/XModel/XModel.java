@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Set;
 
 public class XModel implements XCallbacks2 {
+
+
     private Implem implem = new Implem(this);
     public String filePath;
     public String fileName;
@@ -111,7 +113,7 @@ public class XModel implements XCallbacks2 {
         for (int i = 0; i < m.vnum; ++i) {
             var v = m.vs[i];
             var d = v.d;
-            XVar var = new XVar(num_vars++, "", 0, d.num - 1);
+            XVar var = new XVar(num_vars++, v.name, d.vals);
             vars.add(var);
             max_domain_size = Math.max(max_arity, var.size);
         }
@@ -123,9 +125,11 @@ public class XModel implements XCallbacks2 {
             for (int j = 0; j < c.vnum; ++j) {
                 v[j] = vars.get(c.vs[j].me);
             }
-            XTab t = new XTab(num_tabs++, "", true, r.rvs, v, need_positive, false);
+            XTab t = new XTab(num_tabs++, c.name, true, r.rvs, v, need_positive, true);
             tabs.add(t);
             max_arity = Math.max(max_arity, t.arity);
+            max_tuples_size = Math.max(max_tuples_size, t.tuples.length);
+            avg_tuples_size = (avg_tuples_size * (tabs.size() - 1) + t.tuples.length) / tabs.size();
         }
     }
 
@@ -135,6 +139,31 @@ public class XModel implements XCallbacks2 {
         return fileName;
     }
 
+
+    public double Get_Looseness()  //by zhenluhan 6.3
+    {
+        double s = 0;
+        for(var i : tabs)
+        {
+            s += i.Looseness();
+        }
+        return s / (double)tabs.size();
+    }
+
+    public double Get_Tightness() //by zhenluhan 6.3
+    {
+        return 1- Get_Looseness();
+    }
+
+    public double Get_Ave_Domain_Size() //by zhenluhan 6.4
+    {
+        int sum = 0;
+        for (var a:vars) {
+            sum += a.values.length;
+
+        }
+        return sum / (double)vars.size();
+    }
 
     public void show() {
 //        for (XVar x:vars){
