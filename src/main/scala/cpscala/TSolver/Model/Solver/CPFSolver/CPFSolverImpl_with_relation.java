@@ -209,9 +209,10 @@ public class CPFSolverImpl_with_relation extends CPFSolver {
         }
 
         int R_f[] = new int[zm.m.rs.length];
-        for(int i = 0; i < zm.tabs.size();i++)
+
+        /*for(int i = 0; i < zm.tabs.size();i++)
         {
-            int j = zm.tabs.get(i).R.id;
+
             if(R_f[j] == 0){
             CompactTrie T = new CompactTrie(i, zm.tabs.get(i).scope);
             T.Build(zm.tabs.get(i).R.rvs);
@@ -220,14 +221,20 @@ public class CPFSolverImpl_with_relation extends CPFSolver {
             }
 
 
-        }
+        }*/
 
         int [] check_map_flag = new int[tabsize + 1];
         for (int i = 0; i < zm.tabs.size(); ++i) {
 
             if (temp_f[i] != 1) {
 
-
+                int k = zm.tabs.get(i).R.id;
+                if(R_f[k] == 0){
+                    CompactTrie T = new CompactTrie(i, zm.tabs.get(i).scope);
+                    T.Build(zm.tabs.get(i).R.rvs);
+                    Filter.add(T);
+                    R_f[k] = 1;
+                }
 
                 int index[] = new int[zm.tabs.get(i).arity];
                 for (int j = 0; j < zm.tabs.get(i).scope.length; ++j)

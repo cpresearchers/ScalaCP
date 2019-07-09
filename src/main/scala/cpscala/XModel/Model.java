@@ -109,6 +109,7 @@ public class Model {
                 String name1 = rl.item(i).getAttributes().item(1).getNodeValue();
 
                 rs[i] = new Relation(inrnum, invnum, text, intype, i);
+               // System.out.println(inrnum + "  " + invnum + "    " + name1 + "    " + i);
                 rs[i].name = name1;
                 //System.out.println(text);
             }

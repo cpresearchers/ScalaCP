@@ -23,6 +23,7 @@ public class Relation {
         me = r.me;
         type = r.type;
         d = new int[vnum];
+        id = r.id;
     }
 
     public Relation(int inrnum, int invnum, int inme, int d) {
@@ -31,11 +32,13 @@ public class Relation {
         rs = new int[vnum][rnum];
         rvs = new int[rnum][vnum];
         me = inme;
+        id = inme;
     }
 
     public Relation(int inrnum, int invnum, String s, String intype, int inme) {
-        d = new int[invnum];
+
         id = inme;
+       // System.out.println("id = "+ id);
         vnum = invnum;
         rnum = inrnum;
         type = intype;
@@ -55,13 +58,15 @@ public class Relation {
                 t = ss[i].split("[ ]");
             }
             //int max = Integer.parseInt(t[0]);
+
             for (int j = 0; j < t.length; j++) {
 
                 rs[j][i] = Integer.parseInt(t[j]);
-               // max = max >  rs[j][i] ? max : rs[j][i];
+
                 rvs[i][j] = rs[j][i];
+
             }
-          //  d[i] = max;
+          //   = max;
         }
 
 
@@ -252,6 +257,8 @@ public class Relation {
 
     public void print() {
         System.out.println("name:"+name);
+
+
         for (int i = 0; i < rnum; i++) {
             for (int j = 0; j < rvs[i].length; j++) {
                 System.out.print(rvs[i][j] + " | ");
