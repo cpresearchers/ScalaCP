@@ -1,12 +1,12 @@
 package cpscala.XModel;
 
 public class Relation {
-    String name = "";
-    int id = -1;
+    public String name = "";
+    public int id = -1;
     int rnum = 0;
     int vnum = 0;
     int rs[][] = null;
-    int rvs[][] = null;
+    public int rvs[][] = null;
     int change = 0;
     int me = 0;
     String type = "";
@@ -34,6 +34,7 @@ public class Relation {
     }
 
     public Relation(int inrnum, int invnum, String s, String intype, int inme) {
+        d = new int[invnum];
         id = inme;
         vnum = invnum;
         rnum = inrnum;
@@ -53,13 +54,17 @@ public class Relation {
             } else {
                 t = ss[i].split("[ ]");
             }
+            //int max = Integer.parseInt(t[0]);
             for (int j = 0; j < t.length; j++) {
+
                 rs[j][i] = Integer.parseInt(t[j]);
+               // max = max >  rs[j][i] ? max : rs[j][i];
                 rvs[i][j] = rs[j][i];
             }
+          //  d[i] = max;
         }
 
-        d = new int[vnum];
+
 
     }
 
@@ -246,6 +251,7 @@ public class Relation {
 
 
     public void print() {
+        System.out.println("name:"+name);
         for (int i = 0; i < rnum; i++) {
             for (int j = 0; j < rvs[i].length; j++) {
                 System.out.print(rvs[i][j] + " | ");

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<folders>
+
+
+    <inputRoot>/home/b522/zlh/Tester_For_ALL/benchmark_again/</inputRoot>
+
+    <folder format="2">rand-3-20-20</folder>
+        <folder format="2">bddLarge</folder>
+        <folder format="2">composed-25-1-2</folder>
+        <folder format="2">composed-25-1-25</folder>
+        <folder format="2">composed-25-1-40</folder>
+        <folder format="2">composed-25-1-80</folder>
+        <folder format="2">composed-25-10-20</folder>
+        <folder format="2">composed-75-1-2</folder>
+        <folder format="2">ehi-85</folder>
+        <folder format="2">ehi-90</folder>
+        <folder format="2">half</folder>
+        <folder format="2">hanoi</folder>
+        <folder format="2">langford</folder>
+        <folder format="2">lexHerald</folder>
+        <folder format="2">pedigree</folder>
+        <folder format="2">planning</folder>
+        <folder format="2">pret</folder>
+        <folder format="2">rand</folder>
+        <folder format="2">rand-10-60-20</folder>
+        <folder format="2">rand-2-25</folder>
+        <folder format="2">rand-2-26</folder>
+        <folder format="2">rand-2-30-15</folder>
+        <folder format="2">rand-2-40-19</folder>
+        <folder format="2">ssa</folder>
+        <folder format="2">tightness0.1</folder>
+        <folder format="2">tightness0.2</folder>
+        <folder format="2">tightness0.35</folder>
+        <folder format="2">tightness0.5</folder>
+        <folder format="2">tightness0.65</folder>
+        <folder format="2">tightness0.8</folder>
+        <folder format="2">tightness0.9</folder>
+        <folder format="2">travellingSalesman-20</folder>
+        <folder format="2">travellingSalesman-25</folder>
+
+
+    <outputRoot>/home/b522/zlh/Tester_For_ALL/output/5</outputRoot>
+</folders>

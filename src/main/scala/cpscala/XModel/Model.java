@@ -16,7 +16,7 @@ public class Model {
     public static long timeUpBound = 600000;
     public static String satisfaction = "--";
 
-    Relation rs[] = null;
+    public Relation rs[] = null;
     int rnum = 0;
 
     Domain ds[] = null;

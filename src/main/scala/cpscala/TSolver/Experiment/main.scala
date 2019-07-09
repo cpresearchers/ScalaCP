@@ -31,7 +31,7 @@ object main {
     val xm = new ZModel(path, true, fmt)
 
     xm.show_Relation()
-    xm.show()
+    //xm.show()
 
 //    val Trie_Data = new  CompactTrie (1,xm.tabs.get(0).scope)
 //
@@ -46,13 +46,13 @@ object main {
 //      //assert(Trie_Data.Contain(i))
 //
 //    }
-/*
 
-    var CPF = new CPFSolverImpl(xm,null,null,null)
+
+   // var CPF = new CPFSolverImpl_with_relation(xm,null,null,null)
    // CPF.Show()
-    CPF.Search(1800000000000L)
-   CPF.Answer()
-*/
+   // CPF.Search(1800000000000L)
+  // CPF.Answer()
+
 
 
 //    var i = 0

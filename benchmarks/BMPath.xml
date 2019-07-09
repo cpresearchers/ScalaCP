@@ -15,6 +15,7 @@
 <!--        <BMFile name="0" format="3">benchmarks/queen12.xml</BMFile>-->
         <!--<BMFile name="0" format="3">benchmarks/queen12.xml</BMFile>-->
        <BMFile name="0" format="2">benchmarks/queens-12_ext.xml</BMFile>
+<!--       <BMFile name="0" format="2">G:/XML3/bddLarge/bddLarge/bdd-21-2713-15-79-1_ext.xml</BMFile>-->
 
         <!--<BMFile name="0" format="3">benchmarks/rand-5-12-12-200-12442-01.xml</BMFile>-->
         <!--<BMFile name="0" format="2">D:/optiSTRpackage/aim-200_600s8/aim-200-3-4-sat-1_ext.xml</BMFile>-->
