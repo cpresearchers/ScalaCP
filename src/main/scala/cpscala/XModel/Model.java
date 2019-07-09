@@ -159,11 +159,11 @@ public class Model {
             }
 
             /////////////////////////////////////////////////////////////
-            rs = new Relation[rnumcur];
+           /* rs = new Relation[rnumcur];
             for (int i = 0; i < rnumcur; i++) {
                 rs[i] = rcur[i];
             }
-            rnum = rnumcur;
+            rnum = rnumcur;*/
 
         } catch (Exception e) {
             e.printStackTrace();

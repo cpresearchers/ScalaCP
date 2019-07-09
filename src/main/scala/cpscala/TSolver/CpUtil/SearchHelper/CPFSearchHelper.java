@@ -3,22 +3,25 @@ package cpscala.TSolver.CpUtil.SearchHelper;
 public class CPFSearchHelper extends SearchHelper {
 
 
-    double time;
+    public double time;
 
 
 
 
-    public CPFSearchHelper(int numVars, int numTabs)
+    public  CPFSearchHelper(int numVars, int numTabs)
     {
         super(numVars,numTabs);
     }
 
-    public void start()
+    public  void  start()
     {
         time = 0;
     }
+
+    //public double get_time(){return time;}
 
 
 
 
 }
+

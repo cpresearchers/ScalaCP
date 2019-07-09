@@ -33,6 +33,10 @@ public class XModel implements XCallbacks2 {
     public Implem implem() {
         return implem;
     }
+    public XModel()
+    {
+
+    }
 
     public XModel(String fileName, boolean transform, int format) throws Exception {
         filePath = fileName;

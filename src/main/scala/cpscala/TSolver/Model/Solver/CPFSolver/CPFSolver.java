@@ -37,6 +37,11 @@ public abstract class CPFSolver {
 
     }
 
+    public CPFSolver()
+    {
+
+    }
+
 
     public static<E> void println(E in)
     {

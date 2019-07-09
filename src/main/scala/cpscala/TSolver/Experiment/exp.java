@@ -1,11 +1,15 @@
 package cpscala.TSolver.Experiment;
 
 
+import cpscala.XModel.ZModel;
+import scala.xml.XML;
 
 public class exp {
 
      public static void main(String[] args)
     {
+
+
 
 //        val xf = XML.loadFile("benchmarks/BMPath.xml")
 //    val fileNode = xf \\ "BMFile"
