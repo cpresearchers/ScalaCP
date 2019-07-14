@@ -38,6 +38,9 @@
 <!--    <folder format="2">aim-50</folder>-->
 <!--    <folder format="2">bddSmall</folder>-->
     <folder format="2">BH-4-13</folder>
+    <folder format="2">planning</folder>
+    <folder format="2">pret</folder>
+    <folder format="2">ssa</folder>
 <!--    <folder format="2">BH-4-4</folder>-->
 <!--    <folder format="2">BH-4-7</folder>-->
     <folder format="2">bqwh-15-106</folder>
@@ -48,7 +51,7 @@
 <!--    <folder format="2">composed-25-1-2</folder>-->
 <!--    <folder format="2">composed-25-1-25</folder>-->
 <!--    <folder format="2">composed-25-10-20</folder>-->
-<!--    <folder format="2">composed-25-1-40</folder>-->
+    <folder format="2">composed-25-1-40</folder>
 <!--    <folder format="2">composed-25-1-80</folder>-->
 <!--    -->
 <!--    <folder format="2">cril</folder>-->
