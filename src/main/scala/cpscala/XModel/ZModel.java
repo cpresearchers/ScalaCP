@@ -72,6 +72,7 @@ public class ZModel extends XModel{
         }
         num_rela = m.rs.length;
 
+
     }
 
 

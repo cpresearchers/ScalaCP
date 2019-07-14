@@ -22,6 +22,8 @@ public class Relation {
         rvs = r.rvs;
         me = r.me;
         type = r.type;
+       // if(type == "supports")
+           // chtype = true;
         d = new int[vnum];
         id = r.id;
     }
@@ -261,9 +263,9 @@ public class Relation {
 
         for (int i = 0; i < rnum; i++) {
             for (int j = 0; j < rvs[i].length; j++) {
-                System.out.print(rvs[i][j] + " | ");
+                System.out.print(rvs[i][j] + " ");
             }
-
+            System.out.print( " | ");
 
         }
         System.out.println();

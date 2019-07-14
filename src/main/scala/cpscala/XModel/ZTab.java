@@ -43,6 +43,7 @@ public class ZTab {
     }
 
     public void show() {
+
         String sem = semantics ? "supports" : "conflicts";
         System.out.println("name: " + id + " semantics: " + sem + " size: " + R.rvs.length + " arity: " + arity + " scope = " + Arrays.toString(scopeInt) + "R = " + R.id);
         for (int[] t : R.rvs) {

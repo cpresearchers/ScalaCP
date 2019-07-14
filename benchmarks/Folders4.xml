@@ -88,14 +88,14 @@
 <!--    <folder format="2">rand-2-40-19-fcd</folder>-->
 <!--    <folder format="2">rand-2-50-23</folder>-->
 <!--    <folder format="2">rand-2-50-23-fcd</folder>-->
-    <folder format="2">rand-3-20-20</folder>
+<!--    <folder format="2">rand-3-20-20</folder>-->
 <!--    <folder format="2">rand-3-20-20-fcd</folder>-->
 <!--    <folder format="2">rand-3-24-24-fcd</folder>-->
-    <folder format="2">rand-8-20-5</folder>
+<!--    <folder format="2">rand-8-20-5</folder>-->
     <folder format="2">renault</folder>
     <folder format="2">sparseTight</folder>
     <folder format="2">spot5</folder>
-    <folder format="2">subs6</folder>
+<!--    <folder format="2">subs6</folder>-->
     <folder format="2">tightness0.1</folder>
     <folder format="2">tightness0.2</folder>
     <folder format="2">tightness0.35</folder>
@@ -103,12 +103,12 @@
     <folder format="2">tightness0.65</folder>
     <folder format="2">tightness0.8</folder>
     <folder format="2">tightness0.9</folder>
-    <folder format="2">travellingSalesman-20</folder>
-    <folder format="2">travellingSalesman-25</folder>
-    <folder format="2">ukVg</folder>
+<!--    <folder format="2">travellingSalesman-20</folder>-->
+<!--    <folder format="2">travellingSalesman-25</folder>-->
+<!--    <folder format="2">ukVg</folder>-->
     <folder format="2">varDimacs</folder>
-    <folder format="2">warehouses</folder>
-    <folder format="2">wordsVg</folder>
+<!--    <folder format="2">warehouses</folder>-->
+<!--    <folder format="2">wordsVg</folder>-->
 
     <outputRoot>/home/b522/zlh/Tester_For_ALL/output/4</outputRoot>
 </folders>

@@ -33,8 +33,8 @@
 <!--    <folder format="2">zzbddSmall</folder>-->
     <inputRoot>G:\XML2\</inputRoot>
 
-    <folder format="2">aim-100</folder>
-    <folder format="2">aim-200</folder>
+<!--    <folder format="2">aim-100</folder>-->
+<!--    <folder format="2">aim-200</folder>-->
     <folder format="2">aim-50</folder>
     <folder format="2">bddSmall</folder>
     <folder format="2">BH-4-13</folder>
@@ -112,6 +112,7 @@
     <folder format="2">wordsVg</folder>
 
     <outputRoot>C://Users//zhenl//Desktop//JAVA_Test</outputRoot>
+
 </folders>
 
 

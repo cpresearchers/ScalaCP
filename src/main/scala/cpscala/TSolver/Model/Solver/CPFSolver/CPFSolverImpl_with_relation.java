@@ -47,6 +47,7 @@ public class CPFSolverImpl_with_relation extends CPFSolver {
     class _info
     {
         int id;
+        int R_id;
         public ArrayList<Integer> scope =  new ArrayList();
     }
 
@@ -65,7 +66,8 @@ public class CPFSolverImpl_with_relation extends CPFSolver {
 
     HashMap<int[], Integer> Check_Map = new HashMap<>();
 
-    ArrayList<CompactTrie> Filter = new ArrayList<>();
+    //ArrayList<CompactTrie> Filter = new ArrayList<>();
+    CompactTrie[] Filter;
 
     ArrayList<Trie_Data> Path_Index = new ArrayList<>();
     ArrayList<Integer>  s = new ArrayList<Integer> (vsize);
@@ -183,16 +185,18 @@ public class CPFSolverImpl_with_relation extends CPFSolver {
     }
 
     public CPFSolverImpl_with_relation(ZModel zzmm , String varType, String heuName, SearchHelper sear) {
-
+        super(null, varType, heuName,sear);
+      //  super();
         zm =zzmm;
         relasize = zm.num_rela;
-       // super(xm, varType, heuName,sear);
+        //
+
         vsize = zm.num_vars;
         tabsize = zm.num_tabs;
         searchhelper = new CPFSearchHelper(zm.num_vars, zm.num_tabs);
-        ArrayList<Integer> p = Select_Path();
+        ArrayList<Integer> p = Select_Path();  //get all path
         //  print_All(p);
-        int temp_f[] = new int[tabsize];
+        int temp_f[] = new int[tabsize];   //set the flag of path in all constraints
         for (var k : p) {
             temp_f[k] = 1;
             _table _t = new _table(vsize);
@@ -210,38 +214,38 @@ public class CPFSolverImpl_with_relation extends CPFSolver {
 
         int R_f[] = new int[zm.m.rs.length];
 
-        /*for(int i = 0; i < zm.tabs.size();i++)
+        Filter = new CompactTrie[relasize];
+        for(int i = 0; i < zm.tabs.size();i++) //make  tries about all relation
         {
+            if (temp_f[i] != 1) {
+                int k = zm.tabs.get(i).R.id;
 
-            if(R_f[j] == 0){
-            CompactTrie T = new CompactTrie(i, zm.tabs.get(i).scope);
-            T.Build(zm.tabs.get(i).R.rvs);
-            Filter.add(T);
-            R_f[j] = 1;
+                if (R_f[k] == 0) {
+                    CompactTrie T = new CompactTrie(k, zm.tabs.get(i).scope);
+                    T.Build(zm.tabs.get(i).R.rvs);
+                    //Filter.add(T);
+                    Filter[k] = T;
+                    R_f[k] = i+1;
+                }
             }
 
-
-        }*/
+        }
 
         int [] check_map_flag = new int[tabsize + 1];
+
         for (int i = 0; i < zm.tabs.size(); ++i) {
 
-            if (temp_f[i] != 1) {
+            if (temp_f[i] != 1) { // this constraint is filter
 
                 int k = zm.tabs.get(i).R.id;
-                if(R_f[k] == 0){
-                    CompactTrie T = new CompactTrie(i, zm.tabs.get(i).scope);
-                    T.Build(zm.tabs.get(i).R.rvs);
-                    Filter.add(T);
-                    R_f[k] = 1;
-                }
+
 
                 int index[] = new int[zm.tabs.get(i).arity];
                 for (int j = 0; j < zm.tabs.get(i).scope.length; ++j)
                     index[j] = zm.tabs.get(i).scope[j].id;
 
-                Check_Map.put(index, Filter.size() + 1);
-                check_map_flag[Filter.size() + 1] = 1;
+                Check_Map.put(index, i);
+                check_map_flag[i] = 1;
 
 
             }
@@ -282,15 +286,19 @@ public class CPFSolverImpl_with_relation extends CPFSolver {
             ArrayList<_info> _t = new ArrayList<>();
 
 
+         //   int R_flag[] = new int[relasize];
+
             for (var it = Check_Map.entrySet().iterator(); it.hasNext(); ) {
+
                 Map.Entry<int[], Integer> item = it.next();
                 int[] key = item.getKey();
 
                 int val = item.getValue();
 
-                if (IsExitTable(key, varf) == true && check_map_flag[val] != 0) {
+                if (IsExitTable(key, varf) == true  && check_map_flag[val] != 0) {
                     _info _tt = new _info();
-                    _tt.id = val - 1;
+                    _tt.id = val;
+                    _tt.R_id = zm.tabs.get(val).R.id;
                     for (var v : key)
                         _tt.scope.add(v);
                     _t.add(_tt);
@@ -302,6 +310,7 @@ public class CPFSolverImpl_with_relation extends CPFSolver {
             Check_Map_Address.add(_t);
 
         }
+        zm.m = null;
 
     }
 
@@ -431,7 +440,7 @@ public class CPFSolverImpl_with_relation extends CPFSolver {
             for(int j = 0;j < i.scope.size();++j)
                 tt.add(solution[i.scope.get(j)]);
 
-            if(!Filter.get(i.id-1).Contain(tt))
+            if(!Filter[i.R_id].Contain(tt))
                 return false;
         }
 
@@ -462,6 +471,14 @@ public class CPFSolverImpl_with_relation extends CPFSolver {
     public void Show()
     {
 
+        print("Filter size = ");
+        println(Filter.length);
+//
+//        for (var i :Filter
+//             ) {
+//            println(i.id + "  ,count = " +i.count);
+//        }
+
         println("Path_Index:");
         for(var i : Path_Index) {
             print(i.count);
@@ -480,10 +497,13 @@ public class CPFSolverImpl_with_relation extends CPFSolver {
             {
                 print("id = ");
                 print(Check_Map_Address.get(i).get(j).id);
+                print("   Rid = ");
+                print(Check_Map_Address.get(i).get(j).R_id);
                 print("Scope = ");
                 print_All(Check_Map_Address.get(i).get(j).scope);
 
             }
+            println("");
         }
         println("Path");
         for(var i :Path)
@@ -502,12 +522,12 @@ public class CPFSolverImpl_with_relation extends CPFSolver {
             print("diff : ");
             print_All(d.diff);
         }
-        for(var d:Filter)
-        {
-            print("filter : ");
-            println(d.id);
-
-        }
+//        for(var d:Filter)
+//        {
+//            print("filter : ");
+//            println(d.id);
+//
+//        }
 
 
 

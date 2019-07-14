@@ -3,9 +3,9 @@ package cpscala.TSolver
 import java.io.File
 
 import com.github.tototoshi.csv.CSVWriter
-import cpscala.TSolver.Model.Solver.CPFSolver.CPFSolverImpl
+import cpscala.TSolver.Model.Solver.CPFSolver.{CPFSolverImpl, CPFSolverImpl_with_relation}
 import cpscala.TSolver.Model.Solver.PWSolver.PWCoarseSolver
-import cpscala.XModel.XModel
+import cpscala.XModel.{XModel, ZModel}
 import java.util.Date
 import java.text.SimpleDateFormat
 
@@ -24,7 +24,8 @@ object CPF_Tester {
   def main(args: Array[String]): Unit = {
 
 
-    val file = XML.loadFile("benchmarks/Folders" + args(0) + ".xml")
+   // val file = XML.loadFile("benchmarks/Folders" + args(0) + ".xml")
+    val file = XML.loadFile("benchmarks/Folders" + ".xml")
     val inputRoot = (file \\ "inputRoot").text
     val outputRoot = (file \\ "outputRoot").text
     val outputFolder = (file \\ "outputFolder").text
@@ -60,14 +61,16 @@ object CPF_Tester {
         dataLine += f.toString()
 
         println(f)
-        val xm = new XModel(f.getPath, true, fmt)
 
 
-        dataLine ++= CPF_Test(xm)
+        var zm = new ZModel(f.getPath, true, fmt)
+        dataLine ++= CPF_Test(zm)
+        zm = null
+        var xm = new XModel(f.getPath, true, fmt)
         dataLine ++= CT_Test_Wdeg(xm)
         dataLine ++= CT_Test_Ddeg(xm)
-        dataLine ++= PW_CT_Test(xm)
 
+        dataLine ++= PW_CT_Test(xm)
 
 
         dataLine += xm.vars.size().toString()
@@ -80,6 +83,7 @@ object CPF_Tester {
         dataLine += xm.avg_tuples_size.toString()
         dataLine += xm.Get_Ave_Domain_Size().toString()
 
+        xm = null
 
         val day=new Date()               //时间戳
         val df = new SimpleDateFormat("MM-dd HH:mm:ss")
@@ -155,14 +159,17 @@ object CPF_Tester {
 
   }
 
-  def CPF_Test(hm : XModel): ArrayBuffer[String]  =
+
+  def CPF_Test(zm : ZModel): ArrayBuffer[String]  =
   {
 
     var line  = new ArrayBuffer[String](5)
     val name = "CPF"
     line += name.toString()
     val init_time_start = System.nanoTime()
-    var CPF = new CPFSolverImpl(hm, null, null, null)
+
+    var CPF = new CPFSolverImpl_with_relation(zm, null, null, null)
+
     val init_time_end = System.nanoTime()
     line += ((init_time_end-init_time_start).toDouble * 1e-9).toString()
     val search_time_start = System.nanoTime()
@@ -176,26 +183,33 @@ object CPF_Tester {
 
   }
 
+
   def PW_CT_Test(hm : XModel): ArrayBuffer[String]  =
   {
 
     var line  = new ArrayBuffer[String](5)
+//
+//    val name:String = "PW-CT"
+//    line += name.toString()
+//    val init_time_start = System.nanoTime()
+//
+//    var ct = new PWCoarseSolver(hm, "PW-CT", "BitSet", "Dom/Wdeg")
+//
+//    val init_time_end = System.nanoTime()
+//    line += ((init_time_end-init_time_start).toDouble * 1e-9).toString()
+//    val search_time_start = System.nanoTime()
+//    ct.search(Time_Limit)
+//    val search_time_end = System.nanoTime()
+//    line += ((search_time_end-search_time_start).toDouble * 1e-9).toString()
+//    line += ct.helper.nodes.toString()
+//    line += "-".toString()
+//    ct = null
+    line += "a"
+    line += "b"
+    line += "c"
+    line += "d"
+    line += "e"
 
-    val name:String = "PW-CT"
-    line += name.toString()
-    val init_time_start = System.nanoTime()
-
-    var ct = new PWCoarseSolver(hm, "PW-CT", "BitSet", "Dom/Wdeg")
-
-    val init_time_end = System.nanoTime()
-    line += ((init_time_end-init_time_start).toDouble * 1e-9).toString()
-    val search_time_start = System.nanoTime()
-    ct.search(Time_Limit)
-    val search_time_end = System.nanoTime()
-    line += ((search_time_end-search_time_start).toDouble * 1e-9).toString()
-    line += ct.helper.nodes.toString()
-    line += "-".toString()
-    ct = null
     return line
 
 

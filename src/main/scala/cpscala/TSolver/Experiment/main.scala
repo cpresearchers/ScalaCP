@@ -30,8 +30,8 @@ object main {
     println(path)
     val xm = new ZModel(path, true, fmt)
 
-   // xm.show_Relation()
-    xm.show()
+    xm.show_Relation()
+    //xm.show()
 
 //    val Trie_Data = new  CompactTrie (1,xm.tabs.get(0).scope)
 //
@@ -49,7 +49,7 @@ object main {
 
 
     var CPF = new CPFSolverImpl_with_relation(xm,null,null,null)
-    //CPF.Show()
+   // CPF.Show()
     CPF.Search(1800000000000L)
    CPF.Answer()
 

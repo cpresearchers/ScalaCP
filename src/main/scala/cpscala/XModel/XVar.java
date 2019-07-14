@@ -48,7 +48,7 @@ public class XVar {
     void show() {
         System.out.println("name: " + id + " name: " + name);
         for (int i = 0; i < size; ++i) {
-            System.out.print(i + "[" + values_ori[i] + "] ");
+            System.out.print(values[i] + "[" + values_ori[i] + "] ");
         }
         System.out.println();
     }
