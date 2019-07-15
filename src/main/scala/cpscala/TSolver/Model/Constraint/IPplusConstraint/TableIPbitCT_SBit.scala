@@ -227,6 +227,9 @@ class TableIPbitCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scop
 
   override def call(): Unit = {
 //    println(s"      ${id} start  ----- cur_ID: ${Thread.currentThread().getId()}")
+//    println(s"      ${id} start  ----- submission count: ${helper.pool.getQueuedSubmissionCount}")
+//    println(s"      ${id} start  ----- active count: ${helper.pool.getActiveThreadCount}")
+//    println(s"      ${id} start  ----- running count: ${helper.pool.getRunningThreadCount}")
     if (helper.isConsistent) {
       propagate()
     }

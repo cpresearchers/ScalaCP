@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id="scalacp [file:/C:/Users/zhenl/IdeaProjects/ScalaCP/]" external.linked.project.path="$MODULE_DIR$/../.." external.root.project.path="$MODULE_DIR$/../.." external.system.id="SBT" type="JAVA_MODULE" version="4">
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_12">
+<module external.linked.project.id="scalacp [file:/F:/chenj/project/ideaProject/ScalaCP/]" external.linked.project.path="$MODULE_DIR$/../.." external.root.project.path="$MODULE_DIR$/../.." external.system.id="SBT" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_11">
     <output url="file://$MODULE_DIR$/../../target/scala-2.12/classes" />
     <output-test url="file://$MODULE_DIR$/../../target/scala-2.12/test-classes" />
     <exclude-output />
@@ -13,15 +13,15 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="sbt: org.scala-lang:scala-library:2.12.8:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.xcsp:xcsp3-tools:1.1.0:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.scala-lang.modules:scala-xml_2.12.0-RC1:1.0.6:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.msgpack:msgpack-core:0.8.16:jar" level="project" />
-    <orderEntry type="library" name="sbt: net.sf.trove4j:core:3.1.0:jar" level="project" />
-    <orderEntry type="library" name="sbt: com.github.tototoshi:scala-csv_2.12:1.3.5:jar" level="project" />
-    <orderEntry type="library" name="sbt: com.alibaba:fastjson:1.2.57:jar" level="project" />
-    <orderEntry type="library" name="sbt: javax.json:javax.json-api:1.1.2:jar" level="project" />
-    <orderEntry type="library" name="sbt: junit:junit:4.12:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.glassfish:javax.json:1.1.2:jar" level="project" />
     <orderEntry type="library" name="sbt: org.hamcrest:hamcrest-core:1.3:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.glassfish:javax.json:1.1.2:jar" level="project" />
+    <orderEntry type="library" name="sbt: junit:junit:4.12:jar" level="project" />
+    <orderEntry type="library" name="sbt: javax.json:javax.json-api:1.1.2:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.alibaba:fastjson:1.2.57:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.github.tototoshi:scala-csv_2.12:1.3.5:jar" level="project" />
+    <orderEntry type="library" name="sbt: net.sf.trove4j:core:3.1.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.msgpack:msgpack-core:0.8.16:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.scala-lang.modules:scala-xml_2.12.0-RC1:1.0.6:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.xcsp:xcsp3-tools:1.1.0:jar" level="project" />
   </component>
 </module>

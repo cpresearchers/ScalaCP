@@ -127,6 +127,7 @@ class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
 
       //传播失败
       if (currTab.isEmpty()) {
+        helper.inconsistentTime = System.nanoTime
         helper.isConsistent = false
         failWeight += 1
         //println(s"update faild!!: ${Thread.currentThread().getName}, cid: ${id}")
@@ -169,14 +170,16 @@ class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
       }
 
       if (deleted) {
-        val (changed, same) = v.submitMaskAndIsSame(localMask(vv))
+        val changed = v.submitMask(localMask(vv))
+//        val (changed, same) = v.submitMaskAndIsSame(localMask(vv))
         if (changed) {
-          helper.pVarStamp.set(v.id, helper.pGlobalStamp.incrementAndGet())
-          if (same) {
-            scopeStamp(vv) = helper.pVarStamp.get(v.id)
-          }
+//          helper.pVarStamp.set(v.id, helper.pGlobalStamp.incrementAndGet())
+//          if (same) {
+//            scopeStamp(vv) = helper.pVarStamp.get(v.id)
+//          }
           // 本地线程删值
           if (v.isEmpty()) {
+            helper.inconsistentTime = System.nanoTime
             helper.isConsistent = false
             failWeight += 1
             //println(s"filter faild!!: ${Thread.currentThread().getName}, cid: ${id}, vid: ${v.id}")
@@ -204,9 +207,10 @@ class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
           return true
         }
       }
-    } else {
-      helper.notChangedTabs.incrementAndGet()
     }
+//    else {
+//      helper.notChangedTabs.incrementAndGet()
+//    }
     return false
   }
 
@@ -217,9 +221,9 @@ class TableDSPCT_SBit(val id: Int, val arity: Int, val num_vars: Int, val scope:
     for (x <- Xevt) {
       if (helper.isConsistent) {
         for (c <- helper.subscription(x.id)) {
-          val index = c.scopeMap(x.id)
-          if (c.id != id && helper.pVarStamp.get(x.id) > c.scopeStamp(index)) {
-//          if (c.id != id) {
+//          val index = c.scopeMap(x.id)
+//          if (c.id != id && helper.pVarStamp.get(x.id) > c.scopeStamp(index)) {
+          if (c.id != id) {
             helper.submitToPool(c)
           }
         }

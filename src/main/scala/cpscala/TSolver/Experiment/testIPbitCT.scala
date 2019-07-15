@@ -19,7 +19,7 @@ object testIPbitCT {
   var varType = ""
   var heuName = ""
 
-  val parallelisms = Array[Int](1, 2, 3, 4, 5, 6)
+  val parallelisms = Array[Int](1, 2, 3, 4, 5)
 
   def main(args: Array[String]): Unit = {
 

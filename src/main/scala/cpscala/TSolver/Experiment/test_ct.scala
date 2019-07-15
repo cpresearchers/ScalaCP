@@ -18,9 +18,10 @@ object test_ct {
   var pType = ""
   var ppType = ""
   var varType = ""
+  var heuName = ""
 
   //  val parallelisms = Array[Int](1, 2, 4, 6, 8, 12, 16, 24)
-  val parallelisms = Array[Int](1, 2, 4, 6, 8, 12, 16)
+  val parallelisms = Array[Int](1, 3, 5)
 
   def main(args: Array[String]): Unit = {
 
@@ -51,11 +52,11 @@ object test_ct {
       val titleLine = ArrayBuffer[String]()
       titleLine += "name"
       titleLine ++= Array("algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum")
+//      for (_ <- 0 until parallelisms.length) {
+//        titleLine ++= Array("algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum")
+//      }
       for (_ <- 0 until parallelisms.length) {
-        titleLine ++= Array("algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum")
-      }
-      for (_ <- 0 until parallelisms.length) {
-        titleLine ++= Array("algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub")
+        titleLine ++= Array("algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "stopTime", "c_prop", "c_sub")
       }
 
       writer.writeRow(titleLine)
@@ -69,9 +70,10 @@ object test_ct {
         //-------------CT串行算法-------------
         pType = "CT_Bit"
         varType = "BitSet"
+        heuName = "Dom/Ddeg"
         name = pType
         println(s"Solving ${name} ===============>")
-        val ct = new SCoarseSolver(xm, pType, varType, "")
+        val ct = new SCoarseSolver(xm, pType, varType, heuName)
         ct.search(Constants.TIME)
         dataLine += name
         dataLine += ct.helper.nodes.toString()
@@ -82,30 +84,31 @@ object test_ct {
         dataLine += ct.helper.c_sum.toString()
         dataLine += ct.helper.p_sum.toString()
         //-------------CT批量提交-------------
-        ppType = "IPCT_SBit"
-        varType = "SafeBitSet"
-        for (parallelism <- parallelisms) {
-          name = ppType + "_" + parallelism.toString()
-          println(s"Solving ${name} with ${parallelism} threads===============>")
-          val pct = new IPCoarseSolver(xm, parallelism, ppType, varType, "")
-          pct.search(Constants.TIME)
-          pct.shutdown()
-          dataLine += name
-          dataLine += pct.helper.nodes.toString()
-          dataLine += (pct.helper.time.toDouble * 1e-9).toString()
-          dataLine += (pct.helper.branchTime.toDouble * 1e-9).toString()
-          dataLine += (pct.helper.propTime.toDouble * 1e-9).toString()
-          dataLine += (pct.helper.backTime.toDouble * 1e-9).toString()
-          dataLine += pct.helper.c_sum.toString()
-          dataLine += pct.helper.p_sum.toString()
-        }
+//        ppType = "IPCT_SBit"
+//        varType = "SafeBitSet"
+//        for (parallelism <- parallelisms) {
+//          name = ppType + "_" + parallelism.toString()
+//          println(s"Solving ${name} with ${parallelism} threads===============>")
+//          val pct = new IPCoarseSolver(xm, parallelism, ppType, varType, "")
+//          pct.search(Constants.TIME)
+//          pct.shutdown()
+//          dataLine += name
+//          dataLine += pct.helper.nodes.toString()
+//          dataLine += (pct.helper.time.toDouble * 1e-9).toString()
+//          dataLine += (pct.helper.branchTime.toDouble * 1e-9).toString()
+//          dataLine += (pct.helper.propTime.toDouble * 1e-9).toString()
+//          dataLine += (pct.helper.backTime.toDouble * 1e-9).toString()
+//          dataLine += pct.helper.c_sum.toString()
+//          dataLine += pct.helper.p_sum.toString()
+//        }
         //-------------CT动态提交-------------
         ppType = "DSPCT_SBit"
         varType = "SafeBitSet"
+        heuName = "Dom/Ddeg"
         for (parallelism <- parallelisms) {
           name = ppType + "_" + parallelism.toString()
           println(s"Solving ${name} with ${parallelism} threads===============>")
-          val pct = new DSPCoarseSolver(xm, parallelism, ppType, varType, "")
+          val pct = new DSPCoarseSolver(xm, parallelism, ppType, varType, heuName)
           pct.search(Constants.TIME)
           pct.shutdown()
           dataLine += name
@@ -114,6 +117,7 @@ object test_ct {
           dataLine += (pct.helper.branchTime.toDouble * 1e-9).toString()
           dataLine += (pct.helper.propTime.toDouble * 1e-9).toString()
           dataLine += (pct.helper.backTime.toDouble * 1e-9).toString()
+          dataLine += (pct.helper.stopTime.toDouble * 1e-9).toString()
           dataLine += pct.helper.c_prop.toString()
           dataLine += pct.helper.c_sub.toString()
         }
