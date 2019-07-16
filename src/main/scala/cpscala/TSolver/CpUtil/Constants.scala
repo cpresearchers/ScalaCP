@@ -115,4 +115,8 @@ object Constants {
     }
   }
 
+
+  @inline def getNumBit(a:Int): Int ={
+    return Math.ceil(a.toDouble / Constants.BITSIZE.toDouble).toInt
+  }
 }

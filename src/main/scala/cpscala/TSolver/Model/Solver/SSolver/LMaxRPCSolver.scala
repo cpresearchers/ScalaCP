@@ -6,7 +6,7 @@ import cpscala.TSolver.Model.Constraint.SConstraint.{LMaxRPC_BitRM, Propagator, 
 import cpscala.TSolver.Model.Variable.{BitSetVar, SimpleBitVar, SparseSetVar, Var}
 import cpscala.XModel.{XModel, XTab, XVar}
 
-import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable._
 
 
 class LMaxRPCSolver(xm: XModel, propagatorName: String, varType: String, heuName: String) {
@@ -15,7 +15,7 @@ class LMaxRPCSolver(xm: XModel, propagatorName: String, varType: String, heuName
   val numTabs: Int = xm.num_tabs
   val vars = new Array[Var](numVars)
   val tabs = new Array[LMaxRPC_BitRM](numTabs)
-  val helper = new LMaxRPCSearchHelper(numVars, numTabs)
+  val helper = new LMaxRPCSearchHelper(numVars, numTabs, xm)
 
   //记录已赋值的变量
   val levelvsparse = Array.range(0, numVars)
@@ -59,10 +59,22 @@ class LMaxRPCSolver(xm: XModel, propagatorName: String, varType: String, heuName
     helper.commonCon(c.scope(1).id)(c.scope(0).id) += c
   }
 
-  for(x<-vars){
-    for(y<-vars){
-      if((x!=y)&& helper.commonCon(x.id)(y.id).nonEmpty){
-        helper.neiborVar(x.id) += y
+  for (x <- vars) {
+    for (y <- vars) {
+      if ((x != y) && helper.commonCon(x.id)(y.id).nonEmpty) {
+        helper.neiVar(x.id) += y
+      }
+    }
+  }
+
+  for (x <- vars) {
+    for (y <- vars) {
+      if ((x != y)) {
+        for (z <- vars) {
+          if (x != z && y != z && helper.commonCon(x.id)(z.id).nonEmpty && helper.commonCon(y.id)(z.id).nonEmpty) {
+            helper.commonVar(x.id)(y.id) += z
+          }
+        }
       }
     }
   }
