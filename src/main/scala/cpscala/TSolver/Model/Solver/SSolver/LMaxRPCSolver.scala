@@ -14,7 +14,7 @@ class LMaxRPCSolver(xm: XModel, propagatorName: String, varType: String, heuName
   val numVars: Int = xm.num_vars
   val numTabs: Int = xm.num_tabs
   val vars = new Array[Var](numVars)
-  val tabs = new Array[Propagator](numTabs)
+  val tabs = new Array[LMaxRPC_BitRM](numTabs)
   val helper = new LMaxRPCSearchHelper(numVars, numTabs)
 
   //记录已赋值的变量
@@ -25,9 +25,9 @@ class LMaxRPCSolver(xm: XModel, propagatorName: String, varType: String, heuName
   //  val levelcdense = Array.range(0, numTabs)
   //  val clevel = Array.fill(numVars + 1)(-1)
 
-  val subscription = new Array[ArrayBuffer[Propagator]](numVars)
+  val subscription = new Array[ArrayBuffer[LMaxRPC_BitRM]](numVars)
   for (i <- 0 until numVars) {
-    subscription(i) = new ArrayBuffer[Propagator]()
+    subscription(i) = new ArrayBuffer[LMaxRPC_BitRM]()
   }
 
   // 初始化变量
@@ -54,6 +54,19 @@ class LMaxRPCSolver(xm: XModel, propagatorName: String, varType: String, heuName
   val I = new AssignedStack[Var](xm.num_vars)
 
   // 初始化helper中的部分数据结构
+  for (c <- tabs) {
+    helper.commonCon(c.scope(0).id)(c.scope(1).id) += c
+    helper.commonCon(c.scope(1).id)(c.scope(0).id) += c
+  }
+
+  for(x<-vars){
+    for(y<-vars){
+      if((x!=y)&& helper.commonCon(x.id)(y.id).nonEmpty){
+        helper.neiborVar(x.id) += y
+      }
+    }
+  }
+
 
   var start_time = 0L
   var branch_start_time = 0L
