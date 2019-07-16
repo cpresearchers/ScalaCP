@@ -181,6 +181,63 @@ class LMaxRPCSolver(xm: XModel, propagatorName: String, varType: String, heuName
 
   def checkConsistencyAfterRefutation(ix: Var): Boolean
 
+
+  def propagate(x: Var): Boolean = {
+    Q.clear()
+
+    // 初始化传播队列
+    if (x == null) {
+      for (z <- vars) {
+        Q.push(z)
+      }
+    } else {
+      Q.push(x)
+    }
+
+    while (!Q.empty()) {
+      val j = Q.pop()
+
+      for (i <- helper.neiVar(j.id)) {
+        if (i.unBind()) {
+          var changed = false
+          val c = helper.commonCon(i.id)(j.id)(0)
+
+          Y_evt.clear()
+          Y_evt += i
+          Y_evt += j
+          c.propagate(Y_evt)
+
+
+        }
+      }
+
+      // AC传播队列
+      for (c <- subscription(v.id)) {
+        if (helper.varStamp(v.id) > helper.tabStamp(c.id)) {
+          //          println("str(" + c.name + ")")
+          Y_evt.clear()
+          val consistent = c.propagate(Y_evt)
+          helper.c_sum += 1
+          //          print(s"cid: ${c.id} yevt: ")
+          //          Y_evt.foreach(p => print(p.id, " "))
+          //          println()
+          if (!consistent) {
+            return false
+          } else {
+            for (y <- Y_evt) {
+              insert(y)
+            }
+          }
+          helper.globalStamp += 1
+          helper.tabStamp(c.id) = helper.globalStamp
+        }
+      }
+      helper.p_sum += 1
+    }
+
+    return true
+  }
+
   //修改levelvdense
   def selectLiteral(): Literal[Var] = {
     var mindmdd = Double.MaxValue

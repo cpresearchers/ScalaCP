@@ -4,7 +4,7 @@ import cpscala.TSolver.Model.Variable.Var
 import cpscala.XModel.XModel
 
 /**
-  *粗粒度求解器，适用于STR2。
+  * 粗粒度求解器，适用于STR2。
   */
 
 class SCoarseSolver(xm: XModel, propagatorName: String, varType: String, heuName: String) extends SSolver(xm, propagatorName, varType, heuName) {
@@ -61,7 +61,7 @@ class SCoarseSolver(xm: XModel, propagatorName: String, varType: String, heuName
     return true
   }
 
-    def insert(x: Var): Unit = {
+  def insert(x: Var): Unit = {
     Q.push(x)
     helper.globalStamp += 1
     helper.varStamp(x.id) = helper.globalStamp
