@@ -1,15 +1,17 @@
-package cpscala.TSolver.Model.Constraint.SConstraint
+package cpscala.TSolver.Model.Solver.Others
 
+import cpscala.TSolver.CpUtil.SearchHelper.LMaxRPCSearchHelper
 import cpscala.TSolver.CpUtil.{Constants, INDEX}
-import cpscala.TSolver.CpUtil.SearchHelper.{LMaxRPCSearchHelper, SearchHelper}
+import cpscala.TSolver.Model.Constraint.SConstraint.Propagator
 import cpscala.TSolver.Model.Variable.{BitSetVar, Var}
 
 import scala.collection.mutable.ArrayBuffer
+import scala.util.control.Breaks._
 
-class LMaxRPC_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[Var], val tuples: Array[Array[Int]], val helper: LMaxRPCSearchHelper) extends Propagator {
+class LMaxRPC_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[BitSetVar_LMRPC], val tuples: Array[Array[Int]], val helper: LMaxRPCSearchHelper) extends Propagator {
 
+//  val bitScope = Array.tabulate[BitSetVar](arity)(i => scope(i).asInstanceOf[BitSetVar])
   // 获取所有变量的numbit
-  val bitScope = Array.tabulate[BitSetVar](arity)(i => scope(i).asInstanceOf[BitSetVar])
   val numBits = Array.tabulate(arity)(i => Constants.getNumBit(scope(i).size()))
   val maxNumBits = numBits.max
   val bitSup = Array.tabulate(arity)(i => Array.ofDim[Long](scope(i).size(), maxNumBits))
@@ -27,33 +29,77 @@ class LMaxRPC_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: A
   }
 
 
-  override def propagate(evt: ArrayBuffer[Var]): Boolean = {
+  override def propagate(evt: ArrayBuffer[BitSetVar_LMRPC]): Boolean = {
     //获取传入的两个变量
     val i = evt(0)
     val j = evt(1)
     //判断变量 i,j 的位置
-    var iIdx: Int = 0
-    var jIdx: Int = 1
+    //    var iIdx: Int = 0
+    //    var jIdx: Int = 1
+    //
+    evt.clear()
 
-    if (scope(0) == i) {
-      iIdx = 0
-      jIdx = 1
-    } else {
-      iIdx = 1
-      jIdx = 0
-    }
+    val (iIdx, jIdx) = if (scope(0) == i) (0, 1) else (1, 0)
+
+    //    if (scope(0) == i) {
+    //      iIdx = 0
+    //      jIdx = 1
+    //    } else {
+    //      iIdx = 1
+    //      jIdx = 0
+    //    }
 
     i.getValidValues(values)
 
+    for (a <- values) {
+      if (!havePCSupport(iIdx, a, jIdx)) {
+        i.remove(a)
+        if (i.isEmpty()) {
+          return false
+        }
+
+        evt += i
+      }
+    }
 
     return false
   }
 
-  def havePCSupport(iIdx: Int, a: Int, jIdx: Int, b: Int): Boolean = {
+  def havePCSupport(iIdx: Int, a: Int, jIdx: Int): Boolean = {
     val lastPC_iaj = lastPC(iIdx)(a)
+    val i = bitScope(iIdx)
+    val j = bitScope(jIdx)
 
     if (lastPC_iaj != INDEX.kOVERFLOW && bitScope(jIdx).contains(lastPC_iaj)) {
       return true
+    }
+
+    val v = j.minValue()
+
+    var b = nextSupportBit(iIdx, a, jIdx, v)
+    while (b != INDEX.kOVERFLOW) {
+      b = nextSupportBit(iIdx, a, jIdx, b + 1)
+      while (b != INDEX.kOVERFLOW) {
+        var pcWitness = true
+        breakable {
+          for (k <- helper.commonVar(i.id)(j.id)) {
+            if (k.unBind()) {
+              if (!havePCWit(iIdx, a, jIdx, b, k)) {
+                pcWitness = false
+                break()
+              }
+            }
+          }
+        }
+
+        if (pcWitness) {
+          lastPC(iIdx)(a) = b
+          lastPC(jIdx)(b) = a
+          lastAC(iIdx)(a) = b / Constants.BITSIZE
+        }
+
+        b = nextSupportBit(iIdx, a, jIdx, b + 1)
+      }
     }
 
     //....
@@ -61,9 +107,9 @@ class LMaxRPC_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: A
     return false
   }
 
-  def havePCWit(iIdx: Int, a: Int, jIdx: Int, b: Int, k: BitSetVar): Boolean = {
-    val i = bitScope(iIdx)
-    val j = bitScope(jIdx)
+  def havePCWit(iIdx: Int, a: Int, jIdx: Int, b: Int, k: BitSetVar_LMRPC): Boolean = {
+    val i = scope(iIdx)
+    val j = scope(jIdx)
     val c_ik = helper.commonCon(i.id)(k.id)(0)
     val c_jk = helper.commonCon(j.id)(k.id)(0)
 

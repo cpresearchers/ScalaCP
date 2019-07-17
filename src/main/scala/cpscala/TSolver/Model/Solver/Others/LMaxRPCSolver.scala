@@ -1,9 +1,8 @@
-package cpscala.TSolver.Model.Solver.SSolver
+package cpscala.TSolver.Model.Solver.Others
 
-import cpscala.TSolver.CpUtil.{AssignedStack, CoarseQueue, Literal}
 import cpscala.TSolver.CpUtil.SearchHelper.LMaxRPCSearchHelper
-import cpscala.TSolver.Model.Constraint.SConstraint.{LMaxRPC_BitRM, Propagator, TableCT_Bit, TableCT_SSet, TableSTR2_SSet, TableSTR3_SSet, TableSTRbit_Bit, TableSTRbit_SSet}
-import cpscala.TSolver.Model.Variable.{BitSetVar, SimpleBitVar, SparseSetVar, Var}
+import cpscala.TSolver.CpUtil.{AssignedStack, CoarseQueue, Literal}
+import cpscala.TSolver.Model.Variable.{BitSetVar, Var}
 import cpscala.XModel.{XModel, XTab, XVar}
 
 import scala.collection.mutable._
@@ -13,7 +12,7 @@ class LMaxRPCSolver(xm: XModel, propagatorName: String, varType: String, heuName
 
   val numVars: Int = xm.num_vars
   val numTabs: Int = xm.num_tabs
-  val vars = new Array[Var](numVars)
+  val vars = new Array[BitSetVar](numVars)
   val tabs = new Array[LMaxRPC_BitRM](numTabs)
   val helper = new LMaxRPCSearchHelper(numVars, numTabs, xm)
 
@@ -40,7 +39,7 @@ class LMaxRPCSolver(xm: XModel, propagatorName: String, varType: String, heuName
   for (i <- 0 until numTabs) {
     val xc: XTab = xm.tabs.get(i)
     val ts: Array[Array[Int]] = xc.tuples
-    val scope: Array[Var] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
+    val scope: Array[BitSetVar] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
     tabs(i) = new LMaxRPC_BitRM(xc.id, xc.arity, numVars, scope, ts, helper)
 
     for (v <- scope) {
@@ -199,7 +198,6 @@ class LMaxRPCSolver(xm: XModel, propagatorName: String, varType: String, heuName
 
       for (i <- helper.neiVar(j.id)) {
         if (i.unBind()) {
-          var changed = false
           val c = helper.commonCon(i.id)(j.id)(0)
 
           Y_evt.clear()
@@ -207,32 +205,11 @@ class LMaxRPCSolver(xm: XModel, propagatorName: String, varType: String, heuName
           Y_evt += j
           c.propagate(Y_evt)
 
-
-        }
-      }
-
-      // AC传播队列
-      for (c <- subscription(v.id)) {
-        if (helper.varStamp(v.id) > helper.tabStamp(c.id)) {
-          //          println("str(" + c.name + ")")
-          Y_evt.clear()
-          val consistent = c.propagate(Y_evt)
-          helper.c_sum += 1
-          //          print(s"cid: ${c.id} yevt: ")
-          //          Y_evt.foreach(p => print(p.id, " "))
-          //          println()
-          if (!consistent) {
-            return false
-          } else {
-            for (y <- Y_evt) {
-              insert(y)
-            }
+          for (y <- Y_evt) {
+            Q.push(y)
           }
-          helper.globalStamp += 1
-          helper.tabStamp(c.id) = helper.globalStamp
         }
       }
-      helper.p_sum += 1
     }
 
     return true
