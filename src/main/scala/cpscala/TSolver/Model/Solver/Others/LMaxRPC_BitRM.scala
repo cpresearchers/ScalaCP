@@ -1,6 +1,5 @@
 package cpscala.TSolver.Model.Solver.Others
 
-import cpscala.TSolver.CpUtil.SearchHelper.LMaxRPCSearchHelper
 import cpscala.TSolver.CpUtil.{Constants, INDEX}
 import cpscala.TSolver.Model.Constraint.SConstraint.Propagator
 import cpscala.TSolver.Model.Variable.{BitSetVar, Var}
@@ -8,10 +7,10 @@ import cpscala.TSolver.Model.Variable.{BitSetVar, Var}
 import scala.collection.mutable.ArrayBuffer
 import scala.util.control.Breaks._
 
-class LMaxRPC_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[BitSetVar_LMRPC], val tuples: Array[Array[Int]], val helper: LMaxRPCSearchHelper) extends Propagator {
-
-//  val bitScope = Array.tabulate[BitSetVar](arity)(i => scope(i).asInstanceOf[BitSetVar])
+class LMaxRPC_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[BitSetVar_LMRPC], val tuples: Array[Array[Int]], val helper: LMaxRPCSearchHelper) {
   // 获取所有变量的numbit
+  var level = 0
+  var assignedCount = 0
   val numBits = Array.tabulate(arity)(i => Constants.getNumBit(scope(i).size()))
   val maxNumBits = numBits.max
   val bitSup = Array.tabulate(arity)(i => Array.ofDim[Long](scope(i).size(), maxNumBits))
@@ -29,26 +28,14 @@ class LMaxRPC_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: A
   }
 
 
-  override def propagate(evt: ArrayBuffer[BitSetVar_LMRPC]): Boolean = {
+  def propagate(evt: ArrayBuffer[BitSetVar_LMRPC]): Boolean = {
     //获取传入的两个变量
     val i = evt(0)
     val j = evt(1)
     //判断变量 i,j 的位置
-    //    var iIdx: Int = 0
-    //    var jIdx: Int = 1
-    //
     evt.clear()
 
     val (iIdx, jIdx) = if (scope(0) == i) (0, 1) else (1, 0)
-
-    //    if (scope(0) == i) {
-    //      iIdx = 0
-    //      jIdx = 1
-    //    } else {
-    //      iIdx = 1
-    //      jIdx = 0
-    //    }
-
     i.getValidValues(values)
 
     for (a <- values) {
@@ -67,10 +54,10 @@ class LMaxRPC_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: A
 
   def havePCSupport(iIdx: Int, a: Int, jIdx: Int): Boolean = {
     val lastPC_iaj = lastPC(iIdx)(a)
-    val i = bitScope(iIdx)
-    val j = bitScope(jIdx)
+    val i = scope(iIdx)
+    val j = scope(jIdx)
 
-    if (lastPC_iaj != INDEX.kOVERFLOW && bitScope(jIdx).contains(lastPC_iaj)) {
+    if (lastPC_iaj != INDEX.kOVERFLOW && scope(jIdx).contains(lastPC_iaj)) {
       return true
     }
 
@@ -160,12 +147,12 @@ class LMaxRPC_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: A
 
   def nextSupportBit(iIdx: Int, a: Int, jIdx: Int, v: Int): Int = {
     // 若传入的v已越界
-    if (v > bitScope(jIdx).capacity - 1 || v == INDEX.kOVERFLOW) {
+    if (v > scope(jIdx).capacity - 1 || v == INDEX.kOVERFLOW) {
       return INDEX.kOVERFLOW
     }
 
     val (x, y) = INDEX.getXY(v)
-    val j = bitScope(jIdx)
+    val j = scope(jIdx)
     val b = (bitSup(iIdx)(a)(x) & j.bitDoms(j.level)(x)) >> y
 
     if (b != 0L) {
@@ -184,37 +171,12 @@ class LMaxRPC_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: A
     return INDEX.kOVERFLOW
   }
 
-  //  def getLastAC(v: Var, a: Int): Int = {
-  //    val vIdx = if (scope(0).id == v.id) 0 else 1
-  //    return lastAC(vIdx)(a)
-  //  }
-  //
-  //  def setLastAC(v: Var, a: Int, b: Int): Unit = {
-  //    val vIdx = if (scope(0).id == v.id) 0 else 1
-  //    lastAC(vIdx)(a) = b
-  //  }
-  //
-  //  def getBitSup(v: Var, a: Int, index: Int): Int = {
-  //    val vIdx = if (scope(0).id == v.id) 0 else 1
-  //    return lastAC(vIdx)(a)
-  //  }
-  //
-  //  def setLastAC(v: Var, a: Int, b: Int): Unit = {
-  //    val vIdx = if (scope(0).id == v.id) 0 else 1
-  //    lastAC(vIdx)(a) = b
-  //  }
-
   def getVarIndex(v: Var): Int = {
     if (scope(0).id == v.id) 0 else 1
   }
 
-  override def newLevel(): Unit = ???
+  def newLevel(): Unit = {level+=1}
 
-  override def backLevel(): Unit = ???
+  def backLevel(): Unit = {level-=1}
 
-  override def stepUp(num_vars: Int): Unit = ???
-
-  override def isEntailed(): Boolean = ???
-
-  override def isSatisfied(): Unit = ???
 }

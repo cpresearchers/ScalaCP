@@ -11,7 +11,7 @@ class Pack(val S:HashSet[Node],var pos: Int) {
 //  }
 
 
-  def size(): Unit = {
+  def size(): Int = {
     return S.size
   }
 

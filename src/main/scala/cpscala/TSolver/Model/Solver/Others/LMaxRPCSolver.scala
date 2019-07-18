@@ -1,7 +1,7 @@
 package cpscala.TSolver.Model.Solver.Others
 
-import cpscala.TSolver.CpUtil.SearchHelper.LMaxRPCSearchHelper
 import cpscala.TSolver.CpUtil.{AssignedStack, CoarseQueue, Literal}
+import cpscala.TSolver.Model.Solver.SSolver.SSolver
 import cpscala.TSolver.Model.Variable.{BitSetVar, Var}
 import cpscala.XModel.{XModel, XTab, XVar}
 
@@ -12,7 +12,7 @@ class LMaxRPCSolver(xm: XModel, propagatorName: String, varType: String, heuName
 
   val numVars: Int = xm.num_vars
   val numTabs: Int = xm.num_tabs
-  val vars = new Array[BitSetVar](numVars)
+  val vars = new Array[BitSetVar_LMRPC](numVars)
   val tabs = new Array[LMaxRPC_BitRM](numTabs)
   val helper = new LMaxRPCSearchHelper(numVars, numTabs, xm)
 
@@ -32,14 +32,14 @@ class LMaxRPCSolver(xm: XModel, propagatorName: String, varType: String, heuName
   // 初始化变量
   for (i <- 0 until numVars) {
     val xv: XVar = xm.vars.get(i)
-    vars(i) = new BitSetVar(xv.name, xv.id, numVars, xv.values, helper)
+    vars(i) = new BitSetVar_LMRPC(xv.name, xv.id, numVars, xv.values, helper)
   }
 
   //初始化约束
   for (i <- 0 until numTabs) {
     val xc: XTab = xm.tabs.get(i)
     val ts: Array[Array[Int]] = xc.tuples
-    val scope: Array[BitSetVar] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
+    val scope: Array[BitSetVar_LMRPC] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
     tabs(i) = new LMaxRPC_BitRM(xc.id, xc.arity, numVars, scope, ts, helper)
 
     for (v <- scope) {
@@ -49,7 +49,7 @@ class LMaxRPCSolver(xm: XModel, propagatorName: String, varType: String, heuName
 
   // 初始化搜索引擎中用到的数据结构
   val Q = new CoarseQueue[Var](numVars)
-  var Y_evt: ArrayBuffer[Var] = new ArrayBuffer[Var](xm.max_arity)
+  var Y_evt: ArrayBuffer[BitSetVar_LMRPC] = new ArrayBuffer[BitSetVar_LMRPC](xm.max_arity)
   val I = new AssignedStack[Var](xm.num_vars)
 
   // 初始化helper中的部分数据结构
@@ -174,11 +174,17 @@ class LMaxRPCSolver(xm: XModel, propagatorName: String, varType: String, heuName
     return
   }
 
-  def initialPropagate(): Boolean
+  def initialPropagate(): Boolean = {
+    return propagate(null)
+  }
 
-  def checkConsistencyAfterAssignment(ix: Var): Boolean
+  def checkConsistencyAfterAssignment(x: Var): Boolean = {
+    return propagate(x)
+  }
 
-  def checkConsistencyAfterRefutation(ix: Var): Boolean
+  def checkConsistencyAfterRefutation(x: Var): Boolean = {
+    return propagate(x)
+  }
 
 
   def propagate(x: Var): Boolean = {
@@ -194,12 +200,11 @@ class LMaxRPCSolver(xm: XModel, propagatorName: String, varType: String, heuName
     }
 
     while (!Q.empty()) {
-      val j = Q.pop()
+      val j = Q.pop().asInstanceOf[BitSetVar_LMRPC]
 
       for (i <- helper.neiVar(j.id)) {
         if (i.unBind()) {
           val c = helper.commonCon(i.id)(j.id)(0)
-
           Y_evt.clear()
           Y_evt += i
           Y_evt += j

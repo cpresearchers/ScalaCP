@@ -120,9 +120,10 @@ public class Model {
             rcur = new Relation[cnum];
 
             for (int i = 0; i < cnum; i++) {
-                int invnum = Integer.parseInt(cl.item(i).getAttributes().item(0).getNodeValue());
+                int invnum = Integer.parseInt(cl.item(i).getAttributes().getNamedItem("arity").getNodeValue());
+                String cname = cl.item(i).getAttributes().getNamedItem("name").getNodeValue();
 
-                String rname = cl.item(i).getAttributes().item(2).getNodeValue();
+                String rname = cl.item(i).getAttributes().getNamedItem("reference").getNodeValue();
                 int inr = 0;
 
                 for (; inr < rnum; inr++) {
@@ -132,7 +133,7 @@ public class Model {
                 }
 
 
-                String s[] = cl.item(i).getAttributes().item(3).getNodeValue().split(" ");
+                String s[] = cl.item(i).getAttributes().getNamedItem("scope").getNodeValue().split(" ");
                 Variable invs[] = new Variable[invnum];
 
                 for (int j = 0; j < invnum; j++) {
@@ -148,7 +149,7 @@ public class Model {
                 }
 
 
-                cs[i] = new Constraint(invnum, rs[inr], invs, i, this);
+                cs[i] = new Constraint(invnum, rs[inr], invs, i,cname, this);
 
                 if (cs[i].rnum > maxr) {
                     maxr = cs[i].rnum;
