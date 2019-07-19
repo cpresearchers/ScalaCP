@@ -254,7 +254,11 @@ class LMaxRPCSolver(xm: XModel) {
           Y_evt.clear()
           Y_evt += i
           Y_evt += j
-          c.propagate(Y_evt)
+          val res = c.propagate(Y_evt)
+
+          if (!res) {
+            return false
+          }
 
           for (y <- Y_evt) {
             Q.push(y)

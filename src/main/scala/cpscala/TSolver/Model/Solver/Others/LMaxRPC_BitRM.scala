@@ -35,10 +35,14 @@ class LMaxRPC_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: A
     //判断变量 i,j 的位置
     evt.clear()
 
+    // 获取变量位置
     val (iIdx, jIdx) = if (scope(0) == i) (0, 1) else (1, 0)
+    // 获取所有的有效值
+    // 这里带层数
     i.getValidValues(values)
 
     for (a <- values) {
+      // 若没有PC支持则删值
       if (!havePCSupport(iIdx, a, jIdx)) {
         i.remove(a)
         if (i.isEmpty()) {
