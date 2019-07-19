@@ -8,7 +8,7 @@ import cpscala.XModel.{XModel, XTab, XVar}
 import scala.collection.mutable._
 
 
-class LMaxRPCSolver(xm: XModel, propagatorName: String, varType: String, heuName: String) {
+class LMaxRPCSolver(xm: XModel) {
 
   val numVars: Int = xm.num_vars
   val numTabs: Int = xm.num_tabs
@@ -76,6 +76,52 @@ class LMaxRPCSolver(xm: XModel, propagatorName: String, varType: String, heuName
         }
       }
     }
+  }
+
+  //.....show common
+
+  var ii = 0
+  while (ii < numVars) {
+    var jj = 0
+    while (jj < numVars) {
+      val cs = helper.commonCon(ii)(jj)
+      if (cs.nonEmpty) {
+        print(cs(0).id, "\t")
+      } else {
+        print("X", "\t")
+      }
+      jj += 1
+    }
+    println()
+    ii += 1
+  }
+  println("--------------")
+  ii = 0
+  while (ii < numVars) {
+    var jj = 0
+    while (jj < numVars) {
+      val vs = helper.commonVar(ii)(jj)
+      if (vs.nonEmpty) {
+        for (v <- vs) {
+          print(v.id + " ")
+        }
+        print("|")
+      } else {
+        print("X|")
+      }
+      jj += 1
+    }
+    println()
+    ii += 1
+  }
+  println("--------------")
+  for (jj <- 0 until numVars) {
+    val vs = helper.neiVar(jj)
+    print(jj + ": ")
+    for (v <- vs) {
+      print(v.id + " ")
+    }
+    println()
   }
 
 

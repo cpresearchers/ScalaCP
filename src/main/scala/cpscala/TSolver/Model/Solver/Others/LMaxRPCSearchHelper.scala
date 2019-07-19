@@ -8,12 +8,12 @@ import cpscala.XModel.XModel
 import scala.collection.mutable.ArrayBuffer
 
 class LMaxRPCSearchHelper(override val numVars: Int, override val numTabs: Int, xm: XModel) extends SearchHelper(numVars, numTabs) {
-//  val subscription = new Array[ArrayBuffer[LMaxRPC_BitRM]](numVars)(new ArrayBuffer[LMaxRPC_BitRM]())
+  //  val subscription = new Array[ArrayBuffer[LMaxRPC_BitRM]](numVars)(new ArrayBuffer[LMaxRPC_BitRM]())
   val subscription = Array.fill(numTabs)(new ArrayBuffer[LMaxRPC_BitRM])
   // 为两两变量间生成中间变量的矩阵
-  val commonVar = Array.ofDim[ArrayBuffer[BitSetVar_LMRPC]](numVars, numVars)
+  val commonVar = Array.fill(numVars)(Array.fill(numVars)(new ArrayBuffer[BitSetVar_LMRPC]))
   // 为两两变量间生成共同约束的矩阵
-  val commonCon = Array.ofDim[ArrayBuffer[LMaxRPC_BitRM]](numVars, numVars)
+  val commonCon: Array[Array[ArrayBuffer[LMaxRPC_BitRM]]] = Array.fill(numVars)(Array.fill(numVars)(new ArrayBuffer[LMaxRPC_BitRM]))
   // 存储一个变量所有的临域
   val neiVar = Array.fill(numVars)(new ArrayBuffer[BitSetVar_LMRPC])
 

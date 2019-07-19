@@ -144,7 +144,6 @@ class LMaxRPC_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: A
     return false
   }
 
-
   def nextSupportBit(iIdx: Int, a: Int, jIdx: Int, v: Int): Int = {
     // 若传入的v已越界
     if (v > scope(jIdx).capacity - 1 || v == INDEX.kOVERFLOW) {
