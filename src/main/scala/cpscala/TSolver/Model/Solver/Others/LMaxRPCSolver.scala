@@ -135,6 +135,7 @@ class LMaxRPCSolver(xm: XModel) {
     var finished = false
 
     //initial propagate
+    println("init prop")
     var consistent = initialPropagate()
     end_time = System.nanoTime
     helper.propTime += (end_time - prop_start_time)
@@ -169,7 +170,7 @@ class LMaxRPCSolver(xm: XModel) {
       helper.nodes += 1
       //println("nodes: " + helper.nodes)
       I.push(literal)
-      //println("push:" + literal.toString())
+      println("push:" + literal.toString())
       bind(literal)
 
 
@@ -188,7 +189,7 @@ class LMaxRPCSolver(xm: XModel) {
         //        for (c <- subscription(literal.v.name)) {
         //          c.assignedCount += 0.5
         //        }
-        //        I.show()
+        I.show()
         end_time = System.nanoTime
         helper.time = end_time - start_time
         return
@@ -197,7 +198,7 @@ class LMaxRPCSolver(xm: XModel) {
       while (!consistent && !I.empty()) {
         back_start_time = System.nanoTime
         literal = I.pop()
-        //println("pop:" + literal.toString())
+        println("pop:" + literal.toString())
         backLevel()
         literal.v.remove(literal.a)
         remove(literal)
@@ -240,28 +241,32 @@ class LMaxRPCSolver(xm: XModel) {
     if (x == null) {
       for (z <- vars) {
         Q.push(z)
+        println(s"Q << ${z.id}")
       }
     } else {
       Q.push(x)
+      println(s"Q << ${x.id}")
     }
 
     while (!Q.empty()) {
       val j = Q.pop().asInstanceOf[BitSetVar_LMRPC]
-
+      println(s"Q >> ${j.id}")
       for (i <- helper.neiVar(j.id)) {
+        println(s"nei: ${i.id}")
         if (i.unBind()) {
           val c = helper.commonCon(i.id)(j.id)(0)
           Y_evt.clear()
           Y_evt += i
           Y_evt += j
-          val res = c.propagate(Y_evt)
+
+          val (res, changed) = c.propagate(Y_evt)
 
           if (!res) {
             return false
           }
 
-          for (y <- Y_evt) {
-            Q.push(y)
+          if (changed) {
+            Q.push(i)
           }
         }
       }
