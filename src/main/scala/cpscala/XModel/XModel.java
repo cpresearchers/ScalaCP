@@ -3,6 +3,7 @@ package cpscala.XModel;
 import org.xcsp.common.Types;
 //import org.xcsp.parser.XCallbacks2;
 //import org.xcsp.parser.callbacks.XCallbacks;
+import org.xcsp.parser.callbacks.SolutionChecker;
 import org.xcsp.parser.callbacks.XCallbacks2;
 import org.xcsp.parser.entries.XVariables;
 
@@ -12,8 +13,6 @@ import java.util.Map;
 import java.util.Set;
 
 public class XModel implements XCallbacks2 {
-
-
     private Implem implem = new Implem(this);
     public String filePath;
     public String fileName;
@@ -92,15 +91,15 @@ public class XModel implements XCallbacks2 {
         avg_tuples_size = (avg_tuples_size * (tabs.size() - 1) + t.tuples.length) / tabs.size();
     }
 
-    boolean check(int[] vals) {
+    public boolean check(int[] vals) {
         boolean res = false;
         for (XTab t : tabs) {
             int[] tuple = new int[t.arity];
             for (int i = 0; i < t.arity; ++i) {
                 tuple[i] = vals[t.scope[i].id];
-                if (!t.have(tuple)) {
-                    return false;
-                }
+            }
+            if (!t.have(tuple)) {
+                return false;
             }
         }
         return true;
@@ -143,26 +142,25 @@ public class XModel implements XCallbacks2 {
     public double Get_Looseness()  //by zhenluhan 6.3
     {
         double s = 0;
-        for(var i : tabs)
-        {
+        for (var i : tabs) {
             s += i.Looseness();
         }
-        return s / (double)tabs.size();
+        return s / (double) tabs.size();
     }
 
     public double Get_Tightness() //by zhenluhan 6.3
     {
-        return 1- Get_Looseness();
+        return 1 - Get_Looseness();
     }
 
     public double Get_Ave_Domain_Size() //by zhenluhan 6.4
     {
         int sum = 0;
-        for (var a:vars) {
+        for (var a : vars) {
             sum += a.values.length;
 
         }
-        return sum / (double)vars.size();
+        return sum / (double) vars.size();
     }
 
     public void show() {

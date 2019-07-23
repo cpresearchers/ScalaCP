@@ -79,50 +79,50 @@ class LMaxRPCSolver(xm: XModel) {
   }
 
   //.....show common
-
-  var ii = 0
-  while (ii < numVars) {
-    var jj = 0
-    while (jj < numVars) {
-      val cs = helper.commonCon(ii)(jj)
-      if (cs.nonEmpty) {
-        print(cs(0).id, "\t")
-      } else {
-        print("X", "\t")
-      }
-      jj += 1
-    }
-    println()
-    ii += 1
-  }
-  println("--------------")
-  ii = 0
-  while (ii < numVars) {
-    var jj = 0
-    while (jj < numVars) {
-      val vs = helper.commonVar(ii)(jj)
-      if (vs.nonEmpty) {
-        for (v <- vs) {
-          print(v.id + " ")
-        }
-        print("|")
-      } else {
-        print("X|")
-      }
-      jj += 1
-    }
-    println()
-    ii += 1
-  }
-  println("--------------")
-  for (jj <- 0 until numVars) {
-    val vs = helper.neiVar(jj)
-    print(jj + ": ")
-    for (v <- vs) {
-      print(v.id + " ")
-    }
-    println()
-  }
+//
+//  var ii = 0
+//  while (ii < numVars) {
+//    var jj = 0
+//    while (jj < numVars) {
+//      val cs = helper.commonCon(ii)(jj)
+//      if (cs.nonEmpty) {
+//        print(cs(0).id, "\t")
+//      } else {
+//        print("X", "\t")
+//      }
+//      jj += 1
+//    }
+//    println()
+//    ii += 1
+//  }
+//  println("--------------")
+//  ii = 0
+//  while (ii < numVars) {
+//    var jj = 0
+//    while (jj < numVars) {
+//      val vs = helper.commonVar(ii)(jj)
+//      if (vs.nonEmpty) {
+//        for (v <- vs) {
+//          print(v.id + " ")
+//        }
+//        print("|")
+//      } else {
+//        print("X|")
+//      }
+//      jj += 1
+//    }
+//    println()
+//    ii += 1
+//  }
+//  println("--------------")
+//  for (jj <- 0 until numVars) {
+//    val vs = helper.neiVar(jj)
+//    print(jj + ": ")
+//    for (v <- vs) {
+//      print(v.id + " ")
+//    }
+//    println()
+//  }
 
 
   var start_time = 0L
@@ -135,7 +135,8 @@ class LMaxRPCSolver(xm: XModel) {
     var finished = false
 
     //initial propagate
-    println("init prop")
+//    println("init prop")
+    start_time = System.nanoTime
     var consistent = initialPropagate()
     end_time = System.nanoTime
     helper.propTime += (end_time - prop_start_time)
@@ -170,7 +171,7 @@ class LMaxRPCSolver(xm: XModel) {
       helper.nodes += 1
       //println("nodes: " + helper.nodes)
       I.push(literal)
-      println("push:" + literal.toString())
+//      println("push:" + literal.toString())
       bind(literal)
 
 
@@ -189,7 +190,7 @@ class LMaxRPCSolver(xm: XModel) {
         //        for (c <- subscription(literal.v.name)) {
         //          c.assignedCount += 0.5
         //        }
-        I.show()
+//        I.show()
         end_time = System.nanoTime
         helper.time = end_time - start_time
         return
@@ -198,7 +199,7 @@ class LMaxRPCSolver(xm: XModel) {
       while (!consistent && !I.empty()) {
         back_start_time = System.nanoTime
         literal = I.pop()
-        println("pop:" + literal.toString())
+//        println("pop:" + literal.toString())
         backLevel()
         literal.v.remove(literal.a)
         remove(literal)
@@ -241,18 +242,18 @@ class LMaxRPCSolver(xm: XModel) {
     if (x == null) {
       for (z <- vars) {
         Q.push(z)
-        println(s"Q << ${z.id}")
+//        println(s"Q << ${z.id}")
       }
     } else {
       Q.push(x)
-      println(s"Q << ${x.id}")
+//      println(s"Q << ${x.id}")
     }
 
     while (!Q.empty()) {
       val j = Q.pop().asInstanceOf[BitSetVar_LMRPC]
-      println(s"Q >> ${j.id}")
+//      println(s"Q >> ${j.id}")
       for (i <- helper.neiVar(j.id)) {
-        println(s"nei: ${i.id}")
+//        println(s"nei: ${i.id}")
         if (i.unBind()) {
           val c = helper.commonCon(i.id)(j.id)(0)
           Y_evt.clear()
@@ -266,6 +267,7 @@ class LMaxRPCSolver(xm: XModel) {
           }
 
           if (changed) {
+//            println(s"Q << ${i.id}")
             Q.push(i)
           }
         }

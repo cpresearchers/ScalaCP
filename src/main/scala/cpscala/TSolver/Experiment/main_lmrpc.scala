@@ -17,10 +17,15 @@ object main_lmrpc {
     println(path)
     val xm = new XModel(path, true, fmt)
 
-    xm.show()
+    //    xm.show()
 
-    val ct = new LMaxRPCSolver(xm)
-    ct.search(Constants.TIME)
+    val lmx = new LMaxRPCSolver(xm)
+    lmx.search(Constants.TIME)
+
+    println(lmx.I.toArray().mkString(","))
+    val sol = lmx.I.toArray()
+//    sol(1) = 0
+    println(xm.check(sol))
   }
 
 }

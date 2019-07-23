@@ -18,10 +18,10 @@ class LMaxRPC_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: A
   val lastAC = Array.tabulate(arity)(i => Array.fill(scope(i).size())(INDEX.kOVERFLOW))
   // 保存变量的有效值
   private[this] val values = new ArrayBuffer[Int]()
-  println(s"cid: ${id}")
+  //  println(s"cid: ${id}")
 
   for (t <- tuples) {
-    println(t.mkString(","))
+    //    println(t.mkString(","))
     val bIdx = (INDEX.getXY(t(0)), INDEX.getXY(t(1)))
     //    println(s"bitSup(0)(${t(0)})(${bIdx._2._1}) = ${bitSup(0)(t(0))(bIdx._2._1).toBinaryString}")
     //    println(s"bitSup(1)(${t(1)})(${bIdx._1._1}) = ${bitSup(1)(t(1))(bIdx._1._1).toBinaryString}")
@@ -31,19 +31,19 @@ class LMaxRPC_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: A
     //    println(s"bitSup(1)(${t(1)})(${bIdx._1._1}) = ${bitSup(1)(t(1))(bIdx._1._1).toBinaryString}")
   }
 
-  for (kk <- 0 until 2) {
-    val vv = scope(kk)
-    for (aa <- 0 until vv.size()) {
-      println(s"bitSup(${vv.id})($aa)(0) = ${bitSup(kk)(aa)(0).toHexString}")
-    }
-  }
+  //  for (kk <- 0 until 2) {
+  //    val vv = scope(kk)
+  //    for (aa <- 0 until vv.size()) {
+  //      println(s"bitSup(${vv.id})($aa)(0) = ${bitSup(kk)(aa)(0).toHexString}")
+  //    }
+  //  }
 
 
   def propagate(evt: ArrayBuffer[BitSetVar_LMRPC]): (Boolean, Boolean) = {
     //获取传入的两个变量
     val i = evt(0)
     val j = evt(1)
-    println(s"${i.id}, ${j.id}")
+    //    println(s"${i.id}, ${j.id}")
     //判断变量 i,j 的位置
     evt.clear()
     var changed = false
@@ -51,11 +51,13 @@ class LMaxRPC_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: A
     i.getValidValues(values)
 
     for (a <- values) {
+      //      println(s"have_pc_support（${i.id}, ${a}, ${j.id})")
       if (!havePCSupport(iIdx, a, jIdx)) {
-        println(s"remove: (${i.id},${a})")
+        //        println(s"remove: (${i.id},${a})")
         i.remove(a)
         changed = true
         if (i.isEmpty()) {
+          //          println("field")
           return (false, changed)
         }
 
@@ -78,31 +80,30 @@ class LMaxRPC_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: A
     val v = j.minValue()
 
     var b = nextSupportBit(iIdx, a, jIdx, v)
+
     while (b != INDEX.kOVERFLOW) {
-      b = nextSupportBit(iIdx, a, jIdx, b + 1)
-      while (b != INDEX.kOVERFLOW) {
-        var pcWitness = true
-        breakable {
-          for (k <- helper.commonVar(i.id)(j.id)) {
-            if (k.unBind()) {
-              if (!havePCWit(iIdx, a, jIdx, b, k)) {
-                pcWitness = false
-                break()
-              }
+      var pcWitness = true
+      breakable {
+        for (k <- helper.commonVar(i.id)(j.id)) {
+          if (k.unBind()) {
+            if (!havePCWit(iIdx, a, jIdx, b, k)) {
+              pcWitness = false
+              break()
             }
           }
         }
-
-        if (pcWitness) {
-          lastPC(iIdx)(a) = b
-          lastPC(jIdx)(b) = a
-          lastAC(iIdx)(a) = b / Constants.BITSIZE
-          return true
-        }
-
-        b = nextSupportBit(iIdx, a, jIdx, b + 1)
       }
+
+      if (pcWitness) {
+        lastPC(iIdx)(a) = b
+        lastPC(jIdx)(b) = a
+        lastAC(iIdx)(a) = b / Constants.BITSIZE
+        return true
+      }
+
+      b = nextSupportBit(iIdx, a, jIdx, b + 1)
     }
+
 
     //....
 
@@ -197,5 +198,4 @@ class LMaxRPC_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: A
   def backLevel(): Unit = {
     level -= 1
   }
-
 }

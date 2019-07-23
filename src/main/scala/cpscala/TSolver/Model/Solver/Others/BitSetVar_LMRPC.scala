@@ -7,20 +7,18 @@ import cpscala.TSolver.Model.Variable.Var
 import scala.collection.mutable.ArrayBuffer
 
 class BitSetVar_LMRPC(val name: String, val id: Int, numVars: Int, vals: Array[Int], val helper: SearchHelper) extends Var {
-
-  // 用于标记层数的
-  class MultiLevel(var searchLevel: Int, var tmpLevel: Int) {
-  }
-
   //// 各种层
   // 总层数
   val numLevel = numVars + 20
+  val numTmpLevels = 16
   // 临时层数启始层
   val startTmpLevel = numVars + 3
   // 主线程搜索层
   val mainLevel = numVars + 3
   // 当前顶层，包括临时层
   val topLevel = numVars + 3
+  // 初始化所有临时层
+  val tmpLevels = Array.fill[MultiLevel](numTmpLevels)(new MultiLevel(INDEX.kOVERFLOW, INDEX.kOVERFLOW))
   override val capacity = vals.length
   val numBit = Math.ceil(capacity.toDouble / Constants.BITSIZE.toDouble).toInt
   val bitMark = Array.fill[Long](numBit)(0L)

@@ -167,8 +167,18 @@ public class XTab {
     }
 
     boolean have(int[] tuple) {
-        return Arrays.binarySearch(tuples, tuple) >= 0;
+        return Arrays.binarySearch(tuples, tuple, (int[] x, int[] y) -> {
+            for (int i = 0; i < x.length; i++) {
+                if (x[i] < y[i]) {
+                    return -1;
+                } else if (x[i] > y[i]) {
+                    return 1;
+                }
+            }
+            return 0;
+        }) >= 0;
     }
+
 
     public void show() {
         String sem = semantics ? "supports" : "conflicts";
