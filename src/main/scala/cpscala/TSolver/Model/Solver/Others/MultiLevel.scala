@@ -22,10 +22,6 @@ object MultiLevel {
     val b = ml0.tmpLevel
     ml0.set(ml1)
     ml1.set(a,b)
-//    ml0.searchLevel = ml1.searchLevel
-//    ml0.tmpLevel = ml1.tmpLevel
-//    ml1.searchLevel = a
-//    ml1.tmpLevel = b
   }
 }
 

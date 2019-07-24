@@ -48,8 +48,12 @@ class BitSetVar_LMX(val name: String, val id: Int, numVars: Int, vals: Array[Int
     return level
   }
 
-  def newTmpLevel(): Int = {
+  def newTmpLevel(searchLevel: Int): MultiLevel = {
+    return tmpLevels.add(searchLevel)
+  }
 
+  def deleteTmpLevel(m: MultiLevel) = {
+    tmpLevels.remove(m)
   }
 
   override def backLevel(): Int = {

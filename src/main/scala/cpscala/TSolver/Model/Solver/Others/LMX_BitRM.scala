@@ -7,7 +7,7 @@ import cpscala.TSolver.Model.Variable.{BitSetVar, Var}
 import scala.collection.mutable.ArrayBuffer
 import scala.util.control.Breaks._
 
-class LMX_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[BitSetVar_LMRPC], val tuples: Array[Array[Int]], val helper: LMXSearchHelper, val parallelism: Int) {
+class LMX_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[BitSetVar_LMX], val tuples: Array[Array[Int]], val helper: LMXSearchHelper, val parallelism: Int) {
   // 获取所有变量的numbit
   var level = 0
   var assignedCount = 0
@@ -228,7 +228,7 @@ class LMX_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: Array
   }
 
   // 等几个线程
-  def LMX(evt: ArrayBuffer[BitSetVar_LMRPC], tIdx: Int, m: MultiLevel): (Boolean, Boolean) = {
+  def LMX(evt: ArrayBuffer[BitSetVar_LMX], tIdx: Int, m: MultiLevel): (Boolean, Boolean) = {
     //获取传入的两个变量
     val i = evt(0)
     val j = evt(1)

@@ -22,7 +22,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
 
   val numVars: Int = xm.num_vars
   val numTabs: Int = xm.num_tabs
-  val vars = new Array[BitSetVar_LMRPC](numVars)
+  val vars = new Array[BitSetVar_LMX](numVars)
   val tabs = new Array[LMX_BitRM](numTabs)
   val helper = new LMXSearchHelper(numVars, numTabs, xm)
 
@@ -42,14 +42,14 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
   // 初始化变量
   for (i <- 0 until numVars) {
     val xv: XVar = xm.vars.get(i)
-    vars(i) = new BitSetVar_LMRPC(xv.name, xv.id, numVars, xv.values, helper)
+    vars(i) = new BitSetVar_LMX(xv.name, xv.id, numVars, xv.values, helper, parallelism)
   }
 
   //初始化约束
   for (i <- 0 until numTabs) {
     val xc: XTab = xm.tabs.get(i)
     val ts: Array[Array[Int]] = xc.tuples
-    val scope: Array[BitSetVar_LMRPC] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
+    val scope: Array[BitSetVar_LMX] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
     tabs(i) = new LMX_BitRM(xc.id, xc.arity, numVars, scope, ts, helper, parallelism)
 
     for (v <- scope) {
@@ -59,7 +59,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
 
   // 初始化搜索引擎中用到的数据结构
   val Q = new CoarseQueue[Var](numVars)
-  var Y_evt: ArrayBuffer[BitSetVar_LMRPC] = new ArrayBuffer[BitSetVar_LMRPC](xm.max_arity)
+  var Y_evt: ArrayBuffer[BitSetVar_LMX] = new ArrayBuffer[BitSetVar_LMX](xm.max_arity)
   val I = new AssignedStack[Var](xm.num_vars)
 
   // 初始化helper中的部分数据结构
@@ -100,6 +100,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
     //initial propagate
     //    println("init prop")
     start_time = System.nanoTime
+
     var consistent = initialPropagate()
     end_time = System.nanoTime
     helper.propTime += (end_time - prop_start_time)
@@ -186,19 +187,22 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
   }
 
   def initialPropagate(): Boolean = {
-    return propagate(null)
+//    return propagate(null)
+    return false
   }
 
   def checkConsistencyAfterAssignment(x: Var): Boolean = {
-    return propagate(x)
+//    return propagate(x)
+    return false
   }
 
   def checkConsistencyAfterRefutation(x: Var): Boolean = {
-    return propagate(x)
+//    return propagate(x)
+    return false
   }
 
 
-  def propagate(x: Var): Boolean = {
+  def LMX(x: Var): Boolean = {
     Q.clear()
 
     // 初始化传播队列
@@ -213,7 +217,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
     }
 
     while (!Q.empty()) {
-      val j = Q.pop().asInstanceOf[BitSetVar_LMRPC]
+      val j = Q.pop().asInstanceOf[BitSetVar_LMX]
       //      println(s"Q >> ${j.id}")
       for (i <- helper.neiVar(j.id)) {
         //        println(s"nei: ${i.id}")
@@ -223,7 +227,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
           Y_evt += i
           Y_evt += j
 
-          val (res, changed) = c.propagate(Y_evt)
+          val (res, changed) = c.LMX(Y_evt)
 
           if (!res) {
             return false

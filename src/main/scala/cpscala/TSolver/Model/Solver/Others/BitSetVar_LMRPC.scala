@@ -17,8 +17,8 @@ class BitSetVar_LMRPC(val name: String, val id: Int, numVars: Int, vals: Array[I
   val mainLevel = numVars + 3
   // 当前顶层，包括临时层
   val topLevel = numVars + 3
-  // 初始化所有临时层
-  val tmpLevels = Array.fill[MultiLevel](numTmpLevels)(new MultiLevel(INDEX.kOVERFLOW, INDEX.kOVERFLOW))
+  //  // 初始化所有临时层
+  //  val tmpLevels = Array.fill[MultiLevel](numTmpLevels)(new MultiLevel(INDEX.kOVERFLOW, INDEX.kOVERFLOW))
   override val capacity = vals.length
   val numBit = Math.ceil(capacity.toDouble / Constants.BITSIZE.toDouble).toInt
   val bitMark = Array.fill[Long](numBit)(0L)
@@ -33,6 +33,14 @@ class BitSetVar_LMRPC(val name: String, val id: Int, numVars: Int, vals: Array[I
   bitDoms(0)(numBit - 1) <<= (Constants.BITSIZE - capacity % Constants.BITSIZE)
 
   override def getNumBit(): Int = numBit
+
+  def newTmpLevel(tmpLevel: Int) = {
+    var i = 0
+    while (i < numBit) {
+      bitDoms(level)(i) = bitDoms(tmpLevel)(i)
+      i += 1
+    }
+  }
 
   override def newLevel(): Int = {
     val pre_level = level
