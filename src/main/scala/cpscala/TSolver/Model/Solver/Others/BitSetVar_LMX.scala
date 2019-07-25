@@ -49,7 +49,9 @@ class BitSetVar_LMX(val name: String, val id: Int, numVars: Int, vals: Array[Int
   }
 
   def newTmpLevel(searchLevel: Int): MultiLevel = {
-    return tmpLevels.add(searchLevel)
+    // 先获取最新层
+    val m = tmpLevels.add(searchLevel)
+    return m
   }
 
   def deleteTmpLevel(m: MultiLevel) = {

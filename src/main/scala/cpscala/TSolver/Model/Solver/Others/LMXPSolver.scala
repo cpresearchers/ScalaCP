@@ -12,16 +12,13 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
 
   class LCRunnable(val x: BitSetVar_LMRPC, val m: MultiLevel) extends Runnable {
     override def run(): Unit = {
-      propagate(x, m)
+      LMX(x, m)
     }
-  }
-
-  class Model() {
-
   }
 
   val numVars: Int = xm.num_vars
   val numTabs: Int = xm.num_tabs
+  //  val parallelism = 16
   val vars = new Array[BitSetVar_LMX](numVars)
   val tabs = new Array[LMX_BitRM](numTabs)
   val helper = new LMXSearchHelper(numVars, numTabs, xm)
@@ -61,7 +58,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
   val Q = new CoarseQueue[Var](numVars)
   var Y_evt: ArrayBuffer[BitSetVar_LMX] = new ArrayBuffer[BitSetVar_LMX](xm.max_arity)
   val I = new AssignedStack[Var](xm.num_vars)
-
+  val L = new LMXSparseSet(parallelism, numVars)
   // 初始化helper中的部分数据结构
   for (c <- tabs) {
     helper.commonCon(c.scope(0).id)(c.scope(1).id) += c
@@ -100,6 +97,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
     //initial propagate
     //    println("init prop")
     start_time = System.nanoTime
+    val m =
 
     var consistent = initialPropagate()
     end_time = System.nanoTime
@@ -187,22 +185,22 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
   }
 
   def initialPropagate(): Boolean = {
-//    return propagate(null)
+    //    return propagate(null)
     return false
   }
 
   def checkConsistencyAfterAssignment(x: Var): Boolean = {
-//    return propagate(x)
+    //    return propagate(x)
     return false
   }
 
   def checkConsistencyAfterRefutation(x: Var): Boolean = {
-//    return propagate(x)
+    //    return propagate(x)
     return false
   }
 
 
-  def LMX(x: Var): Boolean = {
+  def LMX(x: Var, m: MultiLevel): Boolean = {
     Q.clear()
 
     // 初始化传播队列
@@ -227,7 +225,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
           Y_evt += i
           Y_evt += j
 
-          val (res, changed) = c.LMX(Y_evt)
+          val (res, changed) = c.LMX(Y_evt, m)
 
           if (!res) {
             return false
@@ -245,47 +243,47 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
   }
 
 
-  def propagate(x: Var, m: MultiLevel): Boolean = {
-    Q.clear()
-
-    // 初始化传播队列
-    if (x == null) {
-      for (z <- vars) {
-        Q.push(z)
-        //        println(s"Q << ${z.id}")
-      }
-    } else {
-      Q.push(x)
-      //      println(s"Q << ${x.id}")
-    }
-
-    while (!Q.empty()) {
-      val j = Q.pop().asInstanceOf[BitSetVar_LMRPC]
-      //      println(s"Q >> ${j.id}")
-      for (i <- helper.neiVar(j.id)) {
-        //        println(s"nei: ${i.id}")
-        if (i.unBind()) {
-          val c = helper.commonCon(i.id)(j.id)(0)
-          Y_evt.clear()
-          Y_evt += i
-          Y_evt += j
-
-          val (res, changed) = c.propagate(Y_evt)
-
-          if (!res) {
-            return false
-          }
-
-          if (changed) {
-            //            println(s"Q << ${i.id}")
-            Q.push(i)
-          }
-        }
-      }
-    }
-
-    return true
-  }
+  //  def propagate(x: Var, m: MultiLevel): Boolean = {
+  //    Q.clear()
+  //
+  //    // 初始化传播队列
+  //    if (x == null) {
+  //      for (z <- vars) {
+  //        Q.push(z)
+  //        //        println(s"Q << ${z.id}")
+  //      }
+  //    } else {
+  //      Q.push(x)
+  //      //      println(s"Q << ${x.id}")
+  //    }
+  //
+  //    while (!Q.empty()) {
+  //      val j = Q.pop().asInstanceOf[BitSetVar_LMRPC]
+  //      //      println(s"Q >> ${j.id}")
+  //      for (i <- helper.neiVar(j.id)) {
+  //        //        println(s"nei: ${i.id}")
+  //        if (i.unBind()) {
+  //          val c = helper.commonCon(i.id)(j.id)(0)
+  //          Y_evt.clear()
+  //          Y_evt += i
+  //          Y_evt += j
+  //
+  //          val (res, changed) = c.propagate(Y_evt)
+  //
+  //          if (!res) {
+  //            return false
+  //          }
+  //
+  //          if (changed) {
+  //            //            println(s"Q << ${i.id}")
+  //            Q.push(i)
+  //          }
+  //        }
+  //      }
+  //    }
+  //
+  //    return true
+  //  }
 
 
   //修改levelvdense

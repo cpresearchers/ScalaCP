@@ -51,7 +51,7 @@ class LMaxRPCSolver(xm: XModel) {
   val Q = new CoarseQueue[Var](numVars)
   var Y_evt: ArrayBuffer[BitSetVar_LMRPC] = new ArrayBuffer[BitSetVar_LMRPC](xm.max_arity)
   val I = new AssignedStack[Var](xm.num_vars)
-
+  val levels = new LMXSparseSet(parallelism)
   // 初始化helper中的部分数据结构
   for (c <- tabs) {
     helper.commonCon(c.scope(0).id)(c.scope(1).id) += c

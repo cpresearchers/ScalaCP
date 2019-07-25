@@ -18,7 +18,7 @@ class LMXSparseSet(val capacity: Int, val baseLevel: Int) {
     // 拿到相对层数
     // 获取tmplevel
     val tmplevel = sparse(top)
-    dense(top).set(searchLevel, tmplevel + baseLevel)
+    dense(top).set(searchLevel, tmplevel + baseLevel, tmplevel)
     top += 1
     return dense(top - 1)
   }

@@ -228,7 +228,7 @@ class LMX_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: Array
   }
 
   // 等几个线程
-  def LMX(evt: ArrayBuffer[BitSetVar_LMX], tIdx: Int, m: MultiLevel): (Boolean, Boolean) = {
+  def LMX(evt: ArrayBuffer[BitSetVar_LMX], m: MultiLevel): (Boolean, Boolean) = {
     //获取传入的两个变量
     val i = evt(0)
     val j = evt(1)
@@ -243,7 +243,7 @@ class LMX_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: Array
 
     for (a <- lmxValues) {
       //      println(s"have_pc_support（${i.id}, ${a}, ${j.id})")
-      if (!havePCSupport(iIdx, a, jIdx, tIdx, m)) {
+      if (!havePCSupport(iIdx, a, jIdx, m)) {
         //        println(s"remove: (${i.id},${a})")
         i.remove(a)
         changed = true
@@ -259,7 +259,7 @@ class LMX_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: Array
     return (true, changed)
   }
 
-  def havePCSupport(iIdx: Int, a: Int, jIdx: Int, tIdx: Int, m: MultiLevel): Boolean = {
+  def havePCSupport(iIdx: Int, a: Int, jIdx: Int, m: MultiLevel): Boolean = {
     val lastPC_iaj = lastPC(iIdx)(a)
     val i = scope(iIdx)
     val j = scope(jIdx)
@@ -277,7 +277,7 @@ class LMX_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: Array
       breakable {
         for (k <- helper.commonVar(i.id)(j.id)) {
           if (k.unBind()) {
-            if (!havePCWit(iIdx, a, jIdx, b, k, tIdx, m)) {
+            if (!havePCWit(iIdx, a, jIdx, b, k, m)) {
               pcWitness = false
               break()
             }
@@ -286,9 +286,9 @@ class LMX_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: Array
       }
 
       if (pcWitness) {
-        lastPC(tIdx)(iIdx)(a) = b
-        lastPC(tIdx)(jIdx)(b) = a
-        lastAC(tIdx)(iIdx)(a) = b / Constants.BITSIZE
+        lastPC(m.tIdx)(iIdx)(a) = b
+        lastPC(m.tIdx)(jIdx)(b) = a
+        lastAC(m.tIdx)(iIdx)(a) = b / Constants.BITSIZE
         return true
       }
 
@@ -301,7 +301,7 @@ class LMX_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: Array
     return false
   }
 
-  def havePCWit(iIdx: Int, a: Int, jIdx: Int, b: Int, k: BitSetVar_LMRPC, tIdx: Int, m: MultiLevel): Boolean = {
+  def havePCWit(iIdx: Int, a: Int, jIdx: Int, b: Int, k: BitSetVar_LMX, m: MultiLevel): Boolean = {
     val i = scope(iIdx)
     val j = scope(jIdx)
     val c_ik = helper.commonCon(i.id)(k.id)(0)
