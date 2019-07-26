@@ -22,7 +22,7 @@ class LMXSearchHelper(override val numVars: Int, override val numTabs: Int, xm: 
 
 
   var ACFinished = false
-  var isConsistent = false
+//  var isConsistent = false
 
 }
 

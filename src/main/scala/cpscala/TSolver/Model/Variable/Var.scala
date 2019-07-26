@@ -34,6 +34,10 @@ abstract class Var {
 
   def unBind(): Boolean = bindLevel > level
 
+  def isBind(i:Int): Boolean = bindLevel <= i
+
+  def unBind(i:Int): Boolean = bindLevel > i
+
   def isLastBind(): Boolean = bindLevel == level
 
   def isLastBindOrUnBind(): Boolean = bindLevel >= level

@@ -19,7 +19,7 @@ object main_lmrpc {
 
     //    xm.show()
 
-    val lmx = new LMaxRPCSolver(xm)
+    val lmx = new LMaxRPCSolver(xm,"b")
     lmx.search(Constants.TIME)
 
     println(lmx.I.toArray().mkString(","))

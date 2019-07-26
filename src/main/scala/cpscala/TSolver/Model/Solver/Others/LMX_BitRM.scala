@@ -306,9 +306,9 @@ class LMX_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: Array
       }
 
       if (pcWitness) {
-        lastPC(m.tIdx)(iIdx)(a) = b
-        lastPC(m.tIdx)(jIdx)(b) = a
-        lastAC(m.tIdx)(iIdx)(a) = b / Constants.BITSIZE
+        lastPC(iIdx)(a) = b
+        lastPC(jIdx)(b) = a
+        lastAC(iIdx)(a) = b / Constants.BITSIZE
         return true
       }
 

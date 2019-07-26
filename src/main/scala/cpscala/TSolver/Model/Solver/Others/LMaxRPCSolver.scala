@@ -1,6 +1,7 @@
 package cpscala.TSolver.Model.Solver.Others
 
 import cpscala.TSolver.CpUtil.{AssignedStack, CoarseQueue, Literal}
+import cpscala.TSolver.Model.Constraint.SConstraint.Propagator
 import cpscala.TSolver.Model.Solver.SSolver.SSolver
 import cpscala.TSolver.Model.Variable.{BitSetVar, Var}
 import cpscala.XModel.{XModel, XTab, XVar}
@@ -8,12 +9,12 @@ import cpscala.XModel.{XModel, XTab, XVar}
 import scala.collection.mutable._
 
 
-class LMaxRPCSolver(xm: XModel) {
+class LMaxRPCSolver(xm: XModel, propagatorName: String) {
 
   val numVars: Int = xm.num_vars
   val numTabs: Int = xm.num_tabs
   val vars = new Array[BitSetVar_LMRPC](numVars)
-  val tabs = new Array[LMaxRPC_BitRM](numTabs)
+  val tabs = new Array[Propagator](numTabs)
   val helper = new LMaxRPCSearchHelper(numVars, numTabs, xm)
 
   //记录已赋值的变量
@@ -24,9 +25,9 @@ class LMaxRPCSolver(xm: XModel) {
   //  val levelcdense = Array.range(0, numTabs)
   //  val clevel = Array.fill(numVars + 1)(-1)
 
-  val subscription = new Array[ArrayBuffer[LMaxRPC_BitRM]](numVars)
+  val subscription = new Array[ArrayBuffer[Propagator]](numVars)
   for (i <- 0 until numVars) {
-    subscription(i) = new ArrayBuffer[LMaxRPC_BitRM]()
+    subscription(i) = new ArrayBuffer[Propagator]()
   }
 
   // 初始化变量
@@ -35,23 +36,42 @@ class LMaxRPCSolver(xm: XModel) {
     vars(i) = new BitSetVar_LMRPC(xv.name, xv.id, numVars, xv.values, helper)
   }
 
-  //初始化约束
-  for (i <- 0 until numTabs) {
-    val xc: XTab = xm.tabs.get(i)
-    val ts: Array[Array[Int]] = xc.tuples
-    val scope: Array[BitSetVar_LMRPC] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
-    tabs(i) = new LMaxRPC_BitRM(xc.id, xc.arity, numVars, scope, ts, helper)
 
-    for (v <- scope) {
-      subscription(v.id) += tabs(i)
+  propagatorName match {
+    case "br" => {
+      //初始化约束
+      for (i <- 0 until numTabs) {
+        val xc: XTab = xm.tabs.get(i)
+        val ts: Array[Array[Int]] = xc.tuples
+        val scope: Array[Var] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
+        tabs(i) = new LMaxRPC_BitRM(xc.id, xc.arity, numVars, scope, ts, helper)
+
+        for (v <- scope) {
+          subscription(v.id) += tabs(i)
+        }
+      }
+    }
+
+    case "b"=>{
+      //初始化约束
+      for (i <- 0 until numTabs) {
+        val xc: XTab = xm.tabs.get(i)
+        val ts: Array[Array[Int]] = xc.tuples
+        val scope: Array[Var] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
+        tabs(i) = new LMaxRPC_Bit(xc.id, xc.arity, numVars, scope, ts, helper)
+
+        for (v <- scope) {
+          subscription(v.id) += tabs(i)
+        }
+      }
     }
   }
 
+
   // 初始化搜索引擎中用到的数据结构
   val Q = new CoarseQueue[Var](numVars)
-  var Y_evt: ArrayBuffer[BitSetVar_LMRPC] = new ArrayBuffer[BitSetVar_LMRPC](xm.max_arity)
+  var Y_evt: ArrayBuffer[Var] = new ArrayBuffer[Var](xm.max_arity)
   val I = new AssignedStack[Var](xm.num_vars)
-  val levels = new LMXSparseSet(parallelism)
   // 初始化helper中的部分数据结构
   for (c <- tabs) {
     helper.commonCon(c.scope(0).id)(c.scope(1).id) += c
@@ -77,54 +97,6 @@ class LMaxRPCSolver(xm: XModel) {
       }
     }
   }
-
-  //.....show common
-//
-//  var ii = 0
-//  while (ii < numVars) {
-//    var jj = 0
-//    while (jj < numVars) {
-//      val cs = helper.commonCon(ii)(jj)
-//      if (cs.nonEmpty) {
-//        print(cs(0).id, "\t")
-//      } else {
-//        print("X", "\t")
-//      }
-//      jj += 1
-//    }
-//    println()
-//    ii += 1
-//  }
-//  println("--------------")
-//  ii = 0
-//  while (ii < numVars) {
-//    var jj = 0
-//    while (jj < numVars) {
-//      val vs = helper.commonVar(ii)(jj)
-//      if (vs.nonEmpty) {
-//        for (v <- vs) {
-//          print(v.id + " ")
-//        }
-//        print("|")
-//      } else {
-//        print("X|")
-//      }
-//      jj += 1
-//    }
-//    println()
-//    ii += 1
-//  }
-//  println("--------------")
-//  for (jj <- 0 until numVars) {
-//    val vs = helper.neiVar(jj)
-//    print(jj + ": ")
-//    for (v <- vs) {
-//      print(v.id + " ")
-//    }
-//    println()
-//  }
-
-
   var start_time = 0L
   var branch_start_time = 0L
   var prop_start_time = 0L
@@ -135,7 +107,7 @@ class LMaxRPCSolver(xm: XModel) {
     var finished = false
 
     //initial propagate
-//    println("init prop")
+    //    println("init prop")
     start_time = System.nanoTime
     var consistent = initialPropagate()
     end_time = System.nanoTime
@@ -171,7 +143,7 @@ class LMaxRPCSolver(xm: XModel) {
       helper.nodes += 1
       //println("nodes: " + helper.nodes)
       I.push(literal)
-//      println("push:" + literal.toString())
+      //      println("push:" + literal.toString())
       bind(literal)
 
 
@@ -190,7 +162,7 @@ class LMaxRPCSolver(xm: XModel) {
         //        for (c <- subscription(literal.v.name)) {
         //          c.assignedCount += 0.5
         //        }
-//        I.show()
+        //        I.show()
         end_time = System.nanoTime
         helper.time = end_time - start_time
         return
@@ -199,7 +171,7 @@ class LMaxRPCSolver(xm: XModel) {
       while (!consistent && !I.empty()) {
         back_start_time = System.nanoTime
         literal = I.pop()
-//        println("pop:" + literal.toString())
+        //        println("pop:" + literal.toString())
         backLevel()
         literal.v.remove(literal.a)
         remove(literal)
@@ -242,32 +214,32 @@ class LMaxRPCSolver(xm: XModel) {
     if (x == null) {
       for (z <- vars) {
         Q.push(z)
-//        println(s"Q << ${z.id}")
+        //        println(s"Q << ${z.id}")
       }
     } else {
       Q.push(x)
-//      println(s"Q << ${x.id}")
+      //      println(s"Q << ${x.id}")
     }
 
     while (!Q.empty()) {
       val j = Q.pop().asInstanceOf[BitSetVar_LMRPC]
-//      println(s"Q >> ${j.id}")
+      //      println(s"Q >> ${j.id}")
       for (i <- helper.neiVar(j.id)) {
-//        println(s"nei: ${i.id}")
+        //        println(s"nei: ${i.id}")
         if (i.unBind()) {
           val c = helper.commonCon(i.id)(j.id)(0)
           Y_evt.clear()
           Y_evt += i
           Y_evt += j
 
-          val (res, changed) = c.propagate(Y_evt)
+          val res = c.propagate(Y_evt)
 
           if (!res) {
             return false
           }
 
-          if (changed) {
-//            println(s"Q << ${i.id}")
+          if (Y_evt.nonEmpty) {
+            //            println(s"Q << ${i.id}")
             Q.push(i)
           }
         }
