@@ -5,12 +5,13 @@ import cpscala.TSolver.Model.Solver.SSolver.SSolver
 import cpscala.TSolver.Model.Variable.{BitSetVar, Var}
 import cpscala.XModel.{XModel, XTab, XVar}
 
+import scala.collection.mutable
 import scala.collection.mutable._
 
 
 class LMXPSolver(xm: XModel, parallelism: Int) {
 
-  class LCRunnable(val x: BitSetVar_LMRPC, val m: MultiLevel) extends Runnable {
+  class LCRunnable(val x: Var, val m: MultiLevel) extends Thread {
     override def run(): Unit = {
       LMX(x, m)
     }
@@ -59,6 +60,8 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
   var Y_evt: ArrayBuffer[BitSetVar_LMX] = new ArrayBuffer[BitSetVar_LMX](xm.max_arity)
   val I = new AssignedStack[Var](xm.num_vars)
   val L = new LMXSparseSet(parallelism, numVars)
+
+  val M = new mutable.HashMap[MultiLevel, LCRunnable]()
   // 初始化helper中的部分数据结构
   for (c <- tabs) {
     helper.commonCon(c.scope(0).id)(c.scope(1).id) += c
@@ -91,22 +94,29 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
   var back_start_time = 0L
   var end_time = 0L
 
-  def search(timeLimit: Long): Unit = {
+  def nonSync(timeLimit: Long): Unit = {
     var finished = false
 
     //initial propagate
     //    println("init prop")
     start_time = System.nanoTime
-    val m =
 
-    var consistent = initialPropagate()
+    val m = newTmpLevel()
+    M += (m -> new LCRunnable(null, m))
+    val lc = M(m)
+    lc.start()
+    helper.isConsistent = AC(null)
+    lc.join()
+    M -= m
+    deleteTmpLevel(m)
+
     end_time = System.nanoTime
     helper.propTime += (end_time - prop_start_time)
 
     //infoShow()
     //    return
 
-    if (!consistent) {
+    if (!helper.isConsistent) {
       finished = false
       end_time = System.nanoTime
       helper.time = end_time - start_time
@@ -130,24 +140,32 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
       branch_start_time = System.nanoTime
       literal = selectLiteral()
       newLevel()
+
+
       helper.nodes += 1
       //println("nodes: " + helper.nodes)
       I.push(literal)
       //      println("push:" + literal.toString())
       bind(literal)
 
-
       end_time = System.nanoTime
       helper.branchTime += (end_time - branch_start_time)
 
-
       prop_start_time = System.nanoTime
-      consistent = checkConsistencyAfterAssignment(literal.v)
+      val m = newTmpLevel()
+      M += (m -> new LCRunnable(literal.v, m))
+      val lc = M(m)
+      lc.start()
+      helper.isConsistent = AC(literal.v)
+      lc.join()
+      M -= m
+      deleteTmpLevel(m)
+
       end_time = System.nanoTime
       helper.propTime += (end_time - prop_start_time)
       //infoShow()
 
-      if (consistent && I.full()) {
+      if (helper.isConsistent && I.full()) {
         //        //成功再加0.5
         //        for (c <- subscription(literal.v.name)) {
         //          c.assignedCount += 0.5
@@ -158,7 +176,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
         return
       }
 
-      while (!consistent && !I.empty()) {
+      while (!helper.isConsistent && !I.empty()) {
         back_start_time = System.nanoTime
         literal = I.pop()
         //        println("pop:" + literal.toString())
@@ -169,13 +187,21 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
         helper.backTime += (end_time - back_start_time)
 
         prop_start_time = System.nanoTime
-        consistent = !literal.v.isEmpty() && checkConsistencyAfterRefutation(literal.v)
+        val m = newTmpLevel()
+        M += (m -> new LCRunnable(literal.v, m))
+        val lc = M(m)
+        lc.start()
+        helper.isConsistent = !literal.v.isEmpty() && AC(literal.v)
+        lc.join()
+        M -= m
+        deleteTmpLevel(m)
+
         end_time = System.nanoTime
         helper.propTime += (end_time - prop_start_time)
         //infoShow()
       }
 
-      if (!consistent) {
+      if (!helper.isConsistent) {
         finished = true
       }
     }
@@ -242,49 +268,51 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
     return true
   }
 
+  def AC(x: Var): Boolean = {
+    Q.clear()
+    if (x == null) {
+      //初始化
+      for (z <- vars) {
+        insert(z)
+      }
+    } else {
+      insert(x)
+    }
+    while (!Q.empty()) {
+      val v = Q.pop()
+      for (c <- subscription(v.id)) {
+        if (helper.varStamp(v.id) > helper.tabStamp(c.id)) {
+          //          println("str(" + c.name + ")")
+          Y_evt.clear()
+          val consistent = c.AC(Y_evt)
+          helper.c_sum += 1
+          //          print(s"cid: ${c.id} yevt: ")
+          //          Y_evt.foreach(p => print(p.id, " "))
+          //          println()
+          if (!consistent) {
+            helper.isConsistent = false
+            helper.ACFinished = true
+            return false
+          } else {
+            for (y <- Y_evt) {
+              insert(y)
+            }
+          }
+          helper.globalStamp += 1
+          helper.tabStamp(c.id) = helper.globalStamp
+        }
+      }
+      helper.p_sum += 1
+    }
+    helper.ACFinished = true
+    return true
+  }
 
-  //  def propagate(x: Var, m: MultiLevel): Boolean = {
-  //    Q.clear()
-  //
-  //    // 初始化传播队列
-  //    if (x == null) {
-  //      for (z <- vars) {
-  //        Q.push(z)
-  //        //        println(s"Q << ${z.id}")
-  //      }
-  //    } else {
-  //      Q.push(x)
-  //      //      println(s"Q << ${x.id}")
-  //    }
-  //
-  //    while (!Q.empty()) {
-  //      val j = Q.pop().asInstanceOf[BitSetVar_LMRPC]
-  //      //      println(s"Q >> ${j.id}")
-  //      for (i <- helper.neiVar(j.id)) {
-  //        //        println(s"nei: ${i.id}")
-  //        if (i.unBind()) {
-  //          val c = helper.commonCon(i.id)(j.id)(0)
-  //          Y_evt.clear()
-  //          Y_evt += i
-  //          Y_evt += j
-  //
-  //          val (res, changed) = c.propagate(Y_evt)
-  //
-  //          if (!res) {
-  //            return false
-  //          }
-  //
-  //          if (changed) {
-  //            //            println(s"Q << ${i.id}")
-  //            Q.push(i)
-  //          }
-  //        }
-  //      }
-  //    }
-  //
-  //    return true
-  //  }
-
+  def insert(x: Var): Unit = {
+    Q.push(x)
+    helper.globalStamp += 1
+    helper.varStamp(x.id) = helper.globalStamp
+  }
 
   //修改levelvdense
   def selectLiteral(): Literal[Var] = {
@@ -332,6 +360,18 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
     for (c <- tabs) {
       c.newLevel()
     }
+  }
+
+  def newTmpLevel(): MultiLevel = {
+    val m = L.add(helper.level)
+    for (v <- vars) {
+      v.newTmpLevel(m)
+    }
+    return m
+  }
+
+  def deleteTmpLevel(m: MultiLevel): Unit = {
+    L.remove(m)
   }
 
   def backLevel(): Unit = {

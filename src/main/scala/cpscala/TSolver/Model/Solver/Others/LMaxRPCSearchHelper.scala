@@ -21,5 +21,6 @@ class LMaxRPCSearchHelper(override val numVars: Int, override val numTabs: Int, 
   val maxNumBit = Constants.getNumBit(xm.max_domain_size)
 
 
+
 }
 

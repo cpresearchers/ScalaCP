@@ -121,7 +121,7 @@ class LMX_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: Array
   def updateTable(): Boolean = {
     //    //println(s"      ut cid: ${id}===========>")
     var i = 0
-    while (i < Sval.length) {
+    while (i < Sval.length && helper.isConsistent) {
       val vv: Int = Sval(i)
       val v: Var = scope(vv)
       //      v.mask(localMask(vv))
@@ -159,6 +159,7 @@ class LMX_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: Array
 
       //传播失败
       if (currTab.isEmpty()) {
+        helper.isConsistent = false
         //println(s"update faild!!: ${Thread.currentThread().getName}, cid: ${id}")
         return false
       }
@@ -170,11 +171,13 @@ class LMX_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: Array
     return true
   }
 
-  def filterDomains(y: ArrayBuffer[Var]): Boolean = {
+  def filterDomains(y: ArrayBuffer[BitSetVar_LMX]): Boolean = {
     y.clear()
 
-    for (vv <- Ssup) {
+    var i = 0
+    while (i < Ssup.length && helper.isConsistent) {
       var deleted: Boolean = false
+      val vv: Int = Ssup(i)
       val v = scope(vv)
       v.getValidValues(values)
 
@@ -197,6 +200,7 @@ class LMX_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: Array
       if (deleted) {
         // 论域删空退出
         if (v.isEmpty()) {
+          helper.isConsistent = false
           //println(s"filter faild!!: ${Thread.currentThread().getName}, cid: ${id}, vid: ${v.id}")
           return false
         }
@@ -204,12 +208,14 @@ class LMX_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: Array
         v.mask(lastMask(vv))
         y += v
       }
+
+      i += 1
     }
 
     return true
   }
 
-  def AC(evt: ArrayBuffer[Var]): Boolean = {
+  def AC(evt: ArrayBuffer[BitSetVar_LMX]): Boolean = {
     //L32~L33
     initial()
     //    val utStart = System.nanoTime
@@ -217,6 +223,7 @@ class LMX_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: Array
     //    val utEnd = System.nanoTime
     //    helper.updateTableTime += utEnd - utStart
     if (!res) {
+      helper.isConsistent = false
       return false
     }
 
@@ -242,13 +249,26 @@ class LMX_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: Array
     i.getValidValues(lmxValues)
 
     for (a <- lmxValues) {
+
+      // 若主线程已完成
+      if (helper.ACFinished) {
+        return (true, changed)
+      }
+
+      if (!helper.isConsistent) {
+        return (false, changed)
+      }
+
       //      println(s"have_pc_support（${i.id}, ${a}, ${j.id})")
       if (!havePCSupport(iIdx, a, jIdx, m)) {
         //        println(s"remove: (${i.id},${a})")
         i.remove(a)
+        i.remove(a, m)
         changed = true
         if (i.isEmpty()) {
           //          println("field")
+
+          helper.isConsistent = false
           return (false, changed)
         }
 
@@ -276,7 +296,7 @@ class LMX_BitRM(val id: Int, val arity: Int, val num_vars: Int, val scope: Array
       var pcWitness = true
       breakable {
         for (k <- helper.commonVar(i.id)(j.id)) {
-          if (k.unBind()) {
+          if (k.unBind(m.searchLevel)) {
             if (!havePCWit(iIdx, a, jIdx, b, k, m)) {
               pcWitness = false
               break()

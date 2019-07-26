@@ -21,5 +21,8 @@ class LMXSearchHelper(override val numVars: Int, override val numTabs: Int, xm: 
   val maxNumBit = Constants.getNumBit(xm.max_domain_size)
 
 
+  var ACFinished = false
+  var isConsistent = false
+
 }
 

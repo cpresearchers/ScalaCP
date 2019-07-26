@@ -23,7 +23,7 @@ class BitSetVar_LMX(val name: String, val id: Int, numVars: Int, vals: Array[Int
   val numBit = Math.ceil(capacity.toDouble / Constants.BITSIZE.toDouble).toInt
   val bitMark = Array.fill[Long](numBit)(0L)
   val bitDoms = Array.fill[Long](numLevel, numBit)(0L)
-  val tmpLevels = new LMXSparseSet(parallelism, startTmpLevel)
+//  val tmpLevels = new LMXSparseSet(parallelism, startTmpLevel)
 
   // 初始化第0级的bitDom
   var ii = 0
@@ -48,14 +48,18 @@ class BitSetVar_LMX(val name: String, val id: Int, numVars: Int, vals: Array[Int
     return level
   }
 
-  def newTmpLevel(searchLevel: Int): MultiLevel = {
+  def newTmpLevel(m: MultiLevel): Int = {
     // 先获取最新层
-    val m = tmpLevels.add(searchLevel)
-    return m
+    var i = 0
+    while(i<numBit){
+      bitDoms(m.tmpLevel)(i) = bitDoms(level)(i)
+      i+=1
+    }
+    return m.tmpLevel
   }
 
   def deleteTmpLevel(m: MultiLevel) = {
-    tmpLevels.remove(m)
+//    tmpLevels.remove(m)
   }
 
   override def backLevel(): Int = {
@@ -101,8 +105,16 @@ class BitSetVar_LMX(val name: String, val id: Int, numVars: Int, vals: Array[Int
   }
 
   override def remove(a: Int): Unit = {
+    this.synchronized {
+      val (x, y) = INDEX.getXY(a)
+      bitDoms(level)(x) &= Constants.MASK0(y)
+    }
+  }
+
+  def remove(a: Int, m: MultiLevel): Unit = {
     val (x, y) = INDEX.getXY(a)
-    bitDoms(level)(x) &= Constants.MASK0(y)
+    bitDoms(m.tmpLevel)(x) &= Constants.MASK0(y)
+
   }
 
   override def isEmpty(): Boolean = {
