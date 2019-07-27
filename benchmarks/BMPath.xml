@@ -3,8 +3,8 @@
     <BMFiles nbBMFiles="1">
         <!--<BMFile name="0" format="3">benchmarks/Experiment.xml</BMFile>-->
         <!--<BMFile name="0" format="3">benchmarks/test2.xml</BMFile>-->
-        <BMFile name="0" format="3">benchmarks/queen4.xml</BMFile>
-        <!--        <BMFile name="0" format="3">benchmarks/queen12.xml</BMFile>-->
+<!--        <BMFile name="0" format="3">benchmarks/queen4.xml</BMFile>-->
+                <BMFile name="0" format="3">benchmarks/queen12.xml</BMFile>
         <!--        <BMFile name="0" format="3">benchmarks/queen12.xml</BMFile>-->
         <!--        <BMFile name="0" format="3">benchmarks/rand-5-12-12-200-12442-01.xml</BMFile>-->
         <!--        <BMFile name="0" format="2">/home/lee/benckmarks/X2/rand-8-20-5_total20/rand-8-20-5-18-800-2_ext.xml</BMFile>-->

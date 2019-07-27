@@ -52,7 +52,7 @@ class LMaxRPCSolver(xm: XModel, propagatorName: String) {
       }
     }
 
-    case "b"=>{
+    case "b" => {
       //初始化约束
       for (i <- 0 until numTabs) {
         val xc: XTab = xm.tabs.get(i)
@@ -107,7 +107,8 @@ class LMaxRPCSolver(xm: XModel, propagatorName: String) {
     var finished = false
 
     //initial propagate
-    //    println("init prop")
+    println("initial propagate")
+    infoShow()
     start_time = System.nanoTime
     var consistent = initialPropagate()
     end_time = System.nanoTime
@@ -128,28 +129,22 @@ class LMaxRPCSolver(xm: XModel, propagatorName: String) {
     while (!finished) {
       end_time = System.nanoTime
       helper.time = end_time - start_time
+
       if (helper.time > timeLimit) {
         return
       }
-
-      //      if (helper.nodes == 8) {
-      //                //infoShow()
-      //        return
-      //      }
 
       branch_start_time = System.nanoTime
       literal = selectLiteral()
       newLevel()
       helper.nodes += 1
-      //println("nodes: " + helper.nodes)
       I.push(literal)
-      //      println("push:" + literal.toString())
       bind(literal)
-
-
       end_time = System.nanoTime
       helper.branchTime += (end_time - branch_start_time)
 
+      println("push:" + literal.toString())
+      infoShow()
 
       prop_start_time = System.nanoTime
       consistent = checkConsistencyAfterAssignment(literal.v)
@@ -157,12 +152,10 @@ class LMaxRPCSolver(xm: XModel, propagatorName: String) {
       helper.propTime += (end_time - prop_start_time)
       //infoShow()
 
+      println("--------")
+      infoShow()
+
       if (consistent && I.full()) {
-        //        //成功再加0.5
-        //        for (c <- subscription(literal.v.name)) {
-        //          c.assignedCount += 0.5
-        //        }
-        //        I.show()
         end_time = System.nanoTime
         helper.time = end_time - start_time
         return
@@ -171,18 +164,22 @@ class LMaxRPCSolver(xm: XModel, propagatorName: String) {
       while (!consistent && !I.empty()) {
         back_start_time = System.nanoTime
         literal = I.pop()
-        //        println("pop:" + literal.toString())
         backLevel()
         literal.v.remove(literal.a)
         remove(literal)
         end_time = System.nanoTime
         helper.backTime += (end_time - back_start_time)
 
+        println("pop:" + literal.toString())
+        infoShow()
+
         prop_start_time = System.nanoTime
         consistent = !literal.v.isEmpty() && checkConsistencyAfterRefutation(literal.v)
         end_time = System.nanoTime
         helper.propTime += (end_time - prop_start_time)
-        //infoShow()
+
+        println("--------")
+        infoShow()
       }
 
       if (!consistent) {
@@ -342,7 +339,8 @@ class LMaxRPCSolver(xm: XModel, propagatorName: String) {
 
   def infoShow(): Unit = {
     for (x <- vars) {
-      println(s"     var:${x.id} size:${x.size()}")
+      //      println(s"     var:${x.id} size:${x.size()}")
+      x.show()
     }
   }
 }

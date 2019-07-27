@@ -1,43 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="48a296e1-df47-41ca-bb68-ee7d758e3d3e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMX_Bit.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/ScalaCP-build.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/ScalaCP-build.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/ScalaCP.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/ScalaCP.iml" afterDir="false" />
+    <list default="true" id="48a296e1-df47-41ca-bb68-ee7d758e3d3e" name="Default Changelist" comment="添加spareset用于存储临时层">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/benchmarks/BMPath.xml" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/BMPath.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/default/scalacp-build/scala_2.12/sbt_1.0/0.1.0-SNAPSHOT/resolved.xml.properties" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/default/scalacp-build/scala_2.12/sbt_1.0/0.1.0-SNAPSHOT/resolved.xml.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/default/scalacp-build/scala_2.12/sbt_1.0/0.1.0-SNAPSHOT/resolved.xml.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/default/scalacp-build/scala_2.12/sbt_1.0/0.1.0-SNAPSHOT/resolved.xml.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-compile-internal.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-compile-internal.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-compile.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-compile.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-optional.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-optional.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-plugin.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-provided.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-provided.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-runtime-internal.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-runtime-internal.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-runtime.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-runtime.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-scala-tool.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-scala-tool.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-test-internal.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-test-internal.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-test.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-test.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/streams/$global/update/$global/streams/out" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/streams/$global/update/$global/streams/out" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/streams/$global/update/$global/streams/update_cache_2.12/inputs" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/streams/$global/update/$global/streams/update_cache_2.12/inputs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project/target/streams/$global/update/$global/streams/update_cache_2.12/output" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/streams/$global/update/$global/streams/update_cache_2.12/output" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/streams/compile/dependencyClasspath/$global/streams/export" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/streams/compile/dependencyClasspath/$global/streams/export" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/streams/compile/exportedProducts/$global/streams/export" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/streams/compile/exportedProducts/$global/streams/export" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/streams/compile/externalDependencyClasspath/$global/streams/export" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/streams/compile/externalDependencyClasspath/$global/streams/export" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/streams/compile/managedClasspath/$global/streams/export" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/streams/compile/managedClasspath/$global/streams/export" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/streams/runtime/dependencyClasspath/$global/streams/export" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/streams/runtime/dependencyClasspath/$global/streams/export" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/streams/runtime/exportedProducts/$global/streams/export" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/streams/runtime/exportedProducts/$global/streams/export" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/streams/runtime/fullClasspath/$global/streams/export" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/streams/runtime/fullClasspath/$global/streams/export" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/streams/runtime/internalDependencyClasspath/$global/streams/export" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/streams/runtime/internalDependencyClasspath/$global/streams/export" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/main_lmrpc.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/main_lmrpc.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/BitSetVar_LMRPC.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/BitSetVar_LMRPC.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/BitSetVar_LMX.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/BitSetVar_LMX.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMXPSolver.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMXPSolver.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMXSearchHelper.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMXSearchHelper.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMX_BitRM.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMX_BitRM.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMaxRPC_Bit.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMaxRPC_Bit.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMX_Bit.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMX_Bit.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMaxRPCSolver.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMaxRPCSolver.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/.history" beforeDir="false" afterPath="$PROJECT_DIR$/target/.history" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sbt_2.12/0.1/resolved.xml.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sbt_2.12/0.1/resolved.xml.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sbt_2.12/0.1/resolved.xml.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sbt_2.12/0.1/resolved.xml.xml" afterDir="false" />
@@ -82,7 +54,6 @@
       <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp_2.12-test.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp_2.12-test.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/streams/$global/$global/dumpStructure/$global/streams/out" beforeDir="false" afterPath="$PROJECT_DIR$/target/streams/$global/$global/dumpStructure/$global/streams/out" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/streams/$global/dependencyPositions/$global/streams/update_cache_2.12/output_dsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/streams/$global/dependencyPositions/$global/streams/update_cache_2.12/output_dsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/streams/$global/ivyConfiguration/$global/streams/out" beforeDir="false" afterPath="$PROJECT_DIR$/target/streams/$global/ivyConfiguration/$global/streams/out" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/streams/$global/update/$global/streams/out" beforeDir="false" afterPath="$PROJECT_DIR$/target/streams/$global/update/$global/streams/out" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/streams/$global/update/$global/streams/update_cache_2.12/inputs" beforeDir="false" afterPath="$PROJECT_DIR$/target/streams/$global/update/$global/streams/update_cache_2.12/inputs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/streams/$global/update/$global/streams/update_cache_2.12/output" beforeDir="false" afterPath="$PROJECT_DIR$/target/streams/$global/update/$global/streams/update_cache_2.12/output" afterDir="false" />
@@ -133,8 +104,28 @@
             <file pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Constraint/DSPConstraint/TableDSPCT_SBit.scala">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="19">
-                    <caret line="151" column="6" selection-start-line="151" selection-start-column="6" selection-end-line="151" selection-end-column="27" />
+                  <state relative-caret-position="348">
+                    <caret line="156" column="16" lean-forward="true" selection-start-line="156" selection-start-column="16" selection-end-line="156" selection-end-column="16" />
+                  </state>
+                </provider>
+              </entry>
+            </file>
+          </leaf>
+        </state>
+      </content>
+    </window>
+    <window id="1">
+      <content type="file-editors">
+        <state>
+          <leaf>
+            <file pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMXPSolver.scala">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="184">
+                    <caret line="195" selection-start-line="195" selection-end-line="196" selection-end-column="18" />
+                    <folding>
+                      <element signature="e#45#112#0" expanded="true" />
+                    </folding>
                   </state>
                 </provider>
               </entry>
@@ -152,40 +143,28 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMXPSolver.scala">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMaxRPCSolver.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-97">
-              <caret line="395" column="20" selection-start-line="395" selection-start-column="20" selection-end-line="395" selection-end-column="20" />
-              <folding>
-                <element signature="e#45#112#0" expanded="true" />
-                <element signature="e#5615#5704#0" />
-                <element signature="e#5708#5815#0" />
-                <element signature="e#5819#5926#0" />
-                <element signature="e#5931#6795#0" />
-                <element signature="e#7810#7931#0" />
-                <element signature="e#7935#8796#0" />
-              </folding>
+            <state relative-caret-position="296">
+              <caret line="179" selection-start-line="179" selection-end-line="179" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/CpUtil/CoarseQueue.scala">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Variable/Var.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="507">
-              <caret line="54" column="4" selection-start-line="54" selection-start-column="4" selection-end-line="54" selection-end-column="4" />
+            <state relative-caret-position="609">
+              <caret line="74" column="6" selection-start-line="74" selection-start-column="6" selection-end-line="74" selection-end-column="6" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMX_Bit.scala">
+        <entry file="file://$PROJECT_DIR$/benchmarks/BMPath.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="78">
-              <caret line="237" column="6" selection-start-line="237" selection-start-column="6" selection-end-line="237" selection-end-column="6" />
-              <folding>
-                <element signature="e#3864#5340#0" />
-              </folding>
+            <state relative-caret-position="133">
+              <caret line="7" column="43" selection-start-line="7" selection-start-column="43" selection-end-line="7" selection-end-column="43" />
             </state>
           </provider>
         </entry>
@@ -193,44 +172,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMaxRPC_Bit.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="354">
-              <caret line="56" column="24" lean-forward="true" selection-start-line="56" selection-start-column="24" selection-end-line="56" selection-end-column="24" />
+            <state relative-caret-position="401">
+              <caret line="56" column="24" selection-start-line="56" selection-start-column="24" selection-end-line="56" selection-end-column="24" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMX_BitRM.scala">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMX_Bit.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="759">
-              <caret line="51" column="14" lean-forward="true" selection-start-line="51" selection-start-column="14" selection-end-line="51" selection-end-column="14" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMXSparseSet.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="399">
-              <caret line="22" column="4" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="4" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/XModel/XModel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="253">
-              <caret line="100" selection-start-line="100" selection-end-line="100" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/XModel/XTab.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="253">
-              <caret line="170" selection-start-line="170" selection-end-line="170" />
+            <state relative-caret-position="561">
+              <caret line="428" column="5" lean-forward="true" selection-start-line="428" selection-start-column="5" selection-end-line="428" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -238,11 +190,26 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/BitSetVar_LMX.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2332">
-              <caret line="120" lean-forward="true" selection-start-line="120" selection-end-line="120" />
-              <folding>
-                <element signature="e#4495#5025#0" />
-              </folding>
+            <state relative-caret-position="561">
+              <caret line="306" selection-start-line="306" selection-end-line="306" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/BitSetVar_LMRPC.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="666">
+              <caret line="218" selection-start-line="218" selection-end-line="218" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.12.8-sources.jar!/scala/runtime/RichLong.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="593">
+              <caret line="43" column="6" selection-start-line="43" selection-start-column="6" selection-end-line="43" selection-end-column="6" />
             </state>
           </provider>
         </entry>
@@ -275,6 +242,9 @@
       <find>bitDoms(level)</find>
       <find>remove</find>
       <find>bitdom</find>
+      <find>show</find>
+      <find>cons:</find>
+      <find>infoShow</find>
     </findStrings>
     <replaceStrings>
       <replace>LMX_Bit</replace>
@@ -295,23 +265,25 @@
         <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMXPropagator.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMX_BitRM.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMXSearchHelper.scala" />
-        <option value="$PROJECT_DIR$/benchmarks/BMPath.xml" />
         <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/main_lmrpc.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMaxRPC_Bit.scala" />
+        <option value="$PROJECT_DIR$/benchmarks/BMPath.xml" />
         <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMX_Bit.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/BitSetVar_LMX.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/BitSetVar_LMRPC.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMXPSolver.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMaxRPCSolver.scala" />
       </list>
     </option>
   </component>
   <component name="ProjectCodeStyleSettingsMigration">
     <option name="version" value="1" />
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-314" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="1305" />
     <option name="y" value="23" />
-    <option name="width" value="2509" />
-    <option name="height" value="1306" />
+    <option name="width" value="1255" />
+    <option name="height" value="1417" />
   </component>
   <component name="ProjectId" id="1OU7wCHNASbs86IeJMKP0FH822U" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -714,6 +686,9 @@
       <workItem from="1564020569119" duration="312000" />
       <workItem from="1564020933501" duration="15094000" />
       <workItem from="1564140611531" duration="5584000" />
+      <workItem from="1564189968656" duration="73000" />
+      <workItem from="1564190063136" duration="220000" />
+      <workItem from="1564215657680" duration="7429000" />
     </task>
     <task id="LOCAL-00001" summary="1">
       <created>1555836982265</created>
@@ -827,16 +802,23 @@
       <option name="project" value="LOCAL" />
       <updated>1564044895488</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="添加spareset用于存储临时层">
+      <created>1564190035521</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1564190035522</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5597000" />
+    <option name="totallyTimeSpent" value="13319000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="51" y="23" width="2509" height="1417" extended-state="6" />
+    <frame x="1305" y="23" width="1255" height="1417" extended-state="0" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14227808" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.27699918" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -845,7 +827,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.5249458" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49876338" weight="0.3773585" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49876338" visible="true" weight="0.3773585" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3954717" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -924,18 +906,6 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="scala-line">
-          <url>file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMXPSolver.scala</url>
-          <line>92</line>
-          <properties />
-          <option name="timeStamp" value="35" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="scala-line">
-          <url>file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMXPSolver.scala</url>
-          <line>97</line>
-          <properties />
-          <option name="timeStamp" value="36" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="scala-line">
           <url>file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/main_lmrpc.scala</url>
           <line>29</line>
           <properties />
@@ -943,39 +913,27 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="scala-line">
           <url>file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMXPSolver.scala</url>
-          <line>489</line>
+          <line>171</line>
           <properties />
-          <option name="timeStamp" value="39" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="scala-line">
-          <url>file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMX_Bit.scala</url>
-          <line>266</line>
-          <properties />
-          <option name="timeStamp" value="41" />
+          <option name="timeStamp" value="46" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="scala-line">
           <url>file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMXPSolver.scala</url>
-          <line>15</line>
+          <line>174</line>
           <properties />
-          <option name="timeStamp" value="42" />
+          <option name="timeStamp" value="48" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="scala-line">
-          <url>file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMX_Bit.scala</url>
-          <line>264</line>
+          <url>file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/BitSetVar_LMX.scala</url>
+          <line>300</line>
           <properties />
-          <option name="timeStamp" value="43" />
+          <option name="timeStamp" value="50" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="scala-line">
-          <url>file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMX_Bit.scala</url>
-          <line>263</line>
+          <url>file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMXPSolver.scala</url>
+          <line>544</line>
           <properties />
-          <option name="timeStamp" value="44" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="scala-line">
-          <url>file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMX_Bit.scala</url>
-          <line>284</line>
-          <properties />
-          <option name="timeStamp" value="45" />
+          <option name="timeStamp" value="51" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -1062,20 +1020,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Variable/Var.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="684">
-          <caret line="39" selection-start-line="39" selection-end-line="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Constraint/DSPConstraint/TableDSPCT_SBit.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="151" column="6" selection-start-line="151" selection-start-column="6" selection-end-line="151" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/SSolver/SSolver.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="76">
@@ -1090,20 +1034,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMXSearchHelper.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="9" column="54" selection-start-line="9" selection-start-column="54" selection-end-line="9" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMaxRPCSolver.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="11" column="6" selection-start-line="11" selection-start-column="6" selection-end-line="11" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMaxRPC_BitRM.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
@@ -1111,34 +1041,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMXPropagator.scala">
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMXPropagator.scala" />
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMX_BitRM.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
-          <folding>
-            <element signature="e#45#86#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/benchmarks/BMPath.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="6" column="59" selection-start-line="6" selection-start-column="59" selection-end-line="6" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/XModel/XModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="100" selection-start-line="100" selection-end-line="100" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/XModel/XTab.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="170" selection-start-line="170" selection-end-line="170" />
+        <state relative-caret-position="969">
+          <caret line="51" column="14" selection-start-line="51" selection-start-column="14" selection-end-line="51" selection-end-column="14" />
         </state>
       </provider>
     </entry>
@@ -1149,10 +1056,52 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/XModel/XModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1672">
+          <caret line="100" selection-start-line="100" selection-end-line="100" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/XModel/XTab.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3192">
+          <caret line="170" selection-start-line="170" selection-end-line="170" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Constraint/DSPConstraint/TableDSPCT_SBit.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="348">
+          <caret line="156" column="16" lean-forward="true" selection-start-line="156" selection-start-column="16" selection-end-line="156" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/CpUtil/CoarseQueue.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="507">
+        <state relative-caret-position="1007">
           <caret line="54" column="4" selection-start-line="54" selection-start-column="4" selection-end-line="54" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMXSearchHelper.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="23" column="6" selection-start-line="23" selection-start-column="6" selection-end-line="23" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.12.8-sources.jar!/scala/runtime/RichLong.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="593">
+          <caret line="43" column="6" selection-start-line="43" selection-start-column="6" selection-end-line="43" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Variable/Var.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="609">
+          <caret line="74" column="6" selection-start-line="74" selection-start-column="6" selection-end-line="74" selection-end-column="6" />
         </state>
       </provider>
     </entry>
@@ -1166,53 +1115,55 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMX_BitRM.scala">
+    <entry file="file://$PROJECT_DIR$/benchmarks/BMPath.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="759">
-          <caret line="51" column="14" lean-forward="true" selection-start-line="51" selection-start-column="14" selection-end-line="51" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/BitSetVar_LMX.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2332">
-          <caret line="120" lean-forward="true" selection-start-line="120" selection-end-line="120" />
-          <folding>
-            <element signature="e#4495#5025#0" />
-          </folding>
+        <state relative-caret-position="133">
+          <caret line="7" column="43" selection-start-line="7" selection-start-column="43" selection-end-line="7" selection-end-column="43" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMaxRPC_Bit.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="354">
-          <caret line="56" column="24" lean-forward="true" selection-start-line="56" selection-start-column="24" selection-end-line="56" selection-end-column="24" />
+        <state relative-caret-position="401">
+          <caret line="56" column="24" selection-start-line="56" selection-start-column="24" selection-end-line="56" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/BitSetVar_LMX.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="561">
+          <caret line="306" selection-start-line="306" selection-end-line="306" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/BitSetVar_LMRPC.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="666">
+          <caret line="218" selection-start-line="218" selection-end-line="218" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMX_Bit.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="78">
-          <caret line="237" column="6" selection-start-line="237" selection-start-column="6" selection-end-line="237" selection-end-column="6" />
-          <folding>
-            <element signature="e#3864#5340#0" />
-          </folding>
+        <state relative-caret-position="561">
+          <caret line="428" column="5" lean-forward="true" selection-start-line="428" selection-start-column="5" selection-end-line="428" selection-end-column="5" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMXPSolver.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-97">
-          <caret line="395" column="20" selection-start-line="395" selection-start-column="20" selection-end-line="395" selection-end-column="20" />
+        <state relative-caret-position="184">
+          <caret line="195" selection-start-line="195" selection-end-line="196" selection-end-column="18" />
           <folding>
             <element signature="e#45#112#0" expanded="true" />
-            <element signature="e#5615#5704#0" />
-            <element signature="e#5708#5815#0" />
-            <element signature="e#5819#5926#0" />
-            <element signature="e#5931#6795#0" />
-            <element signature="e#7810#7931#0" />
-            <element signature="e#7935#8796#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/Others/LMaxRPCSolver.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="296">
+          <caret line="179" selection-start-line="179" selection-end-line="179" />
         </state>
       </provider>
     </entry>

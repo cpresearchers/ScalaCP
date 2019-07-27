@@ -108,9 +108,9 @@ class BitSetVar_LMX(val name: String, val id: Int, numVars: Int, vals: Array[Int
     bindLevel = level
   }
 
-//  override def isBind(): Boolean = {
-//    bindLevel != 1
-//}
+  //  override def isBind(): Boolean = {
+  //    bindLevel != 1
+  //}
 
   override def remove(a: Int): Unit = {
     this.synchronized {
@@ -295,5 +295,15 @@ class BitSetVar_LMX(val name: String, val id: Int, numVars: Int, vals: Array[Int
       i += 1
     }
     return values.length
+  }
+
+  override def show(): Unit = {
+    var sss = bitDoms(level)(0).toBinaryString
+    var ii = sss.length
+    while (ii < 64) {
+      sss = '0'+ sss
+      ii += 1
+    }
+    println(s"id:${id},${sss}")
   }
 }

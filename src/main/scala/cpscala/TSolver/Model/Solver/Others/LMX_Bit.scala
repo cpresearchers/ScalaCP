@@ -191,7 +191,8 @@ class LMX_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[B
           else {
             deleted = true
             //无法找到支持, 删除(v, a)
-            println(s"      cons:${id} var:${v.id} remove new value:${a}")
+            //            println(s"      cons:${id} var:${v.id} remove new value:${a}")
+            println(s"ac  remove: (${v.id},${a})")
             v.remove(a)
           }
         }
@@ -200,6 +201,7 @@ class LMX_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[B
       if (deleted) {
         // 论域删空退出
         if (v.isEmpty()) {
+          println("ac field")
           helper.isConsistent = false
           //println(s"filter faild!!: ${Thread.currentThread().getName}, cid: ${id}, vid: ${v.id}")
           return false
@@ -236,7 +238,7 @@ class LMX_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[B
 
   // 等几个线程
   def LMX(evt: ArrayBuffer[BitSetVar_LMX], m: MultiLevel): (Boolean, Boolean) = {
-    println("enter c.lmx")
+    //    println("enter c.lmx")
     //获取传入的两个变量
     val i = evt(0)
     val j = evt(1)
@@ -262,13 +264,21 @@ class LMX_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[B
 
       //      println(s"have_pc_support（${i.id}, ${a}, ${j.id})")
       if (!havePCSupport(iIdx, a, jIdx, m)) {
-        println(s"lmx remove: (${i.id},${a})")
-        i.remove(a)
+        if (i.contains(a)) {
+          println(s"lmx remove: (${i.id},${a})")
+          i.remove(a)
+        }
         i.remove(a, m)
         changed = true
-        if (i.isEmpty()) {
-          //          println("field")
 
+        if (i.isEmpty(m)) {
+          println("lmx field")
+          helper.isConsistent = false
+          return (false, changed)
+        }
+
+        if (i.isEmpty()) {
+          println("ac field")
           helper.isConsistent = false
           return (false, changed)
         }

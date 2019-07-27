@@ -93,8 +93,10 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
     var finished = false
 
     //initial propagate
-    start_time = System.nanoTime
+    println("initial propagate")
+    infoShow()
 
+    start_time = System.nanoTime
     val m = newTmpLevel()
     M += (m -> new LCRunnable(null, m))
     val lc = M(m)
@@ -108,9 +110,6 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
     end_time = System.nanoTime
     helper.propTime += (end_time - prop_start_time)
 
-    //infoShow()
-    //    //    return
-    //
     if (!helper.isConsistent) {
       finished = false
       end_time = System.nanoTime
@@ -130,16 +129,14 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
       branch_start_time = System.nanoTime
       literal = selectLiteral()
       newLevel()
-
-
       helper.nodes += 1
-      //println("nodes: " + helper.nodes)
       I.push(literal)
-      //      println("push:" + literal.toString())
       bind(literal)
-
       end_time = System.nanoTime
       helper.branchTime += (end_time - branch_start_time)
+
+      println("push:" + literal.toString())
+      infoShow()
 
       prop_start_time = System.nanoTime
       helper.ACFinished = false
@@ -154,14 +151,12 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
 
       end_time = System.nanoTime
       helper.propTime += (end_time - prop_start_time)
-      //infoShow()
+
+      println("--------")
+      infoShow()
 
       if (helper.isConsistent && I.full()) {
-        //        //成功再加0.5
-        //        for (c <- subscription(literal.v.name)) {
-        //          c.assignedCount += 0.5
-        //        }
-        //        I.show()
+        I.show()
         end_time = System.nanoTime
         helper.time = end_time - start_time
         return
@@ -170,26 +165,36 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
       while (!helper.isConsistent && !I.empty()) {
         back_start_time = System.nanoTime
         literal = I.pop()
-        //        println("pop:" + literal.toString())
         backLevel()
         literal.v.remove(literal.a)
         remove(literal)
+
+        println("pop:" + literal.toString())
+        infoShow()
+
+        if (literal.v.isEmpty()) {
+          end_time = System.nanoTime
+          helper.time = end_time - start_time
+          return
+        }
         end_time = System.nanoTime
         helper.backTime += (end_time - back_start_time)
 
         prop_start_time = System.nanoTime
+        helper.ACFinished = false
         val m = newTmpLevel()
         M += (m -> new LCRunnable(literal.v, m))
         val lc = M(m)
         lc.start()
-        helper.isConsistent = !literal.v.isEmpty() && AC(literal.v)
+        AC(literal.v)
         lc.join()
         M -= m
         deleteTmpLevel(m)
 
         end_time = System.nanoTime
         helper.propTime += (end_time - prop_start_time)
-        //infoShow()
+        println("--------")
+        infoShow()
       }
 
       if (!helper.isConsistent) {
@@ -390,7 +395,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
       insert(x)
     }
     while (!Q.empty()) {
-      if(!helper.isConsistent){
+      if (!helper.isConsistent) {
         helper.isConsistent = false
         helper.ACFinished = true
         return false
@@ -491,6 +496,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
   }
 
   def backLevel(): Unit = {
+    helper.isConsistent = true
     helper.level -= 1
     for (v <- vars) {
       v.backLevel()
@@ -535,7 +541,8 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
 
   def infoShow(): Unit = {
     for (x <- vars) {
-      println(s"     var:${x.id} size:${x.size()}")
+//      println(s"     var:${x.id} size:${x.size()}")
+      x.show()
     }
   }
 }
