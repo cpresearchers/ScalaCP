@@ -1,7 +1,7 @@
 package cpscala.TSolver.Experiment
 
 import cpscala.TSolver.CpUtil.Constants
-import cpscala.TSolver.Model.Solver.Others.LMaxRPCSolver
+import cpscala.TSolver.Model.Solver.Others.{LMXPSolver, LMaxRPCSolver}
 import cpscala.TSolver.Model.Solver.SSolver.SCoarseSolver
 import cpscala.XModel.XModel
 
@@ -17,15 +17,17 @@ object main_lmrpc {
     println(path)
     val xm = new XModel(path, true, fmt)
 
-    //    xm.show()
-
-    val lmx = new LMaxRPCSolver(xm,"b")
+    val lmx = new LMaxRPCSolver(xm, "b")
     lmx.search(Constants.TIME)
 
     println(lmx.I.toArray().mkString(","))
     val sol = lmx.I.toArray()
-//    sol(1) = 0
+    //    sol(1) = 0
     println(xm.check(sol))
+
+
+    val lmx2 = new LMXPSolver(xm, 16)
+    lmx2.nonSync(Constants.TIME)
   }
 
 }

@@ -11,12 +11,12 @@ class LMaxRPC_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Arr
   // 获取所有变量的numbit
   //  var level = 0
   //  var assignedCount = 0
-  val pscope = Array.tabulate(arity)(i=>scope(i).asInstanceOf[BitSetVar_LMRPC])
+  val pscope = Array.tabulate(arity)(i => scope(i).asInstanceOf[BitSetVar_LMRPC])
   val numBits = Array.tabulate(arity)(i => Constants.getNumBit(pscope(i).size()))
   val maxNumBits = numBits.max
   val bitSup = Array.tabulate(arity)(i => Array.ofDim[Long](pscope(i).size(), maxNumBits))
-//  val lastPC = Array.tabulate(arity)(i => Array.fill(pscope(i).size())(INDEX.kOVERFLOW))
-//  val lastAC = Array.tabulate(arity)(i => Array.fill(pscope(i).size())(INDEX.kOVERFLOW))
+  //  val lastPC = Array.tabulate(arity)(i => Array.fill(pscope(i).size())(INDEX.kOVERFLOW))
+  //  val lastAC = Array.tabulate(arity)(i => Array.fill(pscope(i).size())(INDEX.kOVERFLOW))
   // 保存变量的有效值
   private[this] val values = new ArrayBuffer[Int]()
   //  println(s"cid: ${id}")
@@ -54,7 +54,7 @@ class LMaxRPC_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Arr
     for (a <- values) {
       //      println(s"have_pc_support（${i.id}, ${a}, ${j.id})")
       if (!havePCSupport(iIdx, a, jIdx)) {
-        //        println(s"remove: (${i.id},${a})")
+        println(s"remove: (${i.id},${a})")
         i.remove(a)
         changed = true
         if (i.isEmpty()) {
@@ -70,13 +70,13 @@ class LMaxRPC_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Arr
   }
 
   def havePCSupport(iIdx: Int, a: Int, jIdx: Int): Boolean = {
-//    val lastPC_iaj = lastPC(iIdx)(a)
+    //    val lastPC_iaj = lastPC(iIdx)(a)
     val i = pscope(iIdx)
     val j = pscope(jIdx)
 
-//    if (lastPC_iaj != INDEX.kOVERFLOW && pscope(jIdx).contains(lastPC_iaj)) {
-//      return true
-//    }
+    //    if (lastPC_iaj != INDEX.kOVERFLOW && pscope(jIdx).contains(lastPC_iaj)) {
+    //      return true
+    //    }
 
     val v = j.minValue()
 
@@ -96,9 +96,9 @@ class LMaxRPC_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Arr
       }
 
       if (pcWitness) {
-//        lastPC(iIdx)(a) = b
-//        lastPC(jIdx)(b) = a
-//        lastAC(iIdx)(a) = b / Constants.BITSIZE
+        //        lastPC(iIdx)(a) = b
+        //        lastPC(jIdx)(b) = a
+        //        lastAC(iIdx)(a) = b / Constants.BITSIZE
         return true
       }
 
@@ -120,27 +120,27 @@ class LMaxRPC_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Arr
     val iIdx_In_c_ik = c_ik.getVarIndex(i)
     val jIdx_In_c_jk = c_jk.getVarIndex(j)
 
-//    val d = c_ik.lastAC(iIdx_In_c_ik)(a)
-//    if (d != INDEX.kOVERFLOW) {
-//      val aa = c_ik.bitSup(iIdx_In_c_ik)(a)(d)
-//      val bb = c_jk.bitSup(jIdx_In_c_jk)(b)(d)
-//      val cc = k.bitDoms(k.level)(d)
-//
-//      if ((aa & bb & cc) != 0L) {
-//        return true
-//      }
-//    }
-//
-//    val e = c_jk.lastAC(jIdx_In_c_jk)(b)
-//    if (e != INDEX.kOVERFLOW) {
-//      val aa = c_ik.bitSup(iIdx_In_c_ik)(a)(e)
-//      val bb = c_jk.bitSup(jIdx_In_c_jk)(b)(e)
-//      val cc = k.bitDoms(k.level)(e)
-//
-//      if ((aa & bb & cc) != 0L) {
-//        return true
-//      }
-//    }
+    //    val d = c_ik.lastAC(iIdx_In_c_ik)(a)
+    //    if (d != INDEX.kOVERFLOW) {
+    //      val aa = c_ik.bitSup(iIdx_In_c_ik)(a)(d)
+    //      val bb = c_jk.bitSup(jIdx_In_c_jk)(b)(d)
+    //      val cc = k.bitDoms(k.level)(d)
+    //
+    //      if ((aa & bb & cc) != 0L) {
+    //        return true
+    //      }
+    //    }
+    //
+    //    val e = c_jk.lastAC(jIdx_In_c_jk)(b)
+    //    if (e != INDEX.kOVERFLOW) {
+    //      val aa = c_ik.bitSup(iIdx_In_c_ik)(a)(e)
+    //      val bb = c_jk.bitSup(jIdx_In_c_jk)(b)(e)
+    //      val cc = k.bitDoms(k.level)(e)
+    //
+    //      if ((aa & bb & cc) != 0L) {
+    //        return true
+    //      }
+    //    }
 
     var f = 0
     while (f < k.numBit) {
@@ -149,8 +149,8 @@ class LMaxRPC_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Arr
       val cc = k.bitDoms(k.level)(f)
 
       if ((aa & bb & cc) != 0L) {
-//        c_ik.lastAC(iIdx_In_c_ik)(a) = f
-//        c_jk.lastAC(jIdx_In_c_jk)(b) = f
+        //        c_ik.lastAC(iIdx_In_c_ik)(a) = f
+        //        c_jk.lastAC(jIdx_In_c_jk)(b) = f
         return true
       }
 

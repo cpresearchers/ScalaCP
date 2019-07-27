@@ -19,22 +19,17 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
 
   val numVars: Int = xm.num_vars
   val numTabs: Int = xm.num_tabs
-  //  val parallelism = 16
   val vars = new Array[BitSetVar_LMX](numVars)
-  val tabs = new Array[LMX_BitRM](numTabs)
+  val tabs = new Array[LMX_Bit](numTabs)
   val helper = new LMXSearchHelper(numVars, numTabs, xm)
 
-  //记录已赋值的变量
+  // 记录已赋值的变量
   val levelvsparse = Array.range(0, numVars)
   val levelvdense = Array.range(0, numVars)
-  //记录已entail 的约束
-  //  val levelcsparse = Array.range(0, numTabs)
-  //  val levelcdense = Array.range(0, numTabs)
-  //  val clevel = Array.fill(numVars + 1)(-1)
+  val subscription = new Array[ArrayBuffer[LMX_Bit]](numVars)
 
-  val subscription = new Array[ArrayBuffer[LMX_BitRM]](numVars)
   for (i <- 0 until numVars) {
-    subscription(i) = new ArrayBuffer[LMX_BitRM]()
+    subscription(i) = new ArrayBuffer[LMX_Bit]()
   }
 
   // 初始化变量
@@ -43,12 +38,12 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
     vars(i) = new BitSetVar_LMX(xv.name, xv.id, numVars, xv.values, helper, parallelism)
   }
 
-  //初始化约束
+  // 初始化约束
   for (i <- 0 until numTabs) {
     val xc: XTab = xm.tabs.get(i)
     val ts: Array[Array[Int]] = xc.tuples
     val scope: Array[BitSetVar_LMX] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
-    tabs(i) = new LMX_BitRM(xc.id, xc.arity, numVars, scope, ts, helper, parallelism)
+    tabs(i) = new LMX_Bit(xc.id, xc.arity, numVars, scope, ts, helper, parallelism)
 
     for (v <- scope) {
       subscription(v.id) += tabs(i)
@@ -98,14 +93,14 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
     var finished = false
 
     //initial propagate
-    //    println("init prop")
     start_time = System.nanoTime
 
     val m = newTmpLevel()
     M += (m -> new LCRunnable(null, m))
     val lc = M(m)
+    //    lc.run()
     lc.start()
-    helper.isConsistent = AC(null)
+    AC(null)
     lc.join()
     M -= m
     deleteTmpLevel(m)
@@ -114,28 +109,23 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
     helper.propTime += (end_time - prop_start_time)
 
     //infoShow()
-    //    return
-
+    //    //    return
+    //
     if (!helper.isConsistent) {
       finished = false
       end_time = System.nanoTime
       helper.time = end_time - start_time
       return
     }
-
+    //
     var literal: Literal[Var] = null
-
+    //
     while (!finished) {
       end_time = System.nanoTime
       helper.time = end_time - start_time
       if (helper.time > timeLimit) {
         return
       }
-
-      //      if (helper.nodes == 8) {
-      //                //infoShow()
-      //        return
-      //      }
 
       branch_start_time = System.nanoTime
       literal = selectLiteral()
@@ -152,11 +142,12 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
       helper.branchTime += (end_time - branch_start_time)
 
       prop_start_time = System.nanoTime
+      helper.ACFinished = false
       val m = newTmpLevel()
       M += (m -> new LCRunnable(literal.v, m))
       val lc = M(m)
       lc.start()
-      helper.isConsistent = AC(literal.v)
+      AC(literal.v)
       lc.join()
       M -= m
       deleteTmpLevel(m)
@@ -210,6 +201,121 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
     return
   }
 
+  //  def nonSync(timeLimit: Long): Unit = {
+  //    var finished = false
+  //
+  //    //initial propagate
+  //    start_time = System.nanoTime
+  //
+  //    val m = newTmpLevel()
+  //    M += (m -> new LCRunnable(null, m))
+  //    val lc = M(m)
+  //    lc.start()
+  //    helper.isConsistent = AC(null)
+  //    lc.join()
+  //    M -= m
+  //    deleteTmpLevel(m)
+  //
+  //    end_time = System.nanoTime
+  //    helper.propTime += (end_time - prop_start_time)
+  //
+  //    //infoShow()
+  //    //    return
+  //
+  //    if (!helper.isConsistent) {
+  //      finished = false
+  //      end_time = System.nanoTime
+  //      helper.time = end_time - start_time
+  //      return
+  //    }
+  //
+  //    var literal: Literal[Var] = null
+  //
+  //    while (!finished) {
+  //      end_time = System.nanoTime
+  //      helper.time = end_time - start_time
+  //      if (helper.time > timeLimit) {
+  //        return
+  //      }
+  //
+  //      //      if (helper.nodes == 8) {
+  //      //                //infoShow()
+  //      //        return
+  //      //      }
+  //
+  //      branch_start_time = System.nanoTime
+  //      literal = selectLiteral()
+  //      newLevel()
+  //
+  //
+  //      helper.nodes += 1
+  //      //println("nodes: " + helper.nodes)
+  //      I.push(literal)
+  //      //      println("push:" + literal.toString())
+  //      bind(literal)
+  //
+  //      end_time = System.nanoTime
+  //      helper.branchTime += (end_time - branch_start_time)
+  //
+  //      prop_start_time = System.nanoTime
+  //      val m = newTmpLevel()
+  //      M += (m -> new LCRunnable(literal.v, m))
+  //      val lc = M(m)
+  //      lc.start()
+  //      helper.isConsistent = AC(literal.v)
+  //      lc.join()
+  //      M -= m
+  //      deleteTmpLevel(m)
+  //
+  //      end_time = System.nanoTime
+  //      helper.propTime += (end_time - prop_start_time)
+  //      //infoShow()
+  //
+  //      if (helper.isConsistent && I.full()) {
+  //        //        //成功再加0.5
+  //        //        for (c <- subscription(literal.v.name)) {
+  //        //          c.assignedCount += 0.5
+  //        //        }
+  //        //        I.show()
+  //        end_time = System.nanoTime
+  //        helper.time = end_time - start_time
+  //        return
+  //      }
+  //
+  //      while (!helper.isConsistent && !I.empty()) {
+  //        back_start_time = System.nanoTime
+  //        literal = I.pop()
+  //        //        println("pop:" + literal.toString())
+  //        backLevel()
+  //        literal.v.remove(literal.a)
+  //        remove(literal)
+  //        end_time = System.nanoTime
+  //        helper.backTime += (end_time - back_start_time)
+  //
+  //        prop_start_time = System.nanoTime
+  //        val m = newTmpLevel()
+  //        M += (m -> new LCRunnable(literal.v, m))
+  //        val lc = M(m)
+  //        lc.start()
+  //        helper.isConsistent = !literal.v.isEmpty() && AC(literal.v)
+  //        lc.join()
+  //        M -= m
+  //        deleteTmpLevel(m)
+  //
+  //        end_time = System.nanoTime
+  //        helper.propTime += (end_time - prop_start_time)
+  //        //infoShow()
+  //      }
+  //
+  //      if (!helper.isConsistent) {
+  //        finished = true
+  //      }
+  //    }
+  //    end_time = System.nanoTime
+  //    helper.time = end_time - start_time
+  //    return
+  //  }
+
   def initialPropagate(): Boolean = {
     //    return propagate(null)
     return false
@@ -225,41 +331,46 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
     return false
   }
 
-
   def LMX(x: Var, m: MultiLevel): Boolean = {
-    Q.clear()
+    val LMXQ = new CoarseQueue[Var](numVars)
+    var LMXY: ArrayBuffer[BitSetVar_LMX] = new ArrayBuffer[BitSetVar_LMX](xm.max_arity)
+    LMXQ.clear()
 
     // 初始化传播队列
     if (x == null) {
       for (z <- vars) {
-        Q.push(z)
+        LMXQ.push(z)
         //        println(s"Q << ${z.id}")
       }
     } else {
-      Q.push(x)
+      LMXQ.push(x)
       //      println(s"Q << ${x.id}")
     }
 
-    while (!Q.empty()) {
-      val j = Q.pop().asInstanceOf[BitSetVar_LMX]
+    while (!LMXQ.empty()) {
+      if (helper.ACFinished) {
+        return true
+      }
+      val j = LMXQ.pop().asInstanceOf[BitSetVar_LMX]
       //      println(s"Q >> ${j.id}")
       for (i <- helper.neiVar(j.id)) {
         //        println(s"nei: ${i.id}")
-        if (i.unBind()) {
+        if (i.unBind(m.searchLevel)) {
           val c = helper.commonCon(i.id)(j.id)(0)
-          Y_evt.clear()
-          Y_evt += i
-          Y_evt += j
+          LMXY.clear()
+          LMXY += i
+          LMXY += j
 
-          val (res, changed) = c.LMX(Y_evt, m)
+          val (res, changed) = c.LMX(LMXY, m)
 
           if (!res) {
+            helper.isConsistent = false
             return false
           }
 
           if (changed) {
             //            println(s"Q << ${i.id}")
-            Q.push(i)
+            LMXQ.push(i)
           }
         }
       }
@@ -279,6 +390,11 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
       insert(x)
     }
     while (!Q.empty()) {
+      if(!helper.isConsistent){
+        helper.isConsistent = false
+        helper.ACFinished = true
+        return false
+      }
       val v = Q.pop()
       for (c <- subscription(v.id)) {
         if (helper.varStamp(v.id) > helper.tabStamp(c.id)) {

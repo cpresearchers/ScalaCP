@@ -23,7 +23,7 @@ class BitSetVar_LMX(val name: String, val id: Int, numVars: Int, vals: Array[Int
   val numBit = Math.ceil(capacity.toDouble / Constants.BITSIZE.toDouble).toInt
   val bitMark = Array.fill[Long](numBit)(0L)
   val bitDoms = Array.fill[Long](numLevel, numBit)(0L)
-//  val tmpLevels = new LMXSparseSet(parallelism, startTmpLevel)
+  //  val tmpLevels = new LMXSparseSet(parallelism, startTmpLevel)
 
   // 初始化第0级的bitDom
   var ii = 0
@@ -51,15 +51,15 @@ class BitSetVar_LMX(val name: String, val id: Int, numVars: Int, vals: Array[Int
   def newTmpLevel(m: MultiLevel): Int = {
     // 先获取最新层
     var i = 0
-    while(i<numBit){
+    while (i < numBit) {
       bitDoms(m.tmpLevel)(i) = bitDoms(level)(i)
-      i+=1
+      i += 1
     }
     return m.tmpLevel
   }
 
   def deleteTmpLevel(m: MultiLevel) = {
-//    tmpLevels.remove(m)
+    //    tmpLevels.remove(m)
   }
 
   override def backLevel(): Int = {
@@ -89,6 +89,14 @@ class BitSetVar_LMX(val name: String, val id: Int, numVars: Int, vals: Array[Int
     return curr_size
   }
 
+  def size(m: MultiLevel): Int = {
+    var curr_size = 0
+    for (a <- bitDoms(m.tmpLevel)) {
+      curr_size += java.lang.Long.bitCount(a)
+    }
+    return curr_size
+  }
+
   override def bind(a: Int): Unit = {
     val (x, y) = INDEX.getXY(a)
     var i = 0
@@ -100,9 +108,9 @@ class BitSetVar_LMX(val name: String, val id: Int, numVars: Int, vals: Array[Int
     bindLevel = level
   }
 
-  override def isBind(): Boolean = {
-    bindLevel != 1
-  }
+//  override def isBind(): Boolean = {
+//    bindLevel != 1
+//}
 
   override def remove(a: Int): Unit = {
     this.synchronized {
@@ -119,6 +127,15 @@ class BitSetVar_LMX(val name: String, val id: Int, numVars: Int, vals: Array[Int
 
   override def isEmpty(): Boolean = {
     for (a <- bitDoms(level)) {
+      if (a != 0) {
+        return false
+      }
+    }
+    return true
+  }
+
+  def isEmpty(m: MultiLevel): Boolean = {
+    for (a <- bitDoms(m.tmpLevel)) {
       if (a != 0) {
         return false
       }
@@ -161,6 +178,14 @@ class BitSetVar_LMX(val name: String, val id: Int, numVars: Int, vals: Array[Int
     return (bitDoms(level)(x) & Constants.MASK1(y)) != 0L
   }
 
+  def contains(a: Int, m: MultiLevel): Boolean = {
+    if (a == Constants.INDEXOVERFLOW) {
+      return false
+    }
+    val (x, y) = INDEX.getXY(a)
+    return (bitDoms(m.tmpLevel)(x) & Constants.MASK1(y)) != 0L
+  }
+
   override def minValue(): Int = {
     var i = 0
     while (i < numBit) {
@@ -172,10 +197,32 @@ class BitSetVar_LMX(val name: String, val id: Int, numVars: Int, vals: Array[Int
     return Constants.INDEXOVERFLOW
   }
 
+  def minValue(m: MultiLevel): Int = {
+    var i = 0
+    while (i < numBit) {
+      if (bitDoms(m.tmpLevel)(i) != 0L) {
+        return INDEX.getIndex(i, Constants.FirstLeft(bitDoms(m.tmpLevel)(i)))
+      }
+      i += 1
+    }
+    return Constants.INDEXOVERFLOW
+  }
+
   override def nextValue(a: Int): Int = {
     var b = a + 1
     while (b < capacity) {
       if (contains(b))
+        return b
+      else
+        b += 1
+    }
+    return Constants.INDEXOVERFLOW
+  }
+
+  def nextValue(a: Int, m: MultiLevel): Int = {
+    var b = a + 1
+    while (b < capacity) {
+      if (contains(b, m))
         return b
       else
         b += 1
@@ -224,4 +271,29 @@ class BitSetVar_LMX(val name: String, val id: Int, numVars: Int, vals: Array[Int
     return values.length
   }
 
+
+  def getValidValues(values: ArrayBuffer[Int], m: MultiLevel): Int = {
+    values.clear()
+    var j = 0
+    var end = 0
+    var i = 0
+    var base = 0
+
+    while (i < numBit) {
+      val a = bitDoms(m.tmpLevel)(i)
+      base = i * Constants.BITSIZE
+      if (a != 0) {
+        j = Constants.FirstLeft(a)
+        end = Constants.FirstRight(a)
+        while (j <= end) {
+          if ((a & Constants.MASK1(j)) != 0) {
+            values += (j + base)
+          }
+          j += 1
+        }
+      }
+      i += 1
+    }
+    return values.length
+  }
 }
