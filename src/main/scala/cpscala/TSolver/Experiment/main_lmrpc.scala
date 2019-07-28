@@ -28,6 +28,8 @@ object main_lmrpc {
 
     val lmx2 = new LMXPSolver(xm, 16)
     lmx2.nonSync(Constants.TIME)
+    val sol2 = lmx2.I.toArray()
+    println(xm.check(sol2))
   }
 
 }
