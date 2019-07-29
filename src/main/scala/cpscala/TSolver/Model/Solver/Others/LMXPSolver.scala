@@ -89,13 +89,11 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
   var back_start_time = 0L
   var end_time = 0L
 
-  def nonSync(timeLimit: Long): Unit = {
-    var finished = false
-
-    //initial propagate
+  def sync(timeLimit: Long): Unit = {
+//    initial propagate
 //    println("initial propagate")
 //    infoShow()
-
+    var finished = false
     start_time = System.nanoTime
     val m = newTmpLevel()
     M += (m -> new LCRunnable(null, m))
@@ -201,6 +199,9 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
     return
   }
 
+  def async(timeLimit: Long): Unit={
+
+  }
   //  def nonSync(timeLimit: Long): Unit = {
   //    var finished = false
   //
