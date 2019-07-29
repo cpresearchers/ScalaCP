@@ -71,6 +71,15 @@ class BitSetVar_LMX(val name: String, val id: Int, numVars: Int, vals: Array[Int
     return level
   }
 
+  def backLevel(i: Int): Int = {
+    // 若变量在当前层赋值，则撤销赋值
+    if (bindLevel > i) {
+      bindLevel = Constants.kINTINF
+    }
+    level -= i
+    return level
+  }
+
   //提交改动
   override def restrict(): Unit = {
     var i = 0
@@ -301,7 +310,7 @@ class BitSetVar_LMX(val name: String, val id: Int, numVars: Int, vals: Array[Int
     var sss = bitDoms(level)(0).toBinaryString
     var ii = sss.length
     while (ii < 64) {
-      sss = '0'+ sss
+      sss = '0' + sss
       ii += 1
     }
     println(s"id:${id},${sss}")

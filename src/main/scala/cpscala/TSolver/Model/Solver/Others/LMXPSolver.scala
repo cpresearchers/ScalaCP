@@ -7,13 +7,20 @@ import cpscala.XModel.{XModel, XTab, XVar}
 
 import scala.collection.mutable
 import scala.collection.mutable._
+import scala.util.control.Breaks.{break, breakable}
 
 
 class LMXPSolver(xm: XModel, parallelism: Int) {
 
-  class LCRunnable(val x: Var, val m: MultiLevel) extends Thread {
+  class LCSync(val x: Var, val m: MultiLevel) extends Thread {
     override def run(): Unit = {
       LMX(x, m)
+    }
+  }
+
+  class LCAsync(val x: Var, val m: MultiLevel) extends Thread {
+    override def run(): Unit = {
+      LMXAsync(x, m)
     }
   }
 
@@ -56,7 +63,8 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
   val I = new AssignedStack[Var](xm.num_vars)
   val L = new LMXSparseSet(parallelism, numVars)
 
-  val M = new mutable.HashMap[MultiLevel, LCRunnable]()
+  val M = new mutable.HashMap[MultiLevel, LCSync]()
+  val idle = new mutable.HashMap[MultiLevel, Boolean]()
   // 初始化helper中的部分数据结构
   for (c <- tabs) {
     helper.commonCon(c.scope(0).id)(c.scope(1).id) += c
@@ -90,13 +98,13 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
   var end_time = 0L
 
   def sync(timeLimit: Long): Unit = {
-//    initial propagate
-//    println("initial propagate")
-//    infoShow()
+    //    initial propagate
+    //    println("initial propagate")
+    //    infoShow()
     var finished = false
     start_time = System.nanoTime
     val m = newTmpLevel()
-    M += (m -> new LCRunnable(null, m))
+    M += (m -> new LCSync(null, m))
     val lc = M(m)
     //    lc.run()
     lc.start()
@@ -133,13 +141,13 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
       end_time = System.nanoTime
       helper.branchTime += (end_time - branch_start_time)
 
-//      println("push:" + literal.toString())
-//      infoShow()
+      //      println("push:" + literal.toString())
+      //      infoShow()
 
       prop_start_time = System.nanoTime
       helper.ACFinished = false
       val m = newTmpLevel()
-      M += (m -> new LCRunnable(literal.v, m))
+      M += (m -> new LCSync(literal.v, m))
       val lc = M(m)
       lc.start()
       AC(literal.v)
@@ -150,8 +158,8 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
       end_time = System.nanoTime
       helper.propTime += (end_time - prop_start_time)
 
-//      println("--------")
-//      infoShow()
+      //      println("--------")
+      //      infoShow()
 
       if (helper.isConsistent && I.full()) {
         I.show()
@@ -167,15 +175,15 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
         literal.v.remove(literal.a)
         remove(literal)
 
-//        println("pop:" + literal.toString())
-//        infoShow()
+        //        println("pop:" + literal.toString())
+        //        infoShow()
 
         if (literal.v.isEmpty()) {
 
           prop_start_time = System.nanoTime
           helper.ACFinished = false
           val m = newTmpLevel()
-          M += (m -> new LCRunnable(literal.v, m))
+          M += (m -> new LCSync(literal.v, m))
           val lc = M(m)
           lc.start()
           AC(literal.v)
@@ -185,8 +193,8 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
 
           end_time = System.nanoTime
           helper.propTime += (end_time - prop_start_time)
-//          println("--------")
-//          infoShow()
+          //          println("--------")
+          //          infoShow()
         }
       }
 
@@ -199,9 +207,67 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
     return
   }
 
-  def async(timeLimit: Long): Unit={
+  def async(timeLimit: Long): Unit = {
+    //    initial propagate
+    //    println("initial propagate")
+    //    infoShow()
+    var finished = false
+    start_time = System.nanoTime
+    var fail = false
+
+    AC(null)
+
+    end_time = System.nanoTime
+    helper.propTime += (end_time - prop_start_time)
+
+    if (!helper.isConsistent) {
+      finished = false
+      end_time = System.nanoTime
+      helper.time = end_time - start_time
+      return
+    }
+    //
+    //    var literal: Literal[Var] = null/null
+    //    literal = selectLiteral()
+
+    var v = selectVar()
+
+    var ii = 1
+    while (ii <= numVars && ii >= 1) {
+      breakable {
+        while (v.size() >= 1) {
+          fail = false
+          val BTLevel = forceBT()
+
+          if (BTLevel < ii) {
+            fail = true
+            break()
+          }
+
+          val literal = new Literal(v, v.minValue())
+          newLevel()
+          helper.nodes += 1
+          I.push(literal)
+          bind(literal)
+
+          for ((k, v) <- idle) {
+
+          }
+
+
+        }
+      }
+
+      ii += 1
+    }
+
 
   }
+
+  def forceBT(): Int = {
+    0
+  }
+
   //  def nonSync(timeLimit: Long): Unit = {
   //    var finished = false
   //
@@ -425,6 +491,99 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
     return true
   }
 
+  def LMXAsync(x: Var, m: MultiLevel): Boolean = {
+    val LMXQ = new CoarseQueue[Var](numVars)
+    var LMXY: ArrayBuffer[BitSetVar_LMX] = new ArrayBuffer[BitSetVar_LMX](xm.max_arity)
+    LMXQ.clear()
+
+    // 初始化传播队列
+    if (x == null) {
+      for (z <- vars) {
+        LMXQ.push(z)
+        //        println(s"Q << ${z.id}")
+      }
+    } else {
+      LMXQ.push(x)
+      //      println(s"Q << ${x.id}")
+    }
+
+    while (!LMXQ.empty()) {
+      if (helper.ACFinished) {
+        return true
+      }
+      val j = LMXQ.pop().asInstanceOf[BitSetVar_LMX]
+      //      println(s"Q >> ${j.id}")
+      for (i <- helper.neiVar(j.id)) {
+        //        println(s"nei: ${i.id}")
+        if (i.unBind(m.searchLevel)) {
+          val c = helper.commonCon(i.id)(j.id)(0)
+          LMXY.clear()
+          LMXY += i
+          LMXY += j
+
+          val (res, changed) = c.LMX(LMXY, m)
+
+          if (!res) {
+            helper.isConsistent = false
+            return false
+          }
+
+          if (changed) {
+            //            println(s"Q << ${i.id}")
+            LMXQ.push(i)
+          }
+        }
+      }
+    }
+
+    return true
+  }
+
+  def ACAsync(x: Var): Boolean = {
+    Q.clear()
+    if (x == null) {
+      //初始化
+      for (z <- vars) {
+        insert(z)
+      }
+    } else {
+      insert(x)
+    }
+    while (!Q.empty()) {
+      if (!helper.isConsistent) {
+        helper.isConsistent = false
+        helper.ACFinished = true
+        return false
+      }
+      val v = Q.pop()
+      for (c <- subscription(v.id)) {
+        if (helper.varStamp(v.id) > helper.tabStamp(c.id)) {
+          //          println("str(" + c.name + ")")
+          Y_evt.clear()
+          val consistent = c.AC(Y_evt)
+          helper.c_sum += 1
+          //          print(s"cid: ${c.id} yevt: ")
+          //          Y_evt.foreach(p => print(p.id, " "))
+          //          println()
+          if (!consistent) {
+            helper.isConsistent = false
+            helper.ACFinished = true
+            return false
+          } else {
+            for (y <- Y_evt) {
+              insert(y)
+            }
+          }
+          helper.globalStamp += 1
+          helper.tabStamp(c.id) = helper.globalStamp
+        }
+      }
+      helper.p_sum += 1
+    }
+    helper.ACFinished = true
+    return true
+  }
+
   def insert(x: Var): Unit = {
     Q.push(x)
     helper.globalStamp += 1
@@ -433,6 +592,11 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
 
   //修改levelvdense
   def selectLiteral(): Literal[Var] = {
+    var v = selectVar()
+    return new Literal[Var](v, v.minValue())
+  }
+
+  def selectVar(): Var = {
     var mindmdd = Double.MaxValue
     var minvid = 0
 
@@ -449,10 +613,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
       }
 
       if (ddeg == 0) {
-        //                val a = v.minValue()
-        //        //println(s"(${v.id}, ${a}): ${v.simpleMask().toBinaryString}")
-        return new Literal(v, v.minValue())
-        //        return new Literal(v, v.dense(0))
+        return v
       }
 
       val sizeD: Double = v.size.toDouble
@@ -465,7 +626,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
       i += 1
     }
 
-    return new Literal(vars(minvid), vars(minvid).minValue())
+    return vars(minvid)
   }
 
   def newLevel(): Unit = {

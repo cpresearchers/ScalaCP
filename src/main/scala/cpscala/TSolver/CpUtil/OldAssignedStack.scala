@@ -28,6 +28,18 @@ class AssignedStack[VT <: Var : ClassTag](num_vars: Int) {
     literal
   }
 
+  def size() = index + 1
+
+  def backToLevel(i: Int): Unit = {
+    if (size() > i) {
+      pop()
+    }
+  }
+
+  def contain(literal: Literal[VT]): Unit = {
+    return inStack(literal.v.id) == literal.a
+  }
+
   def full(): Boolean = index + 1 == num_vars
 
   def empty(): Boolean = index == -1

@@ -18,6 +18,8 @@ class LMX_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[B
   //  val lastPC = Array.tabulate(parallelism)(Array.tabulate(arity)(i => Array.fill(scope(i).size())(INDEX.kOVERFLOW)))
   //  val lastAC = Array.tabulate(parallelism)(Array.tabulate(arity)(i => Array.fill(scope(i).size())(INDEX.kOVERFLOW)))
   val values = new ArrayBuffer[Int]()
+
+
   //  println(s"cid: ${id}")
 
   for (t <- tuples) {
