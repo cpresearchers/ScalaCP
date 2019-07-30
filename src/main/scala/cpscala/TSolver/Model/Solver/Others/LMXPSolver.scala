@@ -214,7 +214,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
     var finished = false
     start_time = System.nanoTime
     var fail = false
-
+    var literal: Literal[Var] = null
     AC(null)
 
     end_time = System.nanoTime
@@ -244,14 +244,29 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
             break()
           }
 
-          val literal = new Literal(v, v.minValue())
+          literal  = new Literal(v, v.minValue())
           newLevel()
           helper.nodes += 1
           I.push(literal)
           bind(literal)
 
-          for ((k, v) <- idle) {
-
+          //          // 线程未满,
+          //          if (M.size < parallelism) {
+          //            val m = newTmpLevel()
+          //            M += (m -> new LCSync(literal.v, m))
+          //            val lc = M(m)
+          //            lc.start()
+          //          }
+          AC(v)
+          // 失败了做回溯一层
+          if (!helper.isConsistent) {
+            literal = I.pop()
+            backLevel()
+            literal.v.remove(literal.a)
+            remove(literal)
+          }
+          else {
+            break()
           }
 
 
