@@ -231,20 +231,21 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
     //    literal = selectLiteral()
 
     var v = selectVar()
+    var BTLevel = -1
 
     var ii = 1
     while (ii <= numVars && ii >= 1) {
       breakable {
         while (v.size() >= 1) {
           fail = false
-          val BTLevel = forceBT()
+          BTLevel = forceBT()
 
           if (BTLevel < ii) {
             fail = true
             break()
           }
 
-          literal  = new Literal(v, v.minValue())
+          literal = new Literal(v, v.minValue())
           newLevel()
           helper.nodes += 1
           I.push(literal)
@@ -258,18 +259,31 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
           //            lc.start()
           //          }
           AC(v)
-          // 失败了做回溯一层
+          // 失败了回溯一层
           if (!helper.isConsistent) {
+            fail = true
             literal = I.pop()
             backLevel()
             literal.v.remove(literal.a)
             remove(literal)
+            helper.level -= 1
           }
           else {
             break()
           }
 
 
+        }
+      }
+
+      if (fail) {
+        backLevel(BTLevel)
+        // 其它线程回溯
+        for ((k, v) <- idle) {
+          // 若线程仍在运行且该相容性的搜索层数大于当前层，则中止worker
+          if (!v && k.searchLevel >= helper.level) {
+
+          }
         }
       }
 
@@ -655,6 +669,16 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
     }
   }
 
+  def backLevel(i: Int): Unit = {
+    helper.isConsistent = true
+    for (v <- vars) {
+      v.backLevel(i)
+    }
+    for (c <- tabs) {
+      c.backLevel()
+    }
+  }
+
   def newTmpLevel(): MultiLevel = {
     val m = L.add(helper.level)
     for (v <- vars) {
@@ -681,9 +705,6 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
   def remove(literal: Literal[Var]): Unit = {
     //约束的已实例化变量个数减1
     for (c <- subscription(literal.v.id)) {
-      //      if (c.assignedCount.toInt != c.assignedCount)
-      //        c.assignedCount -= 0.5
-      //      else
       c.assignedCount -= 1
     }
     literal.v.remove(literal.a)

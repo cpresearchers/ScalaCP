@@ -247,10 +247,18 @@ class BitSetVar_LMX(val name: String, val id: Int, numVars: Int, vals: Array[Int
 
   override def get(index: Int): Int = ???
 
-  override def mask(m: Array[Long]): Unit = {
+  override def mask(m: Array[Long], a): Unit = {
     var i = 0
     while (i < numBit) {
       m(i) = bitDoms(level)(i)
+      i += 1
+    }
+  }
+
+  def mask(m: Array[Long], a: Int): Unit = {
+    var i = 0
+    while (i < numBit) {
+      m(i) = bitDoms(a)(i)
       i += 1
     }
   }

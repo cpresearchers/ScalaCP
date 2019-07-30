@@ -194,7 +194,7 @@ class LMX_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[B
             deleted = true
             //无法找到支持, 删除(v, a)
             //            println(s"      cons:${id} var:${v.id} remove new value:${a}")
-//            println(s"ac  remove: (${v.id},${a})")
+            //            println(s"ac  remove: (${v.id},${a})")
             v.remove(a)
           }
         }
@@ -203,7 +203,7 @@ class LMX_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[B
       if (deleted) {
         // 论域删空退出
         if (v.isEmpty()) {
-//          println("ac field")
+          //          println("ac field")
           helper.isConsistent = false
           //println(s"filter faild!!: ${Thread.currentThread().getName}, cid: ${id}, vid: ${v.id}")
           return false
@@ -215,6 +215,7 @@ class LMX_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[B
 
       i += 1
     }
+
 
     return true
   }
@@ -267,20 +268,20 @@ class LMX_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[B
       //      println(s"have_pc_support（${i.id}, ${a}, ${j.id})")
       if (!havePCSupport(iIdx, a, jIdx, m)) {
         if (i.contains(a)) {
-//          println(s"lmx remove: (${i.id},${a})")
+          //          println(s"lmx remove: (${i.id},${a})")
           i.remove(a)
         }
         i.remove(a, m)
         changed = true
 
         if (i.isEmpty(m)) {
-//          println("lmx field")
+          //          println("lmx field")
           helper.isConsistent = false
           return (false, changed)
         }
 
         if (i.isEmpty()) {
-//          println("ac field")
+          //          println("ac field")
           helper.isConsistent = false
           return (false, changed)
         }
@@ -427,6 +428,16 @@ class LMX_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[B
     var i = 0
     while (i < arity) {
       scope(i).mask(lastMask(i))
+      i += 1
+    }
+  }
+
+  def backLevel(a: Int): Unit = {
+    currTab.deleteLevel(a)
+    level -= 1
+    var i = 0
+    while (i < arity) {
+      scope(i).mask(lastMask(i), a)
       i += 1
     }
   }
