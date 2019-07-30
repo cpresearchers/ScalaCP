@@ -24,6 +24,13 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
     }
   }
 
+//  object LCState extends Enumeration {
+//    type LCState = Value
+//    val Idle = Value(0)
+//    val NeedStop = Value(1)
+//    val Running = Value(2)
+//  }
+
   val numVars: Int = xm.num_vars
   val numTabs: Int = xm.num_tabs
   val vars = new Array[BitSetVar_LMX](numVars)
@@ -64,7 +71,11 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
   val L = new LMXSparseSet(parallelism, numVars)
 
   val M = new mutable.HashMap[MultiLevel, LCSync]()
-  val idle = new mutable.HashMap[MultiLevel, Boolean]()
+  // =0 是idle
+  // =1 是needstop
+  // =2 是running
+  // =3 是完成
+  val LCState = new mutable.HashMap[MultiLevel, Int]()
   // 初始化helper中的部分数据结构
   for (c <- tabs) {
     helper.commonCon(c.scope(0).id)(c.scope(1).id) += c
@@ -279,10 +290,13 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
       if (fail) {
         backLevel(BTLevel)
         // 其它线程回溯
-        for ((k, v) <- idle) {
-          // 若线程仍在运行且该相容性的搜索层数大于当前层，则中止worker
-          if (!v && k.searchLevel >= helper.level) {
-
+        for ((k, v) <- LCState) {
+          // 若线程仍在运行且该相容性的搜索层数大于当前层，则中止worker，设置其为idle为负的
+          if (v == 2 && k.searchLevel >= helper.level) {
+            // 设置其为需要停止
+            LCState(k) = 1
+            // 等待其停止
+            M(k).join()
           }
         }
       }
@@ -296,121 +310,6 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
   def forceBT(): Int = {
     0
   }
-
-  //  def nonSync(timeLimit: Long): Unit = {
-  //    var finished = false
-  //
-  //    //initial propagate
-  //    start_time = System.nanoTime
-  //
-  //    val m = newTmpLevel()
-  //    M += (m -> new LCRunnable(null, m))
-  //    val lc = M(m)
-  //    lc.start()
-  //    helper.isConsistent = AC(null)
-  //    lc.join()
-  //    M -= m
-  //    deleteTmpLevel(m)
-  //
-  //    end_time = System.nanoTime
-  //    helper.propTime += (end_time - prop_start_time)
-  //
-  //    //infoShow()
-  //    //    return
-  //
-  //    if (!helper.isConsistent) {
-  //      finished = false
-  //      end_time = System.nanoTime
-  //      helper.time = end_time - start_time
-  //      return
-  //    }
-  //
-  //    var literal: Literal[Var] = null
-  //
-  //    while (!finished) {
-  //      end_time = System.nanoTime
-  //      helper.time = end_time - start_time
-  //      if (helper.time > timeLimit) {
-  //        return
-  //      }
-  //
-  //      //      if (helper.nodes == 8) {
-  //      //                //infoShow()
-  //      //        return
-  //      //      }
-  //
-  //      branch_start_time = System.nanoTime
-  //      literal = selectLiteral()
-  //      newLevel()
-  //
-  //
-  //      helper.nodes += 1
-  //      //println("nodes: " + helper.nodes)
-  //      I.push(literal)
-  //      //      println("push:" + literal.toString())
-  //      bind(literal)
-  //
-  //      end_time = System.nanoTime
-  //      helper.branchTime += (end_time - branch_start_time)
-  //
-  //      prop_start_time = System.nanoTime
-  //      val m = newTmpLevel()
-  //      M += (m -> new LCRunnable(literal.v, m))
-  //      val lc = M(m)
-  //      lc.start()
-  //      helper.isConsistent = AC(literal.v)
-  //      lc.join()
-  //      M -= m
-  //      deleteTmpLevel(m)
-  //
-  //      end_time = System.nanoTime
-  //      helper.propTime += (end_time - prop_start_time)
-  //      //infoShow()
-  //
-  //      if (helper.isConsistent && I.full()) {
-  //        //        //成功再加0.5
-  //        //        for (c <- subscription(literal.v.name)) {
-  //        //          c.assignedCount += 0.5
-  //        //        }
-  //        //        I.show()
-  //        end_time = System.nanoTime
-  //        helper.time = end_time - start_time
-  //        return
-  //      }
-  //
-  //      while (!helper.isConsistent && !I.empty()) {
-  //        back_start_time = System.nanoTime
-  //        literal = I.pop()
-  //        //        println("pop:" + literal.toString())
-  //        backLevel()
-  //        literal.v.remove(literal.a)
-  //        remove(literal)
-  //        end_time = System.nanoTime
-  //        helper.backTime += (end_time - back_start_time)
-  //
-  //        prop_start_time = System.nanoTime
-  //        val m = newTmpLevel()
-  //        M += (m -> new LCRunnable(literal.v, m))
-  //        val lc = M(m)
-  //        lc.start()
-  //        helper.isConsistent = !literal.v.isEmpty() && AC(literal.v)
-  //        lc.join()
-  //        M -= m
-  //        deleteTmpLevel(m)
-  //
-  //        end_time = System.nanoTime
-  //        helper.propTime += (end_time - prop_start_time)
-  //        //infoShow()
-  //      }
-  //
-  //      if (!helper.isConsistent) {
-  //        finished = true
-  //      }
-  //    }
-  //    end_time = System.nanoTime
-  //    helper.time = end_time - start_time
-  //    return
-  //  }
 
   def initialPropagate(): Boolean = {
     //    return propagate(null)
