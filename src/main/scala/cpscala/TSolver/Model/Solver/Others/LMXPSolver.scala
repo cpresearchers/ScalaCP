@@ -24,12 +24,12 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
     }
   }
 
-//  object LCState extends Enumeration {
-//    type LCState = Value
-//    val Idle = Value(0)
-//    val NeedStop = Value(1)
-//    val Running = Value(2)
-//  }
+  //  object LCState extends Enumeration {
+  //    type LCState = Value
+  //    val Idle = Value(0)
+  //    val NeedStop = Value(1)
+  //    val Running = Value(2)
+  //  }
 
   val numVars: Int = xm.num_vars
   val numTabs: Int = xm.num_tabs
@@ -297,18 +297,52 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
             LCState(k) = 1
             // 等待其停止
             M(k).join()
+            LCState(k) = 0
+
+            // 从两个集合中移除该线程，应该减key
+            LCState -= k
+            M -= k
           }
         }
+      }
+      else {
+        v = selectVar()
+        newLevel()
       }
 
       ii += 1
     }
 
+    if (helper.level == 0) {
+      return
+    }
+    else {
+      return
+    }
 
   }
 
   def forceBT(): Int = {
-    0
+    var minLevel = helper.level
+    for ((k, v) <- LCState) {
+      if (v == 3 && k.searchLevel < minLevel) {
+        minLevel = k.searchLevel
+      }
+
+      breakable {
+        var ii = k.searchLevel
+        while (ii <= helper.level) {
+          //拿到值
+          val va = I.table(ii)
+          if (!va.v.asInstanceOf[BitSetVar_LMX].contains(va.a, k)) {
+            minLevel = k.searchLevel
+            break()
+          }
+          ii += 1
+        }
+      }
+    }
+    return minLevel
   }
 
   def initialPropagate(): Boolean = {
