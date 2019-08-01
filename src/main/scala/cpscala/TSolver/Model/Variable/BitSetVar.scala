@@ -191,5 +191,15 @@ class BitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[Int], v
     return values.length
   }
 
+  override def show(): Unit = {
+    var sss = bitDoms(level)(0).toBinaryString
+    var ii = sss.length
+    while (ii < 64) {
+      sss = '0' + sss
+      ii += 1
+    }
+    println(s"id:${id},${sss}")
+  }
+
   //  def getLastRemovedValuesByMask(oldSize: Long, vals: ArrayBuffer[Int]): Int = ???
 }
