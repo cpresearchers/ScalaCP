@@ -1,10 +1,15 @@
 package cpscala.TSolver.Model.Solver.Others
 
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.locks.ReentrantLock
+
 import cpscala.TSolver.CpUtil.Constants
 import cpscala.TSolver.CpUtil.SearchHelper.SearchHelper
+import cpscala.TSolver.Model.Solver.Others.LCState.LCState
 import cpscala.TSolver.Model.Variable.BitSetVar
 import cpscala.XModel.XModel
 
+import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
 class LMXSearchHelper(override val numVars: Int, override val numTabs: Int, xm: XModel) extends SearchHelper(numVars, numTabs) {
@@ -22,7 +27,14 @@ class LMXSearchHelper(override val numVars: Int, override val numTabs: Int, xm: 
 
 
   var ACFinished = false
-//  var isConsistent = false
+
+  var End = new AtomicBoolean(false)
+
+  val States = mutable.HashMap[MultiLevel, LCState]()
+
+  val domainChanging = new ReentrantLock()
+
+  //  var isConsistent = false
 
 }
 
