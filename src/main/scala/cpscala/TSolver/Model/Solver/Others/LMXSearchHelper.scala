@@ -32,7 +32,7 @@ class LMXSearchHelper(override val numVars: Int, override val numTabs: Int, xm: 
 
   val States = mutable.HashMap[MultiLevel, LCState]()
 
-  val domainChanging = new ReentrantLock()
+  val domainLock = new ReentrantLock()
 
   //  var isConsistent = false
 

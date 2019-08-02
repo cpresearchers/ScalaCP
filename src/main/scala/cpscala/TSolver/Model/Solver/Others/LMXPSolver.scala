@@ -178,7 +178,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
         back_start_time = System.nanoTime
         literal = I.pop()
         backLevel()
-        literal.v.remove(literal.a)
+//        literal.v.remove(literal.a)
         remove(literal)
 
         //        println("pop:" + literal.toString())
@@ -255,12 +255,21 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
         return
       }
 
-      //先BT 再选值
+      //扫描所有的 删除失败的线程确定回溯行数
       BTLevel = forceBT()
+      // 扫描所有的 删除成功的线程
+      for ((m, s) <- helper.States) {
+        if (s == LCState.Success) {
+          LCAThreads -= m
+          helper.States -= m
+          deleteTmpLevel(m)
+        }
+      }
 
       if (BTLevel < helper.level) {
 
       }
+
 
       branch_start_time = System.nanoTime
       literal = selectLiteral()
@@ -276,15 +285,6 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
 
       prop_start_time = System.nanoTime
       helper.ACFinished = false
-
-      // 扫描所有的 删除结束的线程
-      for ((m, s) <- helper.States) {
-        if (s == LCState.Success) {
-          LCAThreads -= m
-          helper.States -= m
-          deleteTmpLevel(m)
-        }
-      }
 
       // 线程未满，新建线程
       if (LCAThreads.size < parallelism) {
@@ -313,14 +313,12 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
         back_start_time = System.nanoTime
         literal = I.pop()
         backLevel()
-        literal.v.remove(literal.a)
         remove(literal)
 
         //        println("pop:" + literal.toString())
         //        infoShow()
 
         if (literal.v.isEmpty()) {
-
           prop_start_time = System.nanoTime
           helper.ACFinished = false
           val m = newTmpLevel()
@@ -729,6 +727,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
   }
 
   def newLevel(): Unit = {
+
     helper.level += 1
     for (v <- vars) {
       v.newLevel()
