@@ -774,13 +774,14 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
   def backLevel(i: Int): Unit = {
     helper.domainLock.lock()
     helper.isConsistent = true
+    helper.level = i
     for (v <- vars) {
       v.backLevel(i)
     }
+    helper.domainLock.unlock()
     for (c <- tabs) {
       c.backLevel()
     }
-    helper.domainLock.unlock()
   }
 
   def newTmpLevel(): MultiLevel = {
