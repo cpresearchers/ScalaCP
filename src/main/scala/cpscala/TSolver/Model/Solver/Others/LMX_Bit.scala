@@ -293,6 +293,56 @@ class LMX_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[B
     return (true, changed)
   }
 
+  // 等几个线程
+  def LMXAsync(evt: ArrayBuffer[BitSetVar_LMX], m: MultiLevel): (Boolean, Boolean) = {
+    //    println("enter c.lmx")
+    //获取传入的两个变量
+    val i = evt(0)
+    val j = evt(1)
+    //    println(s"${i.id}, ${j.id}")
+    //判断变量 i,j 的位置
+    // 保存变量的有效值
+    val lmxValues = new ArrayBuffer[Int]()
+    evt.clear()
+    var changed = false
+    val (iIdx, jIdx) = if (scope(0) == i) (0, 1) else (1, 0)
+    i.getValidValues(lmxValues, m)
+
+    for (a <- lmxValues) {
+      // 需要停下来了，一般是由外部通知
+      if (helper.States(m) != LCState.Running) {
+        helper.States(m) == LCState.Stopped
+        return (true, changed)
+      }
+
+      //      println(s"have_pc_support（${i.id}, ${a}, ${j.id})")
+      if (!havePCSupport(iIdx, a, jIdx, m)) {
+        if (i.contains(a)) {
+          //          println(s"lmx remove: (${i.id},${a})")
+          i.remove(a)
+        }
+        i.remove(a, m)
+        changed = true
+
+        if (i.isEmpty(m)) {
+          //          println("lmx field")
+          helper.States(m) == LCState.Fail
+          return (false, changed)
+        }
+
+        if (i.isEmpty()) {
+          //          println("ac field")
+          helper.States(m) == LCState.Fail
+          return (false, changed)
+        }
+
+        evt += i
+      }
+    }
+    helper.States(m) == LCState.Success
+    return (true, changed)
+  }
+
   def havePCSupport(iIdx: Int, a: Int, jIdx: Int, m: MultiLevel): Boolean = {
     //    val lastPC_iaj = lastPC(iIdx)(a)
     val i = scope(iIdx)

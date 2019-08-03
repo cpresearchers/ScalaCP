@@ -6,7 +6,7 @@ import cpscala.TSolver.Model.Variable.Var
 
 import scala.collection.mutable.ArrayBuffer
 
-class BitSetVar_LMX(val name: String, val id: Int, numVars: Int, vals: Array[Int], val helper: SearchHelper, val parallelism: Int) extends Var {
+class BitSetVar_LMX(val name: String, val id: Int, numVars: Int, vals: Array[Int], val helper: LMXSearchHelper, val parallelism: Int) extends Var {
   //// 各种层
   // 总层数
   val numLevel = numVars + parallelism + 3
@@ -90,12 +90,15 @@ class BitSetVar_LMX(val name: String, val id: Int, numVars: Int, vals: Array[Int
   }
 
   override def size(): Int = {
+    helper.domainLock.lock()
     var curr_size = 0
     for (a <- bitDoms(level)) {
       curr_size += java.lang.Long.bitCount(a)
     }
     //    bitDoms(level).foreach(a => curr_size += java.lang.Long.bitCount(a))
+    helper.domainLock.unlock()
     return curr_size
+
   }
 
   def size(m: MultiLevel): Int = {
@@ -107,6 +110,7 @@ class BitSetVar_LMX(val name: String, val id: Int, numVars: Int, vals: Array[Int
   }
 
   override def bind(a: Int): Unit = {
+    helper.domainLock.lock()
     val (x, y) = INDEX.getXY(a)
     var i = 0
     while (i < numBit) {
@@ -115,6 +119,7 @@ class BitSetVar_LMX(val name: String, val id: Int, numVars: Int, vals: Array[Int
     }
     bitDoms(level)(x) = Constants.MASK1(y)
     bindLevel = level
+    helper.domainLock.unlock()
   }
 
   //  override def isBind(): Boolean = {
@@ -122,16 +127,15 @@ class BitSetVar_LMX(val name: String, val id: Int, numVars: Int, vals: Array[Int
   //}
 
   override def remove(a: Int): Unit = {
-    this.synchronized {
-      val (x, y) = INDEX.getXY(a)
-      bitDoms(level)(x) &= Constants.MASK0(y)
-    }
+    helper.domainLock.lock()
+    val (x, y) = INDEX.getXY(a)
+    bitDoms(level)(x) &= Constants.MASK0(y)
+    helper.domainLock.unlock()
   }
 
   def remove(a: Int, m: MultiLevel): Unit = {
     val (x, y) = INDEX.getXY(a)
     bitDoms(m.tmpLevel)(x) &= Constants.MASK0(y)
-
   }
 
   override def isEmpty(): Boolean = {

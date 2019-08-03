@@ -7,4 +7,5 @@ object LCState extends Enumeration {
   val Running = Value(2)
   val Success = Value(3)
   val Fail = Value(4)
+  val Stopped = Value(5)
 }

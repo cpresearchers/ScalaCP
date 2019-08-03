@@ -22,9 +22,7 @@ class LMXSearchHelper(override val numVars: Int, override val numTabs: Int, xm: 
   // 存储一个变量所有的临域
   val neiVar = Array.fill(numVars)(new ArrayBuffer[BitSetVar_LMX])
 
-
   val maxNumBit = Constants.getNumBit(xm.max_domain_size)
-
 
   var ACFinished = false
 
@@ -32,9 +30,9 @@ class LMXSearchHelper(override val numVars: Int, override val numTabs: Int, xm: 
 
   val States = mutable.HashMap[MultiLevel, LCState]()
 
-  val domainLock = new ReentrantLock()
+  val domainLock = new ReentrantLock(true)
 
-  //  var isConsistent = false
+  var searchFinished = false
 
 }
 
