@@ -18,23 +18,23 @@ object main_lmrpc {
     val xm = new XModel(path, true, fmt)
 
 
-    val ct = new SCoarseSolver(xm, "CT_Bit", "BitSet", "")
-    ct.search(Constants.TIME)
+//    val ct = new SCoarseSolver(xm, "CT_Bit", "BitSet", "")
+//    ct.search(Constants.TIME)
+//
+//
+//    val lmx = new LMaxRPCSolver(xm, "b")
+//    lmx.search(Constants.TIME)
+//
+//    println(lmx.I.toArray().mkString(","))
+//    val sol = lmx.I.toArray()
+//    //    sol(1) = 0
+//    println(xm.check(sol))
 
 
-    val lmx = new LMaxRPCSolver(xm, "b")
-    lmx.search(Constants.TIME)
-
-    println(lmx.I.toArray().mkString(","))
-    val sol = lmx.I.toArray()
-    //    sol(1) = 0
-    println(xm.check(sol))
-
-
-    val lmx2 = new LMXPSolver(xm, 16)
-    lmx2.sync(Constants.TIME)
-    val sol2 = lmx2.I.toArray()
-    println(xm.check(sol2))
+//    val lmx2 = new LMXPSolver(xm, 16)
+//    lmx2.sync(Constants.TIME)
+//    val sol2 = lmx2.I.toArray()
+//    println(xm.check(sol2))
 
     val lmx3 = new LMXPSolver(xm, 16)
     lmx3.async(Constants.TIME)

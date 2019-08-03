@@ -5,7 +5,7 @@ import org.glassfish.json.MapUtil
 
 class LMXSparseSet(val capacity: Int, val baseLevel: Int) {
   //  val data = Array.fill[T](capacity)(new MultiLevel(-1,-1))
-  val dense = Array.tabulate[MultiLevel](capacity * 2)(i => new MultiLevel(INDEX.kOVERFLOW, INDEX.kOVERFLOW, INDEX.kOVERFLOW))
+  val dense = Array.tabulate[MultiLevel](capacity)(i => new MultiLevel(INDEX.kOVERFLOW, INDEX.kOVERFLOW, INDEX.kOVERFLOW))
   //  val dense = Array.range(0, capacity)
   val sparse = Array.range(0, capacity * 2)
   // 当前顶层
@@ -39,7 +39,7 @@ class LMXSparseSet(val capacity: Int, val baseLevel: Int) {
 
   def size() = top
 
-  def isFull() = top == capacity - 1
+  def isFull() = top >= capacity
 
   def nonFull() = top < capacity
 

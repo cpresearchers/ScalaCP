@@ -12,6 +12,11 @@ class MultiLevel(var searchLevel: Int, var tmpLevel: Int, var tIdx: Int) {
     tmpLevel = tl
     tIdx = ti
   }
+
+  override def toString(): String = {
+    return searchLevel + ", " + tmpLevel + ", " + tIdx
+  }
+
 }
 
 object MultiLevel {
