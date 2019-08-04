@@ -6,10 +6,10 @@ import scala.collection.mutable.ArrayBuffer
 
 object UnitTest {
   def main(args: Array[String]): Unit = {
-
+    multiLevelTest()
   }
 
-  def multiLevelTest(): Unit ={
+  def multiLevelTest(): Unit = {
     println("xixi")
     val L = new LMXSparseSet(5, 5)
     val ms = new ArrayBuffer[MultiLevel]()

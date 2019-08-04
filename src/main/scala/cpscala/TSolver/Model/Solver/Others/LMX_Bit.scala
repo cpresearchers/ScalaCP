@@ -194,7 +194,7 @@ class LMX_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[B
             deleted = true
             //无法找到支持, 删除(v, a)
             //            println(s"      cons:${id} var:${v.id} remove new value:${a}")
-            //            println(s"ac  remove: (${v.id},${a})")
+            println(s"ac  remove: (${v.id},${a})")
             v.remove(a)
           }
         }
@@ -318,9 +318,10 @@ class LMX_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[B
       //      println(s"have_pc_support（${i.id}, ${a}, ${j.id})")
       if (!havePCSupport(iIdx, a, jIdx, m)) {
         if (i.contains(a)) {
-          //          println(s"lmx remove: (${i.id},${a})")
+          println(s"lmx remove main value: (${i.id},${a}), at ${m.toString()}")
           i.remove(a)
         }
+        println(s"lmx remove sub value: (${i.id},${a}), at ${m.toString()}")
         i.remove(a, m)
         changed = true
 

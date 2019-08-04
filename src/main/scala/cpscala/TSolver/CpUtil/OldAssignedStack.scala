@@ -36,7 +36,7 @@ class AssignedStack[VT <: Var : ClassTag](num_vars: Int) {
     }
   }
 
-  def contain(literal: Literal[VT]): Unit = {
+  def contain(literal: Literal[VT]): Boolean = {
     return inStack(literal.v.id) == literal.a
   }
 

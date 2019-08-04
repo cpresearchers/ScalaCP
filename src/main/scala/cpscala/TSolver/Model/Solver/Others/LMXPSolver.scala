@@ -262,7 +262,6 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
       println("forceBT", BTLevel)
       // 扫描所有的线程，删除未运行的线程
       for ((m, s) <- helper.States) {
-        println("delete threads:")
         if (s != LCState.Running) {
           println("delete:", m.toString())
           LCAThreads(m).join()
@@ -287,15 +286,6 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
             deleteTmpLevel(m)
           }
         }
-
-        // 主线程部分回溯
-        // 回溯BTLevel也坏掉了
-        //        while (helper.level >= BTLevel) {
-        //          literal = I.pop()
-        //          backLevel()
-        //          remove(literal)
-        //          println("backtrack main, pop: ", literal.toString())
-        //        }
 
         do {
           literal = I.pop()
@@ -322,7 +312,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
       prop_start_time = System.nanoTime
       helper.ACFinished = false
 
-      if (literal.v.isEmpty()) {
+      if (!literal.v.isEmpty()) {
         // 线程未满，新建线程
         if (LCAThreads.size < parallelism) {
           val m = newTmpLevel()
@@ -338,9 +328,6 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
 
       end_time = System.nanoTime
       helper.propTime += (end_time - prop_start_time)
-
-      //      println("--------")
-      //      infoShow()
 
       if (helper.isConsistent && I.full()) {
         I.show()
@@ -395,13 +382,15 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
       }
     }
 
-    // 扫描所有的线程，删除未运行的线程
+    // 扫描所有的线程，删除所有运行层数大于当前层的线程
     for ((m, s) <- helper.States) {
-      helper.States(m) = LCState.NeedStop
-      LCAThreads(m).join()
-      LCAThreads -= m
-      helper.States -= m
-      deleteTmpLevel(m)
+      if (m.searchLevel > helper.level) {
+        helper.States(m) = LCState.NeedStop
+        LCAThreads(m).join()
+        LCAThreads -= m
+        helper.States -= m
+        deleteTmpLevel(m)
+      }
     }
 
     end_time = System.nanoTime
@@ -535,7 +524,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
         // 其它未失败的线程
         // 从其searchLevel开始向后查，一直查到minLevel
         var ii = k.searchLevel
-        while (ii <= minLevel) {
+        while (ii < minLevel && ii < I.size()) {
           // 从I中拿到值 从search level 到 当前层，若I存储的赋值已被线程删去，则需要回溯，更新minLevel
           val va = I.table(ii)
           if (!va.v.asInstanceOf[BitSetVar_LMX].contains(va.a, k)) {
@@ -787,14 +776,13 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
 
       val sizeD: Double = v.size.toDouble
       val dmdd = sizeD / ddeg
-
+      println(s"${v.id}： size = ${sizeD}, ddeg = ${ddeg}, score = ${dmdd}")
       if (dmdd < mindmdd) {
         minvid = vid
         mindmdd = dmdd
       }
       i += 1
     }
-
     return vars(minvid)
   }
 
