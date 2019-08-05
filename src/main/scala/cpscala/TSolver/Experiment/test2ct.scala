@@ -13,7 +13,7 @@ import scala.collection.mutable.ArrayBuffer
 import scala.util.Sorting
 import scala.xml.XML
 
-object test_ct {
+object test2ct {
   var name = ""
   var pType = ""
   var ppType = ""

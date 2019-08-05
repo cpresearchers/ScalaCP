@@ -345,7 +345,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
       helper.propTime += (end_time - prop_start_time)
 
       if (helper.isConsistent && I.full()) {
-        I.show()
+
         end_time = System.nanoTime
         helper.time = end_time - start_time
 
@@ -357,6 +357,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
           helper.States -= m
           deleteTmpLevel(m)
         }
+        I.show()
         return
       }
 

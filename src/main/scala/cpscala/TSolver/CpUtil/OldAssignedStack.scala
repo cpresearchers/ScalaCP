@@ -47,7 +47,9 @@ class AssignedStack[VT <: Var : ClassTag](num_vars: Int) {
   def empty(): Boolean = index == -1
 
   def show(): Unit = {
+    println("------------------------solution------------------------------")
     println(inStack.mkString(" "))
+    println("--------------------------------------------------------------")
   }
 
   def toArray(): Array[Int] = {
