@@ -7,7 +7,7 @@ class LMXSparseSet(val capacity: Int, val baseLevel: Int) {
   //  val data = Array.fill[T](capacity)(new MultiLevel(-1,-1))
   val dense = Array.tabulate[MultiLevel](capacity)(i => new MultiLevel(INDEX.kOVERFLOW, INDEX.kOVERFLOW, INDEX.kOVERFLOW))
   //  val dense = Array.range(0, capacity)
-  val sparse = Array.range(0, capacity * 2)
+  val sparse = Array.range(0, capacity)
   // 当前顶层
   var top = 0
 

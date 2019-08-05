@@ -6,6 +6,8 @@ import scala.reflect.ClassTag
 
 class Literal[VT <: Var : ClassTag](val v: VT, val a: Int) {
   override def toString(): String = "(" + v.id + "," + a + ")"
+
+  def invalid() = a == INDEX.kOVERFLOW
 }
 
 class AssignedStack[VT <: Var : ClassTag](num_vars: Int) {

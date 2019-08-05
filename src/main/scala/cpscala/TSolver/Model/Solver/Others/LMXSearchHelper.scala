@@ -34,5 +34,9 @@ class LMXSearchHelper(override val numVars: Int, override val numTabs: Int, xm: 
 
   var searchFinished = false
 
+  var hasSolution = false
+
+  var timeout = false
+
 }
 

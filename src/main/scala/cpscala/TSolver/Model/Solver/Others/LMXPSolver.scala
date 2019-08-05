@@ -19,7 +19,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
 
   class LCAsync(val x: Var, val m: MultiLevel) extends Thread {
     override def run(): Unit = {
-      println(Thread.currentThread().getId() + " start at: " + m.toString())
+      helper.States(m) = LCState.Running
       LMXAsync(x, m)
       println(Thread.currentThread().getId() + " ending ")
     }
@@ -170,6 +170,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
 
       if (helper.isConsistent && I.full()) {
         I.show()
+        helper.hasSolution = true
         end_time = System.nanoTime
         helper.time = end_time - start_time
         return
@@ -254,16 +255,29 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
       end_time = System.nanoTime
       helper.time = end_time - start_time
       if (helper.time > timeLimit) {
+        helper.timeout = true
+        for ((m, s) <- helper.States) {
+          helper.States(m) = LCState.NeedStop
+          LCAThreads(m).join()
+          LCAThreads -= m
+          helper.States -= m
+          deleteTmpLevel(m)
+        }
         return
       }
+
 
       //扫描所有的 删除失败的线程确定回溯行数，其中BTLevel也是错的
       BTLevel = forceBT()
       println("forceBT", BTLevel)
+      for ((m, s) <- helper.States) {
+        println("state:", m.toString(), s)
+      }
       // 扫描所有的线程，删除未运行的线程
       for ((m, s) <- helper.States) {
         if (s != LCState.Running) {
           println("delete:", m.toString())
+          //          helper.States(m) = LCState.NeedStop
           LCAThreads(m).join()
           LCAThreads -= m
           helper.States -= m
@@ -271,14 +285,12 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
         }
       }
 
-      // 网络回溯到BTLevel层
+      // 网络回溯到BTLevel层，BTLevel也不要了
       if (BTLevel < helper.level) {
         // 子线程先回溯
         for ((m, s) <- helper.States) {
-
-          //          if (s != LCState.Running && m.searchLevel >= BTLevel) {
           if (m.searchLevel >= BTLevel) {
-            println("backtrack threads: ", m)
+            println("backtrack threads: ", m, s, helper.States.size)
             helper.States(m) = LCState.NeedStop
             LCAThreads(m).join()
             LCAThreads -= m
@@ -289,9 +301,9 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
 
         do {
           literal = I.pop()
+          println(s"level: ${helper.level}, backtrack main, pop: ", literal.toString())
           backLevel()
           remove(literal)
-          println("backtrack main, pop: ", literal.toString())
         } while (helper.level >= BTLevel || literal.v.isEmpty())
 
         helper.isConsistent = true
@@ -300,21 +312,24 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
       // 选新值赋值
       branch_start_time = System.nanoTime
       literal = selectLiteral()
-      newLevel()
-      helper.nodes += 1
-      I.push(literal)
-      bind(literal)
-      end_time = System.nanoTime
-      helper.branchTime += (end_time - branch_start_time)
 
-      println("push:" + literal.toString())
+
       //      infoShow()
       prop_start_time = System.nanoTime
       helper.ACFinished = false
 
-      if (!literal.v.isEmpty()) {
+      if (!(literal.v.isEmpty() || literal.invalid())) {
+        newLevel()
+        helper.nodes += 1
+        println(s"level: ${helper.level}, push:" + literal.toString())
+        I.push(literal)
+        bind(literal)
+        end_time = System.nanoTime
+        helper.branchTime += (end_time - branch_start_time)
+
         // 线程未满，新建线程
         if (LCAThreads.size < parallelism) {
+          println(s"new tmp: ${LCAThreads.size}, ${parallelism}")
           val m = newTmpLevel()
           LCAThreads += (m -> new LCAsync(literal.v, m))
           helper.States += (m -> LCState.Running)
@@ -349,11 +364,22 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
       while (!helper.isConsistent && !I.empty()) {
         //        back_start_time = System.nanoTime
         do {
+          for ((m, v) <- helper.States) {
+            if (m.searchLevel >= helper.level) {
+              helper.States(m) = LCState.NeedStop
+              LCAThreads(m).join()
+              LCAThreads -= m
+              helper.States -= m
+              deleteTmpLevel(m)
+            }
+          }
+
           literal = I.pop()
+          println(s"level: ${helper.level}, pop:" + literal.toString(), literal.v.size())
           backLevel()
           remove(literal)
 
-          println("pop:" + literal.toString())
+          infoShow()
         } while (literal.v.isEmpty())
 
         //        infoShow()
@@ -384,13 +410,11 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
 
     // 扫描所有的线程，删除所有运行层数大于当前层的线程
     for ((m, s) <- helper.States) {
-      if (m.searchLevel > helper.level) {
-        helper.States(m) = LCState.NeedStop
-        LCAThreads(m).join()
-        LCAThreads -= m
-        helper.States -= m
-        deleteTmpLevel(m)
-      }
+      helper.States(m) = LCState.NeedStop
+      LCAThreads(m).join()
+      LCAThreads -= m
+      helper.States -= m
+      deleteTmpLevel(m)
     }
 
     end_time = System.nanoTime
@@ -645,7 +669,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
     return true
   }
 
-  def LMXAsync(x: Var, m: MultiLevel): Boolean = {
+  def LMXAsync(x: Var, m: MultiLevel): Unit = {
     val LMXQ = new CoarseQueue[Var](numVars)
     var LMXY: ArrayBuffer[BitSetVar_LMX] = new ArrayBuffer[BitSetVar_LMX](xm.max_arity)
     LMXQ.clear()
@@ -666,9 +690,9 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
       //      println(s"Q >> ${j.id}")
       for (i <- helper.neiVar(j.id)) {
         // 需要停下来了，一般是由外部通知
-        if (helper.States(m) != LCState.Running) {
-          helper.States(m) == LCState.Stopped
-          return true
+        if (helper.States(m) == LCState.NeedStop) {
+          helper.States(m) = LCState.Stopped
+          return
         }
         //        println(s"nei: ${i.id}")
         if (i.unBind(m.searchLevel)) {
@@ -677,12 +701,16 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
           LMXY += i
           LMXY += j
 
-          val (res, changed) = c.LMXAsync(LMXY, m)
+          val (state, changed) = c.LMXAsync(LMXY, m)
 
-          if (!res) {
-            helper.States(m) == LCState.Fail
+          if (state == LCState.Fail) {
+            helper.States(m) = LCState.Fail
             helper.isConsistent = false
-            return false
+            return
+          }
+          else if (state == LCState.Stopped) {
+            helper.States(m) = LCState.Stopped
+            return
           }
 
           if (changed) {
@@ -693,8 +721,8 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
       }
     }
 
-    helper.States(m) == LCState.Success
-    return true
+    helper.States(m) = LCState.Success
+    return
   }
 
   def ACAsync(x: Var): Boolean = {
@@ -776,7 +804,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
 
       val sizeD: Double = v.size.toDouble
       val dmdd = sizeD / ddeg
-      println(s"${v.id}： size = ${sizeD}, ddeg = ${ddeg}, score = ${dmdd}")
+      //      println(s"${v.id}： size = ${sizeD}, ddeg = ${ddeg}, score = ${dmdd}")
       if (dmdd < mindmdd) {
         minvid = vid
         mindmdd = dmdd
@@ -813,6 +841,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
 
   def newTmpLevel(): MultiLevel = {
     val m = L.add(helper.level)
+    println("new tmplevel", m.toString())
     for (v <- vars) {
       v.newTmpLevel(m)
     }
@@ -820,6 +849,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
   }
 
   def deleteTmpLevel(m: MultiLevel): Unit = {
+    println("remove tmplevel", m.toString())
     L.remove(m)
   }
 

@@ -2,6 +2,7 @@ package cpscala.TSolver.Model.Solver.Others
 
 import cpscala.TSolver.CpUtil.{Constants, INDEX, RSBitSet}
 import cpscala.TSolver.Model.Constraint.SConstraint.Propagator
+import cpscala.TSolver.Model.Solver.Others.LCState.LCState
 import cpscala.TSolver.Model.Variable.{BitSetVar, Var}
 
 import scala.collection.mutable.ArrayBuffer
@@ -194,7 +195,7 @@ class LMX_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[B
             deleted = true
             //无法找到支持, 删除(v, a)
             //            println(s"      cons:${id} var:${v.id} remove new value:${a}")
-            println(s"ac  remove: (${v.id},${a})")
+            //            println(s"ac  remove: (${v.id},${a})")
             v.remove(a)
           }
         }
@@ -294,7 +295,7 @@ class LMX_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[B
   }
 
   // 等几个线程
-  def LMXAsync(evt: ArrayBuffer[BitSetVar_LMX], m: MultiLevel): (Boolean, Boolean) = {
+  def LMXAsync(evt: ArrayBuffer[BitSetVar_LMX], m: MultiLevel): (LCState, Boolean) = {
     //    println("enter c.lmx")
     //获取传入的两个变量
     val i = evt(0)
@@ -310,38 +311,38 @@ class LMX_Bit(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[B
 
     for (a <- lmxValues) {
       // 需要停下来了，一般是由外部通知
-      if (helper.States(m) != LCState.Running) {
-        helper.States(m) == LCState.Stopped
-        return (true, changed)
+      if (helper.States(m) == LCState.NeedStop) {
+//        helper.States(m) = LCState.Stopped
+        return (LCState.Stopped, changed)
       }
 
       //      println(s"have_pc_support（${i.id}, ${a}, ${j.id})")
       if (!havePCSupport(iIdx, a, jIdx, m)) {
-        if (i.contains(a)) {
-          println(s"lmx remove main value: (${i.id},${a}), at ${m.toString()}")
+        if (i.unBind() && i.contains(a)) {
+          //          println(s"lmx remove main value: (${i.id},${a}), at ${m.toString()}")
           i.remove(a)
         }
-        println(s"lmx remove sub value: (${i.id},${a}), at ${m.toString()}")
+        //        println(s"lmx remove sub value: (${i.id},${a}), at ${m.toString()}")
         i.remove(a, m)
         changed = true
 
         if (i.isEmpty(m)) {
           //          println("lmx field")
-          helper.States(m) == LCState.Fail
-          return (false, changed)
+//          helper.States(m) == LCState.Fail
+          return (LCState.Fail, changed)
         }
 
         if (i.isEmpty()) {
           //          println("ac field")
           helper.States(m) == LCState.Fail
-          return (false, changed)
+          return (LCState.Fail, changed)
         }
 
         evt += i
       }
     }
-    helper.States(m) == LCState.Success
-    return (true, changed)
+
+    return (LCState.Success, changed)
   }
 
   def havePCSupport(iIdx: Int, a: Int, jIdx: Int, m: MultiLevel): Boolean = {
