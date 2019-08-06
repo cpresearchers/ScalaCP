@@ -6,6 +6,7 @@ import com.github.tototoshi.csv.CSVWriter
 import cpscala.TSolver.CpUtil.Constants
 import cpscala.TSolver.Model.Solver.DSPSolver.DSPCoarseSolver
 import cpscala.TSolver.Model.Solver.IPSolver.IPCoarseSolver
+import cpscala.TSolver.Model.Solver.Others.LMXPSolver
 import cpscala.TSolver.Model.Solver.SSolver.SCoarseSolver
 import cpscala.XModel.XModel
 
@@ -51,12 +52,13 @@ object test2ct {
       val titleLine = ArrayBuffer[String]()
       titleLine += "name"
       titleLine ++= Array("algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum")
-      for (_ <- 0 until parallelisms.length) {
-        titleLine ++= Array("algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum")
-      }
+//      for (_ <- 0 until parallelisms.length) {
+//        titleLine ++= Array("algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum")
+//      }
       for (_ <- 0 until parallelisms.length) {
         titleLine ++= Array("algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub")
       }
+      titleLine ++= Array("algorithm", "nodes", "time")
       titleLine ++= Array("algorithm", "nodes", "time")
       writer.writeRow(titleLine)
       var dataLine = new ArrayBuffer[String](titleLine.length)
@@ -81,24 +83,6 @@ object test2ct {
         dataLine += (ct.helper.backTime.toDouble * 1e-9).toString()
         dataLine += ct.helper.c_sum.toString()
         dataLine += ct.helper.p_sum.toString()
-        //-------------CT批量提交-------------
-        ppType = "IPCT_SBit"
-        varType = "SafeBitSet"
-        for (parallelism <- parallelisms) {
-          name = ppType + "_" + parallelism.toString()
-          println(s"Solving ${name} with ${parallelism} threads===============>")
-          val pct = new IPCoarseSolver(xm, parallelism, ppType, varType, "")
-          pct.search(Constants.TIME)
-          pct.shutdown()
-          dataLine += name
-          dataLine += pct.helper.nodes.toString()
-          dataLine += (pct.helper.time.toDouble * 1e-9).toString()
-          dataLine += (pct.helper.branchTime.toDouble * 1e-9).toString()
-          dataLine += (pct.helper.propTime.toDouble * 1e-9).toString()
-          dataLine += (pct.helper.backTime.toDouble * 1e-9).toString()
-          dataLine += pct.helper.c_sum.toString()
-          dataLine += pct.helper.p_sum.toString()
-        }
         //-------------CT动态提交-------------
         ppType = "DSPCT_SBit"
         varType = "SafeBitSet"
@@ -118,6 +102,23 @@ object test2ct {
           dataLine += pct.helper.c_sub.toString()
           //---async
         }
+
+        //---------hyper--------
+        name = "Hyper"
+        val lmx4 = new LMXPSolver(xm, 3)
+        lmx4.hyper(Constants.TIME)
+        dataLine += name
+        dataLine += lmx4.helper.nodes.toString()
+        dataLine += (lmx4.helper.time.toDouble * 1e-9).toString()
+
+        //-------async------
+        name = "Async"
+        val lmx3 = new LMXPSolver(xm, 3)
+        lmx3.async(Constants.TIME)
+        dataLine += name
+        dataLine += lmx3.helper.nodes.toString()
+        dataLine += (lmx3.helper.time.toDouble * 1e-9).toString()
+
         writer.writeRow(dataLine)
         println("end: " + f.getName)
       }

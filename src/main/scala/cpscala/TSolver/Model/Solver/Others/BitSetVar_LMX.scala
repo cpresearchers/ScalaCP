@@ -9,8 +9,8 @@ import scala.collection.mutable.ArrayBuffer
 class BitSetVar_LMX(val name: String, val id: Int, numVars: Int, vals: Array[Int], val helper: LMXSearchHelper, val parallelism: Int) extends Var {
   //// 各种层
   // 总层数
-  val numLevel = numVars + parallelism + 3
-  val numTmpLevels = parallelism
+  val numLevel = numVars + parallelism + 3 + 1
+  val numTmpLevels = parallelism + 1
   // 临时层数启始层
   val startTmpLevel = numVars + 3
   // 主线程搜索层

@@ -48,7 +48,7 @@ import org.glassfish.json.MapUtil
 class LMXSparseSet(val capacity: Int, val baseLevel: Int) {
   // 临时层位置
   val tmpLevels = Array.range(baseLevel, baseLevel + capacity)
-  println(tmpLevels.mkString(","))
+//  println(tmpLevels.mkString(","))
   // 对应的搜索层，初始为-1
   val searchLevels = Array.fill(capacity)(INDEX.kOVERFLOW)
   //  val tmpMultiLevels = Array.fill(capacity)(new MultiLevel(INDEX.kOVERFLOW, INDEX.kOVERFLOW, INDEX.kOVERFLOW))
@@ -63,7 +63,7 @@ class LMXSparseSet(val capacity: Int, val baseLevel: Int) {
           sizeL += 1
           searchLevels(ii) = searchLevel
           val m =new MultiLevel(searchLevel, tmpLevels(ii), sizeL - 1)
-          println("return: "+m.toString())
+//          println("return: "+m.toString())
           return m
         }
         ii += 1

@@ -21,7 +21,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
     override def run(): Unit = {
       helper.States(m) = LCState.Running
       LMXAsync(x, m)
-      println(Thread.currentThread().getId() + " ending ")
+      //      println(Thread.currentThread().getId() + " ending ")
     }
   }
 
@@ -62,7 +62,9 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
   val Q = new CoarseQueue[Var](numVars)
   var Y_evt: ArrayBuffer[BitSetVar_LMX] = new ArrayBuffer[BitSetVar_LMX](xm.max_arity)
   val I = new AssignedStack[Var](xm.num_vars)
-  val L = new LMXSparseSet(parallelism, numVars + 3)
+  val baseLevel = numVars + 3
+  val L = new LMXSparseSet(parallelism, baseLevel)
+  val singleTmpLevel = parallelism + baseLevel
 
   val M = new mutable.HashMap[MultiLevel, LCSync]()
   // =0 是idle
@@ -169,7 +171,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
       //      infoShow()
 
       if (helper.isConsistent && I.full()) {
-        I.show()
+//        I.show()
         helper.hasSolution = true
         end_time = System.nanoTime
         helper.time = end_time - start_time
@@ -220,8 +222,8 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
     var literal: Literal[Var] = null
 
     //initial propagate
-    println("initial propagate")
-    infoShow()
+    //    println("initial propagate")
+    //    infoShow()
     start_time = System.nanoTime
     //    var fail = false
     var BTLevel = 0
@@ -269,14 +271,14 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
 
       //扫描所有的 删除失败的线程确定回溯行数，其中BTLevel也是错的
       BTLevel = forceBT()
-      println("forceBT", BTLevel)
-      for ((m, s) <- helper.States) {
-        println("state:", m.toString(), s)
-      }
+      //      println("forceBT", BTLevel)
+      //      for ((m, s) <- helper.States) {
+      //        println("state:", m.toString(), s)
+      //      }
       // 扫描所有的线程，删除未运行的线程
       for ((m, s) <- helper.States) {
         if (s != LCState.Running) {
-          println("delete:", m.toString())
+          //          println("delete:", m.toString())
           //          helper.States(m) = LCState.NeedStop
           LCAThreads(m).join()
           LCAThreads -= m
@@ -286,11 +288,12 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
       }
 
       // 网络回溯到BTLevel层，BTLevel也不要了
+      //      println(BTLevel, helper.level)
       if (BTLevel < helper.level) {
         // 子线程先回溯
         for ((m, s) <- helper.States) {
           if (m.searchLevel >= BTLevel) {
-            println("backtrack threads: ", m, s, helper.States.size)
+            //            println("backtrack threads: ", m, s, helper.States.size)
             helper.States(m) = LCState.NeedStop
             LCAThreads(m).join()
             LCAThreads -= m
@@ -301,10 +304,10 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
 
         do {
           literal = I.pop()
-          println(s"level: ${helper.level}, backtrack main, pop: ", literal.toString())
+          //          println(s"level: ${helper.level}, backtrack main, pop: ", literal.toString())
           backLevel()
           remove(literal)
-        } while (helper.level >= BTLevel || literal.v.isEmpty())
+        } while (helper.level > BTLevel || literal.v.isEmpty())
 
         helper.isConsistent = true
       }
@@ -313,24 +316,23 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
       branch_start_time = System.nanoTime
       literal = selectLiteral()
 
-
       //      infoShow()
       prop_start_time = System.nanoTime
       helper.ACFinished = false
 
       if (!(literal.v.isEmpty() || literal.invalid())) {
         newLevel()
-        println(s"level: ${helper.level}, push:" + literal.toString())
+        //        println(s"level: ${helper.level}, push:" + literal.toString())
         I.push(literal)
         bind(literal)
         helper.nodes += 1
-        println("nodes:", helper.nodes)
+        //        println("nodes:", helper.nodes)
         end_time = System.nanoTime
         helper.branchTime += (end_time - branch_start_time)
 
         // 线程未满，新建线程
         if (LCAThreads.size < parallelism) {
-          println(s"new tmp: ${LCAThreads.size}, ${parallelism}")
+          //          println(s"new tmp: ${LCAThreads.size}, ${parallelism}")
           val m = newTmpLevel()
           LCAThreads += (m -> new LCAsync(literal.v, m))
           helper.States += (m -> LCState.Running)
@@ -358,7 +360,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
           helper.States -= m
           deleteTmpLevel(m)
         }
-        I.show()
+//        I.show()
         return
       }
 
@@ -377,11 +379,11 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
           }
 
           literal = I.pop()
-          println(s"level: ${helper.level}, pop:" + literal.toString(), literal.v.size())
+          //          println(s"level: ${helper.level}, pop:" + literal.toString(), literal.v.size())
           backLevel()
           remove(literal)
 
-          infoShow()
+          //          infoShow()
         } while (literal.v.isEmpty())
 
         //        infoShow()
@@ -425,118 +427,208 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
 
   }
 
-  //  def aasync(timeLimit: Long): Unit = {
-  //    var finished = false
-  //    var literal: Literal[Var] = null
-  //
-  //
-  //    //initial propagate
-  //    println("initial propagate")
-  //    infoShow()
-  //
-  //    start_time = System.nanoTime
-  //    var fail = false
-  //    AC(null)
-  //
-  //    end_time = System.nanoTime
-  //    helper.propTime += (end_time - prop_start_time)
-  //
-  //    if (!helper.isConsistent) {
-  //      finished = false
-  //      end_time = System.nanoTime
-  //      helper.time = end_time - start_time
-  //      return
-  //    }
-  //
-  //    var v = selectVar()
-  //    //    var BTLevel = -1
-  //
-  //    var ii = 0
-  //    while (ii < numVars && ii >= 0) {
-  //      breakable {
-  //        while (v.size() >= 1) {
-  //          fail = false
-  //
-  //          //          BTLevel = forceBT()
-  //          //
-  //          //          if (BTLevel < ii) {
-  //          //            fail = true
-  //          //            break()
-  //          //          }
-  //
-  //          literal = new Literal(v, v.minValue())
-  //          newLevel()
-  //          helper.nodes += 1
-  //          I.push(literal)
-  //          bind(literal)
-  //          println("push:" + literal.toString())
-  //          infoShow()
-  //          //          // 线程未满,
-  //          //          if (M.size < parallelism) {
-  //          //            val m = newTmpLevel()
-  //          //            M += (m -> new LCSync(literal.v, m))
-  //          //            val lc = M(m)
-  //          //            lc.start()
-  //          //          }
-  //          AC(v)
-  //          infoShow()
-  //          // 失败了回溯一层
-  //          if (!helper.isConsistent) {
-  //            fail = true
-  //            literal = I.pop()
-  //
-  //            backLevel()
-  //            remove(literal)
-  //
-  //            println("pop:" + literal.toString())
-  //            infoShow()
-  //          }
-  //          else {
-  //            break()
-  //          }
-  //        }
-  //      }
-  //
-  //      if (fail) {
-  //        //        backLevel(BTLevel)
-  //        //        // 其它线程回溯
-  //        //        for ((k, v) <- LCState) {
-  //        //          // 若线程仍在运行且该相容性的搜索层数大于当前层，则中止worker，设置其为idle为负的
-  //        //          if (v == 2 && k.searchLevel >= helper.level) {
-  //        //            // 设置其为需要停止
-  //        //            LCState(k) = 1
-  //        //            // 等待其停止
-  //        //            M(k).join()
-  //        //            LCState(k) = 0
-  //        //
-  //        //            // 从两个集合中移除该线程，应该减key
-  //        //            LCState -= k
-  //        //            M -= k
-  //        //          }
-  //        //        }
-  //      }
-  //      else {
-  //        v = selectVar()
-  //        //        newLevel()
-  //      }
-  //
-  //      ii += 1
-  //    }
-  //
-  //    if (helper.level == 0) {
-  //      // 失败
-  //      return
-  //    }
-  //    else {
-  //      // 成功
-  //      I.show()
-  //      return
-  //    }
-  //
-  //  }
+  def hyper(timeLimit: Long): Unit = {
+    helper.searchFinished = false
+    var literal: Literal[Var] = null
+
+    //initial propagate
+    //    println("initial propagate")
+    //    infoShow()
+    start_time = System.nanoTime
+    //    var fail = false
+    var BTLevel = 0
+    val sm = new MultiLevel(helper.level, singleTmpLevel, parallelism)
+    //    println(sm.toString())
+
+    val m = newTmpLevel()
+    LCAThreads += (m -> new LCAsync(null, m))
+    helper.States += (m -> LCState.Running)
+    val cc = LCAThreads(m)
+    cc.start()
+
+    newSyncTmpLevel(sm)
+    val tm = new LCSync(null, sm)
+    tm.start()
+    AC(null)
+    tm.join()
+
+
+    end_time = System.nanoTime
+    helper.propTime += (end_time - prop_start_time)
+
+    // AC失败了,直接退出
+    if (!helper.isConsistent) {
+      LCAThreads(m).join()
+      LCAThreads -= m
+      helper.States -= m
+      deleteTmpLevel(m)
+
+      helper.searchFinished = false
+      end_time = System.nanoTime
+      helper.time = end_time - start_time
+      return
+    }
+
+    //搜索阶段
+    while (!helper.searchFinished) {
+      // 超时检测
+      end_time = System.nanoTime
+      helper.time = end_time - start_time
+      if (helper.time > timeLimit) {
+        helper.timeout = true
+        for ((m, s) <- helper.States) {
+          helper.States(m) = LCState.NeedStop
+          LCAThreads(m).join()
+          LCAThreads -= m
+          helper.States -= m
+          deleteTmpLevel(m)
+        }
+        return
+      }
+
+
+      //扫描所有的 删除失败的线程确定回溯行数，其中BTLevel也是错的
+      BTLevel = forceBT()
+      //      println("forceBT", BTLevel)
+      for ((m, s) <- helper.States) {
+        //        println("state:", m.toString(), s)
+      }
+      // 扫描所有的线程，删除未运行的线程
+      for ((m, s) <- helper.States) {
+        if (s != LCState.Running) {
+          //          println("delete:", m.toString())
+          //          helper.States(m) = LCState.NeedStop
+          LCAThreads(m).join()
+          LCAThreads -= m
+          helper.States -= m
+          deleteTmpLevel(m)
+        }
+      }
+
+      // 网络回溯到BTLevel层，BTLevel也不要了
+      if (BTLevel < helper.level) {
+        // 子线程先回溯
+        for ((m, s) <- helper.States) {
+          if (m.searchLevel >= BTLevel) {
+            //            println("backtrack threads: ", m, s, helper.States.size)
+            helper.States(m) = LCState.NeedStop
+            LCAThreads(m).join()
+            LCAThreads -= m
+            helper.States -= m
+            deleteTmpLevel(m)
+          }
+        }
+
+        do {
+          literal = I.pop()
+          //          println(s"level: ${helper.level}, backtrack main, pop: ", literal.toString())
+          backLevel()
+          remove(literal)
+        } while (helper.level > BTLevel || literal.v.isEmpty())
+
+        helper.isConsistent = true
+      }
+
+      // 选新值赋值
+      branch_start_time = System.nanoTime
+      literal = selectLiteral()
+
+      //      infoShow()
+      prop_start_time = System.nanoTime
+      helper.ACFinished = false
+
+      if (!(literal.v.isEmpty() || literal.invalid())) {
+        newLevel()
+        //        println(s"level: ${helper.level}, push:" + literal.toString())
+        I.push(literal)
+        bind(literal)
+        helper.nodes += 1
+        //        println("nodes:", helper.nodes)
+        end_time = System.nanoTime
+        helper.branchTime += (end_time - branch_start_time)
+
+        // 线程未满，新建线程
+        if (LCAThreads.size < parallelism) {
+          //          println(s"new tmp: ${LCAThreads.size}, ${parallelism}")
+          val m = newTmpLevel()
+          LCAThreads += (m -> new LCAsync(literal.v, m))
+          helper.States += (m -> LCState.Running)
+          LCAThreads(m).start()
+        }
+
+        newSyncTmpLevel(sm)
+        val tm = new LCSync(literal.v, sm)
+        tm.start()
+        AC(literal.v)
+        tm.join()
+
+      } else {
+        helper.isConsistent = false
+      }
+
+      end_time = System.nanoTime
+      helper.propTime += (end_time - prop_start_time)
+
+      if (helper.isConsistent && I.full()) {
+
+        end_time = System.nanoTime
+        helper.time = end_time - start_time
+        helper.hasSolution = true
+        // 完成了 所有有LC都退出
+        for ((m, v) <- helper.States) {
+          helper.States(m) = LCState.NeedStop
+          LCAThreads(m).join()
+          LCAThreads -= m
+          helper.States -= m
+          deleteTmpLevel(m)
+        }
+//        I.show()
+        return
+      }
+
+      // AC失败了
+      while (!helper.isConsistent && !I.empty()) {
+        //        back_start_time = System.nanoTime
+        do {
+          for ((m, v) <- helper.States) {
+            if (m.searchLevel >= helper.level) {
+              helper.States(m) = LCState.NeedStop
+              LCAThreads(m).join()
+              LCAThreads -= m
+              helper.States -= m
+              deleteTmpLevel(m)
+            }
+          }
+
+          literal = I.pop()
+          //          println(s"level: ${helper.level}, pop:" + literal.toString(), literal.v.size())
+          backLevel()
+          remove(literal)
+        } while (literal.v.isEmpty())
+      }
+
+      if (!helper.isConsistent) {
+        helper.searchFinished = true
+      }
+    }
+
+    // 扫描所有的线程，删除所有运行层数大于当前层的线程
+    for ((m, s) <- helper.States) {
+      helper.States(m) = LCState.NeedStop
+      LCAThreads(m).join()
+      LCAThreads -= m
+      helper.States -= m
+      deleteTmpLevel(m)
+    }
+
+    end_time = System.nanoTime
+    helper.time = end_time - start_time
+    return
+
+  }
 
   def forceBT(): Int = {
-    println("forceBT")
+    //    println("forceBT")
     var minLevel = helper.level + 1
 
     // 所有线程
@@ -598,7 +690,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
       if (helper.ACFinished) {
         return true
       }
-      if(!helper.isConsistent){
+      if (!helper.isConsistent) {
         return false
       }
       val j = LMXQ.pop().asInstanceOf[BitSetVar_LMX]
@@ -846,15 +938,21 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
 
   def newTmpLevel(): MultiLevel = {
     val m = L.add(helper.level)
-    println("new tmplevel", m.toString())
+    //    println("new tmplevel", m.toString())
     for (v <- vars) {
       v.newTmpLevel(m)
     }
     return m
   }
 
+  def newSyncTmpLevel(m: MultiLevel) = {
+    for (v <- vars) {
+      v.newTmpLevel(m)
+    }
+  }
+
   def deleteTmpLevel(m: MultiLevel): Unit = {
-    println("remove tmplevel", m.toString())
+    //    println("remove tmplevel", m.toString())
     L.remove(m)
   }
 
