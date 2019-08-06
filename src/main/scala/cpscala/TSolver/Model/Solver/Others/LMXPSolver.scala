@@ -320,10 +320,11 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
 
       if (!(literal.v.isEmpty() || literal.invalid())) {
         newLevel()
-        helper.nodes += 1
         println(s"level: ${helper.level}, push:" + literal.toString())
         I.push(literal)
         bind(literal)
+        helper.nodes += 1
+        println("nodes:", helper.nodes)
         end_time = System.nanoTime
         helper.branchTime += (end_time - branch_start_time)
 
@@ -348,7 +349,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
 
         end_time = System.nanoTime
         helper.time = end_time - start_time
-
+        helper.hasSolution = true
         // 完成了 所有有LC都退出
         for ((m, v) <- helper.States) {
           helper.States(m) = LCState.NeedStop
@@ -596,6 +597,9 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
     while (!LMXQ.empty()) {
       if (helper.ACFinished) {
         return true
+      }
+      if(!helper.isConsistent){
+        return false
       }
       val j = LMXQ.pop().asInstanceOf[BitSetVar_LMX]
       //      println(s"Q >> ${j.id}")

@@ -35,11 +35,14 @@ object main_lmrpc {
     lmx2.sync(Constants.TIME)
     val sol2 = lmx2.I.toArray()
     println(xm.check(sol2))
+    println(lmx2.helper.time * 1e-9)
 
     val lmx3 = new LMXPSolver(xm, 3)
     lmx3.async(Constants.TIME)
-    if (!lmx3.helper.timeout) {
+    if (!lmx3.helper.timeout && lmx3.helper.hasSolution) {
       val sol3 = lmx2.I.toArray()
+      println(lmx3.helper.nodes)
+      println(lmx3.helper.time * 1e-9)
       println(xm.check(sol3))
     }
   }
