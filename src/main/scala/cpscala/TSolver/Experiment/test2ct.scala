@@ -52,9 +52,9 @@ object test2ct {
       val titleLine = ArrayBuffer[String]()
       titleLine += "name"
       titleLine ++= Array("algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum")
-//      for (_ <- 0 until parallelisms.length) {
-//        titleLine ++= Array("algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum")
-//      }
+      //      for (_ <- 0 until parallelisms.length) {
+      //        titleLine ++= Array("algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_sum", "p_sum")
+      //      }
       for (_ <- 0 until parallelisms.length) {
         titleLine ++= Array("algorithm", "nodes", "time", "branchTime", "propTime", "backTime", "c_prop", "c_sub")
       }
@@ -64,63 +64,71 @@ object test2ct {
       var dataLine = new ArrayBuffer[String](titleLine.length)
 
       for (f <- files) {
-        println("Build Model: " + f.getName)
-        val xm = new XModel(f.getPath, true, fmt)
-        dataLine.clear()
-        dataLine += f.getName()
-        //-------------CT串行算法-------------
-        pType = "CT_Bit"
-        varType = "BitSet"
-        name = pType
-        println(s"Solving ${name} ===============>")
-        val ct = new SCoarseSolver(xm, pType, varType, "")
-        ct.search(Constants.TIME)
-        dataLine += name
-        dataLine += ct.helper.nodes.toString()
-        dataLine += (ct.helper.time.toDouble * 1e-9).toString()
-        dataLine += (ct.helper.branchTime.toDouble * 1e-9).toString()
-        dataLine += (ct.helper.propTime.toDouble * 1e-9).toString()
-        dataLine += (ct.helper.backTime.toDouble * 1e-9).toString()
-        dataLine += ct.helper.c_sum.toString()
-        dataLine += ct.helper.p_sum.toString()
-        //-------------CT动态提交-------------
-        ppType = "DSPCT_SBit"
-        varType = "SafeBitSet"
-        for (parallelism <- parallelisms) {
-          name = ppType + "_" + parallelism.toString()
-          println(s"Solving ${name} with ${parallelism} threads===============>")
-          val pct = new DSPCoarseSolver(xm, parallelism, ppType, varType, "")
-          pct.search(Constants.TIME)
-          pct.shutdown()
+        try {
+          println("Build Model: " + f.getName)
+          val xm = new XModel(f.getPath, true, fmt)
+          dataLine.clear()
+          dataLine += f.getName()
+
+          //-------------CT串行算法-------------
+          pType = "CT_Bit"
+          varType = "BitSet"
+          name = pType
+          println(s"Solving ${name} ===============>")
+          val ct = new SCoarseSolver(xm, pType, varType, "")
+          ct.search(Constants.TIME)
           dataLine += name
-          dataLine += pct.helper.nodes.toString()
-          dataLine += (pct.helper.time.toDouble * 1e-9).toString()
-          dataLine += (pct.helper.branchTime.toDouble * 1e-9).toString()
-          dataLine += (pct.helper.propTime.toDouble * 1e-9).toString()
-          dataLine += (pct.helper.backTime.toDouble * 1e-9).toString()
-          dataLine += pct.helper.c_prop.toString()
-          dataLine += pct.helper.c_sub.toString()
-          //---async
+          dataLine += ct.helper.nodes.toString()
+          dataLine += (ct.helper.time.toDouble * 1e-9).toString()
+          dataLine += (ct.helper.branchTime.toDouble * 1e-9).toString()
+          dataLine += (ct.helper.propTime.toDouble * 1e-9).toString()
+          dataLine += (ct.helper.backTime.toDouble * 1e-9).toString()
+          dataLine += ct.helper.c_sum.toString()
+          dataLine += ct.helper.p_sum.toString()
+          //-------------CT动态提交-------------
+          ppType = "DSPCT_SBit"
+          varType = "SafeBitSet"
+          for (parallelism <- parallelisms) {
+            name = ppType + "_" + parallelism.toString()
+            println(s"Solving ${name} with ${parallelism} threads===============>")
+            val pct = new DSPCoarseSolver(xm, parallelism, ppType, varType, "")
+            pct.search(Constants.TIME)
+            pct.shutdown()
+            dataLine += name
+            dataLine += pct.helper.nodes.toString()
+            dataLine += (pct.helper.time.toDouble * 1e-9).toString()
+            dataLine += (pct.helper.branchTime.toDouble * 1e-9).toString()
+            dataLine += (pct.helper.propTime.toDouble * 1e-9).toString()
+            dataLine += (pct.helper.backTime.toDouble * 1e-9).toString()
+            dataLine += pct.helper.c_prop.toString()
+            dataLine += pct.helper.c_sub.toString()
+            //---async
+          }
+
+          //---------hyper--------
+          name = "Hyper"
+          val lmx4 = new LMXPSolver(xm, 3)
+          println(s"Solving ${name} ===============>")
+          lmx4.hyper(Constants.TIME)
+          dataLine += name
+          dataLine += lmx4.helper.nodes.toString()
+          dataLine += (lmx4.helper.time.toDouble * 1e-9).toString()
+
+          //-------async------
+          name = "Async"
+          val lmx3 = new LMXPSolver(xm, 4)
+          println(s"Solving ${name} ===============>")
+          lmx3.async(Constants.TIME)
+          dataLine += name
+          dataLine += lmx3.helper.nodes.toString()
+          dataLine += (lmx3.helper.time.toDouble * 1e-9).toString()
+
+          writer.writeRow(dataLine)
+          println("end: " + f.getName)
         }
+        finally {
 
-        //---------hyper--------
-        name = "Hyper"
-        val lmx4 = new LMXPSolver(xm, 3)
-        lmx4.hyper(Constants.TIME)
-        dataLine += name
-        dataLine += lmx4.helper.nodes.toString()
-        dataLine += (lmx4.helper.time.toDouble * 1e-9).toString()
-
-        //-------async------
-        name = "Async"
-        val lmx3 = new LMXPSolver(xm, 3)
-        lmx3.async(Constants.TIME)
-        dataLine += name
-        dataLine += lmx3.helper.nodes.toString()
-        dataLine += (lmx3.helper.time.toDouble * 1e-9).toString()
-
-        writer.writeRow(dataLine)
-        println("end: " + f.getName)
+        }
       }
       writer.close()
       println("-----" + folderStr + " done!-----")

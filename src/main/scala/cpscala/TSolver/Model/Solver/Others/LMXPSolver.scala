@@ -20,7 +20,12 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
   class LCAsync(val x: Var, val m: MultiLevel) extends Thread {
     override def run(): Unit = {
       helper.States(m) = LCState.Running
-      LMXAsync(x, m)
+      try {
+        LMXAsync(x, m)
+      } finally {
+        return
+      }
+
       //      println(Thread.currentThread().getId() + " ending ")
     }
   }
@@ -171,7 +176,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
       //      infoShow()
 
       if (helper.isConsistent && I.full()) {
-//        I.show()
+        //        I.show()
         helper.hasSolution = true
         end_time = System.nanoTime
         helper.time = end_time - start_time
@@ -245,7 +250,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
       helper.States -= m
       deleteTmpLevel(m)
 
-      helper.searchFinished = false
+      helper.searchFinished = true
       end_time = System.nanoTime
       helper.time = end_time - start_time
       return
@@ -281,7 +286,9 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
           //          println("delete:", m.toString())
           //          helper.States(m) = LCState.NeedStop
           LCAThreads(m).join()
+
           LCAThreads -= m
+          //          println("removing", m.toString())
           helper.States -= m
           deleteTmpLevel(m)
         }
@@ -297,6 +304,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
             helper.States(m) = LCState.NeedStop
             LCAThreads(m).join()
             LCAThreads -= m
+            //            println("removing", m.toString())
             helper.States -= m
             deleteTmpLevel(m)
           }
@@ -307,9 +315,15 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
           //          println(s"level: ${helper.level}, backtrack main, pop: ", literal.toString())
           backLevel()
           remove(literal)
-        } while (helper.level > BTLevel || literal.v.isEmpty())
+        } while (helper.level > BTLevel || (helper.level > 0 && literal.v.isEmpty()))
 
-        helper.isConsistent = true
+        if (helper.level == 0 && literal.v.isEmpty()) {
+          end_time = System.nanoTime
+          helper.time = end_time - start_time
+          return
+        } else {
+          helper.isConsistent = true
+        }
       }
 
       // 选新值赋值
@@ -360,7 +374,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
           helper.States -= m
           deleteTmpLevel(m)
         }
-//        I.show()
+        //        I.show()
         return
       }
 
@@ -384,7 +398,15 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
           remove(literal)
 
           //          infoShow()
-        } while (literal.v.isEmpty())
+        } while (literal.v.isEmpty() && helper.level > 0)
+
+        if (literal.v.isEmpty() && helper.level == 0) {
+          end_time = System.nanoTime
+          helper.time = end_time - start_time
+          return
+        } else {
+          helper.isConsistent = true
+        }
 
         //        infoShow()
 
@@ -463,7 +485,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
       helper.States -= m
       deleteTmpLevel(m)
 
-      helper.searchFinished = false
+      helper.searchFinished = true
       end_time = System.nanoTime
       helper.time = end_time - start_time
       return
@@ -521,12 +543,19 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
 
         do {
           literal = I.pop()
+          //print("pop", BTLevel, I.size(), literal.toString())
           //          println(s"level: ${helper.level}, backtrack main, pop: ", literal.toString())
           backLevel()
           remove(literal)
-        } while (helper.level > BTLevel || literal.v.isEmpty())
+        } while (helper.level > BTLevel || (helper.level > 0 && literal.v.isEmpty()))
 
-        helper.isConsistent = true
+        if (helper.level == 0 && literal.v.isEmpty()) {
+          end_time = System.nanoTime
+          helper.time = end_time - start_time
+          return
+        } else {
+          helper.isConsistent = true
+        }
       }
 
       // 选新值赋值
@@ -582,7 +611,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
           helper.States -= m
           deleteTmpLevel(m)
         }
-//        I.show()
+        //        I.show()
         return
       }
 
@@ -600,11 +629,20 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
             }
           }
 
+          //println("pop", I.size())
           literal = I.pop()
           //          println(s"level: ${helper.level}, pop:" + literal.toString(), literal.v.size())
           backLevel()
           remove(literal)
-        } while (literal.v.isEmpty())
+        } while (literal.v.isEmpty() && helper.level > 0)
+
+        if (literal.v.isEmpty() && helper.level == 0) {
+          end_time = System.nanoTime
+          helper.time = end_time - start_time
+          return
+        } else {
+          helper.isConsistent = true
+        }
       }
 
       if (!helper.isConsistent) {

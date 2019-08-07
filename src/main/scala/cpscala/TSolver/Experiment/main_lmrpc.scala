@@ -31,29 +31,34 @@ object main_lmrpc {
     //    println(xm.check(sol))
 
 
-//    val lmx2 = new LMXPSolver(xm, 4)
-//    lmx2.sync(Constants.TIME)
-//    val sol2 = lmx2.I.toArray()
-//    println(xm.check(sol2))
-//    println(lmx2.helper.time * 1e-9)
+    //    val lmx2 = new LMXPSolver(xm, 4)
+    //    lmx2.sync(Constants.TIME)
+    //    val sol2 = lmx2.I.toArray()
+    //    println(xm.check(sol2))
+    //    println(lmx2.helper.time * 1e-9)
 
-    val lmx3 = new LMXPSolver(xm, 3)
-    lmx3.async(Constants.TIME)
-    if (!lmx3.helper.timeout && lmx3.helper.hasSolution) {
-      val sol3 = lmx3.I.toArray()
-      println(lmx3.helper.nodes)
-      println(lmx3.helper.time * 1e-9)
-      println(xm.check(sol3))
-    }
+    var ii = 0
+    while (ii < 100) {
+      val lmx3 = new LMXPSolver(xm, 3)
+      lmx3.async(Constants.TIME)
+      if (!lmx3.helper.timeout && lmx3.helper.hasSolution) {
+        val sol3 = lmx3.I.toArray()
+        println(lmx3.helper.nodes)
+        println(lmx3.helper.time * 1e-9)
+        println(xm.check(sol3))
+      }
 
-    val lmx4 = new LMXPSolver(xm, 3)
-    lmx4.hyper(Constants.TIME)
-    if (!lmx4.helper.timeout && lmx4.helper.hasSolution) {
-      val sol3 = lmx4.I.toArray()
-      println(lmx4.helper.nodes)
-      println(lmx4.helper.time * 1e-9)
-      println(xm.check(sol3))
+      val lmx4 = new LMXPSolver(xm, 3)
+      lmx4.hyper(Constants.TIME)
+      if (!lmx4.helper.timeout && lmx4.helper.hasSolution) {
+        val sol3 = lmx4.I.toArray()
+        println(lmx4.helper.nodes)
+        println(lmx4.helper.time * 1e-9)
+        println(xm.check(sol3))
+      }
     }
+    ii += 1
   }
+
 
 }

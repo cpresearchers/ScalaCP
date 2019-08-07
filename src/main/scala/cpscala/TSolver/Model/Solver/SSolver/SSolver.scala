@@ -152,8 +152,8 @@ abstract class SSolver(xm: XModel, propagatorName: String, varType: String, heuN
     end_time = System.nanoTime
     helper.propTime += (end_time - prop_start_time)
 
-    println("initial propagate")
-    infoShow()
+    //println("initial propagate")
+    //infoShow()
 
     if (!consistent) {
       finished = false
@@ -182,9 +182,9 @@ abstract class SSolver(xm: XModel, propagatorName: String, varType: String, heuN
       helper.nodes += 1
       //println("nodes: " + helper.nodes)
       I.push(literal)
-      println("push:" + literal.toString())
+      //println("push:" + literal.toString())
       bind(literal)
-      infoShow()
+      //infoShow()
 
       end_time = System.nanoTime
       helper.branchTime += (end_time - branch_start_time)
@@ -194,7 +194,7 @@ abstract class SSolver(xm: XModel, propagatorName: String, varType: String, heuN
       consistent = checkConsistencyAfterAssignment(literal.v)
       end_time = System.nanoTime
       helper.propTime += (end_time - prop_start_time)
-      infoShow()
+      //infoShow()
 
       if (consistent && I.full()) {
         //        //成功再加0.5
@@ -210,11 +210,11 @@ abstract class SSolver(xm: XModel, propagatorName: String, varType: String, heuN
       while (!consistent && !I.empty()) {
         back_start_time = System.nanoTime
         literal = I.pop()
-        println("pop:" + literal.toString())
+        //println("pop:" + literal.toString())
         backLevel()
         literal.v.remove(literal.a)
         remove(literal)
-        infoShow()
+        //infoShow()
         end_time = System.nanoTime
         helper.backTime += (end_time - back_start_time)
 
@@ -222,7 +222,7 @@ abstract class SSolver(xm: XModel, propagatorName: String, varType: String, heuN
         consistent = !literal.v.isEmpty() && checkConsistencyAfterRefutation(literal.v)
         end_time = System.nanoTime
         helper.propTime += (end_time - prop_start_time)
-        infoShow()
+        //infoShow()
       }
 
       if (!consistent) {
