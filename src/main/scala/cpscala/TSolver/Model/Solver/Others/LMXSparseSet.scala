@@ -48,9 +48,10 @@ import org.glassfish.json.MapUtil
 class LMXSparseSet(val capacity: Int, val baseLevel: Int) {
   // 临时层位置
   val tmpLevels = Array.range(baseLevel, baseLevel + capacity)
-//  println(tmpLevels.mkString(","))
+  //  println(tmpLevels.mkString(","))
   // 对应的搜索层，初始为-1
   val searchLevels = Array.fill(capacity)(INDEX.kOVERFLOW)
+
   //  val tmpMultiLevels = Array.fill(capacity)(new MultiLevel(INDEX.kOVERFLOW, INDEX.kOVERFLOW, INDEX.kOVERFLOW))
 
   var sizeL = 0
@@ -62,8 +63,8 @@ class LMXSparseSet(val capacity: Int, val baseLevel: Int) {
         if (searchLevels(ii) == INDEX.kOVERFLOW) {
           sizeL += 1
           searchLevels(ii) = searchLevel
-          val m =new MultiLevel(searchLevel, tmpLevels(ii), sizeL - 1)
-//          println("return: "+m.toString())
+          val m = new MultiLevel(searchLevel, tmpLevels(ii), sizeL - 1)
+          //          println("return: "+m.toString())
           return m
         }
         ii += 1
@@ -83,9 +84,20 @@ class LMXSparseSet(val capacity: Int, val baseLevel: Int) {
       val idx = m.tmpLevel - baseLevel
       searchLevels(idx) = INDEX.kOVERFLOW
       sizeL -= 1
-    }else{
+    } else {
       println("set empty!!")
     }
+  }
+
+  def getMultiLevel(i: Int): MultiLevel = {
+    if (searchLevels(i) == -1) {
+      println("multiLevel error")
+    }
+    new MultiLevel(searchLevels(i), i + baseLevel, i)
+  }
+
+  def getSearchLevel(i: Int): Int = {
+    return searchLevels(i)
   }
 
   def size() = sizeL

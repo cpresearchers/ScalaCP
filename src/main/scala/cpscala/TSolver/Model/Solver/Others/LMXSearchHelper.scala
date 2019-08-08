@@ -12,7 +12,7 @@ import cpscala.XModel.XModel
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
-class LMXSearchHelper(override val numVars: Int, override val numTabs: Int, xm: XModel) extends SearchHelper(numVars, numTabs) {
+class LMXSearchHelper(override val numVars: Int, override val numTabs: Int, xm: XModel, parallelism: Int) extends SearchHelper(numVars, numTabs) {
   //  val subscription = new Array[ArrayBuffer[LMaxRPC_BitRM]](numVars)(new ArrayBuffer[LMaxRPC_BitRM]())
   val subscription = Array.fill(numTabs)(new ArrayBuffer[LMX_Bit])
   // 为两两变量间生成中间变量的矩阵
@@ -29,6 +29,8 @@ class LMXSearchHelper(override val numVars: Int, override val numTabs: Int, xm: 
   var End = new AtomicBoolean(false)
 
   val States = mutable.HashMap[MultiLevel, LCState]()
+
+  val State = Array.fill(parallelism)(LCState.Idle)
 
   val domainLock = new ReentrantLock(true)
 
