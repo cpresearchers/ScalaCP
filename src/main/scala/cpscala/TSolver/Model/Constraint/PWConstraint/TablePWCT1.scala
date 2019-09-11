@@ -20,6 +20,7 @@ class TablePWCT1(val id: Int, val arity: Int, val num_vars: Int, val scope: Arra
   val residues = new Array[Array[Int]](arity)
   level = 0
 
+  var tupe = new Array[Int](scope.length)
   var b: Block = new Block
   b.sets = new ArrayBuffer[PWRSparseBitSet]()
   b.commonIndices = new PWRSparseBitSet(id, num_bit, num_vars)
@@ -290,79 +291,155 @@ class TablePWCT1(val id: Int, val arity: Int, val num_vars: Int, val scope: Arra
         }
       }
     } else {
-      if (helper.incidentSubscopes.contains(id)) {
-        living.clearDelta()
-        for (sub <- helper.incidentSubscopes(id)) { //约束涉及的子集
-          for (ci <- helper.incidentCons(sub)) { //获取子集涉及的约束
-            helper.tabs(ci).living.clearMask()
-          }
-          living.toCheck(tocheck)
-          tocheck.getIndeces(index)
-          var setindex: Set[Int] = Set()
-          var i = 0
-          while (i < index.length) {
-            if (!setindex.contains(index(i))) {
-              setindex += index(i)
-              var tuplePWC = true
-              for (ci <- helper.incidentCons(sub)) {
-                if (tuplePWC) {
-                  if (helper.tabs(ci).interesectIndex(sub, tuples(index(i)), scope) == -1) {
-                    tuplePWC = false
-                  }
-                }
-              }
-              if (tuplePWC) {
-                for (ci <- helper.incidentCons(sub)) {
-                  helper.tabs(ci).addBlockToMask(sub, tuples(index(i)), scope)
-                }
-              }
-              if (tocheck.removeBlock(createBlock(sub, tuples(index(i)))) && i != index.length - 1) {
-                i = 0
-                tocheck.getIndeces(index)
-              } else {
-                i += 1
-              }
-            } else {
-              i += 1
-            }
-          }
-          for (ci <- helper.incidentCons(sub)) {
-            if (helper.tabs(ci).living.intersectWithMask()) {
-              if (!evt.contains(ci)) {
-                evt += ci
-              }
-            }
-            if (helper.tabs(ci).living.numSet() == 0) return false
-          }
-        }
-//        living.computeDelta(tupToCheck)
-//        if(tupToCheck.numSet()!=0) {
-//          for (sub <- helper.incidentSubscopes(id)) {
-//            tupToCheck.save()
-//            tupToCheck.getIndeces(index)
-//            //        println(index.length)
-//            var setindex: Set[Int] = Set()
-//            var i = 0
-//            while (i < index.length) {
-//
-//              if (!setindex.contains(index(i))) {
-//                setindex += index(i)
-//                val consistent = reviseBlock(sub, tuples(index(i)), evt)
-//                if (!consistent) return false
-//                if (tupToCheck.removeBlock(createBlock(sub, tuples(index(i)))) && i != index.length - 1) {
-//                  i = 0
-//                  tupToCheck.getIndeces(index)
-//                } else {
-//                  i += 1
+//      if (helper.incidentSubscopes.contains(id)) {
+//        living.clearDelta()
+//        for (sub <- helper.incidentSubscopes(id)) { //约束涉及的子集
+//          for (ci <- helper.incidentCons(sub)) { //获取子集涉及的约束
+//            helper.tabs(ci).living.clearMask()
+//          }
+//          living.toCheck(tocheck)
+//          tocheck.getIndeces(index)
+//          var setindex: Set[Int] = Set()
+//          var i = 0
+//          while (i < index.length) {
+//            if (!setindex.contains(index(i))) {
+//              setindex += index(i)
+//              var tuplePWC = true
+//              for (ci <- helper.incidentCons(sub)) {
+//                if (tuplePWC) {
+//                  if (helper.tabs(ci).interesectIndex(sub, tuples(index(i)), scope) == -1) {
+//                    tuplePWC = false
+//                  }
 //                }
+//              }
+//              if (tuplePWC) {
+//                for (ci <- helper.incidentCons(sub)) {
+//                  helper.tabs(ci).addBlockToMask(sub, tuples(index(i)), scope)
+//                }
+//              }
+//              if (tocheck.removeBlock(createBlock(sub, tuples(index(i)))) && i != index.length - 1) {
+//                i = 0
+//                tocheck.getIndeces(index)
 //              } else {
 //                i += 1
 //              }
+//            } else {
+//              i += 1
 //            }
-//            tupToCheck.restore()
+//          }
+//          for (ci <- helper.incidentCons(sub)) {
+//            if (helper.tabs(ci).living.intersectWithMask()) {
+//              if (!evt.contains(ci)) {
+//                evt += ci
+//              }
+//            }
+//            if (helper.tabs(ci).living.numSet() == 0) return false
 //          }
 //        }
-
+////        living.computeDelta(tupToCheck)
+////        if(tupToCheck.numSet()!=0) {
+////          for (sub <- helper.incidentSubscopes(id)) {
+////            tupToCheck.save()
+////            tupToCheck.getIndeces(index)
+////            //        println(index.length)
+////            var setindex: Set[Int] = Set()
+////            var i = 0
+////            while (i < index.length) {
+////
+////              if (!setindex.contains(index(i))) {
+////                setindex += index(i)
+////                val consistent = reviseBlock(sub, tuples(index(i)), evt)
+////                if (!consistent) return false
+////                if (tupToCheck.removeBlock(createBlock(sub, tuples(index(i)))) && i != index.length - 1) {
+////                  i = 0
+////                  tupToCheck.getIndeces(index)
+////                } else {
+////                  i += 1
+////                }
+////              } else {
+////                i += 1
+////              }
+////            }
+////            tupToCheck.restore()
+////          }
+////        }
+//
+//      }
+      if (helper.incidentSubscopes.contains(id)) {
+        living.clearDelta()
+        for (sub <- helper.incidentSubscopes(id)) { //约束涉及的子集
+          if (!helper.subScopesSet.contains(sub)) {
+            helper.subScopesSet+=sub
+            for (ci <- helper.incidentCons(sub)) { //获取子集涉及的约束
+              helper.tabs(ci).living.clearMask()
+            }
+            living.toCheck(tocheck)
+            tocheck.getIndeces(index)
+            var setindex: Set[Int] = Set()
+            var i = 0
+            while (i < index.length) {
+              if (!setindex.contains(index(i))) {
+                setindex += index(i)
+                var tuplePWC = true
+                for (ci <- helper.incidentCons(sub)) {
+                  if (tuplePWC) {
+                    if (helper.tabs(ci).interesectIndex(sub, tuples(index(i)), scope) == -1) {
+                      tuplePWC = false
+                    }
+                  }
+                }
+                if (tuplePWC) {
+                  for (ci <- helper.incidentCons(sub)) {
+                    helper.tabs(ci).addBlockToMask(sub, tuples(index(i)), scope)
+                  }
+                }
+                if (tocheck.removeBlock(createBlock(sub, tuples(index(i)))) && i != index.length - 1) {
+                  i = 0
+                  tocheck.getIndeces(index)
+                } else {
+                  i += 1
+                }
+              } else {
+                i += 1
+              }
+            }
+            for (ci <- helper.incidentCons(sub)) {
+              if (helper.tabs(ci).living.intersectWithMask()) {
+                if (!evt.contains(ci)) {
+                  evt += ci
+                }
+              }
+              if (helper.tabs(ci).living.numSet() == 0) return false
+            }
+          }
+          //        living.computeDelta(tupToCheck)
+          //        if(tupToCheck.numSet()!=0) {
+          //          for (sub <- helper.incidentSubscopes(id)) {
+          //            tupToCheck.save()
+          //            tupToCheck.getIndeces(index)
+          //            //        println(index.length)
+          //            var setindex: Set[Int] = Set()
+          //            var i = 0
+          //            while (i < index.length) {
+          //
+          //              if (!setindex.contains(index(i))) {
+          //                setindex += index(i)
+          //                val consistent = reviseBlock(sub, tuples(index(i)), evt)
+          //                if (!consistent) return false
+          //                if (tupToCheck.removeBlock(createBlock(sub, tuples(index(i)))) && i != index.length - 1) {
+          //                  i = 0
+          //                  tupToCheck.getIndeces(index)
+          //                } else {
+          //                  i += 1
+          //                }
+          //              } else {
+          //                i += 1
+          //              }
+          //            }
+          //            tupToCheck.restore()
+          //          }
+          //        }
+        }
       }
     }
     for (i <- 0 until arity) {
@@ -393,7 +470,7 @@ class TablePWCT1(val id: Int, val arity: Int, val num_vars: Int, val scope: Arra
   }
 
   override def addBlockToMask(vars: ArrayBuffer[Int], t: Array[Int], cscope: Array[Var]): Unit = {
-    var tupe = new Array[Int](scope.length)
+    tupe.drop(scope.length)
     for (x <- vars) {
       for (i <- 0 until cscope.length) {
         if (cscope(i).id == x) {
@@ -410,7 +487,7 @@ class TablePWCT1(val id: Int, val arity: Int, val num_vars: Int, val scope: Arra
   }
 
   override def interesectIndex(vars: ArrayBuffer[Int], t: Array[Int], cscope: Array[Var]): Int = {
-    var tupe = new Array[Int](scope.length)
+    tupe.drop(scope.length)
     for (x <- vars) {
       for (i <- 0 until cscope.length) {
         if (cscope(i).id == x) {
@@ -427,7 +504,7 @@ class TablePWCT1(val id: Int, val arity: Int, val num_vars: Int, val scope: Arra
   }
 
   override def removeBlock(vars: ArrayBuffer[Int], t: Array[Int], cscope: Array[Var]): Boolean = {
-    var tupe = new Array[Int](scope.length)
+    tupe.drop(scope.length)
     for (x <- vars) {
       for (i <- 0 until cscope.length) {
         if (cscope(i).id == x) {

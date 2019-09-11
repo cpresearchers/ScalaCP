@@ -251,8 +251,6 @@ abstract class PWSolver(xm: XModel, propagatorName: String, varType: String, heu
       bind(v, a)
       end_time = System.nanoTime
       helper.branchTime += (end_time - branch_start_time)
-
-
       prop_start_time = System.nanoTime
       consistent = checkConsistencyAfterAssignment(v)
       end_time = System.nanoTime

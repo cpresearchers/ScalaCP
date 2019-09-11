@@ -56,6 +56,7 @@ class PWCoarseSolver(xm: XModel, propagatorName: String, varType: String, heuNam
             }
           }
           C_evt.clear()
+          helper.subScopesSet=Set()
           while(consistent && !PWC_Q.empty()){
             val pwc = PWC_Q.pop()
             consistent=pwc.propagatePWC(Y_evt,C_evt)

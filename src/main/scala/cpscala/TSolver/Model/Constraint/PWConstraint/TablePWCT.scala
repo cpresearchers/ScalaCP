@@ -18,6 +18,7 @@ class TablePWCT(val id: Int, val arity: Int, val num_vars: Int, val scope: Array
   var index = new ArrayBuffer[Int]()
   val residues = new Array[Array[Int]](arity)
   level = 0
+  var tupe = new Array[Int](scope.length)
 
   var b: Block = new Block
   b.sets = new ArrayBuffer[PWRSparseBitSet]()
@@ -256,11 +257,8 @@ class TablePWCT(val id: Int, val arity: Int, val num_vars: Int, val scope: Array
                 var b: Block = new Block
                 b.sets = new ArrayBuffer[PWRSparseBitSet]()
                 b.sets += supports(vposition)(a)
-                //                supports(vposition)(a).show()
                 b.commonIndices = indices(vposition)(a)
                 tupToCheck.removeBlock(b)
-//                                println("tupToCheck block  "+tupToCheck.removeBlock(b))
-//                println(tupToCheck.numSet())
               }
             }
           }
@@ -320,7 +318,7 @@ class TablePWCT(val id: Int, val arity: Int, val num_vars: Int, val scope: Array
     return true
   }
   override def addBlockToMask(vars: ArrayBuffer[Int], t: Array[Int], cscope: Array[Var]): Unit = {
-    var tupe = new Array[Int](scope.length)
+    tupe.drop(scope.length)
     for (x <- vars) {
       for (i <- 0 until cscope.length) {
         if (cscope(i).id == x) {
@@ -337,7 +335,7 @@ class TablePWCT(val id: Int, val arity: Int, val num_vars: Int, val scope: Array
   }
 
   override def interesectIndex(vars: ArrayBuffer[Int], t: Array[Int], cscope: Array[Var]): Int = {
-    var tupe = new Array[Int](scope.length)
+    tupe.drop(scope.length)
     for (x <- vars) {
       for (i <- 0 until cscope.length) {
         if (cscope(i).id == x) {
@@ -354,7 +352,8 @@ class TablePWCT(val id: Int, val arity: Int, val num_vars: Int, val scope: Array
   }
 
   override def removeBlock(vars: ArrayBuffer[Int], t: Array[Int], cscope: Array[Var]): Boolean = {
-    var tupe = new Array[Int](scope.length)
+    tupe.drop(scope.length)
+    tupe.init
     for (x <- vars) {
       for (i <- 0 until cscope.length) {
         if (cscope(i).id == x) {

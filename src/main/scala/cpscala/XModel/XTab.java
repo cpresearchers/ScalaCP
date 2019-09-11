@@ -123,6 +123,7 @@ public class XTab {
         this.id = id;
         this.name = name;
         this.semantics = true;
+        this.scope = scp;
         this.arity = scp.length;
         scopeInt = new int[arity];
 
@@ -171,12 +172,14 @@ public class XTab {
     }
 
     public void show() {
-        String sem = semantics ? "supports" : "conflicts";
-        System.out.println("name: " + id + " semantics: " + sem + " size: " + tuples.length + " arity: " + arity + " scope = " + Arrays.toString(scopeInt));
-        for (int[] t : tuples) {
-            System.out.print(Arrays.toString(t));
-        }
-        System.out.println();
+//        String sem = semantics ? "supports" : "conflicts";
+//        System.out.println("name: " + id + " semantics: " + sem + " size: " + tuples.length + " arity: " + arity + " scope = " + Arrays.toString(scopeInt));
+        System.out.println("name: " + id + " size: " + tuples.length + " arity: " + arity + " scope = " + Arrays.toString(scopeInt));
+
+//        for (int[] t : tuples) {
+//            System.out.print(Arrays.toString(t));
+//        }
+//        System.out.println();
     }
 
     public int getVarIndex(int vid) {

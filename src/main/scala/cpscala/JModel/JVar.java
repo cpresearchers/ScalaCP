@@ -1,18 +1,26 @@
 package cpscala.JModel;
 
+import java.lang.reflect.Array;
+
 public class JVar {
-    public int name;
+    public String name=" ";
+    public int id;
     public boolean additional;
     public int size;
+    public int[] values;
 
     public JVar(int name, boolean additional, int size) {
-        this.name = name;
+        this.id = name;
         this.additional = additional;
         this.size = size;
+        values = new int[size];
+        for (int i = 0; i < size; ++i) {
+            values[i] = i;
+        }
     }
 
     public void show() {
-        System.out.println("name: " + name + ", additional: " + additional + ", size: " + size);
+        System.out.println("name: " + id + ", additional: " + additional + ", size: " + size);
     }
 
 }

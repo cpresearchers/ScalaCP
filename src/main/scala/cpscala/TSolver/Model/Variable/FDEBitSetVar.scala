@@ -1,11 +1,11 @@
 package cpscala.TSolver.Model.Variable
 
+import cpscala.TSolver.CpUtil.{Constants, INDEX}
 import cpscala.TSolver.CpUtil.SearchHelper.SearchHelper
-import cpscala.TSolver.CpUtil.{Constants, _}
 
 import scala.collection.mutable.ArrayBuffer
 
-class BitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[Int], val helper: SearchHelper) extends Var {
+class FDEBitSetVar (val name: String, val id: Int, numVars: Int, vals: Array[Int], val helper: SearchHelper) extends Var {
   // 总层数
   val numLevel = numVars + 3
 
@@ -13,6 +13,7 @@ class BitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[Int], v
   val numBit = Math.ceil(capacity.toDouble / Constants.BITSIZE.toDouble).toInt
   val bitMark = Array.fill[Long](numBit)(0L)
   val bitDoms = Array.fill[Long](numLevel, numBit)(0L)
+  var word=  Array.fill(numBit)(0L)
 
   // 初始化第0级的bitDom
   var ii = 0
@@ -21,6 +22,7 @@ class BitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[Int], v
     ii += 1
   }
   bitDoms(0)(numBit - 1) <<= (Constants.BITSIZE - capacity % Constants.BITSIZE)
+  word(numBit - 1) <<= (Constants.BITSIZE - capacity % Constants.BITSIZE)
 
   override def getNumBit(): Int = numBit
 
@@ -80,11 +82,8 @@ class BitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[Int], v
   }
 
   override def remove(a: Int): Unit = {
-
     val (x, y) = INDEX.getXY(a)
-//    System.out.println(Constants.toFormatBinaryString (bitDoms(level)(x)));
     bitDoms(level)(x) &= Constants.MASK0(y)
-//    System.out.println(Constants.toFormatBinaryString (bitDoms(level)(x)));
   }
 
   override def isEmpty(): Boolean = {
@@ -194,5 +193,42 @@ class BitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[Int], v
     return values.length
   }
 
+  override def removeValues(words:Array[Long]):Boolean={
+    //本表默认未修改
+    var changed = false
+    var w = 0L
+    var currentWords = 0L
+    var i = 0
+    while (i < numBit) {
+      currentWords = bitDoms(level)(i)
+      w = currentWords & words(i)
+      if (w != currentWords) {
+        bitDoms(level)(i) = w
+        //本表已修改
+        changed = true
+      }
+      i += 1
+    }
+    //记录是否改变
+    return changed
+  }
+
+  override def getBitDom(): Array[Long] = {
+    var i = 0
+    while (i < numBit) {
+      word(i)=bitDoms(level)(i)
+      i+=1
+    }
+    return word
+  }
+
   //  def getLastRemovedValuesByMask(oldSize: Long, vals: ArrayBuffer[Int]): Int = ???
+
+  override def show(): Unit = {
+    print("var = " + id + ", level = " + level + " ")
+    for (i <- 0 until numBit) {
+      printf("%x ", bitDoms(level)(i))
+    }
+    println()
+  }
 }

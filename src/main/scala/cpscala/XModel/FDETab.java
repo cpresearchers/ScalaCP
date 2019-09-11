@@ -6,7 +6,7 @@ public class FDETab extends XTab {
 
     FDETab(int id, String name, int[][] ts, FDEVar[] scp) {
         super(id, name, ts, scp);
-        sort();
+//        sort();           //加上排序没必要，并且会与新产生变量的论域不匹配，错误
     }
 
     public void sort() {
