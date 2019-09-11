@@ -57,7 +57,14 @@ public class FDEModel {
     public FDEModel(String path, int fmt) throws Exception {
         this.xm = new XModel(path, true, fmt);
         String name = getFileName(path);
+        long starttime = System.currentTimeMillis();
+
         initial();
+
+        long endtime = System.currentTimeMillis();
+        var search_time = endtime - starttime;
+        System.out.println("FDEtime:"+search_time);
+
         xm = null;
     }
 
@@ -82,7 +89,6 @@ public class FDEModel {
         fileName = path.substring(path.lastIndexOf("/") + 1, path.lastIndexOf("."));
         return fileName;
     }
-
 
     public JModel buildJModel() {
         jm = new JModel();
@@ -133,7 +139,7 @@ public class FDEModel {
             }
         }
 
-        buildMatrix();
+        buildMatrix(true);
         build1DScope();
 
         //先生成原变量
@@ -148,51 +154,188 @@ public class FDEModel {
 
         buildNewScope();
         buildModel();
+        System.out.println(tabs.length);
     }
 
-    void buildMatrix() {
+    //生成公共变量
+    private void buildMatrix(boolean mini) {
 
-        for (var i = 0; i < num_OriTabs; ++i) {
-            var t0 = xm.tabs.get(i);
+        if (mini) {
+            int[][][] numcc = new int[num_OriVars][num_OriTabs * (num_OriTabs - 1) / 2][3];
+            //hash排序约束，[相交变量个数][相交约束组数]约束1约束2标志位3
+            int[] numccnum = new int[num_OriVars];            //存储数目
+            int maxcc = 0;
+            ArrayList<Integer>[][] tabsScopeMatrixMini = new ArrayList[num_OriTabs][num_OriTabs];
 
-            for (var j = 0; j < num_OriTabs; ++j) {
-                var t1 = xm.tabs.get(j);
-                tabsScopeMatrix[i][j] = new ArrayList<>();
-
-                if (t0.id != t1.id) {
-
-                    int k = 0, l = 0;
-                    while (k < t0.arity && l < t1.arity) {
-                        var v0 = t0.scopeInt[k];
-                        var v1 = t1.scopeInt[l];
-
-                        if (v0 < v1)
-                            ++k;
-                        else if (v0 > v1)
-                            ++l;
-                        else {
-                            tabsScopeMatrix[i][j].add(v0);
-                            ++k;
-                            ++l;
+            for (int i = 0; i < num_OriVars; i++) {
+                numccnum[i] = 0;
+            }
+            int num = 0;
+            for (int i = 0; i < num_OriTabs - 1; i++) {
+                var t0 = xm.tabs.get(i);
+                for (int j = i + 1; j < num_OriTabs; j++) {
+                    num = 0;
+                    var t1 = xm.tabs.get(j);
+                    tabsScopeMatrix[i][j] = new ArrayList<>();
+                    for (int u = 0; u < t0.arity; u++) {
+                        for (int v = 0; v < t1.arity; v++) {
+                            if (t0.scopeInt[u] == t1.scopeInt[v]) {
+                                tabsScopeMatrix[i][j].add(t0.scopeInt[u]);
+                                num++;
+                                break;
+                            }
                         }
                     }
-                } else {
-                    //约束i = j什么都不做
+//                    System.out.println(i+"  "+j+"  "+tabsScopeMatrix[i][j]);
+                    numcc[num][numccnum[num]][0] = i;
+                    numcc[num][numccnum[num]][1] = j;
+                    numcc[num][numccnum[num]][2] = 0;
+                    numccnum[num]++;
+                    if (num > maxcc) {
+                        maxcc = num;
+                    }
+                }
+            }
+            int c[] = new int[num_OriTabs];       //生成minidual
+            int sub = 1;
+            for (int i = 0; i < num_OriTabs; i++) {
+                c[i] = 0;
+            }
+            for (int i = maxcc; i > 0; i--) {
+                for (int j = 0; j < numccnum[i]; j++) {
+                    if (c[numcc[i][j][0]] == 0 && c[numcc[i][j][1]] == 0) {
+                        tabsScopeMatrixMini[numcc[i][j][0]][numcc[i][j][1]] = tabsScopeMatrix[numcc[i][j][0]][numcc[i][j][1]];
+                        c[numcc[i][j][0]] = sub;
+                        c[numcc[i][j][1]] = sub;
+                        sub++;
+                    } else if (c[numcc[i][j][0]] < c[numcc[i][j][1]]) {
+                        tabsScopeMatrixMini[numcc[i][j][0]][numcc[i][j][1]] = tabsScopeMatrix[numcc[i][j][0]][numcc[i][j][1]];
+                        if (c[numcc[i][j][0]] != 0) {
+                            int nn = c[numcc[i][j][0]];
+                            for (int n = 0; n < num_OriTabs; n++) {
+                                if (c[n] == nn)
+                                    c[n] = c[numcc[i][j][1]];
+                            }
+                        }
+                        c[numcc[i][j][0]] = c[numcc[i][j][1]];
+                    } else if (c[numcc[i][j][0]] > c[numcc[i][j][1]]) {
+                        tabsScopeMatrixMini[numcc[i][j][0]][numcc[i][j][1]] = tabsScopeMatrix[numcc[i][j][0]][numcc[i][j][1]];
+                        if (c[numcc[i][j][1]] != 0) {
+                            int nn = c[numcc[i][j][1]];
+                            for (int n = 0; n < num_OriTabs; n++) {
+                                if (c[n] == nn)
+                                    c[n] = c[numcc[i][j][0]];
+                            }
+                        }
+                        c[numcc[i][j][1]] = c[numcc[i][j][0]];
+                    } else if (c[numcc[i][j][0]] == c[numcc[i][j][1]]) {//两个约束都在图中检测所涉及元组是否包含在之前所涉及元组中
+                        int[][] nextlist = new int[num_OriTabs][2];
+                        nextlist[0][0] = numcc[i][j][0];
+                        nextlist[0][1] = 0;
+                        int nextlistmin = 0;
+                        int nextlistmax = 1;
+                        boolean bool = false;
+                        boolean boolnext = false;
+                        ArrayList<Integer> intersect = tabsScopeMatrix[numcc[i][j][0]][numcc[i][j][1]];
+                        while (nextlistmin < nextlistmax) {
+                            for (int u = maxcc; u >= i; u--) {
+                                for (int v = 0; v < numccnum[u]; v++) {
+                                    if (u == i && v >= j) {
+                                        break;
+                                    }
+                                    if (numcc[u][v][2] == 0
+                                            && (numcc[u][v][0] == nextlist[nextlistmin][0] || numcc[u][v][1] == nextlist[nextlistmin][0])) {
+                                        bool = true;
+                                        ArrayList<Integer> intersectcheck = tabsScopeMatrix[numcc[u][v][0]][numcc[u][v][1]];
+                                        HashSet<Integer> hset = new HashSet<>();
+                                        // hset stores all the values of arr1
+                                        for (int t = 0; t < intersectcheck.size(); t++) {
+                                            hset.add(intersectcheck.get(t));
+                                        }
+                                        // loop to check if all elements of arr2 also
+                                        // lies in arr1
+                                        for (int t = 0; t < intersect.size(); t++) {
+                                            if (!hset.contains(intersect.get(t))) {
+                                                bool = false;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    int next;
+                                    if (bool == true) {
+                                        if (numcc[u][v][0] == nextlist[nextlistmin][0])
+                                            next = numcc[u][v][1];
+                                        else
+                                            next = numcc[u][v][0];
+                                        boolean b = true;
+                                        for (int nextlistnum = 0; nextlistnum < nextlistmax; nextlistnum++) {
+                                            if (nextlist[nextlistnum][0] == next) {
+                                                b = false;
+                                                break;
+                                            }
+                                        }
+                                        if (b) {
+                                            nextlist[nextlistmax][0] = next;
+                                            nextlistmax++;
+                                        }
+//                                        System.out.println(numcc[i][j][1]+"   "+next);
+//                                        System.out.println("------------------------------------------");
+//                                        for(int nn=0;nn<num_OriTabs-1;nn++)
+//                                            for(int nnn=nn;nnn<num_OriTabs;nnn++)
+//                                                System.out.println(nn+"  "+nnn+"  "+tabsScopeMatrixMini[nn][nnn]);
+//                                        System.out.println("------------------------------------------");
+
+                                        if (numcc[i][j][1] > next ? tabsScopeMatrixMini[next][numcc[i][j][1]] != null : tabsScopeMatrixMini[numcc[i][j][1]][next] != null) {
+                                            boolnext = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                                if (boolnext) {
+                                    break;
+                                }
+                            }
+                            if (boolnext) {
+                                break;
+                            }
+                            nextlistmin++;
+                        }
+                        if (boolnext) {
+                            numcc[i][j][2] = 1;
+                        } else {
+                            tabsScopeMatrixMini[numcc[i][j][0]][numcc[i][j][1]] = tabsScopeMatrix[numcc[i][j][0]][numcc[i][j][1]];
+                        }
+                    }
+                }
+            }
+            tabsScopeMatrix = tabsScopeMatrixMini;
+        } else {
+            for (int i = 0; i < num_OriTabs - 1; i++) {
+                var t0 = xm.tabs.get(i);
+                for (int j = i + 1; j < num_OriTabs; j++) {
+                    var t1 = xm.tabs.get(j);
+                    tabsScopeMatrix[i][j] = new ArrayList<>();
+                    for (int u = 0; u < t0.arity; u++) {
+                        for (int v = 0; v < t1.arity; v++) {
+                            if (t0.scopeInt[u] == t1.scopeInt[v]) {
+                                tabsScopeMatrix[i][j].add(t0.scopeInt[u]);
+                                break;
+                            }
+                        }
+                    }
                 }
             }
         }
-
-        //生成commonVarsBoolean
-        for (var i = 0; i < num_OriTabs; ++i) {
+//        生成commonVarsBoolean
+        for (int i = 0; i < num_OriTabs - 1; i++) {
             var t0 = xm.tabs.get(i);
-
-            for (var j = 0; j < num_OriTabs; ++j) {
+            for (int j = i + 1; j < num_OriTabs; j++) {
                 var t1 = xm.tabs.get(j);
                 var tSM = tabsScopeMatrix[i][j];
                 //<i, k>, <j, l>：约束i的第k个的变量，约束j的第l个变量
                 //因为被 收录入公共 变量 所以以后该被 删去
                 //多于1的公共变量，才记入commonVarsBoolean
-                if (tSM.size() > 1) {
+                if (tSM!=null&&tSM.size()>1) {
                     for (var vid : tSM) {
                         commonVarsBoolean[i][t0.getVarIndex(vid)] = false;
                         commonVarsBoolean[j][t1.getVarIndex(vid)] = false;
@@ -200,51 +343,105 @@ public class FDEModel {
                 }
             }
         }
-
     }
 
-    //二维公共scope转一维，
-    //生成tabsIDMatrix
-    //addtionTabsTabScopeArray
-    //addtionTabsVarScopeArray
-    //生成factor variable的长度
-    //生成 新变量和约束个数
+//    void buildMatrix() {
+//
+//        for (var i = 0; i < num_OriTabs; ++i) {
+//            var t0 = xm.tabs.get(i);
+//
+//            for (var j = 0; j < num_OriTabs; ++j) {
+//                var t1 = xm.tabs.get(j);
+//                tabsScopeMatrix[i][j] = new ArrayList<>();
+//
+//                if (t0.id != t1.id) {
+//
+//                    int k = 0, l = 0;
+//                    while (k < t0.arity && l < t1.arity) {
+//                        var v0 = t0.scopeInt[k];
+//                        var v1 = t1.scopeInt[l];
+//
+//                        if (v0 < v1)
+//                            ++k;
+//                        else if (v0 > v1)
+//                            ++l;
+//                        else {
+//                            tabsScopeMatrix[i][j].add(v0);
+//                            ++k;
+//                            ++l;
+//                        }
+//                    }
+//                } else {
+//                    //约束i = j什么都不做
+//                }
+//            }
+//        }
+//
+//        //生成commonVarsBoolean
+//        for (var i = 0; i < num_OriTabs; ++i) {
+//            var t0 = xm.tabs.get(i);
+//
+//            for (var j = 0; j < num_OriTabs; ++j) {
+//                var t1 = xm.tabs.get(j);
+//                var tSM = tabsScopeMatrix[i][j];
+//                //<i, k>, <j, l>：约束i的第k个的变量，约束j的第l个变量
+//                //因为被 收录入公共 变量 所以以后该被 删去
+//                //多于1的公共变量，才记入commonVarsBoolean
+//                if (tSM.size() > 1) {
+//                    for (var vid : tSM) {
+//                        commonVarsBoolean[i][t0.getVarIndex(vid)] = false;
+//                        commonVarsBoolean[j][t1.getVarIndex(vid)] = false;
+//                    }
+//                }
+//            }
+//        }
+//
+//    }
+
+    //    二维公共scope转一维，
+//    生成tabsIDMatrix
+//    addtionTabsTabScopeArray
+//    addtionTabsVarScopeArray
+//    生成factor variable的长度
+//    生成 新变量和约束个数
     void build1DScope() {
 
-        for (var i = 0; i < num_OriTabs; ++i) {
-            for (var j = 0; j < i; ++j) {
+        for (var i = 0; i < num_OriTabs-1; ++i) {
+            for (var j = i+1; j < num_OriTabs; ++j) {
                 var aca = tabsScopeMatrix[i][j];
-
-                int k = 0;
-                boolean has = false;
-                while (k < addtionTabsVarScopeArray.size() && !has) {
-                    var cc = addtionTabsVarScopeArray.get(k);
-                    //如果当前的约束aca与队列中的已存的约束有相同的scope
-                    //has标记为true，则跳出
-                    //cc在addtionTabsArray位置k存入tabsIDMatrix
-                    //cc的CScope被存入队列中
-                    //addtionTabsArray与addtionTabsScopeArray的位置是严格对应的
-                    if (aca.equals(cc)) {
-                        has = true;
-                        //k存入matrix
-                        tabsIDMatrix[i][j] = k;
-                        tabsIDMatrix[j][i] = k;
-                        var t2 = new Tuple2<>(i, j);
-                        addtionTabsTabScopeArray.get(k).add(t2);
+                if(aca!=null) {
+                    aca.sort(Integer::compareTo);
+                    int k = 0;
+                    boolean has = false;
+                    while (k < addtionTabsVarScopeArray.size() && !has) {
+                        var cc = addtionTabsVarScopeArray.get(k);
+                        //如果当前的约束aca与队列中的已存的约束有相同的scope
+                        //has标记为true，则跳出
+                        //cc在addtionTabsArray位置k存入tabsIDMatrix
+                        //cc的CScope被存入队列中
+                        //addtionTabsArray与addtionTabsScopeArray的位置是严格对应的
+                        if (aca.equals(cc)) {           //顺序可能不同，不能判断是否相等
+                            has = true;
+                            //k存入matrix
+                            tabsIDMatrix[i][j] = k;
+                            tabsIDMatrix[j][i] = k;
+                            var t2 = new Tuple2<>(i, j);
+                            addtionTabsTabScopeArray.get(k).add(t2);
+                        }
+                        ++k;
                     }
-                    ++k;
-                }
 
-                //新的，没有same scope的附加约束，将新加此约束 i j 存入标记
-                if (!has && aca.size() > 1) {
-                    var t2 = new Tuple2<>(i, j);
-                    var tq = new ArrayList<Tuple2<Integer, Integer>>();
-                    tq.add(t2);
-                    addtionTabsTabScopeArray.add(tq);
-                    addtionTabsVarScopeArray.add(aca);
-                    var addLength = addtionTabsVarScopeArray.size() - 1;
-                    tabsIDMatrix[i][j] = addLength;
-                    tabsIDMatrix[j][i] = addLength;
+                    //新的，没有same scope的附加约束，将新加此约束 i j 存入标记
+                    if (!has && aca.size() > 1) {
+                        var t2 = new Tuple2<>(i, j);
+                        var tq = new ArrayList<Tuple2<Integer, Integer>>();
+                        tq.add(t2);
+                        addtionTabsTabScopeArray.add(tq);
+                        addtionTabsVarScopeArray.add(aca);
+                        var addLength = addtionTabsVarScopeArray.size() - 1;
+                        tabsIDMatrix[i][j] = addLength;
+                        tabsIDMatrix[j][i] = addLength;
+                    }
                 }
             }
         }
@@ -369,11 +566,11 @@ public class FDEModel {
 //        for (XVar x:vars){
 //            x.show();
 //        }
-        System.out.println("show model: numVars = " + vars.length);
+        System.out.println("show model: num_vars = " + vars.length);
         for (var v : vars) {
             v.show();
         }
-        System.out.println("show model: numTabs = " + tabs.length);
+        System.out.println("show model: num_tabs = " + tabs.length);
         for (var t : tabs) {
             t.show();
         }

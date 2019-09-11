@@ -69,4 +69,8 @@ abstract class Var {
   def getValidValues(vals: ArrayBuffer[Int]): Int = ???
 
   def show(): Unit = ???
+
+  def removeValues(word:Array[Long]):Boolean = ???
+
+  def getBitDom():Array[Long] = ???
 }
