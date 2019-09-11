@@ -200,7 +200,7 @@ class Table_STRFDE1 (val id: Int, val arity: Int, val num_vars: Int, val scope: 
 
         for (a <- validValues) {
           val bitSupports = bitTables(i)(a)
-          val old = bitSupports.length
+          val old = bitSupports.length-1
           // 寻找支持的比特元组
           var now = old
 

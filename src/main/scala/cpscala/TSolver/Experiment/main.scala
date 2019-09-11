@@ -3,12 +3,13 @@ package cpscala.TSolver.Experiment
 import cpscala.TSolver.CpUtil.Constants
 import cpscala.TSolver.Model.Constraint.SConstraint.TableCT_Bit
 import cpscala.TSolver.Model.Solver.DSPSolver._
+import cpscala.TSolver.Model.Solver.FDESolver.FDECoarseSolver1
 import cpscala.TSolver.Model.Solver.IPSolver._
 import cpscala.TSolver.Model.Solver.IPplusSolver._
 import cpscala.TSolver.Model.Solver.PWSolver.PWCoarseSolver
 import cpscala.TSolver.Model.Solver.SSolver._
 import cpscala.TSolver.Model.Variable.BitSetVar
-import cpscala.XModel.XModel
+import cpscala.XModel.{FDEModel1, XModel}
 
 import scala.xml.XML
 
@@ -21,6 +22,7 @@ object main {
     val fmt = (fileNode \\ "@format").text.toInt
     println(path)
     val xm = new XModel(path, true, fmt)
+    val fdem = new FDEModel1(path, fmt);
 
     var i = 0
     var parallelism = 1
@@ -60,6 +62,35 @@ object main {
     branchTime = 0L
     backTime = 0L
     propTime = 0L
+    pType = "STRbit_FDE"
+    varType = "FDEBitSet"
+    println(s"${pType} ===============>")
+    i = 0
+    while (i < exe) {
+      //                val ct = new SCoarseSolver(xm, pType, varType, "")
+      val ct = new FDECoarseSolver1(fdem, pType, varType, heuName)
+      ct.search(Constants.TIME)
+      node = ct.helper.nodes
+      time += ct.helper.time
+      branchTime += ct.helper.branchTime
+      propTime += ct.helper.propTime
+      backTime += ct.helper.backTime
+      c_sum = ct.helper.c_sum
+      p_sum = ct.helper.p_sum
+      i += 1
+    }
+    println("node = " + node)
+    println("search time = " + (time / exe).toDouble * 1e-9 + "s")
+    println("branch time = " + (branchTime / exe).toDouble * 1e-9 + "s")
+    println("propagate time = " + (propTime / exe).toDouble * 1e-9 + "s")
+    println("backtrack time = " + (backTime / exe).toDouble * 1e-9 + "s")
+    println("c_sum = " + c_sum)
+    println("p_sum = " + p_sum)
+
+    time = 0L
+    branchTime = 0L
+    backTime = 0L
+    propTime = 0L
     //    pType = "CT_Bit"
     pType = "PW-CT"
     varType = "BitSet"
@@ -86,35 +117,35 @@ object main {
     println("c_sum = " + c_sum)
     println("p_sum = " + p_sum)
 
-    time = 0L
-    branchTime = 0L
-    backTime = 0L
-    propTime = 0L
-    //    pType = "CT_Bit"
-    pType = "PW-CT1"
-    varType = "BitSet"
-    println(s"${pType} ===============>")
-    i = 0
-    while (i < exe) {
-      //                val ct = new SCoarseSolver(xm, pType, varType, "")
-      val ct = new PWCoarseSolver(xm, pType, varType, heuName)
-      ct.search(Constants.TIME)
-      node = ct.helper.nodes
-      time += ct.helper.time
-      branchTime += ct.helper.branchTime
-      propTime += ct.helper.propTime
-      backTime += ct.helper.backTime
-      c_sum = ct.helper.c_sum
-      p_sum = ct.helper.p_sum
-      i += 1
-    }
-    println("node = " + node)
-    println("search time = " + (time / exe).toDouble * 1e-9 + "s")
-    println("branch time = " + (branchTime / exe).toDouble * 1e-9 + "s")
-    println("propagate time = " + (propTime / exe).toDouble * 1e-9 + "s")
-    println("backtrack time = " + (backTime / exe).toDouble * 1e-9 + "s")
-    println("c_sum = " + c_sum)
-    println("p_sum = " + p_sum)
+//    time = 0L
+//    branchTime = 0L
+//    backTime = 0L
+//    propTime = 0L
+//    //    pType = "CT_Bit"
+//    pType = "PW-CT1"
+//    varType = "BitSet"
+//    println(s"${pType} ===============>")
+//    i = 0
+//    while (i < exe) {
+//      //                val ct = new SCoarseSolver(xm, pType, varType, "")
+//      val ct = new PWCoarseSolver(xm, pType, varType, heuName)
+//      ct.search(Constants.TIME)
+//      node = ct.helper.nodes
+//      time += ct.helper.time
+//      branchTime += ct.helper.branchTime
+//      propTime += ct.helper.propTime
+//      backTime += ct.helper.backTime
+//      c_sum = ct.helper.c_sum
+//      p_sum = ct.helper.p_sum
+//      i += 1
+//    }
+//    println("node = " + node)
+//    println("search time = " + (time / exe).toDouble * 1e-9 + "s")
+//    println("branch time = " + (branchTime / exe).toDouble * 1e-9 + "s")
+//    println("propagate time = " + (propTime / exe).toDouble * 1e-9 + "s")
+//    println("backtrack time = " + (backTime / exe).toDouble * 1e-9 + "s")
+//    println("c_sum = " + c_sum)
+//    println("p_sum = " + p_sum)
 //
 //    time = 0L
 //    branchTime = 0L
