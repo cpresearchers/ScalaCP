@@ -11,8 +11,9 @@ import cpscala.TSolver.Model.Solver.IPplusSolver._
 import cpscala.TSolver.Model.Solver.PWSolver.PWCoarseSolver
 import cpscala.TSolver.Model.Solver.SSolver._
 import cpscala.TSolver.Model.Variable.BitSetVar
-import cpscala.XModel.XModel
+import cpscala.XModel.{FDEModel1, XModel}
 import cpscala.TSolver.Model.Solver.CPFSolver._
+import cpscala.TSolver.Model.Solver.FDESolver.FDECoarseSolver1
 
 import scala.collection.mutable
 import scala.xml.XML
@@ -28,49 +29,27 @@ object main {
     val fmt = (fileNode \\ "@format").text.toInt
     println(path)
     val xm = new XModel(path, true, fmt)
-   // xm.show()
+    val fdem = new FDEModel1(path, fmt);
 
-//    val Trie_Data = new  CompactTrie (1,xm.tabs.get(0).scope)
-//
-//    for( i <- xm.tabs.get(0).tuples)
-//    {
-//      Trie_Data.Insert(i)
-//
-//    }
-//    for( i <- xm.tabs.get(0).tuples)
-//    {
-//     // println(Trie_Data.Contain(i))
-//      //assert(Trie_Data.Contain(i))
-//
-//    }
-
-
-    var CPF = new CPFSolverImpl(xm,null,null,null)
-   // CPF.Show()
-    CPF.Search(1800000000000L)
-   CPF.Answer()
-
-
-
-//    var i = 0
-//    var parallelism = 1
-//    var node = 0L
-//    var time = 0L
-//    var branchTime = 0L
-//    var propTime = 0L
-//    var otherTime = 0L
-//    var updateTableTime = 0L
-//    var filterDomainTime = 0L
-//    var backTime = 0L
-//    var pType = " "
-//    var ppType = " "
-//    var varType = ""
-//    var heuName = "Dom/Ddeg"
-//    var exe = 1
-//    var p_sum = 0L
-//    var c_sum = 0L
-//    var notChangedTabs = 0L
-//    val maxPara = 2
+    var i = 0
+    var parallelism = 1
+    var node = 0L
+    var time = 0L
+    var branchTime = 0L
+    var propTime = 0L
+    var otherTime = 0L
+    var updateTableTime = 0L
+    var filterDomainTime = 0L
+    var backTime = 0L
+    var pType = " "
+    var ppType = " "
+    var varType = ""
+    var heuName = "Dom/Ddeg"
+    var exe = 1
+    var p_sum = 0L
+    var c_sum = 0L
+    var notChangedTabs = 0L
+    val maxPara = 2
 
     //        pType = "STR2"
     //        varType = "SparseSet"
@@ -85,6 +64,36 @@ object main {
     //        println("node = " + node)
     //        println("search time = " + (time / exe).toDouble * 1e-9 + "s")
     //        println("c_sum = " + c_sum)
+
+        time = 0L
+        branchTime = 0L
+        backTime = 0L
+        propTime = 0L
+        //    pType = "CT_Bit"
+        pType = "STRbit_FDE"
+        varType = "FDEBitSet"
+        println(s"${pType} ===============>")
+        i = 0
+        while (i < exe) {
+          //                val ct = new SCoarseSolver(xm, pType, varType, "")
+          val ct = new FDECoarseSolver1(fdem, pType, varType, heuName)
+          ct.search(Constants.TIME)
+          node = ct.helper.nodes
+          time += ct.helper.time
+          branchTime += ct.helper.branchTime
+          propTime += ct.helper.propTime
+          backTime += ct.helper.backTime
+          c_sum = ct.helper.c_sum
+          p_sum = ct.helper.p_sum
+          i += 1
+        }
+        println("node = " + node)
+        println("search time = " + (time / exe).toDouble * 1e-9 + "s")
+        println("branch time = " + (branchTime / exe).toDouble * 1e-9 + "s")
+        println("propagate time = " + (propTime / exe).toDouble * 1e-9 + "s")
+        println("backtrack time = " + (backTime / exe).toDouble * 1e-9 + "s")
+        println("c_sum = " + c_sum)
+        println("p_sum = " + p_sum)
 
 //    time = 0L
 //    branchTime = 0L
