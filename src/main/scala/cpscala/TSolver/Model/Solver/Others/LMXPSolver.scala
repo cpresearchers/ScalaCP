@@ -34,7 +34,7 @@ class LMXPSolver(xm: XModel, parallelism: Int) {
   val numTabs: Int = xm.num_tabs
   val vars = new Array[BitSetVar_LMX](numVars)
   val tabs = new Array[LMX_Bit](numTabs)
-  val helper = new LMXSearchHelper(numVars, numTabs, xm)
+  val helper = new LMXSearchHelper(numVars, numTabs, xm, parallelism)
 
   // 记录已赋值的变量
   val levelvsparse = Array.range(0, numVars)

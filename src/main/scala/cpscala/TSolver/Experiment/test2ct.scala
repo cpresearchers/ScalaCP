@@ -64,7 +64,7 @@ object test2ct {
       var dataLine = new ArrayBuffer[String](titleLine.length)
 
       for (f <- files) {
-        try {
+
           println("Build Model: " + f.getName)
           val xm = new XModel(f.getPath, true, fmt)
           dataLine.clear()
@@ -104,7 +104,7 @@ object test2ct {
             dataLine += pct.helper.c_sub.toString()
             //---async
           }
-
+        try {
           //---------hyper--------
           name = "Hyper"
           val lmx4 = new LMXPSolver(xm, 3)
@@ -115,14 +115,14 @@ object test2ct {
           dataLine += (lmx4.helper.time.toDouble * 1e-9).toString()
 
           //-------async------
-          name = "Async"
-          val lmx3 = new LMXPSolver(xm, 4)
-          println(s"Solving ${name} ===============>")
-          lmx3.async(Constants.TIME)
-          dataLine += name
-          dataLine += lmx3.helper.nodes.toString()
-          dataLine += (lmx3.helper.time.toDouble * 1e-9).toString()
-
+//          name = "Async"
+//          val lmx3 = new LMXPSolver(xm, 4)
+//          println(s"Solving ${name} ===============>")
+//          lmx3.async(Constants.TIME)
+//          dataLine += name
+//          dataLine += lmx3.helper.nodes.toString()
+//          dataLine += (lmx3.helper.time.toDouble * 1e-9).toString()
+//
           writer.writeRow(dataLine)
           println("end: " + f.getName)
         }
