@@ -12,7 +12,7 @@ public class XVar {
     public int size;
     public boolean isSTD;
 
-    XVar(int id, String name, int[] vals) {
+    public XVar(int id, String name, int[] vals) {
         this.id = id;
         this.name = name;
         size = vals.length;
@@ -45,7 +45,7 @@ public class XVar {
         isSTD = (minValues == 0);
     }
 
-    void show() {
+    public void  show() {
         System.out.println("name: " + id + " name: " + name);
         for (int i = 0; i < size; ++i) {
             System.out.print(values[i] + "[" + values_ori[i] + "] ");

@@ -183,7 +183,7 @@ public class CPFSolverImpl extends CPFSolver {
         tabsize = hm.num_tabs;
         searchhelper = new CPFSearchHelper(hm.num_vars, hm.num_tabs);
         ArrayList<Integer> p = Select_Path();
-      //  print_All(p);
+        //print_All(p);
         int temp_f[] = new int[tabsize];
         for (var k : p) {
             temp_f[k] = 1;

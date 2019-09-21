@@ -4,6 +4,7 @@ import java.util
 import cpscala.TSolver.Model.Solver.CPFSolver.DoubleArrayTrie
 import cpscala.TSolver.CpUtil.Constants
 import cpscala.TSolver.Model.Constraint.SConstraint.TableCT_Bit
+import cpscala.TSolver.Model.Solver.AllDifferent.AllDifferent
 import cpscala.TSolver.Model.Solver.CPFSolver.CPFSolverImpl
 import cpscala.TSolver.Model.Solver.DSPSolver._
 import cpscala.TSolver.Model.Solver.IPSolver._
@@ -11,8 +12,7 @@ import cpscala.TSolver.Model.Solver.IPplusSolver._
 import cpscala.TSolver.Model.Solver.PWSolver.PWCoarseSolver
 import cpscala.TSolver.Model.Solver.SSolver._
 import cpscala.TSolver.Model.Variable.BitSetVar
-import cpscala.XModel.XModel
-import cpscala.XModel.ZModel
+import cpscala.XModel.{XModel, XVar, ZModel}
 import cpscala.TSolver.Model.Solver.CPFSolver._
 
 import scala.collection.mutable
@@ -23,17 +23,51 @@ object main {
 
   def main(args: Array[String]): Unit = {
 
-    val xf = XML.loadFile("benchmarks/BMPath.xml")
-    val fileNode = xf \\ "BMFile"
-    val path = fileNode.text
-    val fmt = (fileNode \\ "@format").text.toInt
-    println(path)
-    val xm = new ZModel(path, true, fmt)
+//    val xf = XML.loadFile("benchmarks/BMPath.xml")
+//    val fileNode = xf \\ "BMFile"
+//    val path = fileNode.text
+//    val fmt = (fileNode \\ "@format").text.toInt
+//    println(path)
+//    val xm = new XModel(path, true, fmt)
+//
+//    val t = new Table_Trie(1)
+//    t.AddTabs(xm.tabs.get(0))
+//    t.Show()
 
-    xm.show_Relation()
-    //xm.show()
 
-//    val Trie_Data = new  CompactTrie (1,xm.tabs.get(0).scope)
+
+    var a = new XVar(1,"a", Array[Int](2,3,4,5,6))
+    var b = new XVar(2,"b", Array[Int](1,2,5,9,12))
+    var c = new XVar(3,"c", Array[Int](3,5,7,10,17))
+    var d = new XVar(4,"d", Array[Int](319))
+//    var a = new XVar(1,"a", Array[Int](1))
+//    var b = new XVar(2,"b", Array[Int](1,2))
+//    var c = new XVar(3,"c", Array[Int](1,2,3))
+//    var d = new XVar(4,"d", Array[Int](1,2,3,4))
+//    var a = new XVar(1,"a", Array[Int](1))
+//    var b = new XVar(2,"b", Array[Int](1,2))
+//    var c = new XVar(3,"c", Array[Int](1,2,3,4))
+//    var d = new XVar(4,"d", Array[Int](1,2,4,5))
+    var all = new util.ArrayList[XVar]()
+    all.add(a)
+    all.add(b)
+    all.add(c)
+    all.add(d)
+    all.forEach(i => i.show)
+    var test = new AllDifferent(all)
+  //  test.show()
+    test.Solve()
+    var solution = test.get_Var()
+      print("after:\n")
+    solution.forEach(i => i.show)
+
+
+   // xm.show_Relation()
+   // xm.show()
+
+   //val Trie_Data = new  CompactTrie (1,xm.tabs.get(0).scope)
+
+
 //
 //    for( i <- xm.tabs.get(0).tuples)
 //    {
@@ -48,10 +82,10 @@ object main {
 //    }
 
 
-    var CPF = new CPFSolverImpl_with_relation(xm,null,null,null)
-   // CPF.Show()
-    CPF.Search(1800000000000L)
-   CPF.Answer()
+   // var CPF = new CPFSolverImpl(xm,null,null,null)
+   /// CPF.Show()
+   // CPF.Search(1800000000000L)
+  // CPF.Answer()
 
 
 
