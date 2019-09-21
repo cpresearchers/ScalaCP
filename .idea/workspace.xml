@@ -1,80 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="dc861cef-a025-4dc8-bbee-133e5b560ac6" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/main.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPF_MultiThread_S.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/highlighting.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/hydra.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/ScalaCP-build.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/ScalaCP-build.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/ScalaCP.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/ScalaCP.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sbt.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sbt.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/scala_compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/scala_compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/scala_settings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/benchmarks/BMPath.xml" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/BMPath.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/benchmarks/Folders.xml" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/Folders.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$f85b5d3b99860383ef5a$.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$f85b5d3b99860383ef5a.cache" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/config-classes/$f85b5d3b99860383ef5a.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/default/scalacp-build/scala_2.12/sbt_1.0/0.1.0-SNAPSHOT/resolved.xml.properties" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/default/scalacp-build/scala_2.12/sbt_1.0/0.1.0-SNAPSHOT/resolved.xml.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/default/scalacp-build/scala_2.12/sbt_1.0/0.1.0-SNAPSHOT/resolved.xml.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/default/scalacp-build/scala_2.12/sbt_1.0/0.1.0-SNAPSHOT/resolved.xml.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-compile-internal.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-compile-internal.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-compile.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-compile.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-optional.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-optional.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-plugin.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-provided.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-provided.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-runtime-internal.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-runtime-internal.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-runtime.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-runtime.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-scala-tool.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-scala-tool.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-test-internal.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-test-internal.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-test.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/resolution-cache/reports/default-scalacp-build-test.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/streams/$global/update/$global/streams/out" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/streams/$global/update/$global/streams/out" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/target/streams/$global/update/$global/streams/update_cache_2.12/output" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/streams/$global/update/$global/streams/update_cache_2.12/output" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/main.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/main.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/XModel/XVar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/XModel/XVar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/.history" beforeDir="false" afterPath="$PROJECT_DIR$/target/.history" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Experiment/main$.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Experiment/main$.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/XVar.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/XVar.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sbt_2.12/0.1/resolved.xml.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sbt_2.12/0.1/resolved.xml.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sbt_2.12/0.1/resolved.xml.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sbt_2.12/0.1/resolved.xml.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sources/0.1/resolved.xml.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sources/0.1/resolved.xml.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sources/0.1/resolved.xml.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sources/0.1/resolved.xml.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sources_2.12/0.1/resolved.xml.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sources_2.12/0.1/resolved.xml.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sources_2.12/0.1/resolved.xml.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/default/scalacp$sources_2.12/0.1/resolved.xml.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sbt_2.12-compile.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sbt_2.12-compile.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sbt_2.12-optional.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sbt_2.12-optional.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sbt_2.12-provided.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sbt_2.12-provided.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sbt_2.12-runtime.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sbt_2.12-runtime.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sbt_2.12-test.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sbt_2.12-test.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-compile-internal.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-compile-internal.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-compile.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-compile.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-optional.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-optional.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-plugin.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-provided.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-provided.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-runtime-internal.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-runtime-internal.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-runtime.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-runtime.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-scala-tool.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-scala-tool.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-test-internal.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-test-internal.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-test.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources-test.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources_2.12-compile.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources_2.12-compile.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources_2.12-default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources_2.12-default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources_2.12-optional.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources_2.12-optional.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources_2.12-provided.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources_2.12-provided.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources_2.12-runtime.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources_2.12-runtime.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources_2.12-test.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/resolution-cache/reports/default-scalacp$sources_2.12-test.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/streams/$global/$global/dumpStructure/$global/streams/out" beforeDir="false" afterPath="$PROJECT_DIR$/target/streams/$global/$global/dumpStructure/$global/streams/out" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/streams/$global/updateClassifiers/$global/streams/out" beforeDir="false" afterPath="$PROJECT_DIR$/target/streams/$global/updateClassifiers/$global/streams/out" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/streams/$global/updateSbtClassifiers/$global/streams/out" beforeDir="false" afterPath="$PROJECT_DIR$/target/streams/$global/updateSbtClassifiers/$global/streams/out" afterDir="false" />
+    <list default="true" id="dc861cef-a025-4dc8-bbee-133e5b560ac6" name="Default Changelist" comment="补充了all_different">
+      <change afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/AllDifferent/AllDifferent.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -267,8 +195,16 @@
       <workItem from="1568859618596" duration="601000" />
       <workItem from="1568873165837" duration="15084000" />
       <workItem from="1568940672414" duration="20177000" />
-      <workItem from="1569027930109" duration="18874000" />
+      <workItem from="1569027930109" duration="19147000" />
     </task>
+    <task id="LOCAL-00001" summary="补充了all_different">
+      <created>1569054478508</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1569054478508</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -286,5 +222,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="补充了all_different" />
+    <option name="LAST_COMMIT_MESSAGE" value="补充了all_different" />
   </component>
 </project>
