@@ -7,15 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Stack;
-//
-//尊敬的学者：
-//        你好！
-//        我是来自吉林大学的一名学生，近期拜读到您的论文《A Fast Algorithm for Generalized Arc Consistency of the Alldifferent Constraint》，您的论文方法之巧妙令我惊叹，我为您在数学和约束领域所作的贡献深感敬佩。
-//        为了进一步理解您的算法，请问您是否愿意公开源代码。
-//        期待您的回信。
-//
-//吉林大学学生：镇路晗
-//2019.9.21
+
 
 //A Fast Algorithm for Generalized Arc Consistency of the Alldifferent Constraint
 //luhan zhen
@@ -381,10 +373,10 @@ public class AllDifferent {
 
     }
 
-    private ArrayList<ArrayList<Integer>> Get_SCC(ArrayList<Integer> Xc_minus_Gamma_A,ArrayList<Integer> Dc_minus_A)
+    private ArrayList<HashSet<Integer>> Get_SCC(ArrayList<Integer> Xc_minus_Gamma_A,ArrayList<Integer> Dc_minus_A)
     {
 
-        ArrayList<ArrayList<Integer>> SCC = new ArrayList<>();
+        ArrayList<HashSet<Integer>> SCC = new ArrayList<>();
         ArrayList<Edge> All_Egde = new ArrayList<>();
         int sum = Xc_minus_Gamma_A.size() + Dc_minus_A.size();
 
@@ -432,7 +424,7 @@ public class AllDifferent {
         return SCC;
     }
     //递归求强连通分量
-    private void TarjanAlgorithm(int time,Stack<Integer> stack ,ArrayList<Edge> All_Egde,ArrayList<ArrayList<Integer>> SCC,int[] isvisited,int[] LOW,int current )
+    private void TarjanAlgorithm(int time,Stack<Integer> stack ,ArrayList<Edge> All_Egde,ArrayList<HashSet<Integer>> SCC,int[] isvisited,int[] LOW,int current )
     {
         LOW[current] = time++;
         isvisited[current] = 1;
@@ -455,7 +447,7 @@ public class AllDifferent {
         }
         if(isRootComponent)
         {
-            ArrayList<Integer> list = new ArrayList<>();
+            HashSet<Integer> list = new HashSet<>();
             while (true)
             {
                 int p = stack.pop();
@@ -471,13 +463,12 @@ public class AllDifferent {
     }
     //剪掉强连通分量之间的边
 
-    private boolean Is_Belong_To_One_SCC(ArrayList<ArrayList<Integer>> SCC,int a,int b)
+    private boolean Is_Belong_To_One_SCC(ArrayList<HashSet<Integer>> SCC,int a,int b)
     {
 
         for (var i : SCC)
         {
-            HashSet<Integer> set = new HashSet<>(i);
-            if(set.contains(a) && set.contains(b))
+            if(i.contains(a) && i.contains(b))
                 return true;
 
         }
@@ -485,7 +476,7 @@ public class AllDifferent {
 
     }
 
-    private void Prune_all_edge_between_SCC(ArrayList<ArrayList<Integer>> SCC, ArrayList<Integer> Xc_minus_Gamma_A, ArrayList<Integer> Dc_minus_A)
+    private void Prune_all_edge_between_SCC(ArrayList<HashSet<Integer>> SCC, ArrayList<Integer> Xc_minus_Gamma_A, ArrayList<Integer> Dc_minus_A)
     {
 
         for(var a : Xc_minus_Gamma_A) //这里编号是先从X编号完毕再编号D
@@ -567,7 +558,7 @@ public class AllDifferent {
             Prune_all_edge_between_GammaA_between_Dc_minus_A(Gamma_A, Dc_minus_A);
           //  ShowGraph();
 
-            ArrayList<ArrayList<Integer>> SCC = Get_SCC(Xc_minus_Gamma_A, Dc_minus_A);
+            ArrayList<HashSet<Integer>> SCC = Get_SCC(Xc_minus_Gamma_A, Dc_minus_A);
             Prune_all_edge_between_SCC(SCC, Xc_minus_Gamma_A, Dc_minus_A);
          //   ShowGraph();
         }catch (Exception e)
