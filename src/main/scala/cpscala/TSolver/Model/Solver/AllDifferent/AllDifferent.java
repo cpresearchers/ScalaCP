@@ -1,12 +1,10 @@
 package cpscala.TSolver.Model.Solver.AllDifferent;
 
 
-import cpscala.TSolver.Model.Variable.Var;
+
 import cpscala.XModel.XVar;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Stack;
+
+import java.util.*;
 
 
 //A Fast Algorithm for Generalized Arc Consistency of the Alldifferent Constraint
@@ -14,22 +12,21 @@ import java.util.Stack;
 //2019.9.8
 
 public class AllDifferent {
-
-    class Edge { //边
+    private static class Edge { //边
         int S,V;
 
         Edge(int s, int v) {S = s;V = v; }
     }
 
-    ArrayList<XVar> vars;
-    ArrayList<XVar> after_vars;
+    private ArrayList<XVar> vars;
+    private ArrayList<XVar> after_vars;
     //int[] ori_solution;
     //int[] mapped_solution;
-    int vsize = 0;
-    int [][] bipartite;
+    private int vsize;
+    private int [][] bipartite;
 
-    ArrayList<Integer> all_values;
-    HashMap<Integer,Integer> values_to_id; //值到id的映射
+    private ArrayList<Integer> all_values;
+    private HashMap<Integer,Integer> values_to_id; //值到id的映射
 
 
     //boolean isSolvable;
@@ -39,9 +36,6 @@ public class AllDifferent {
        // isSolvable = true;
         vars = XV;
         vsize = XV.size();
-      //  ori_solution = new int[vsize];
-     //  mapped_solution = new int[vsize];
-
         HashSet<Integer> all = new HashSet<>(); //将所有的取值扔到set里面
         for(var a: vars)
             for (var b :a.values_ori)
@@ -82,23 +76,20 @@ public class AllDifferent {
         ArrayList<Edge> Max_M = new ArrayList<>();
 
         int[] s_x = new int[vsize];
-        for(int j = 0; j < s_x.length ;++j)
-            s_x[j] = -1;
         int[] s_v = new int[all_values.size()];
-        for(int j = 0; j < s_v.length ;++j)
-            s_v[j] = -1;
+        Arrays.fill(s_x,-1);
+        Arrays.fill(s_v,-1);
+
         int[] visited = new int[all_values.size()];
         for(int i = 0; i < vsize;++i)
         {
-           // if(s_x[i] == 0)
-           // {
-                for(int j = 0; j < visited.length ;++j)
-                    visited[j] = 0;
+
+              Arrays.fill(visited,0);
+
                 Hungary_Algorithm(visited,s_v,s_x,i);
-            //}
+
         }
-       // for (int i = 0; i < s_x.length;++i)
-        //    System.out.print(s_x[i] + "  ");
+
         for (int i = 0; i < s_x.length;++i)
             Max_M.add(new Edge(i,all_values.get(s_x[i])));
         for(var m: Max_M) //将图中匹配置为-1
@@ -143,7 +134,7 @@ public class AllDifferent {
                     break;
                 }
             }
-            if(f != true)
+            if(!f)
             {
                 free.add(a);
             }
@@ -164,7 +155,7 @@ public class AllDifferent {
     {
         if(f == t) //找到了该交替路
             return true;
-        if(flag == true) { //当前点在D
+        if(flag) { //当前点在D
             for (int i = 0; i < vsize;++i)
             {
                 if(bipartite[i][f] == 1)
@@ -184,9 +175,8 @@ public class AllDifferent {
             }
 
         }
-
-
         return false;
+
         /*System.out.println("free: " + f + "  target: " + t);
         Stack<Edge> stack = new Stack<>();
         int [][] visited = new int[vars.size()][all_values.size()];
@@ -272,14 +262,8 @@ public class AllDifferent {
             }
 
         }
-        ArrayList<Integer> A = new ArrayList<>(A_T); //从hash set到ArrayList
 
-
-
-//        System.out.println("\nA (allowed set):");
-//        for(var a : A)
-//            System.out.print(a + "  ");
-        return A;
+        return new ArrayList<>(A_T); //从hash set到ArrayList
 
     }
 
@@ -315,12 +299,12 @@ public class AllDifferent {
                     Gamma_A_T.add(i);
             }
         }
-        ArrayList<Integer> Gamma_A = new ArrayList<>(Gamma_A_T);
+     //   ArrayList<Integer> Gamma_A = ArrayList<>(Gamma_A_T);
 //        System.out.println("\nGamma_A (neighbor nodes of A):");
 //        for(var a : Gamma_A)
 //            System.out.print(a + "  ");
 
-        return  Gamma_A;
+        return   new ArrayList<>(Gamma_A_T);
     }
     private ArrayList<Integer> Get_Xc_minus_Gamma_A(ArrayList<Integer> Gamma_A)
     {
@@ -349,17 +333,9 @@ public class AllDifferent {
 
     }
 
-    private void Prune_all_edge_between_GammaA_between_Dc_minus_A( ArrayList<Integer> Gamma_A, ArrayList<Integer> Dc_minus_A)
+    private void Prune_all_edge_between_Gamma_A_and_Dc_minus_A( ArrayList<Integer> Gamma_A, ArrayList<Integer> Dc_minus_A)
     {
-//        System.out.println("before pruned graph:");
-//        for(var a : bipartite)
-//        {
-//            for (var b:a)
-//            {
-//                System.out.print((int)b + " ");
-//            }
-//            System.out.println();
-//        }
+
         for(var a : Gamma_A)
         {
             for(var b : Dc_minus_A)
@@ -369,7 +345,7 @@ public class AllDifferent {
             }
         }
 
-        return ;
+
 
     }
 
@@ -406,8 +382,8 @@ public class AllDifferent {
        // System.out.println(sum);
       //  for (var a : All_Egde)
          //   System.out.print(a.S + "->" + a.V + "   ");
-        int isvisited[] = new int[sum];
-        int LOW[] = new int[sum];
+        int[] isvisited = new int[sum];
+        int[] LOW = new int[sum];
         Stack<Integer> stack = new Stack<>();
         int time = 0;
         for(int i =0; i < sum; ++i)
@@ -461,7 +437,7 @@ public class AllDifferent {
 
 
     }
-    //剪掉强连通分量之间的边
+
 
     private boolean Is_Belong_To_One_SCC(ArrayList<HashSet<Integer>> SCC,int a,int b)
     {
@@ -475,7 +451,7 @@ public class AllDifferent {
         return false;
 
     }
-
+    //剪掉强连通分量之间的边
     private void Prune_all_edge_between_SCC(ArrayList<HashSet<Integer>> SCC, ArrayList<Integer> Xc_minus_Gamma_A, ArrayList<Integer> Dc_minus_A)
     {
 
@@ -489,61 +465,17 @@ public class AllDifferent {
                         bipartite[a][values_to_id.get(b)] = 0;
                     }
 
-                    //x = values_to_id.get(b)+Xc_minus_Gamma_A.size(), y = a
-                   // All_Egde.add(new Edge(values_to_id.get(b) + Xc_minus_Gamma_A.size(), a));
-
-
 
                 }
             }
         }
-        /*
-        int cursor = Xc_minus_Gamma_A.size();
-        int x,d;
-        for(int i = 0; i < SCC.size();++i)
-        {
-            for(int j= i+1; j < SCC.size();++j)
-            {
-                for (var a : SCC.get(i))
-                {
-                    for (var b : SCC.get(j))
-                    {
-                        if(a >= cursor)
-                        {
-                            x = a - cursor;
-                            if(b < cursor)
-                            {
-                                d = b;
-                                if(bipartite[x][d] == 1)
-                                    bipartite[x][d] = 0;
-                            }
-                        }
-                        if(b >= cursor)
-                        {
-                            x = b - cursor;
-                            if(a < cursor)
-                            {
-                                d = a;
-                                if(bipartite[x][d] == 1)
-                                bipartite[x][d] = 0;
-                            }
-                        }
-                    }
-                }
-            }
-
-        }
-*/
-
-
     }
 
     public boolean Solve()
     {
-      //  double init_time_start = System.nanoTime();
-      //  boolean flag = true;
 
-        if(preprocess() == false)  //必然不可解，肯定不用解了，直接返回
+
+        if(!preprocess())  //必然不可解，肯定不用解了，直接返回
             return  false;
 
         try {
@@ -555,7 +487,7 @@ public class AllDifferent {
             ArrayList<Integer> Dc_minus_A = Get_Dc_minus_A(A);
             ArrayList<Integer> Xc_minus_Gamma_A = Get_Xc_minus_Gamma_A(Gamma_A);
 
-            Prune_all_edge_between_GammaA_between_Dc_minus_A(Gamma_A, Dc_minus_A);
+            Prune_all_edge_between_Gamma_A_and_Dc_minus_A(Gamma_A, Dc_minus_A);
           //  ShowGraph();
 
             ArrayList<HashSet<Integer>> SCC = Get_SCC(Xc_minus_Gamma_A, Dc_minus_A);
@@ -563,7 +495,7 @@ public class AllDifferent {
          //   ShowGraph();
         }catch (Exception e)
         {
-            System.out.println(e);
+            e.printStackTrace();
             return false;
         }
 
@@ -587,30 +519,9 @@ public class AllDifferent {
             after_vars.add(new XVar(vars.get(i).id,vars.get(i).name,v));
 
         }
-
-//        while(flag)
-//        {
-//            if((System.nanoTime()-init_time_start) * 1e-9 > TIME_OUT)
-//                break;
-//
-//        }
-
         return true;
     }
 
-
-//
-//    public int[] get_Ori_Solution()
-//    {
-//
-//        return ori_solution;
-//    }
-//
-//    public int[] get_Solution()
-//    {
-//
-//        return mapped_solution;
-//    }
 
     public ArrayList<XVar> get_Var()
     {
@@ -624,7 +535,7 @@ public class AllDifferent {
         {
             for (var b:a)
             {
-                System.out.print((int)b + " ");
+                System.out.print(b + " ");
             }
             System.out.println();
         }

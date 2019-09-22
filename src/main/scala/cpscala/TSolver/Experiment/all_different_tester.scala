@@ -18,7 +18,7 @@ import cpscala.TSolver.Model.Solver.CPFSolver._
 import scala.collection.mutable
 import scala.xml.XML
 
-object main {
+object all_different_tester {
 
 
   def main(args: Array[String]): Unit = {

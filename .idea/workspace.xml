@@ -2,7 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="dc861cef-a025-4dc8-bbee-133e5b560ac6" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/META-INF/MANIFEST.MF" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/META-INF/fde/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/META-INF/fde/META-INF/MANIFEST.MF" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/META-INF/pct/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/META-INF/pct/META-INF/MANIFEST.MF" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/main.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/all_different_tester.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/AllDifferent/AllDifferent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/AllDifferent/AllDifferent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPF_MultiThread_S.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/CPFSolver/CPF_MultiThread_S.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/META-INF/MANIFEST.MF" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/META-INF/fde/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/META-INF/fde/META-INF/MANIFEST.MF" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/META-INF/pct/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/META-INF/pct/META-INF/MANIFEST.MF" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Experiment/main$.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Experiment/main.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.class" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -65,6 +79,11 @@
         </map>
       </branch-storage>
     </favorite-branches>
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="simple" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectCodeStyleSettingsMigration">
@@ -118,7 +137,7 @@
       </method>
     </configuration>
     <configuration name="main" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="cpscala.TSolver.Experiment.main" />
+      <option name="MAIN_CLASS_NAME" value="cpscala.TSolver.Experiment.all_different_tester" />
       <module name="ScalaCP" />
       <option name="VM_PARAMETERS" value="-ea" />
       <extension name="coverage">
@@ -148,8 +167,8 @@
     <list>
       <item itemvalue="Applet.test" />
       <item itemvalue="Application.main" />
-      <item itemvalue="JUnit.cpscala.TSolver.Model.Solver.CPFSolver in ScalaCP" />
       <item itemvalue="Application.Main" />
+      <item itemvalue="JUnit.cpscala.TSolver.Model.Solver.CPFSolver in ScalaCP" />
     </list>
     <recent_temporary>
       <list>
@@ -208,7 +227,9 @@
       <workItem from="1568859618596" duration="601000" />
       <workItem from="1568873165837" duration="15084000" />
       <workItem from="1568940672414" duration="20177000" />
-      <workItem from="1569027930109" duration="20400000" />
+      <workItem from="1569027930109" duration="20930000" />
+      <workItem from="1569060810494" duration="2272000" />
+      <workItem from="1569113884765" duration="5726000" />
     </task>
     <task id="LOCAL-00001" summary="补充了all_different">
       <created>1569054478508</created>
@@ -238,7 +259,14 @@
       <option name="project" value="LOCAL" />
       <updated>1569055103699</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="补充 all_different">
+      <created>1569055956049</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1569055956049</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -247,6 +275,30 @@
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
+        <entry key="1">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="range">
+                    <value>
+                      <list>
+                        <option value="HEAD..master" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="roots">
+                    <value>
+                      <list>
+                        <option value="$PROJECT_DIR$" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
         <entry key="MAIN">
           <value>
             <State>
@@ -255,6 +307,11 @@
           </value>
         </entry>
       </map>
+    </option>
+    <option name="OPEN_TABS">
+      <set>
+        <option value="1" />
+      </set>
     </option>
   </component>
   <component name="VcsManagerConfiguration">
