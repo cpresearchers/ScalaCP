@@ -45,32 +45,32 @@ object main {
 //    }
 
 
-    var CPF = new CPFSolverImpl(xm,null,null,null)
+//    var CPF = new CPFSolverImpl(xm,null,null,null)
    // CPF.Show()
-    CPF.Search(1800000000000L)
-   CPF.Answer()
+//    CPF.Search(1800000000000L)
+//   CPF.Answer()
 
 
 
-//    var i = 0
-//    var parallelism = 1
-//    var node = 0L
-//    var time = 0L
-//    var branchTime = 0L
-//    var propTime = 0L
-//    var otherTime = 0L
-//    var updateTableTime = 0L
-//    var filterDomainTime = 0L
-//    var backTime = 0L
-//    var pType = " "
-//    var ppType = " "
-//    var varType = ""
-//    var heuName = "Dom/Ddeg"
-//    var exe = 1
-//    var p_sum = 0L
-//    var c_sum = 0L
-//    var notChangedTabs = 0L
-//    val maxPara = 2
+    var i = 0
+    var parallelism = 1
+    var node = 0L
+    var time = 0L
+    var branchTime = 0L
+    var propTime = 0L
+    var otherTime = 0L
+    var updateTableTime = 0L
+    var filterDomainTime = 0L
+    var backTime = 0L
+    var pType = " "
+    var ppType = " "
+    var varType = ""
+    var heuName = "Dom/Ddeg"
+    var exe = 1
+    var p_sum = 0L
+    var c_sum = 0L
+    var notChangedTabs = 0L
+    val maxPara = 2
 
     //        pType = "STR2"
     //        varType = "SparseSet"
@@ -86,35 +86,36 @@ object main {
     //        println("search time = " + (time / exe).toDouble * 1e-9 + "s")
     //        println("c_sum = " + c_sum)
 
-//    time = 0L
-//    branchTime = 0L
-//    backTime = 0L
-//    propTime = 0L
-//    //    pType = "CT_Bit"
-//    pType = "PW-CT"
-//    varType = "BitSet"
-//    println(s"${pType} ===============>")
-//    i = 0
-//    while (i < exe) {
-//      //                val ct = new SCoarseSolver(xm, pType, varType, "")
-//      val ct = new PWCoarseSolver(xm, pType, varType, heuName)
-//      ct.search(Constants.TIME)
-//      node = ct.helper.nodes
-//      time += ct.helper.time
-//      branchTime += ct.helper.branchTime
-//      propTime += ct.helper.propTime
-//      backTime += ct.helper.backTime
-//      c_sum = ct.helper.c_sum
-//      p_sum = ct.helper.p_sum
-//      i += 1
-//    }
-//    println("node = " + node)
-//    println("search time = " + (time / exe).toDouble * 1e-9 + "s")
-//    println("branch time = " + (branchTime / exe).toDouble * 1e-9 + "s")
-//    println("propagate time = " + (propTime / exe).toDouble * 1e-9 + "s")
-//    println("backtrack time = " + (backTime / exe).toDouble * 1e-9 + "s")
-//    println("c_sum = " + c_sum)
-//    println("p_sum = " + p_sum)
+    time = 0L
+    branchTime = 0L
+    backTime = 0L
+    propTime = 0L
+    //    pType = "CT_Bit"
+    pType = "PW-CT"
+    varType = "BitSet"
+    heuName = "Dom/Ddeg"
+    println(s"${pType} ===============>")
+    i = 0
+    while (i < exe) {
+      //                val ct = new SCoarseSolver(xm, pType, varType, "")
+      val ct = new PWCoarseSolver(xm, pType, varType, heuName)
+      ct.search(Constants.TIME)
+      node = ct.helper.nodes
+      time += ct.helper.time
+      branchTime += ct.helper.branchTime
+      propTime += ct.helper.propTime
+      backTime += ct.helper.backTime
+      c_sum = ct.helper.c_sum
+      p_sum = ct.helper.p_sum
+      i += 1
+    }
+    println("node = " + node)
+    println("search time = " + (time / exe).toDouble * 1e-9 + "s")
+    println("branch time = " + (branchTime / exe).toDouble * 1e-9 + "s")
+    println("propagate time = " + (propTime / exe).toDouble * 1e-9 + "s")
+    println("backtrack time = " + (backTime / exe).toDouble * 1e-9 + "s")
+    println("c_sum = " + c_sum)
+    println("p_sum = " + p_sum)
 //
 //    time = 0L
 //    branchTime = 0L

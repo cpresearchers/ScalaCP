@@ -3,7 +3,7 @@ package cpscala.TSolver.Model.Solver.SSolver
 import cpscala.TSolver.CpUtil.SearchHelper.SearchHelper
 import cpscala.TSolver.CpUtil.{AssignedStack, CoarseQueue}
 import cpscala.TSolver.Model.Constraint.SConstraint._
-import cpscala.TSolver.Model.Heuristic.{HeuDomDdeg, HeuDomWdeg, Heuristic}
+import cpscala.TSolver.Model.Heuristic.{HeuAddHybrid, HeuDomDdeg, HeuDomWdeg, HeuMulHybrid, Heuristic}
 import cpscala.TSolver.Model.Variable._
 import cpscala.XModel.{XModel, XTab, XVar}
 
@@ -185,6 +185,14 @@ abstract class SSolver(xm: XModel, propagatorName: String, varType: String, heuN
     case "Dom/Wdeg" => {
       heuristic = new HeuDomWdeg[Var, Propagator[Var]](numVars, vars, subscription)
     }
+
+    case "AddHybrid" => {
+      heuristic = new HeuAddHybrid[Var, Propagator[Var]](numVars, vars, subscription)
+    }
+
+    case "MulHybrid" => {
+      heuristic = new HeuMulHybrid[Var, Propagator[Var]](numVars, vars, subscription)
+    }
   }
 
   val Q = new CoarseQueue[Var](numVars)
@@ -249,7 +257,7 @@ abstract class SSolver(xm: XModel, propagatorName: String, varType: String, heuN
 //            infoShow()
 
       if (consistent && I.full()) {
-        //I.show()
+        I.show()
         // 若想求出所有解，则将consistent设置为false，且不返回
         //        consistent = false
         end_time = System.nanoTime
@@ -262,7 +270,7 @@ abstract class SSolver(xm: XModel, propagatorName: String, varType: String, heuN
         val (v, a) = I.pop()
 //        println(s"pop:(${v.id}, ${a})")
         backLevel()
-        v.remove(a)
+//        v.remove(a)
         remove(v, a)
         end_time = System.nanoTime
         helper.backTime += (end_time - back_start_time)

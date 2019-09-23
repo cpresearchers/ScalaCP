@@ -18,7 +18,7 @@
         <!--<BMFile name="0" format="2">D:/optiSTRpackage/rand5-2X-0.5c/rand5-2X-0.5c-0-p0.xml</Bmod-0_ext.xml</BMFile>-->
         <!--<BMFile name="0" format="2">D:/optiSTRpackage/radar-8-24-3-2/normalized-radar-8-24-3-2-0.xml</BMFile>-->
         <!--<BMFile name ="0" format="2">D:/optiSTRpackage/dubois/normalized-dubois-20_ext.xml</BMFile>-->
-        <BMFile name ="0" format="2">D:\Experiment\XCSP2/lexVg_total63/crossword-m1c-lex-vg6-10_ext.xml</BMFile>
+<!--        <BMFile name ="0" format="2">D:\Experiment\XCSP2/lexVg_total63/crossword-m1c-lex-vg6-10_ext.xml</BMFile>-->
         <!--<BMFile name="0">F:/output/rand-10-10-2-15-370-0_ext-merged.xml</BMFile>-->
         <!--<BMFile name="0" format="2">C:/XBench/Data/rand-8-20-5_total20/rand-8-20-5-18-800-0_ext.xml</BMFile>-->
         <!--<BMFile name="0">E:/X3Benchmarks/Random-m1-15-23-3/rand-15-23-3-16-150000-01.xml</BMFile>-->
@@ -45,6 +45,7 @@
         <!--<BMFile name="0" format="2">E:/benckmarks/optiSTRpackage/MDD0.9_total9/a7-v24-d5-ps0.5-psh0.9-1.xml</BMFile>-->
         <!--<BMFile name="0" format="2">E:/benckmarks/optiSTRpackage/MDD0.7_600s8/a7-v24-d5-ps0.5-psh0.7-1.xml</BMFile>-->
         <!--<BMFile name="0" format="2">E:/benckmarks/optiSTRpackage/travellingSalesman-20_total15/tsp-20-8_ext.xml</BMFile>-->
+        <BMFile name ="0" format="2">D:/Experiment/XCSP2/aim-50_total24/aim-50-3-4-sat-1_ext.xml</BMFile>
 
     </BMFiles>
 </BenchMark>
