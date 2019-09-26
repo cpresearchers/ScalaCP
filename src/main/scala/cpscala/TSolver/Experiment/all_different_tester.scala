@@ -4,7 +4,7 @@ import java.util
 import cpscala.TSolver.Model.Solver.CPFSolver.DoubleArrayTrie
 import cpscala.TSolver.CpUtil.Constants
 import cpscala.TSolver.Model.Constraint.SConstraint.TableCT_Bit
-import cpscala.TSolver.Model.Solver.AllDifferent.AllDifferent
+import cpscala.TSolver.Model.Solver.AllDifferent.{AllDifferent, AllDifferent_Regin}
 import cpscala.TSolver.Model.Solver.CPFSolver.CPFSolverImpl
 import cpscala.TSolver.Model.Solver.DSPSolver._
 import cpscala.TSolver.Model.Solver.IPSolver._

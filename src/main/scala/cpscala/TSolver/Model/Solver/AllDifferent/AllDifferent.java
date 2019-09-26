@@ -410,11 +410,11 @@ public class AllDifferent {
         {
             if(a.S == current)
             {
-                if(isvisited[a.S] != 1)
-                    TarjanAlgorithm(time,stack,All_Egde,SCC,isvisited,LOW,a.S);
-                if(LOW[a.S] > LOW[current])
+                if(isvisited[a.V] != 1)
+                    TarjanAlgorithm(time,stack,All_Egde,SCC,isvisited,LOW,a.V);
+                if(LOW[a.V] > LOW[current])
                 {
-                    LOW[a.S] = LOW[current];
+                    LOW[a.V] = LOW[current];
                     isRootComponent = false;
                 }
 

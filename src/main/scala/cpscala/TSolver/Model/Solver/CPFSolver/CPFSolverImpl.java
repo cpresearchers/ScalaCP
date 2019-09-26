@@ -112,13 +112,10 @@ public class CPFSolverImpl extends CPFSolver {
         int sum;
         int[] visited = new int[tabsize];
 
-
         while(num < tabsize)
         {
             r.add(i);
             sum = operate(vf,Accumulate);
-
-
 
             for(var j : hm.tabs.get(r.get(r.size() - 1)).scope)
             {
@@ -148,6 +145,7 @@ public class CPFSolverImpl extends CPFSolver {
                 }
             }
             i = max_index;
+
             if(i < 0 || i > tabsize)
             {
                 for (int k = 0; k < tabsize; k++)

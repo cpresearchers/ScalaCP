@@ -274,7 +274,7 @@ private ArrayList<HashSet<Integer>> Get_SCC(ArrayList<Integer> free)
 {
     ArrayList<HashSet<Integer>> SCC = new ArrayList<>();
     ArrayList<Edge> All_Egde = new ArrayList<>();
-    int sum = vsize + all_values.size() ;
+    int sum = vsize + all_values.size();
 
 
     for(int i = 0 ;i <  vsize;++i) //这里编号是先从X编号完毕再编号D
@@ -307,8 +307,8 @@ private ArrayList<HashSet<Integer>> Get_SCC(ArrayList<Integer> free)
         else
             All_Egde.add(new Edge(values_to_id.get(a)+vsize,sum));
     }
-    /*
-    System.out.println(All_Egde.size());
+
+   /* System.out.println(All_Egde.size());
     for(var a : All_Egde)
         System.out.println(a.S + " - " + a.V);
     System.out.println();*/
@@ -316,21 +316,21 @@ private ArrayList<HashSet<Integer>> Get_SCC(ArrayList<Integer> free)
     // System.out.println(sum);
     //  for (var a : All_Egde)
     //   System.out.print(a.S + "->" + a.V + "   ");
-    int[] isvisited = new int[sum];
-    int[] LOW = new int[sum];
+    int[] isvisited = new int[sum+1];
+    int[] LOW = new int[sum+1];
     Stack<Integer> stack = new Stack<>();
 
-    for(int i =0; i < sum; ++i)
+    for(int i =0; i < sum+1; ++i)
     {
         if(isvisited[i] != 1)
             TarjanAlgorithm(0,stack,All_Egde,SCC,isvisited,LOW,i);
     }
-    for(var a : SCC)
+  /*  for(var a : SCC)
     {
         for(var b : a)
             System.out.print(b + "  ");
         System.out.println();
-    }
+    }*/
     return SCC;
 }
     /*
@@ -395,6 +395,43 @@ private ArrayList<HashSet<Integer>> Get_SCC(ArrayList<Integer> free)
         {
             if(a.S == current)
             {
+                if(isvisited[a.V] != 1)
+                    TarjanAlgorithm(time,stack,All_Egde,SCC,isvisited,LOW,a.V);
+                if(LOW[a.V] < LOW[current])
+                {
+                     LOW[current] = LOW[a.V];
+                    isRootComponent = false;
+                }
+
+            }
+
+        }
+        if(isRootComponent)
+        {
+            HashSet<Integer> list = new HashSet<>();
+            while (true)
+            {
+                int p = stack.pop();
+                list.add(p);
+                LOW[p] = Integer.MAX_VALUE;
+                if(p == current)
+                    break;
+            }
+            SCC.add(list);
+        }
+
+
+    }
+    /*private void TarjanAlgorithm(int time,Stack<Integer> stack ,ArrayList<Edge> All_Egde,ArrayList<HashSet<Integer>> SCC,int[] isvisited,int[] LOW,int current )
+    {
+        LOW[current] = time++;
+        isvisited[current] = 1;
+        stack.push(current);
+        boolean isRootComponent = true;
+        for(var a : All_Egde)
+        {
+            if(a.S == current)
+            {
                 if(isvisited[a.S] != 1)
                     TarjanAlgorithm(time,stack,All_Egde,SCC,isvisited,LOW,a.S);
                 if(LOW[a.S] > LOW[current])
@@ -421,7 +458,7 @@ private ArrayList<HashSet<Integer>> Get_SCC(ArrayList<Integer> free)
         }
 
 
-    }
+    }*/
 
 
     private boolean Is_Belong_To_One_SCC(ArrayList<HashSet<Integer>> SCC,int a,int b)

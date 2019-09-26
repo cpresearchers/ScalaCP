@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 
 //CPF从搜索入口开始的多线程
-public class CPF_MultiThread_S extends  CPFSolverImpl{
+public class CPF_MultiThread_S extends  CPFSolverImpl implements Runnable{
 
 
     public CPF_MultiThread_S(XModel xm , String varType, String heuName, SearchHelper sear)
@@ -17,6 +17,7 @@ public class CPF_MultiThread_S extends  CPFSolverImpl{
     }
 
     public  boolean Search(long limit_time, int start,int stride) {
+
         boolean result = true;
         long start_time = System.nanoTime();
 
@@ -33,8 +34,8 @@ public class CPF_MultiThread_S extends  CPFSolverImpl{
         int level = 0;
         int lastlevel = 0;
         ArrayList<Integer> p = null;
-        ArrayList<Integer> for_check = new ArrayList<Integer>();
-        long current_Time = 0;
+        ArrayList<Integer> for_check = new ArrayList<>();
+        long current_Time ;
 
         while (table_flag[0] < hm.tabs.get(Path.get(0).id).tuples.length && !flag_for_Solution) {
 
@@ -108,4 +109,8 @@ public class CPF_MultiThread_S extends  CPFSolverImpl{
     }
 
 
+    @Override
+    public void run() {
+
+    }
 }
