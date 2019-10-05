@@ -11,9 +11,9 @@ object SteamTest extends App {
   println(q.mkString(","))
 
   val qp: ParArray[Int] = ParArray[Int](1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
-//  qp.scan(0)((x: Int, y: Int) => {
-//    println(x, y);
-//    x + y
+//  qp.scan(0)((x: Int, Yevt: Int) => {
+//    println(x, Yevt);
+//    x + Yevt
 //  })
   //  val qv: ParVector[Int] = ParVector[Int]()
   //  var i = 0

@@ -347,7 +347,7 @@ class TablePWCT1(val id: Int, val arity: Int, val num_vars: Int, val scope: Arra
 //
 //              if (!setindex.contains(index(i))) {
 //                setindex += index(i)
-//                val consistent = reviseBlock(sub, tuples(index(i)), evt)
+//                val consistent = reviseBlock(sub, tuples(index(i)), Yevt)
 //                if (!consistent) return false
 //                if (tupToCheck.removeBlock(createBlock(sub, tuples(index(i)))) && i != index.length - 1) {
 //                  i = 0

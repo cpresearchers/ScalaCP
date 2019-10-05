@@ -72,10 +72,10 @@ class TableCT_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope: Ar
 
       // !!此处delta重写了一次
       vals.clear()
-      if ((oldSize(vv) - v.size()) < (v.size())) {
+      if ((oldSize(vv) - v.size()) < v.size()) {
         // delta更新
         v.getLastRemovedValues(oldSize(vv), vals)
-        //                //println(s"cid: ${id}, vid: ${v.id}, getLastRemovedValues: ", vals.mkString(","))
+//        println(s"  cid: ${id}, vid: ${v.id}, getLastRemovedValues: ", vals.mkString(","))
         for (a <- vals) {
           currTab.addToMask(supports(vv)(a))
         }
@@ -83,11 +83,12 @@ class TableCT_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope: Ar
       } else {
         // 重头重新
         v.getValidValues(vals)
-        //                //println(s"cid: ${id}, vid: ${v.id}, validValues: ", vals.mkString(","))
+//        println(s"  cid: ${id}, vid: ${v.id}, validValues: ", vals.mkString(","))
         for (a <- vals) {
           currTab.addToMask(supports(vv)(a))
         }
       }
+      oldSize(vv) = v.size()
       val changed = currTab.intersectWithMask()
 
       //传播失败
@@ -98,13 +99,11 @@ class TableCT_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope: Ar
       }
       i += 1
     }
-    //    printf(s"      cid: %2d           after ut   table: ${currTab.words(helper.level)(0)}\n", id)
-    //    printf(s"      cid: %2d           after ut   table: ${Constants.toFormatBinaryString(currTab.words(helper.level)(0))}\n", id)
     return true
   }
 
   def filterDomains(y: ArrayBuffer[Var]): Boolean = {
-    //    //println(s"id:${id}-----------fd----------")
+    //    println(s"id:${id}-----------fd----------")
     y.clear()
     var i = 0
     val SsupN = Ssup.length
@@ -115,9 +114,8 @@ class TableCT_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope: Ar
 
       vals.clear()
       v.getValidValues(vals)
-      //      //println(s"cid: ${id}, vid: ${v.id}, validValues: ", v.validValues.mkString(","))
+      //      println(s"cid: ${id}, vid: ${v.id}, validValues: ", v.validValues.mkString(","))
       for (a <- vals) {
-        //        //println(s"      cid: ${id} var: ${v.id} value: ${a} support: ${Constants.toFormatBinaryString(supports(vv)(a)(0))}")
         var index = residues(vv)(a)
         if (index == -1 || (currTab.words(helper.level)(index) & supports(vv)(a)(index)) == 0L) { //res失效
           index = currTab.intersectIndex(supports(vv)(a))
@@ -128,7 +126,7 @@ class TableCT_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope: Ar
             deleted = true
             //无法找到支持, 删除(v, a)
             v.remove(a)
-            //println(s"      var:${v.id} remove new value:${a}")
+//            println(s"      var:${v.id} remove new value:${a}")
           }
         }
       }
@@ -149,7 +147,7 @@ class TableCT_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope: Ar
   }
 
   override def propagate(evt: ArrayBuffer[Var]): Boolean = {
-    //println(s"c_id: ${id} propagate==========================>")
+//    println(s"c_id: ${id} propagate==========================>")
     initial()
     val utStart = System.nanoTime
     val res = updateTable()

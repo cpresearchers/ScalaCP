@@ -1,5 +1,6 @@
 package cpscala.TSolver.CpUtil.SearchHelper
 
+import java.util.concurrent.{ForkJoinPool, TimeUnit}
 import java.util.concurrent.atomic.AtomicLong
 
 class SearchHelper(val numVars: Int, val numTabs: Int) {
@@ -13,9 +14,11 @@ class SearchHelper(val numVars: Int, val numTabs: Int) {
   var time: Long = 0L
   var branchTime = 0L
   var propTime = 0L
+  var initialTime = 0L
   var updateTableTime = 0L
   var filterDomainTime = 0L
   var backTime = 0L
+  var joinTime = 0L
   var lockTime = new AtomicLong(0L)
   var inconsistentTime = 0L
   var stopTime = 0L

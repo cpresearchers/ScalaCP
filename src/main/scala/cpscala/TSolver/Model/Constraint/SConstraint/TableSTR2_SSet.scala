@@ -86,7 +86,7 @@ class TableSTR2_SSet(val id: Int, val arity: Int, val num_vars: Int, val scope: 
   }
 
   def filterDomains(evt: ArrayBuffer[Var]): Boolean = {
-    //    val y = new ArrayBuffer[Var](arity)
+    //    val Yevt = new ArrayBuffer[Var](arity)
     var i = 0
     val ssupN = Ssup.length
 

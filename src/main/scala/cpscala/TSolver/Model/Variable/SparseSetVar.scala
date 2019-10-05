@@ -140,8 +140,6 @@ class SparseSetVar(val name: String, val id: Int, num_vars: Int, vals: Array[Int
     Constants.INDEXOVERFLOW
   }
 
-  override def isBind(): Boolean = ???
-
   override def isEmpty(): Boolean = {
     sizeLevel(level) == 0
   }

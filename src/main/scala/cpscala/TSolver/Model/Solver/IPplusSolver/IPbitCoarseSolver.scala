@@ -29,7 +29,7 @@ class IPbitCoarseSolver(xm: XModel, parallelism: Int, propagatorName: String, va
       var j = 0
       var end = 0
       var cid = 0
-      println(s"parallel starts =============================>")
+      println(s"maxParallel starts =============================>")
       while (i < subMask.length && helper.isConsistent) {
         val a = subMask(i)
         if (a != 0) {
@@ -82,7 +82,7 @@ class IPbitCoarseSolver(xm: XModel, parallelism: Int, propagatorName: String, va
       var j = 0
       var end = 0
       var cid = 0
-      println(s"parallel starts =============================>")
+      println(s"maxParallel starts =============================>")
       while (i < subMask.length && helper.isConsistent) {
         val a = subMask(i)
         if (a != 0) {
@@ -135,7 +135,7 @@ class IPbitCoarseSolver(xm: XModel, parallelism: Int, propagatorName: String, va
       var j = 0
       var end = 0
       var cid = 0
-      println(s"parallel starts =============================>")
+      println(s"maxParallel starts =============================>")
       while (i < subMask.length && helper.isConsistent) {
         val a = subMask(i)
         if (a != 0) {

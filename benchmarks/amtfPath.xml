@@ -3,16 +3,20 @@
     <BMFiles nbBMFiles="1">
 
         <!--<BMFile name="0" format="3">benchmarks/test2.xml</BMFile>-->
-<!--        <BMFile name="0" format="3">benchmarks/queen4.xml</BMFile>-->
-<!--        <BMFile name="0" format="3">benchmarks/queen12.xml</BMFile>-->
-<!--                <BMFile name="0" format="3">benchmarks/rand-5-12-12-200-12442-01.xml</BMFile>-->
+<!--                <BMFile name="0" format="3">benchmarks/queen4.xml</BMFile>-->
+<!--                <BMFile name="0" format="3">benchmarks/queen12.xml</BMFile>-->
+<!--                        <BMFile name="0" format="3">benchmarks/rand-5-12-12-200-12442-01.xml</BMFile>-->
 <!--                <BMFile name ="0" format="2">D:\Experiment\XCSP2/lexVg_total63/crossword-m1c-lex-vg6-10_ext.xml</BMFile>-->
+<!--                <BMFile name ="0" format="2">D:\Experiment\XCSP2\ogdVg_600s43\crossword-m1c-ogd-vg12-14_ext.xml</BMFile>-->
+<!--                <BMFile name ="0" format="2">D:\Experiment\XCSP2\rand-10-20-10_total20\rand-10-20-10-5-10000-0_ext.xml</BMFile>-->
+<!--                <BMFile name ="0" format="2">D:\Experiment\Queens\queen\queens-8_ext.xml</BMFile>-->
 <!--                <BMFile name ="0" format="2">D:/Experiment/XCSP2/travellingSalesman-20_total15/tsp-20-2_ext.xml</BMFile>-->
-<!--                <BMFile name ="0" format="2">D:/Experiment/XCSP2/rand5-2X-0_5c/rand5-2X-0_5c-0-p0.xml</BMFile>-->
+                <BMFile name ="0" format="2">D:/Experiment/XCSP2/rand5-2X-0_5c/rand5-2X-0_5c-0-p0.xml</BMFile>
 <!--                <BMFile name ="0" format="2">D:/Experiment/XCSP2/rand5-2X2X-0_5c/rand5-2X2X-0_5c-0-p0.xml</BMFile>-->
 <!--                <BMFile name ="0" format="2">D:/Experiment/XCSP2/aim-50_total24/aim-50-3-4-sat-1_ext.xml</BMFile>-->
-        <!--        <BMFile name ="0" format="2">D:/Experiment/XCSP2/rand-3-20-20_total50/rand-3-20-20-60-632-1_ext.xml</BMFile>-->
-                <BMFile name ="0" format="2">D:/Experiment/XCSP2/aim-100_part17/aim-100-1-6-sat-3_ext.xml</BMFile>
+<!--                <BMFile name ="0" format="2">D:/Experiment/XCSP2/rand-3-20-20_total50/rand-3-20-20-60-632-1_ext.xml</BMFile>-->
+<!--                <BMFile name ="0" format="2">D:\Experiment\XCSP2\rand-10-60-20_600s32\rand-10-60-20-30-p51200-0_ext_glb.xml</BMFile>-->
+<!--                <BMFile name ="0" format="2">D:/Experiment/XCSP2/aim-100_part17/aim-100-1-6-sat-3_ext.xml</BMFile>-->
         <!--        <BMFile name ="0" format="2">D:/Experiment/XCSP2/aim-200_600s8/aim-200-6-0-sat-4_ext.xml</BMFile>-->
         <!--        <BMFile name ="0" format="2">D:/Experiment/XCSP2/cril_600s2/cril-5_ext.xml</BMFile>-->
 

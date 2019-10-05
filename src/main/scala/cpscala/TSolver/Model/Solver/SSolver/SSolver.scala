@@ -3,6 +3,7 @@ package cpscala.TSolver.Model.Solver.SSolver
 import cpscala.TSolver.CpUtil.SearchHelper.SearchHelper
 import cpscala.TSolver.CpUtil.{AssignedStack, CoarseQueue}
 import cpscala.TSolver.Model.Constraint.SConstraint._
+import cpscala.TSolver.Model.Constraint.SpfConstraint._
 import cpscala.TSolver.Model.Heuristic.{HeuAddHybrid, HeuDomDdeg, HeuDomWdeg, HeuMulHybrid, Heuristic}
 import cpscala.TSolver.Model.Variable._
 import cpscala.XModel.{XModel, XTab, XVar}
@@ -162,6 +163,45 @@ abstract class SSolver(xm: XModel, propagatorName: String, varType: String, heuN
       }
     }
 
+    case "nCT_SSet" => {
+      for (i <- 0 until numTabs) {
+        val xc: XTab = xm.tabs.get(i)
+        val ts: Array[Array[Int]] = xc.tuples
+        val scope: Array[Var] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
+        tabs(i) = new CT_SSet(xc.id, xc.arity, numVars, scope, ts, helper)
+
+        for (v <- scope) {
+          subscription(v.id) += tabs(i)
+        }
+      }
+    }
+
+    case "CTpf_SSet" => {
+      for (i <- 0 until numTabs) {
+        val xc: XTab = xm.tabs.get(i)
+        val ts: Array[Array[Int]] = xc.tuples
+        val scope: Array[Var] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
+        tabs(i) = new CTpf_SSet(xc.id, xc.arity, numVars, scope, ts, helper)
+
+        for (v <- scope) {
+          subscription(v.id) += tabs(i)
+        }
+      }
+    }
+
+    case "CTpf_SSet_1" => {
+      for (i <- 0 until numTabs) {
+        val xc: XTab = xm.tabs.get(i)
+        val ts: Array[Array[Int]] = xc.tuples
+        val scope: Array[Var] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
+        tabs(i) = new CTpf_SSet_1(xc.id, xc.arity, numVars, scope, ts, helper)
+
+        for (v <- scope) {
+          subscription(v.id) += tabs(i)
+        }
+      }
+    }
+
     case "CT_Bit" => {
       for (i <- 0 until numTabs) {
         val xc: XTab = xm.tabs.get(i)
@@ -231,20 +271,20 @@ abstract class SSolver(xm: XModel, propagatorName: String, varType: String, heuN
         return
       }
 
-      //      if (helper.nodes == 4) {
-      //        infoShow()
-      //        return
-      //      }
+//            if (helper.nodes == 5) {
+//              infoShow()
+//              return
+//            }
 
 //      infoShow()
       branch_start_time = System.nanoTime
       val (v, a) = heuristic.selectLiteral(helper.level, levelvdense)
       newLevel()
       helper.nodes += 1
-//      println("nodes: " + helper.nodes)
+      //println("nodes: " + helper.nodes)
 
       I.push(v, a)
-//      println(s"push:(${v.id}, ${a})")
+      //println(s"push:(${v.id}, ${a})")
       bind(v, a)
       end_time = System.nanoTime
       helper.branchTime += (end_time - branch_start_time)
@@ -268,9 +308,8 @@ abstract class SSolver(xm: XModel, propagatorName: String, varType: String, heuN
       while (!consistent && !I.empty()) {
         back_start_time = System.nanoTime
         val (v, a) = I.pop()
-//        println(s"pop:(${v.id}, ${a})")
+        //println(s"pop:(${v.id}, ${a})")
         backLevel()
-//        v.remove(a)
         remove(v, a)
         end_time = System.nanoTime
         helper.backTime += (end_time - back_start_time)
@@ -279,7 +318,7 @@ abstract class SSolver(xm: XModel, propagatorName: String, varType: String, heuN
         consistent = !v.isEmpty() && checkConsistencyAfterRefutation(v)
         end_time = System.nanoTime
         helper.propTime += (end_time - prop_start_time)
-        //infoShow()
+//        infoShow()
       }
 
       if (!consistent) {
@@ -352,7 +391,7 @@ abstract class SSolver(xm: XModel, propagatorName: String, varType: String, heuN
 
   def infoShow(): Unit = {
     for (x <- vars) {
-      println(s"     var:${x.id} size:${x.size()}")
+      //println(s"     var:${x.id} size:${x.size()}")
     }
   }
 

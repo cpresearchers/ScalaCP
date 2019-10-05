@@ -266,7 +266,7 @@ class TableSTRbit_1_SSet(val id: Int, val arity: Int, val numVars: Int, val scop
 
             // 以下操作放在这里不如放在循环外面快，因为删了多个值会重复执行
             //            oldSizes(i) -= 1
-            //            evt += v
+            //            Yevt += v
             //            if (v.isEmpty()) return false
           } else {
             if (now != old) {
