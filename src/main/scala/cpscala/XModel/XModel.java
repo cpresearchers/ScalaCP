@@ -33,8 +33,8 @@ public class XModel implements XCallbacks2 {
     public Implem implem() {
         return implem;
     }
-    public XModel()
-    {
+
+    public XModel() {
 
     }
 
@@ -59,7 +59,7 @@ public class XModel implements XCallbacks2 {
         XVar var = new XVar(num_vars++, x.id, values);
         vars_map.put(x.id, var);
         vars.add(var);
-        max_domain_size = Math.max(max_arity, var.size);
+        max_domain_size = Math.max(max_domain_size, var.size);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class XModel implements XCallbacks2 {
         XVar var = new XVar(num_vars++, x.id, minValue, maxValue);
         vars_map.put(x.id, var);
         vars.add(var);
-        max_domain_size = Math.max(max_arity, var.size);
+        max_domain_size = Math.max(max_domain_size, var.size);
     }
 
     @Override
@@ -94,6 +94,14 @@ public class XModel implements XCallbacks2 {
         max_arity = Math.max(max_arity, t.arity);
         max_tuples_size = Math.max(max_tuples_size, t.tuples.length);
         avg_tuples_size = (avg_tuples_size * (tabs.size() - 1) + t.tuples.length) / tabs.size();
+    }
+
+    @Override
+    public void buildCtrAllDifferent(String id, XVariables.XVarInteger[] list) {
+      /*  System.out.println(id);
+        for (var v : list) {
+            System.out.println("\t" + v.id);
+        }*/
     }
 
     boolean check(int[] vals) {
@@ -147,26 +155,25 @@ public class XModel implements XCallbacks2 {
     public double Get_Looseness()  //by zhenluhan 6.3
     {
         double s = 0;
-        for(var i : tabs)
-        {
+        for (var i : tabs) {
             s += i.Looseness();
         }
-        return s / (double)tabs.size();
+        return s / (double) tabs.size();
     }
 
     public double Get_Tightness() //by zhenluhan 6.3
     {
-        return 1- Get_Looseness();
+        return 1 - Get_Looseness();
     }
 
     public double Get_Ave_Domain_Size() //by zhenluhan 6.4
     {
         int sum = 0;
-        for (var a:vars) {
+        for (var a : vars) {
             sum += a.values.length;
 
         }
-        return sum / (double)vars.size();
+        return sum / (double) vars.size();
     }
 
     public void show() {

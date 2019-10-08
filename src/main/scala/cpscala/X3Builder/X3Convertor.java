@@ -1,6 +1,6 @@
 //package cpscala.X3Builder;
 //
-//import org.xcsp.common.IVar;
+//import org.xcsp.common.IVariable;
 //import org.xcsp.modeler.api.ProblemAPI;
 //
 //import java.io.File;
@@ -13,7 +13,7 @@
 //    int r;
 //
 //    public void model() {
-//        IVar.Var x[] = array("x", size(4), dom(range(15)), "x[i] is the ith integer of the sequence");
+//        IVariable.Var x[] = array("x", size(4), dom(range(15)), "x[i] is the ith integer of the sequence");
 //        equal(add(x[0], 1), x[1]);
 //        equal(add(x[1], 1), x[2]);
 //        equal(add(x[2], 1), x[3]);

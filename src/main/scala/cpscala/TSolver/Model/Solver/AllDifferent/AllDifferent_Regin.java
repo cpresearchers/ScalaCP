@@ -9,7 +9,7 @@ import java.util.*;
 //A filtering algorithm for constraints of difference in CSPs -Regin 1994
 //luhan zhen
 //2019.9.26
-
+//增加一个点后求全部的SCC，剪去SCC之间的边即可
 public class AllDifferent_Regin {
     private static class Edge { //边
         int S,V;
@@ -135,59 +135,6 @@ public class AllDifferent_Regin {
         return free;
     }
 
-/*
-    private Boolean isReachable(int f,int t,boolean flag) //f -> free ; t -> target
-    //判断两个点之间是否存在可达的交替路
-    //必须是偶数，因为路径的开始结点和终止结点都是二部图的同一侧（D这一侧）
-    //从X->D是匹配的一部分  D->X是非匹配的一部分，二部图变成了有向图，只需要判断有向图是否可达就行了 不再考虑交替路
-    //BFS
-    {
-        if(f == t) //找到了该交替路
-            return true;
-        if(flag) { //当前点在D
-            for (int i = 0; i < vsize;++i)
-            {
-                if(bipartite[i][f] == 1)
-                {
-                    return isReachable(i,t,false);
-                }
-            }
-        }
-        else //当前点在X
-        {
-            for(int i = 0; i < all_values.size();++i)
-            {
-                if(bipartite[f][i] == -1)
-                {
-                    return isReachable(i,t,true);
-                }
-            }
-
-        }
-        return false;
-
-
-    }
-
-    private ArrayList<Integer> Get_A(ArrayList<Integer> free, ArrayList<Edge> Max_M) {
-        HashSet<Integer> A_T = new HashSet<>();   //存到set中，防止出现重复的结点
-        for (var f : free)
-        {
-            A_T.add(f);
-            for(var m :Max_M)
-            {
-                if(isReachable(values_to_id.get(f),values_to_id.get(m.V),true)) //对于该匹配，是否存在偶数长度的交替路径使得f和m是可达的
-                    A_T.add(m.V);
-
-
-            }
-
-        }
-
-        return new ArrayList<>(A_T); //从hash set到ArrayList
-
-    }
-*/
     private boolean preprocess()  //预处理 用于检测那些论域为空的变量和论域仅仅只有一个值的变量
     {
         if(vsize > all_values.size())//变量的个数少于值的个数，必然无解
@@ -207,69 +154,7 @@ public class AllDifferent_Regin {
         }
         return true;
     }
-/*
-    private ArrayList<Integer> Get_Gamma_A(ArrayList<Integer> A)
-    {
-        HashSet<Integer> Gamma_A_T = new HashSet<>();
 
-        for(var a : A)
-        {
-            for(int i = 0; i < vsize;++i)
-            {
-                if(bipartite[i][values_to_id.get(a)] != 0)
-                    Gamma_A_T.add(i);
-            }
-        }
-        //   ArrayList<Integer> Gamma_A = ArrayList<>(Gamma_A_T);
-//        System.out.println("\nGamma_A (neighbor nodes of A):");
-//        for(var a : Gamma_A)
-//            System.out.print(a + "  ");
-
-        return   new ArrayList<>(Gamma_A_T);
-    }
-    private ArrayList<Integer> Get_Xc_minus_Gamma_A(ArrayList<Integer> Gamma_A)
-    {
-        ArrayList<Integer> Xc_minus_Gamma_A = new ArrayList<>();
-        for(int i = 0; i < vsize;i++)
-            if(!Gamma_A.contains(i))
-                Xc_minus_Gamma_A.add(i);
-
-//        System.out.println("\nXc - Gamma_A (rest of X expect  Gamma_A):");
-//        for(var a : Xc_minus_Gamma_A)
-//            System.out.print(a + "  ");
-        return Xc_minus_Gamma_A;
-
-    }
-
-    private ArrayList<Integer> Get_Dc_minus_A(ArrayList<Integer> A)
-    {
-        ArrayList<Integer> Dc_minus_A = new ArrayList<>();
-        for(var a : all_values)
-            if(!A.contains(a))
-                Dc_minus_A.add(a);
-//        System.out.println("\nDc - A (rest of D expect A):");
-//        for(var a : Dc_minus_A)
-//            System.out.print(a + "  ");
-        return Dc_minus_A;
-
-    }
-
-    private void Prune_all_edge_between_Gamma_A_and_Dc_minus_A( ArrayList<Integer> Gamma_A, ArrayList<Integer> Dc_minus_A)
-    {
-
-        for(var a : Gamma_A)
-        {
-            for(var b : Dc_minus_A)
-            {
-                if(bipartite[a][values_to_id.get(b)] == 1)
-                    bipartite[a][values_to_id.get(b)] = 0;
-            }
-        }
-
-
-
-    }
-*/
 private ArrayList<HashSet<Integer>> Get_SCC(ArrayList<Integer> free)
 {
     ArrayList<HashSet<Integer>> SCC = new ArrayList<>();

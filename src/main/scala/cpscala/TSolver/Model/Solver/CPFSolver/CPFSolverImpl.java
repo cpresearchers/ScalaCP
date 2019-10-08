@@ -52,14 +52,16 @@ public class CPFSolverImpl extends CPFSolver {
 
     ArrayList<_table> Path = new ArrayList<>();
     ArrayList<_dif> Path_Diff = new ArrayList<>();
-    private ArrayList<ArrayList<_info>> Check_Map_Address = new ArrayList<>();
 
-    private ArrayList<CompactTrie> Filter = new ArrayList<>();
+     ArrayList<ArrayList<_info>> Check_Map_Address = new ArrayList<>();
+
+     ArrayList<CompactTrie> Filter = new ArrayList<>();
     ArrayList<Trie_Data> Path_Index = new ArrayList<>();
-    ArrayList<Integer>  s = new ArrayList<> (vsize);
-    boolean flag_for_Solution;
 
-    private ArrayList<Integer> Select_Path()
+      ArrayList<Integer>  s = new ArrayList<> (vsize);
+
+    boolean flag_for_Solution;
+     ArrayList<Integer> Select_Path()
     {
         ArrayList<Integer> p = new ArrayList<>();
         int[][] graph = new int[tabsize][tabsize];
@@ -168,16 +170,20 @@ public class CPFSolverImpl extends CPFSolver {
 
     }
 
-    CPFSolverImpl(XModel xm, String varType, String heuName, SearchHelper sear) {
+    public CPFSolverImpl(XModel xm, String varType, String heuName, SearchHelper sear) {
 
 
         super(xm, varType, heuName,sear);
+
          HashMap<int[], Integer> Check_Map = new HashMap<>();
         vsize = hm.num_vars;
         tabsize = hm.num_tabs;
         searchhelper = new CPFSearchHelper(hm.num_vars, hm.num_tabs);
         ArrayList<Integer> p = Select_Path();
+
         //print_All(p);
+        //println(p.size());
+        //println("aaa");
         int[] temp_f = new int[tabsize];
         for (var k : p) {
             temp_f[k] = 1;
@@ -491,7 +497,7 @@ public class CPFSolverImpl extends CPFSolver {
         return true;
     }
 
-    protected void SetTableFlag(int[] table_flag, int level)
+    void SetTableFlag(int[] table_flag, int level)
     {
         int i = level;
         for(;i < Path.size();++i)
