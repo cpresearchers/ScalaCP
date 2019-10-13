@@ -67,8 +67,9 @@ object CPF_Tester {
         dataLine ++= CPF_Test(zm)
         zm = null
         var xm = new XModel(f.getPath, true, fmt)
-        dataLine ++= CT_Test_Wdeg(xm)
         dataLine ++= CT_Test_Ddeg(xm)
+        dataLine ++= CT_Test_Wdeg(xm)
+
 
         dataLine ++= PW_CT_Test(xm)
 

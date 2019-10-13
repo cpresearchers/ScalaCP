@@ -14,8 +14,8 @@ import static java.lang.Thread.sleep;
 public class CPF_MultiThread_S extends  CPFSolverImpl{ // implements Runnable{
 
     int stride;
-    public AtomicInteger status;
-    AtomicInteger node_m = new AtomicInteger();
+    public AtomicInteger status = new AtomicInteger();
+    public AtomicInteger node_m = new AtomicInteger();
    // AtomicIntegerArray ans;
 
     public CPF_MultiThread_S(XModel xm , String varType, String heuName, SearchHelper sear)
@@ -114,11 +114,11 @@ public class CPF_MultiThread_S extends  CPFSolverImpl{ // implements Runnable{
                 if (level == Path.size()) {
                     flag_for_Solution = true;
                     status.getAndSet(1);
-
+                    synchronized(this){
                     for (var v : solution
                     ) {
                         s.add(v);
-                    }
+                    }}
 
                     break;
 
@@ -128,7 +128,8 @@ public class CPF_MultiThread_S extends  CPFSolverImpl{ // implements Runnable{
             //println(start);
 
         }
-        status.getAndSet(3);
+        if(status.get() == 0)
+            status.getAndSet(3);
         return flag_for_Solution;
     }
 //    void test(int i)
