@@ -2,60 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="48a296e1-df47-41ca-bb68-ee7d758e3d3e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/ScalaCP.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/ScalaCP.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/META-INF/MANIFEST.MF" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/META-INF/ScalaCP.kotlin_module" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/META-INF/fde/META-INF/MANIFEST.MF" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/META-INF/pct/META-INF/MANIFEST.MF" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/JModel/JModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/JModel/JModel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/JModel/JReader.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/JModel/JReader.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/JModel/JTab.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/JModel/JTab.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/JModel/JVar.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/JModel/JVar.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/CpUtil/JConstants.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/CpUtil/JConstants.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/CpUtil/MDD/JArc.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/CpUtil/MDD/JArc.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/CpUtil/MDD/JLinkedMDD.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/CpUtil/MDD/JLinkedMDD.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/CpUtil/MDD/JNode.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/CpUtil/MDD/JNode.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/CpUtil/MDD/JPack.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/CpUtil/MDD/JPack.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/CpUtil/SearchHelper/CPFSearchHelper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/CpUtil/SearchHelper/CPFSearchHelper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/CpUtil/SingleBitSet.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/CpUtil/SingleBitSet.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Experiment/exp.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Experiment/exp.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Experiment/main$.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Experiment/main$.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Constraint/FDEConstrain/Table_STRFDE1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Constraint/FDEConstrain/Table_STRFDE1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Constraint/PWConstraint/TablePWCT.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Constraint/PWConstraint/TablePWCT.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Constraint/PWConstraint/TablePWCT1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Constraint/PWConstraint/TablePWCT1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolver$MathOperation.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolver$MathOperation.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolver.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolver.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl$_dif.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl$_dif.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl$_info.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl$_info.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl$_table.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl$_table.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/CPFSolverImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/CompactTrie$node.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/CompactTrie$node.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/CompactTrie.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/CompactTrie.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/DoubleArrayTrie.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/CPFSolver/DoubleArrayTrie.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/PWSolver/PWCoarseSolver.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/PWSolver/PWCoarseSolver.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/PWSolver/PWSolver.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/PWSolver/PWSolver.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/PWSolver/minidual.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/PWSolver/minidual.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/SSolver/SSolver.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Solver/SSolver/SSolver.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Variable/BitSetVar.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Variable/BitSetVar.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Variable/Var.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Model/Variable/Var.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/X3Builder/x3jmain.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/X3Builder/x3jmain.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/Constraint.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/Constraint.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/DATArv.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/DATArv.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/Domain.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/Domain.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/FDEModel$AddtionalTabCache.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/FDEModel$AddtionalTabCache.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/FDEModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/FDEModel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/FDETab.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/FDETab.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/FDEVar.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/FDEVar.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/Model.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/Model.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/Relation.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/Relation.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/Variable.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/Variable.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/XModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/XModel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/XTab.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/XTab.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/XVar.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/XModel/XVar.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/test/ForkJoinPoolAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/test/ForkJoinPoolAction.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/test/JavaJsonTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/test/JavaJsonTest.class" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -95,41 +42,6 @@
         <option value="Class" />
       </list>
     </option>
-  </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>CT_</find>
-      <find>&quot;DSPCT_</find>
-      <find>&quot;name&quot;</find>
-      <find>strbit_</find>
-      <find />
-      <find>println</find>
-      <find>helper.c_sum = 0</find>
-      <find>helper.p_sum += 1</find>
-      <find>IPbitPropagator</find>
-      <find>Propagator</find>
-      <find>Heuristic</find>
-      <find>heuristic</find>
-      <find>selectLiteral</find>
-      <find>helper</find>
-      <find>Check_Map_Address</find>
-      <find>CONVERT_INTENSION_TO_EXTENSION_ARITY_LIMIT</find>
-      <find>getFiles</find>
-      <find>max_tuples_size</find>
-      <find>file = XML.loadFile(&quot;benchmarks/Folders4.xml&quot;)</find>
-      <find>GetChildList</find>
-      <find>GetAllChildWord</find>
-      <find>Filter</find>
-    </findStrings>
-    <replaceStrings>
-      <replace>c_sub</replace>
-      <replace>&quot;algorithm&quot;</replace>
-      <replace />
-      <replace>//println</replace>
-      <replace>//helper.p_sum += 1</replace>
-      <replace>IPbitPropagator[PVar]</replace>
-      <replace>Propagator[Var]</replace>
-    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <favorite-branches>
@@ -387,7 +299,7 @@
       <workItem from="1571056661025" duration="771000" />
       <workItem from="1571058636428" duration="1064000" />
       <workItem from="1571318024650" duration="737000" />
-      <workItem from="1571319663973" duration="896000" />
+      <workItem from="1571319663973" duration="4402000" />
     </task>
     <task id="LOCAL-00001" summary="1">
       <created>1555836982265</created>
@@ -599,7 +511,14 @@
       <option name="project" value="LOCAL" />
       <updated>1560837496678</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="需要重新测试部分例子">
+      <created>1571320767855</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1571320767855</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TodoView">
@@ -664,6 +583,15 @@
     <option name="LAST_COMMIT_MESSAGE" value="需要重新测试部分例子" />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="scala-line">
+          <url>file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/CpUtil/RSIndexedBitSet.scala</url>
+          <line>5</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
         <watch expression="c" />
