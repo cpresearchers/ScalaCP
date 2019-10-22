@@ -11,16 +11,21 @@ object loopTest {
     //    whileTest(100000000)
     //    forTest(100000000)
     //    forRange(100000000)
-    println()
-    val c = Array.fill[Long](3)(Constants.ALLONELONG)
-    val values = ArrayBuffer[Int](256)
-    Constants.getValues(c, values)
-
-    println(values.mkString(" "))
-
-    val ac = 0x4L
-    println(Constants.FirstLeft(ac))
-    println(Constants.FirstRight(ac))
+    //    println()
+    //    val c = Array.fill[Long](3)(Constants.ALLONELONG)
+    //    val values = ArrayBuffer[Int](256)
+    //    Constants.getValues(c, values)
+    //
+    //    println(values.mkString(" "))
+    //
+    //    val ac = 0x4L
+    //    println(Constants.FirstLeft(ac))
+    //    println(Constants.FirstRight(ac))
+    val a = Array[Int](5, 3, 2, 1)
+    a.sortWith(_ < _)
+    println(a.mkString(" "))
+    scala.util.Sorting.quickSort(a)
+    println(a.mkString(" "))
   }
 
   val ss = Array.range(0, 100)
