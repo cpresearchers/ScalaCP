@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="48a296e1-df47-41ca-bb68-ee7d758e3d3e" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/CpUtil/RSIndexedBitSet.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/CpUtil/RSIndexedBitSet.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/test/loopTest.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/test/loopTest.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/test/loopTest$.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/test/loopTest$.class" afterDir="false" />
     </list>
@@ -92,7 +94,7 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="project.structure.last.edited" value="Facets" />
+    <property name="project.structure.last.edited" value="Global Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.37356323" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
@@ -232,7 +234,7 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="3133742474949" />
+        <entry key="$PROJECT_DIR$" value="3143591716563" />
         <entry key="$PROJECT_DIR$/build.sbt" value="176799627" />
         <entry key="$PROJECT_DIR$/project/build.properties" value="1396028727" />
       </map>
@@ -304,6 +306,7 @@
       <workItem from="1571319663973" duration="4561000" />
       <workItem from="1571661729115" duration="3556000" />
       <workItem from="1571755185814" duration="4282000" />
+      <workItem from="1571798426966" duration="5730000" />
     </task>
     <task id="LOCAL-00001" summary="1">
       <created>1555836982265</created>

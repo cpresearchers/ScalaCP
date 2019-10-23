@@ -7,36 +7,35 @@ import scala.util.Sorting
 
 class RSIndexedBitSet(numVars: Int, indices: ArrayBuffer[Int]) {
   private[this] val numLevel = numVars + 1
-  private[this] val m = new mutable.HashMap[Int, Long]()
+  private[this] val m = new mutable.TreeMap[Int, Long]()
 
   // 索引转成
   for (a <- indices) {
-    (x, y) = INDEX.getXY(a)
+    val (x, y) = INDEX.getXY(a)
 
     if (m.contains(x)) {
       m(x) |= Constants.MASK1(y)
     } else {
       m.put(x, Constants.MASK1(y))
     }
-
   }
 
   val k = m.keys.toArray
-  Sorting.quickSort(k)
+//  Sorting.quickSort(k)
   val v = m.values.toArray
-  Sorting.quickSort(v)
+//  Sorting.quickSort(v)
 
-  val index_map: IntMap[Int] = a.zipWithIndex.to(IntMap)
-
-  private[this] val words = Array[Array[Long]]()
-  private[this] val limit = Array.fill(numLevel)(-1)
-  private[this] val index = IntMap[Int]()
-  private[this] var currentLevel = 0
-  private[this] var isFinished = false
-
-  private[this] val tmp_idx_dict = new mutable.HashMap[Int, Int]()
-  private[this] val tmp_idx_set = mutable.SortedSet[Int]()
-  private[this] val tmp_idx_arr = new mutable.ArrayBuffer[Int]()
+//  val index_map: IntMap[Int] = IntMap[Int] ++ a.zipWithIndex.to()
+  //
+  //  private[this] val words = Array[Array[Long]]()
+  //  private[this] val limit = Array.fill(numLevel)(-1)
+  //  private[this] val index = IntMap[Int]()
+  //  private[this] var currentLevel = 0
+  //  private[this] var isFinished = false
+  //
+  //  private[this] val tmp_idx_dict = new mutable.HashMap[Int, Int]()
+  //  private[this] val tmp_idx_set = mutable.SortedSet[Int]()
+  //  private[this] val tmp_idx_arr = new mutable.ArrayBuffer[Int]()
 
 
   def add(idx: Int): Unit = {
@@ -46,7 +45,7 @@ class RSIndexedBitSet(numVars: Int, indices: ArrayBuffer[Int]) {
     //      println("add after finish")
     //    }
 
-    tmp_idx_arr += idx
+    //    tmp_idx_arr += idx
   }
 
   def finish(): Unit = {

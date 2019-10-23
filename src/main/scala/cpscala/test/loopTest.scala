@@ -2,6 +2,8 @@ package cpscala.test
 
 import cpscala.TSolver.CpUtil.Constants
 
+import scala.collection.immutable.{IntMap, SortedMap}
+import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
 object loopTest {
@@ -21,11 +23,26 @@ object loopTest {
     //    val ac = 0x4L
     //    println(Constants.FirstLeft(ac))
     //    println(Constants.FirstRight(ac))
-    val a = Array[Int](5, 3, 2, 1)
-    a.sortWith(_ < _)
-    println(a.mkString(" "))
-    scala.util.Sorting.quickSort(a)
-    println(a.mkString(" "))
+    println("xixi")
+    val m = mutable.HashMap[Int, Int](1 -> 2, 2 -> 3)
+    println(m(1))
+    val c = SortedMap[Int, Int]()
+    val xs = Array[Int](6, 35, 14, 43, 62, 21, 0)
+    val xst = mutable.TreeMap[Int, Int](6 -> 0, 35 -> 1, 14 -> 2, 43 -> 3, 62 -> 4, 21 -> 5, 0 -> 6)
+    println("xst:", xst)
+    println(xst.keys.toArray.mkString(" "))
+    println(xst.values.toArray.mkString(" "))
+    val d = xs.zipWithIndex.toMap
+    val f = xs.sorted.toArray.zipWithIndex.toMap
+    println("xs", xs.sorted.mkString(" "))
+    //    f.to(IntMap[Int])
+    val g = IntMap[Int]() ++ f
+    //    val g = f.to(IntMap[Int]())
+    println("f", f)
+    println("g", g)
+    println(d)
+    val e = SortedMap[Int, Any]() ++ d
+    println(e)
   }
 
   val ss = Array.range(0, 100)
