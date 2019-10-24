@@ -175,6 +175,16 @@ class RSBitSet(id: Int, numTuples: Int, numVars: Int) {
     return -1
   }
 
+  def intersectIndexedBitSet(m: RSIndexedBitSet): Int = {
+    val curSupSize = m.Size()
+    val currentLimit = limit(currentLevel)
+
+    // 对比长度，以短的为主，以短的遍历，只要为结果为0就交换
+    if (curSupSize < currentLimit) {
+
+    }
+  }
+
   def show(): Unit = {
     print("name = " + id + ", level = " + currentLevel + " ")
     for (i <- 0 until numBit) {
@@ -182,5 +192,6 @@ class RSBitSet(id: Int, numTuples: Int, numVars: Int) {
     }
     println()
   }
+
 }
 

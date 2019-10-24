@@ -3,55 +3,46 @@ package cpscala.TSolver.CpUtil
 import scala.collection.immutable.IntMap
 import scala.collection.{immutable, mutable}
 import scala.collection.mutable.ArrayBuffer
-import scala.util.Sorting
 
+// 用于support
 class RSIndexedBitSet(numVars: Int, indices: ArrayBuffer[Int]) {
   private[this] val numLevel = numVars + 1
-  private[this] val m = new mutable.TreeMap[Int, Long]()
 
-  // 索引转成
+  // 临时存储变量
+  private[this] val tmp = new mutable.TreeMap[Int, Long]()
+
+  // 索引转成sparsebitset
   for (a <- indices) {
     val (x, y) = INDEX.getXY(a)
 
-    if (m.contains(x)) {
-      m(x) |= Constants.MASK1(y)
+    if (tmp.contains(x)) {
+      tmp(x) |= Constants.MASK1(y)
     } else {
-      m.put(x, Constants.MASK1(y))
+      tmp.put(x, Constants.MASK1(y))
     }
   }
+  // 清楚临时变量
+  tmp.clear()
 
-  val k = m.keys.toArray
-//  Sorting.quickSort(k)
-  val v = m.values.toArray
-//  Sorting.quickSort(v)
+  private[this] val index_arr: Array[Int] = tmp.keys.toArray
+  private[this] val index_map = IntMap[Int]() ++ index_arr.zipWithIndex
+  private[this] val words = tmp.values.toArray
+  val limit = Array.fill(numLevel)(-1)
+  // 获取长度
+  val numBit = index_arr.length
+  limit(0) = numBit - 1
+  var currentLevel = 0
 
-//  val index_map: IntMap[Int] = IntMap[Int] ++ a.zipWithIndex.to()
-  //
-  //  private[this] val words = Array[Array[Long]]()
-  //  private[this] val limit = Array.fill(numLevel)(-1)
-  //  private[this] val index = IntMap[Int]()
-  //  private[this] var currentLevel = 0
-  //  private[this] var isFinished = false
-  //
-  //  private[this] val tmp_idx_dict = new mutable.HashMap[Int, Int]()
-  //  private[this] val tmp_idx_set = mutable.SortedSet[Int]()
-  //  private[this] val tmp_idx_arr = new mutable.ArrayBuffer[Int]()
+  def Size() = limit(currentLevel)
 
-
-  def add(idx: Int): Unit = {
-    //    if (!isFinished) {
-    //      tmp_idx_arr += idx
-    //    } else {
-    //      println("add after finish")
-    //    }
-
-    //    tmp_idx_arr += idx
+  def newLevel() = {
+    currentLevel += 1
+    levelLimits(currentLevel) = levelLimits(currentLevel - 1)
   }
 
-  def finish(): Unit = {
-    //    tmp_idx_arr.sortBy()sortBy
-
+  def backLevel(): Unit = {
+    levelLimits(currentLevel) = -1
+    currentLevel -= 1
   }
-
 
 }
