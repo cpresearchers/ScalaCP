@@ -176,11 +176,18 @@ class RSBitSet(id: Int, numTuples: Int, numVars: Int) {
   }
 
   def intersectIndexedBitSet(m: RSIndexedBitSet): Int = {
-    val curSupSize = m.Size()
+    var curSupSize = m.Size()
     val currentLimit = limit(currentLevel)
 
     // 对比长度，以短的为主，以短的遍历，只要为结果为0就交换
     if (curSupSize < currentLimit) {
+      // 若m比较短，遍历m改words
+      while (curSupSize >= 0) {
+
+      }
+
+    } else {
+      // 若m比较长,遍历words改m
 
     }
   }

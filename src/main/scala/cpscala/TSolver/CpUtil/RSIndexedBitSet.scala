@@ -7,7 +7,6 @@ import scala.collection.mutable.ArrayBuffer
 // 用于support
 class RSIndexedBitSet(numVars: Int, indices: ArrayBuffer[Int]) {
   private[this] val numLevel = numVars + 1
-
   // 临时存储变量
   private[this] val tmp = new mutable.TreeMap[Int, Long]()
 
@@ -24,9 +23,9 @@ class RSIndexedBitSet(numVars: Int, indices: ArrayBuffer[Int]) {
   // 清楚临时变量
   tmp.clear()
 
-  private[this] val index_arr: Array[Int] = tmp.keys.toArray
-  private[this] val index_map = IntMap[Int]() ++ index_arr.zipWithIndex
-  private[this] val words = tmp.values.toArray
+  val index_arr: Array[Int] = tmp.keys.toArray
+  val index_map = IntMap[Int]() ++ index_arr.zipWithIndex
+  val words = tmp.values.toArray
   val limit = Array.fill(numLevel)(-1)
   // 获取长度
   val numBit = index_arr.length
