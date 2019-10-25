@@ -24,7 +24,7 @@ class RSIndexedBitSet(numVars: Int, indices: ArrayBuffer[Int]) {
   tmp.clear()
 
   val index_arr: Array[Int] = tmp.keys.toArray
-  val index_map = IntMap[Int]() ++ index_arr.zipWithIndex
+  val index_map: IntMap[Int] = IntMap[Int]() ++ index_arr.zipWithIndex
   val words = tmp.values.toArray
   val limit = Array.fill(numLevel)(-1)
   // 获取长度
@@ -36,12 +36,23 @@ class RSIndexedBitSet(numVars: Int, indices: ArrayBuffer[Int]) {
 
   def newLevel() = {
     currentLevel += 1
-    levelLimits(currentLevel) = levelLimits(currentLevel - 1)
+    limit(currentLevel) = limit(currentLevel - 1)
   }
 
   def backLevel(): Unit = {
-    levelLimits(currentLevel) = -1
+    limit(currentLevel) = -1
     currentLevel -= 1
+  }
+
+  def swap(i: Int, j: Int): Unit = {
+    val tmp = index_arr(i)
+    index_arr(i) = index_arr(j)
+    index_arr(j) = tmp
+    /*
+    index_map(index_arr(i)) = i
+    index_map(index_arr(j)) = j
+    */
+
   }
 
 }

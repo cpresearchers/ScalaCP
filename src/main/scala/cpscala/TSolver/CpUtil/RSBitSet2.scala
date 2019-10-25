@@ -1,6 +1,6 @@
 package cpscala.TSolver.CpUtil
 
-class RSBitSet(id: Int, numTuples: Int, numVars: Int) {
+class RSBitSet2(id: Int, numTuples: Int, numVars: Int) {
   val numLevel = numVars + 1
   val numBit = Math.ceil(numTuples.toDouble / Constants.BITSIZE.asInstanceOf[Double]).toInt
   val lastLimits = numTuples % Constants.BITSIZE
@@ -19,7 +19,7 @@ class RSBitSet(id: Int, numTuples: Int, numVars: Int) {
   limit(0) = numBit - 1
   // array of int,  index.length = p
   val index = Array.range(0, numBit)
-  //  val map = Array.range(0, numBit)
+  val map = Array.range(0, numBit)
   // array of long, mask.length = p
   val mask = new Array[Long](numBit)
   var currentLevel = 0
@@ -63,6 +63,24 @@ class RSBitSet(id: Int, numTuples: Int, numVars: Int) {
   }
 
   def isEmpty(): Boolean = limit(currentLevel) == -1
+
+  def swap(i: Int, j: Int): Unit = {
+    val tmp = index(i)
+    index(i) = index(j)
+    index(j) = tmp
+
+    map(index(i)) = i
+    map(index(j)) = j
+  }
+
+  def remove(i: Int): Unit = {
+    val j = limit(currentLevel)
+    index(i) = index(j)
+    index(j) = i
+
+    map(index(i)) = i
+    map(index(j)) = j
+  }
 
   def clearMask(): Unit = {
     val currentLimit = limit(currentLevel)
@@ -128,13 +146,8 @@ class RSBitSet(id: Int, numTuples: Int, numVars: Int) {
         //          limit(currentLevel) -= 1
         //        }
         if (w == 0L) {
-          val j = limit(currentLevel)
-          index(i) = index(j)
-          index(j) = offset
+          remove(offset)
           limit(currentLevel) -= 1
-
-          //          map(index(i)) = i
-          //          map(index(j)) = j
         }
       }
       i -= 1
@@ -164,16 +177,58 @@ class RSBitSet(id: Int, numTuples: Int, numVars: Int) {
     var i = 0
     while (i <= currentLimit) {
       val offset = index(i)
-      if ((words(currentLevel)(offset) & m(offset)) != 0L) return offset
+      if ((words(currentLevel)(offset) & m(offset)) != 0L)
+        return offset
       i += 1
     }
     return -1
-    for (i <- 0 to currentLimit) {
-      val offset = index(i)
-      if ((words(currentLevel)(offset) & m(offset)) != 0L) return offset
-    }
-    return -1
   }
+/*
+  def intersectIndexedBitSet(m: RSIndexedBitSet): Int = {
+    var i = m.Size()
+    val j = limit(currentLevel)
+
+    var w = 0L
+    var currentWords = 0L
+    var changed = false
+    // 对比长度，以短的为主，以短的遍历，只要为结果为0就交换
+    if (i < j) {
+      // 若m比较短，遍历m改words
+      while (i >= 0) {
+        // 先获取 dense和sparse的位置
+        val a = m.index_arr(i)
+        val idx = m.index_map(i)
+        val b = map(a)
+        currentWords = m.index_map(a)
+        w = currentWords & mask(offset)
+        if (w != currentWords) {
+          words(currentLevel)(offset) = w
+          //本表已修改
+          changed = true
+          //        if (w == 0L) {
+          //          index(i) = index(limit(currentLevel))
+          //          index(limit(currentLevel)) = offset
+          //          limit(currentLevel) -= 1
+          //        }
+          if (w == 0L) {
+            val j = limit(currentLevel)
+            index(i) = index(j)
+            index(j) = offset
+            limit(currentLevel) -= 1
+
+            //          map(index(i)) = i
+            //          map(index(j)) = j
+          }
+        }
+        i -= 1
+      }
+
+    } else {
+
+    }
+    return 1
+  }
+*/
 
   def show(): Unit = {
     print("name = " + id + ", level = " + currentLevel + " ")
@@ -184,4 +239,3 @@ class RSBitSet(id: Int, numTuples: Int, numVars: Int) {
   }
 
 }
-
