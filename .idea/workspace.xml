@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="48a296e1-df47-41ca-bb68-ee7d758e3d3e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/CpUtil/RSBitSet2.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/CpUtil/RSBitSet2.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/CpUtil/RSIndexedBitSet.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/CpUtil/RSIndexedBitSet.scala" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -305,7 +306,7 @@
       <workItem from="1571755185814" duration="4429000" />
       <workItem from="1571836041251" duration="6839000" />
       <workItem from="1571967790288" duration="16585000" />
-      <workItem from="1572079971999" duration="1252000" />
+      <workItem from="1572079971999" duration="5076000" />
     </task>
     <task id="LOCAL-00001" summary="1">
       <created>1555836982265</created>
@@ -545,7 +546,14 @@
       <option name="project" value="LOCAL" />
       <updated>1572016254645</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="需要重新测试部分例子">
+      <created>1572096621935</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1572096621935</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TodoView">

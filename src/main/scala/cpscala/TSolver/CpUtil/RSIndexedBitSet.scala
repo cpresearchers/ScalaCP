@@ -52,12 +52,15 @@ class RSIndexedBitSet(numVars: Int, indices: ArrayBuffer[Int]) {
 
     index_map(index_arr(i)) = i
     index_map(index_arr(j)) = j
-
-
   }
 
   def remove(i: Int) = {
+    val j = limit(currentLevel)
+    index_arr(i) = index_arr(j)
+    index_arr(j) = i
 
+    index_map(index_arr(i)) = i
+    index_map(index_arr(j)) = j
   }
 
 }

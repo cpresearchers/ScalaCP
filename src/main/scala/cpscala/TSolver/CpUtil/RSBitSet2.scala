@@ -153,21 +153,6 @@ class RSBitSet2(id: Int, numTuples: Int, numVars: Int) {
       i -= 1
     }
 
-    //    for (i <- (0 to limit(currentLevel)).reverse) {
-    //      val offset = index(i)
-    //      currentWords = words(currentLevel)(offset)
-    //      w = currentWords & mask(offset)
-    //      if (w != currentWords) {
-    //        words(currentLevel)(offset) = w
-    //        //本表已修改
-    //        changed = true
-    //        if (w == 0L) {
-    //          index(i) = index(limit(currentLevel))
-    //          index(limit(currentLevel)) = offset
-    //          limit(currentLevel) -= 1
-    //        }
-    //      }
-    //    }
     //记录是否改变
     return changed
   }
@@ -183,52 +168,6 @@ class RSBitSet2(id: Int, numTuples: Int, numVars: Int) {
     }
     return -1
   }
-/*
-  def intersectIndexedBitSet(m: RSIndexedBitSet): Int = {
-    var i = m.Size()
-    val j = limit(currentLevel)
-
-    var w = 0L
-    var currentWords = 0L
-    var changed = false
-    // 对比长度，以短的为主，以短的遍历，只要为结果为0就交换
-    if (i < j) {
-      // 若m比较短，遍历m改words
-      while (i >= 0) {
-        // 先获取 dense和sparse的位置
-        val a = m.index_arr(i)
-        val idx = m.index_map(i)
-        val b = map(a)
-        currentWords = m.index_map(a)
-        w = currentWords & mask(offset)
-        if (w != currentWords) {
-          words(currentLevel)(offset) = w
-          //本表已修改
-          changed = true
-          //        if (w == 0L) {
-          //          index(i) = index(limit(currentLevel))
-          //          index(limit(currentLevel)) = offset
-          //          limit(currentLevel) -= 1
-          //        }
-          if (w == 0L) {
-            val j = limit(currentLevel)
-            index(i) = index(j)
-            index(j) = offset
-            limit(currentLevel) -= 1
-
-            //          map(index(i)) = i
-            //          map(index(j)) = j
-          }
-        }
-        i -= 1
-      }
-
-    } else {
-
-    }
-    return 1
-  }
-*/
 
   def show(): Unit = {
     print("name = " + id + ", level = " + currentLevel + " ")
