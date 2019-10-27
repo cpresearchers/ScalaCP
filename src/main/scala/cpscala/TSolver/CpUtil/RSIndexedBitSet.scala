@@ -61,6 +61,7 @@ class RSIndexedBitSet(numVars: Int, indices: ArrayBuffer[Int]) {
 
     index_map(index_arr(i)) = i
     index_map(index_arr(j)) = j
+    limit(currentLevel) -= 1
   }
 
 }

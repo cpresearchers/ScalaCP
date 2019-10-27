@@ -168,12 +168,8 @@ class RSBitSet(id: Int, numTuples: Int, numVars: Int) {
       i += 1
     }
     return -1
-    for (i <- 0 to currentLimit) {
-      val offset = index(i)
-      if ((words(currentLevel)(offset) & m(offset)) != 0L) return offset
-    }
-    return -1
   }
+
 
   def show(): Unit = {
     print("name = " + id + ", level = " + currentLevel + " ")

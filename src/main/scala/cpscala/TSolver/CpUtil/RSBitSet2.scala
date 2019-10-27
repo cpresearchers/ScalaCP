@@ -80,6 +80,7 @@ class RSBitSet2(id: Int, numTuples: Int, numVars: Int) {
 
     map(index(i)) = i
     map(index(j)) = j
+    limit(currentLevel) -= 1
   }
 
   def clearMask(): Unit = {
@@ -167,6 +168,39 @@ class RSBitSet2(id: Int, numTuples: Int, numVars: Int) {
       i += 1
     }
     return -1
+  }
+
+  def intersectIndex(m: RSIndexedBitSet): Int = {
+    var i = m.Size()
+    val j = limit(currentLevel)
+
+    // 对比长度，以短的为主，以短的遍历，只要为结果为0就交换
+    if (i < j) {
+      // 若m比较短，遍历m改words
+      while (i >= 0) {
+        //        val mIdx = m.index_arr(i)
+        val commonIdx = m.index_arr(i)
+        val b = index(j)
+        if ((words(currentLevel)(commonIdx) & m.words(commonIdx)) != 0L) return commonIdx
+        //交换在上一层
+        i -= 1
+      }
+
+    } else {
+      // 若m比较长,遍历words改m
+      while (j >= 0) {
+        //        val mIdx = m.index_arr(i)
+        val idx = index(i)
+//        val b = index(j)
+//        if ((words(currentLevel)(commonIdx) & m.words(commonIdx)) != 0L) return commonIdx
+//        //交换在上一层
+//        i -= 1
+//        j -= 1
+      }
+
+    }
+
+    return Constants.kINDEXOVERFLOW
   }
 
   def show(): Unit = {
