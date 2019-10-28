@@ -23,7 +23,7 @@ class RSIndexedBitSet(numVars: Int, indices: ArrayBuffer[Int]) {
   // 清楚临时变量
   tmp.clear()
 
-  val index_arr: Array[Int] = tmp.keys.toArray
+  val index_arr = tmp.keys.toArray
   val index_map = mutable.LongMap[Int]() ++ index_arr.zipWithIndex
 
   val words = tmp.values.toArray
