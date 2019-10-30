@@ -24,38 +24,13 @@ public class AllDifferent_Regin extends AllDifferent{
     }
 
 
-    private ArrayList<Integer> Get_Free_Node(ArrayList<Edge> M)
+
+
+    private ArrayList<HashSet<Integer>> Get_SCC(ArrayList<Integer> free)
     {
-        ArrayList<Integer> free = new ArrayList<>();
-        for(var a: all_values)
-        {
-            boolean f = false;
-            for(var b : M)
-            {
-                if(a == b.V)
-                {
-                    f = true;
-                    break;
-                }
-            }
-            if(!f)
-            {
-                free.add(a);
-            }
-
-        }
-
-        return free;
-    }
-
-
-
-private ArrayList<HashSet<Integer>> Get_SCC(ArrayList<Integer> free)
-{
     ArrayList<HashSet<Integer>> SCC = new ArrayList<>();
     ArrayList<Edge> All_Egde = new ArrayList<>();
     int sum = vsize + all_values.size();
-
 
     for(int i = 0 ;i <  vsize;++i) //这里编号是先从X编号完毕再编号D
     {
@@ -200,6 +175,8 @@ private ArrayList<HashSet<Integer>> Get_SCC(ArrayList<Integer> free)
 
             ArrayList<HashSet<Integer>> SCC = Get_SCC(free);
             Prune_all_edge_between_SCC(SCC);
+
+            generate_new_var();
             //   ShowGraph();
         }catch (Exception e)
         {
@@ -207,7 +184,7 @@ private ArrayList<HashSet<Integer>> Get_SCC(ArrayList<Integer> free)
             return false;
         }
 
-        generate_new_var();
+
         return true;
     }
 

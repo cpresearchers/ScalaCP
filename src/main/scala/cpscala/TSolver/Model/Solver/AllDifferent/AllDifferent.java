@@ -48,6 +48,28 @@ public class AllDifferent {
 
     }
 
+    ArrayList<Integer> Get_Free_Node(ArrayList<Edge> M) {
+        ArrayList<Integer> free = new ArrayList<>();
+        for (var a : all_values) {
+            boolean f = false;
+            for (var b : M) {
+                if (a == b.V) {
+                    f = true;
+                    break;
+                }
+            }
+            if (!f) {
+                free.add(a);
+            }
+
+        }
+//        System.out.print("\nfree node: ");
+//        for(var a : free)
+//            System.out.print(a + "  ");
+//        System.out.println();
+        return free;
+    }
+
     private boolean Hungary_Algorithm(int[] visited, int[] s_v, int[] s_x, int x) //匈牙利算法递归求增广路径
     {
         for (int i = 0; i < s_v.length; ++i) {
@@ -161,6 +183,7 @@ public class AllDifferent {
             return false;
 
         try {
+
             generate_new_var();
             //   ShowGraph();
         } catch (Exception e) {

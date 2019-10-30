@@ -5,7 +5,7 @@ import java.util.BitSet
 import cpscala.TSolver.Model.Solver.CPFSolver.DoubleArrayTrie
 import cpscala.TSolver.CpUtil.Constants
 import cpscala.TSolver.Model.Constraint.SConstraint.TableCT_Bit
-import cpscala.TSolver.Model.Solver.AllDifferent.{AllDifferent_Zhang, AllDifferent_Regin}
+import cpscala.TSolver.Model.Solver.AllDifferent.{AllDifferent_Regin, AllDifferent_Zhang, AllDifferent_Zhen}
 import cpscala.TSolver.Model.Solver.CPFSolver.CPFSolverImpl
 import cpscala.TSolver.Model.Solver.DSPSolver._
 import cpscala.TSolver.Model.Solver.IPSolver._
@@ -56,32 +56,36 @@ object all_different_tester {
     all.add(c)
     all.add(d)
     all.forEach(i => i.show)
+    val zhen = new AllDifferent_Zhen(all)
+    zhen.Solve()
+    var ans = zhen.get_Var()
+    ans.forEach(i => i.show())
 
-  //  test.show()
-    var begin = System.nanoTime();
-    var i = 0
-    while(i < 10000) {
-      val test = new AllDifferent_Regin(all)
-     test.Solve()
-      i = i + 1;
-    }
-    var end = System.nanoTime();
-    println(end-begin)
-    //val solution = test.get_Var()
-      //print("Regin after:\n")
-    //solution.forEach(i => i.show)
-
-
-      //  test.show()
-       begin = System.nanoTime();
-     i = 0
-    while(i < 10000) {
-      val test1 = new AllDifferent_Zhang(all)
-      test1.Solve()
-      i = i + 1;
-    }
-      end = System.nanoTime();
-      println(end-begin)
+//  //  test.show()
+//    var begin = System.nanoTime();
+//    var i = 0
+//    while(i < 10000) {
+//      val test = new AllDifferent_Regin(all)
+//     test.Solve()
+//      i = i + 1;
+//    }
+//    var end = System.nanoTime();
+//    println(end-begin)
+//    //val solution = test.get_Var()
+//      //print("Regin after:\n")
+//    //solution.forEach(i => i.show)
+//
+//
+//      //  test.show()
+//       begin = System.nanoTime();
+//     i = 0
+//    while(i < 10000) {
+//      val test1 = new AllDifferent_Zhang(all)
+//      test1.Solve()
+//      i = i + 1;
+//    }
+//      end = System.nanoTime();
+//      println(end-begin)
 //      val solution1 = test1.get_Var()
 //      print("zhang after:\n")
 //      solution1.forEach(i => i.show)

@@ -25,27 +25,7 @@ public class AllDifferent_Zhang extends AllDifferent{
 
 
 
-    private ArrayList<Integer> Get_Free_Node(ArrayList<Edge> M) {
-        ArrayList<Integer> free = new ArrayList<>();
-        for (var a : all_values) {
-            boolean f = false;
-            for (var b : M) {
-                if (a == b.V) {
-                    f = true;
-                    break;
-                }
-            }
-            if (!f) {
-                free.add(a);
-            }
 
-        }
-//        System.out.print("\nfree node: ");
-//        for(var a : free)
-//            System.out.print(a + "  ");
-//        System.out.println();
-        return free;
-    }
 
     private Boolean isReachable(int f, int t, boolean flag) //f -> free ; t -> target
     //判断两个点之间是否存在可达的交替路
@@ -315,13 +295,14 @@ public class AllDifferent_Zhang extends AllDifferent{
 
             ArrayList<HashSet<Integer>> SCC = Get_SCC(Xc_minus_Gamma_A, Dc_minus_A);
             Prune_all_edge_between_SCC(SCC, Xc_minus_Gamma_A, Dc_minus_A);
+            generate_new_var();
             //   ShowGraph();
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
 
-        generate_new_var();
+
         return true;
     }
 
