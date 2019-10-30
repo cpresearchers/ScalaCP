@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat
 import cpscala.TSolver.Experiment.test_ct.{name, pType, varType}
 import cpscala.TSolver.Model.Solver.SSolver.SCoarseSolver
 
+import scala.collection.JavaConverters._
 import scala.collection.mutable.ArrayBuffer
 import scala.util.Sorting
 import scala.xml.XML
@@ -19,7 +20,7 @@ import scala.xml.XML
 object CPF_MultiThread_Tester {
 
 
-  var Time_Limit : Long = 1800000000000L
+  var Time_Limit: Long = 900000000000L
 
   def main(args: Array[String]): Unit = {
 
@@ -44,12 +45,12 @@ object CPF_MultiThread_Tester {
       val titleLine = ArrayBuffer[String]()
 
       titleLine ++= Array(
-        "id","instance                                           ",
-        "algorithm 1","init_time","search_time","nodes","status", //CPF  8
-        "algorithm 2","init_time","search_time","nodes","status",  //CPF 16
-        "algorithm 3","init_time","search_time","nodes","status",   //CPF 24
-        "algorithm 4","init_time","search_time","nodes","status",   //CPF 28
-        "date                   ")
+        "id", "instance                                           ",
+        "algorithm 1", "init_time", "search_time", "nodes", "status", //CPF  8
+        "algorithm 2", "init_time", "search_time", "nodes", "status", //CPF 16
+        "algorithm 3", "init_time", "search_time", "nodes", "status", //CPF 24
+        "algorithm 4", "init_time", "search_time", "nodes", "status", //CPF 28
+        "num_var", "num_constraint", "date                   ")
       val writer = CSVWriter.open(resFile)
       writer.writeRow(titleLine)
       writer.close()
@@ -62,10 +63,36 @@ object CPF_MultiThread_Tester {
         println(f)
 
         var xm = new XModel(f.getPath, true, fmt)
-        dataLine ++= CPF_Test_N(xm,8)
-        dataLine ++= CPF_Test_N(xm,16)
-        dataLine ++= CPF_Test_N(xm,24)
-        dataLine ++= CPF_Test_N(xm,28)
+
+        val r1 = CPF_Test_N(xm, 8)
+        dataLine ++= r1._1
+        if (r1._2 == false) {
+          dataLine ++= Get_Empty_Strings()
+          dataLine ++= Get_Empty_Strings()
+          dataLine ++= Get_Empty_Strings()
+        }
+        else {
+          val r2 = CPF_Test_N(xm, 16)
+          dataLine ++= r2._1
+          if (r2._2 == false) {
+            dataLine ++= Get_Empty_Strings()
+            dataLine ++= Get_Empty_Strings()
+          }
+          else {
+            val r3 = CPF_Test_N(xm, 24)
+            dataLine ++= r3._1
+            if (r3._2 == false)
+              dataLine ++= Get_Empty_Strings()
+            else {
+              val r4 = CPF_Test_N(xm, 28)
+              dataLine ++= r4._1
+
+            }
+          }
+          }.asJava
+        //dataLine ++= CPF_Test_N(xm, 16)._1
+        //dataLine ++= CPF_Test_N(xm, 24)._1
+        //dataLine ++= CPF_Test_N(xm, 28)._1
 
 
         dataLine += xm.vars.size().toString()
@@ -73,14 +100,14 @@ object CPF_MultiThread_Tester {
 
         xm = null
 
-        val day=new Date()               //时间戳
+        val day = new Date() //时间戳
         val df = new SimpleDateFormat("MM-dd HH:mm:ss")
 
         dataLine += df.format(day).toString()
 
         i += 1
         // println(dataLine)
-        val inner_writer = CSVWriter.open(resFile,true)
+        val inner_writer = CSVWriter.open(resFile, true)
         inner_writer.writeRow(dataLine)
         inner_writer.close()
         dataLine.clear()
@@ -91,26 +118,43 @@ object CPF_MultiThread_Tester {
     }
   }
 
-  def CPF_Test_N(xm : XModel, n : Int): ArrayBuffer[String]  =
+  def Get_Empty_Strings(): ArrayBuffer[String] =
+  {
+    var line  = new ArrayBuffer[String](5)
+    line +=" "
+    line +=" "
+    line +=" "
+    line +=" "
+    line +=" "
+    line
+  }
+
+  def CPF_Test_N(xm : XModel, n : Int): (ArrayBuffer[String], Boolean) =
     {
       var line  = new ArrayBuffer[String](5)
-      val name = "CPF-" + n.toString()
-      line += name.toString()
+
+
       val init_time_start = System.nanoTime()
 
       var CMS = new CPF_MultiThread_S(xm,null, null, null)
       val init_time_end = System.nanoTime()
-      line += ((init_time_end-init_time_start).toDouble * 1e-9).toString()
+
       //CMS.Show()
       val search_time_start = System.nanoTime()
-      CMS.Solve(n,Time_Limit)
+      val r = CMS.Solve(n,Time_Limit)
       val search_time_end = System.nanoTime()
+
+      val name = "CPF-" + r.toString()
+      line += name.toString()
+      line += ((init_time_end-init_time_start).toDouble * 1e-9).toString()
       line += ((search_time_end-search_time_start).toDouble * 1e-9).toString()
       line += CMS.node_m.get().toString()
       line += CMS.status.get().toString()
       CMS = null
-
-      return line
+      var end = true
+      if(r != n)
+        end = false
+      (line,end)
     }
 
 

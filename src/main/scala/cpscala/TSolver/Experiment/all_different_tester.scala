@@ -1,10 +1,11 @@
 package cpscala.TSolver.Experiment
 import java.util
+import java.util.BitSet
 
 import cpscala.TSolver.Model.Solver.CPFSolver.DoubleArrayTrie
 import cpscala.TSolver.CpUtil.Constants
 import cpscala.TSolver.Model.Constraint.SConstraint.TableCT_Bit
-import cpscala.TSolver.Model.Solver.AllDifferent.{AllDifferent, AllDifferent_Regin}
+import cpscala.TSolver.Model.Solver.AllDifferent.{AllDifferent_Zhang, AllDifferent_Regin}
 import cpscala.TSolver.Model.Solver.CPFSolver.CPFSolverImpl
 import cpscala.TSolver.Model.Solver.DSPSolver._
 import cpscala.TSolver.Model.Solver.IPSolver._
@@ -22,6 +23,7 @@ object all_different_tester {
 
 
   def main(args: Array[String]): Unit = {
+
 
 //    val xf = XML.loadFile("benchmarks/BMPath.xml")
 //    val fileNode = xf \\ "BMFile"
@@ -54,13 +56,35 @@ object all_different_tester {
     all.add(c)
     all.add(d)
     all.forEach(i => i.show)
-    var test = new AllDifferent(all)
-  //  test.show()
-    test.Solve()
-    var solution = test.get_Var()
-      print("after:\n")
-    solution.forEach(i => i.show)
 
+  //  test.show()
+    var begin = System.nanoTime();
+    var i = 0
+    while(i < 10000) {
+      val test = new AllDifferent_Regin(all)
+     test.Solve()
+      i = i + 1;
+    }
+    var end = System.nanoTime();
+    println(end-begin)
+    //val solution = test.get_Var()
+      //print("Regin after:\n")
+    //solution.forEach(i => i.show)
+
+
+      //  test.show()
+       begin = System.nanoTime();
+     i = 0
+    while(i < 10000) {
+      val test1 = new AllDifferent_Zhang(all)
+      test1.Solve()
+      i = i + 1;
+    }
+      end = System.nanoTime();
+      println(end-begin)
+//      val solution1 = test1.get_Var()
+//      print("zhang after:\n")
+//      solution1.forEach(i => i.show)
 
    // xm.show_Relation()
    // xm.show()

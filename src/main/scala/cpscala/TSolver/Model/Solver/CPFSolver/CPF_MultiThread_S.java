@@ -4,25 +4,27 @@ import cpscala.TSolver.CpUtil.SearchHelper.SearchHelper;
 import cpscala.XModel.XModel;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicIntegerArray;
 
-import static java.lang.Thread.sleep;
 
 
 //CPF从搜索入口开始的多线程
 public class CPF_MultiThread_S extends  CPFSolverImpl{ // implements Runnable{
 
-    int stride;
+    private int stride;
     public AtomicInteger status = new AtomicInteger();
     public AtomicInteger node_m = new AtomicInteger();
+    private AtomicBoolean m_flag_for_Solution = new AtomicBoolean();
+    private AtomicBoolean writed_solution = new AtomicBoolean();
    // AtomicIntegerArray ans;
 
     public CPF_MultiThread_S(XModel xm , String varType, String heuName, SearchHelper sear)
     {
         super(xm, varType, heuName,sear);
         //ans = new AtomicIntegerArray(vsize);
-
+        writed_solution.set(true);
+        m_flag_for_Solution.set(false);
     }
 
     @Override
@@ -30,8 +32,12 @@ public class CPF_MultiThread_S extends  CPFSolverImpl{ // implements Runnable{
 
         if(level == 0)
         {
-            for(int i = 0;i < Path.get(0).scope.size();++i)
+
+            for(int i = 0;i < Path.get(0).scope.size();++i) {
+              //  if(table_flag[0] >= hm.tabs.get(Path.get(0).id).tuples.length)
+                 //   return false;
                 solution[Path.get(0).scope.get(i)] = hm.tabs.get(Path.get(0).id).tuples[table_flag[0]][i];
+            }
 
             table_flag[0] += stride;
             //println( table_flag[0] );
@@ -44,6 +50,7 @@ public class CPF_MultiThread_S extends  CPFSolverImpl{ // implements Runnable{
         {
             for(var i : Path_Diff.get(level).diff)
             {
+
                 solution[Path.get(level).scope.get(i)] = hm.tabs.get(Path.get(level).id).tuples[p.get(j)][i];
             }
             table_flag[level] = j + 1;
@@ -55,7 +62,7 @@ public class CPF_MultiThread_S extends  CPFSolverImpl{ // implements Runnable{
 
     }
 
-    protected   boolean Search(long limit_time, int start) {
+    private   boolean Search(long limit_time, int start) {
 
       // boolean result = true;
         long start_time = System.nanoTime();
@@ -69,15 +76,15 @@ public class CPF_MultiThread_S extends  CPFSolverImpl{ // implements Runnable{
         int[][] for_find = new int[vsize][];
         for (int i = 0; i < Path.size(); ++i)
             for_find[i] = new int[Path_Diff.get(i).same_id.size()];
-        flag_for_Solution = false;
+
 
         int level = 0;
         int lastlevel = 0;
         ArrayList<Integer> p = null;
         ArrayList<Integer> for_check = new ArrayList<>();
         long current_Time ;
-
-        while ( !flag_for_Solution && table_flag[0] < hm.tabs.get(Path.get(0).id).tuples.length  ) {
+        boolean flag_for_last = true; //万一当前的table_flag是最后一个，本该继续搜索，就因为table_flag[0] 超出范围而导致不搜索了
+        while ( !m_flag_for_Solution.get() &&(flag_for_last || table_flag[0] < hm.tabs.get(Path.get(0).id).tuples.length)) {
 
             current_Time = System.nanoTime();
             if (current_Time - start_time > limit_time) {
@@ -99,37 +106,61 @@ public class CPF_MultiThread_S extends  CPFSolverImpl{ // implements Runnable{
                     SetTableFlag(table_flag, level);
                     lastlevel = level;
                     level--;
+                }
+                if (level == 0 && table_flag[0] >= hm.tabs.get(Path.get(0).id).tuples.length)
+                    flag_for_last = false;
+              // continue;
 
+            }else {
+                if (Check_Filter(solution, level, for_check)) {
+
+                    node_m.getAndIncrement();
+                    lastlevel = level;
+                    level++;
+
+                    if (!m_flag_for_Solution.get() && level == Path.size()) {
+                        // flag_for_Solution = ;
+                        m_flag_for_Solution.set(true);
+                        synchronized (this) {
+                            if (writed_solution.get()) {
+                                writed_solution.set(false);
+                                status.getAndSet(1);
+
+                                for (var v : solution
+                                ) {
+                                    s.add(v);
+                                }
+                            }
+
+                            break;
+                        }
+                    }
 
                 }
-                continue;
-
-            }
-            if (Check_Filter(solution, level, for_check)) {
-
-                node_m.getAndIncrement();
-                lastlevel = level;
-                level++;
-
-                if (level == Path.size()) {
-                    flag_for_Solution = true;
-                    status.getAndSet(1);
-                    synchronized(this){
-                    for (var v : solution
-                    ) {
-                        s.add(v);
-                    }}
-
-                    break;
-
+                else {
+                    if (level == 0 && table_flag[0] >= hm.tabs.get(Path.get(0).id).tuples.length)
+                        flag_for_last = false;
                 }
 
+                //println(start);
             }
-            //println(start);
 
         }
-        if(status.get() == 0)
+        if(!m_flag_for_Solution.get() && status.get() == 0)
             status.getAndSet(3);
+        return m_flag_for_Solution.get();
+    }
+    @Override
+    public boolean Answer(){
+
+        if(m_flag_for_Solution.get())
+        {
+            println("Solution is :");
+            print_All(s);
+        }
+        else
+            println("no Solution!");
+
         return flag_for_Solution;
     }
 //    void test(int i)
@@ -138,10 +169,12 @@ public class CPF_MultiThread_S extends  CPFSolverImpl{ // implements Runnable{
 //             println(i + " " + j);
 //    }
 
-    public Boolean Solve(int num_thread,long limit_time) throws InterruptedException {
+    public int Solve(int num_thread,long limit_time) throws InterruptedException {
 
         if(num_thread < 3)
-             return false;
+             return -1;
+        if(num_thread > hm.tabs.get(Path.get(0).id).tuples.length)
+            num_thread = hm.tabs.get(Path.get(0).id).tuples.length;
         ArrayList<Thread> all = new ArrayList<>();
         stride = num_thread;
         for(int i = 0 ; i < num_thread;++i) {
@@ -149,7 +182,7 @@ public class CPF_MultiThread_S extends  CPFSolverImpl{ // implements Runnable{
             int f = i;
             all.add(new Thread(() -> {
 
-                System.out.println("子线程开启！" + f);
+              //  System.out.println("子线程开启！" + f);
                Search(limit_time, f);
               //  test(f);
             }
@@ -160,7 +193,7 @@ public class CPF_MultiThread_S extends  CPFSolverImpl{ // implements Runnable{
         for(var t : all) {
             t.join();
         }
-        return flag_for_Solution;
+        return num_thread;
 
     }
 

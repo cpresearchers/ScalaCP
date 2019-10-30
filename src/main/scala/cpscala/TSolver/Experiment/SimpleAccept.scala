@@ -19,7 +19,7 @@ object SimpleAccept {
 
     val CMS = new CPF_MultiThread_S(xm,null, null, null)
     //CMS.Show()
-    CMS.Solve(4,1800000000000L)
+    CMS.Solve(7,1800000000000L)
     CMS.Answer()
     print(CMS.status.get())
 //    val CPF = new CPFSolverImpl(xm,null,null,null)
