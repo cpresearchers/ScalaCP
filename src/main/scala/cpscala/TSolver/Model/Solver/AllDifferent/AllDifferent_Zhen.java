@@ -5,7 +5,7 @@ import scala.Int;
 
 import java.util.*;
 
-public class AllDifferent_Zhen extends AllDifferent{
+public class AllDifferent_Zhen extends AllDifferent {
 
     public AllDifferent_Zhen(ArrayList<XVar> XV) {
         super(XV);
@@ -133,6 +133,132 @@ public class AllDifferent_Zhen extends AllDifferent{
 //    }
 
 
+    ArrayList<Edge> find_redundant_edges(ArrayList<Integer> free) //标记不可被删除的边
+    {
+        ArrayList<Edge> All_Egde = new ArrayList<>();
+        int sum = vsize + all_values.size();
+        int [] flag = new int[sum+1];
+
+        for (int i = 0; i < vsize; ++i) //这里编号是先从X编号完毕再编号D
+        {
+            for (var b : all_values) {
+                if (bipartite[i][values_to_id.get(b)] == -1) {
+
+                    //x = values_to_id.get(b)+Xc_minus_Gamma_A.size(), y = a
+                    All_Egde.add(new Edge(i, values_to_id.get(b) + vsize));
+                    flag[values_to_id.get(b) + vsize]++;
+
+                } else if (bipartite[i][values_to_id.get(b)] == 1) {
+
+                    //y = values_to_id.get(b)+Xc_minus_Gamma_A.size(), x = a
+
+                    All_Egde.add(new Edge(values_to_id.get(b) + vsize, i));
+                    flag[i]++;
+
+                }
+            }
+        }
+
+        for (var a : all_values) {
+            if (free.contains(a))
+            {
+                All_Egde.add(new Edge(sum, values_to_id.get(a) + vsize));
+                flag[values_to_id.get(a) + vsize]++;
+            }
+            else
+            {
+                All_Egde.add(new Edge(values_to_id.get(a) + vsize, sum));
+                flag[sum]++;
+            }
+        }
+//        for (var e : All_Egde)
+//            System.out.println(e.S + "------->" + e.V);
+//        System.out.println("---------------------------------------------------------");
+//        for (var e : flag)
+//            System.out.print(e + " ");
+//        System.out.println("---------------------------------------------------------");
+
+        while(Get_Accr(flag) == 0)
+        {
+
+            for(int i = 0;i < flag.length;++i)
+            {
+                if(flag[i] == 0)
+                {
+                    flag[i] = -1;
+                  //  int []f = new int[All_Egde.size()];
+                    for(int j = All_Egde.size() - 1; j > -1;j--){
+                        var e = All_Egde.get(j);
+                        if (e.S == i) {
+                            flag[e.V]--;
+                            All_Egde.remove(j);
+                            //f[j] = 1;
+
+                        }
+                    }
+//                    for(int j = f.length - 1; j > -1;j--)
+//                    {
+//                        if(f[j] == 1)
+//                            All_Egde.remove(j);
+//                    }
+                }
+            }
+        }
+
+//        for(int j = All_Egde.size() - 1; j > -1;j--)
+//        {
+//            if(All_Egde.get(j).S == sum || sum == All_Egde.get(j).V)
+//                All_Egde.remove(j);
+//        }
+
+//        for (var e : All_Egde)
+//            System.out.println(e.S + "------->" + e.V);
+//        System.out.println("---------------------------------------------------------");
+
+        return All_Egde;
+    }
+
+    void ReGenerate_Bipartite(ArrayList<Edge> All_Edges,ArrayList<Edge> Max_M)
+    {
+        int [][] rebipartite = new int[vars.size()][all_values.size()];
+        for(var e : Max_M)
+        {
+
+            rebipartite[e.S][values_to_id.get(e.V)] = -1;
+        }
+//        System.out.println("regraph:");
+//        for (var a : rebipartite) {
+//            for (var b : a) {
+//                System.out.print(b + " ");
+//            }
+//            System.out.println();
+//        }
+        for(var e : All_Edges)
+        {
+            if(e.S > e.V && !(e.S == vsize + all_values.size() ||  e.V == vsize + all_values.size()))
+                rebipartite[e.V][e.S - vsize] = 1;
+        }
+
+        bipartite = rebipartite;
+//        for (int j = 0; j < bipartite.length; ++j) {
+//            for (int i = 0; i < bipartite[j].length; ++i) {
+//                if (bipartite[j][i] == -1)
+//                    rebipartite[j][i] = 1;
+//            }
+//        }
+
+
+
+    }
+
+    private int Get_Accr(int[] flag)
+    {
+        int s = 1;
+        for(var e : flag)
+            s *= e;
+        return s;
+    }
+
 
     public boolean Solve()
     {
@@ -144,8 +270,10 @@ public class AllDifferent_Zhen extends AllDifferent{
         try {
             ArrayList<Edge> Max_M = Find_Max_Match();
             ArrayList<Integer> free = Get_Free_Node(Max_M);
-
-
+            var edges = find_redundant_edges(free);
+           // ShowGraph();
+            ReGenerate_Bipartite(edges,Max_M);
+           // ShowGraph();
             generate_new_var();
             //   ShowGraph();
         }catch (Exception e)

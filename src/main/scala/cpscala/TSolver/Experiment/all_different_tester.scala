@@ -46,46 +46,68 @@ object all_different_tester {
 //    var b = new XVar(2,"b", Array[Int](1,2))
 //    var c = new XVar(3,"c", Array[Int](1,2,3))
 //    var d = new XVar(4,"d", Array[Int](1,2,3,4))
-    var a = new XVar(1,"a", Array[Int](1))
-    var b = new XVar(2,"b", Array[Int](1,2))
-    var c = new XVar(3,"c", Array[Int](1,2,3,4))
-    var d = new XVar(4,"d", Array[Int](1,2,4,5))
+    var a = new XVar(1,"a", Array[Int](1,2,45,6,7))
+    var b = new XVar(2,"b", Array[Int](1,2,3))
+    var c = new XVar(3,"c", Array[Int](1,2,3,4,8))
+    var d = new XVar(4,"d", Array[Int](1,2,4,5,7,66,45,5544))
+    var e = new XVar(4,"d", Array[Int]( 5544,3))
     var all = new util.ArrayList[XVar]()
     all.add(a)
     all.add(b)
     all.add(c)
     all.add(d)
+    all.add(e)
     all.forEach(i => i.show)
-    val zhen = new AllDifferent_Zhen(all)
-    zhen.Solve()
-    var ans = zhen.get_Var()
-    ans.forEach(i => i.show())
+//      println("---------------------zhen---------------")
+//    val zhen = new AllDifferent_Zhen(all)
+//    zhen.Solve()
+//      zhen.get_Var().forEach(i => i.show())
+//
+//      println("---------------------zhang---------------")
+//      val zhang = new AllDifferent_Zhang(all)
+//      zhang.Solve()
+//      zhang.get_Var().forEach(i => i.show())
+//      println("---------------------Regin---------------")
+//      val Regin = new AllDifferent_Regin(all)
+//      Regin.Solve()
+//      Regin.get_Var().forEach(i => i.show())
 
 //  //  test.show()
-//    var begin = System.nanoTime();
-//    var i = 0
-//    while(i < 10000) {
-//      val test = new AllDifferent_Regin(all)
-//     test.Solve()
-//      i = i + 1;
-//    }
-//    var end = System.nanoTime();
-//    println(end-begin)
-//    //val solution = test.get_Var()
-//      //print("Regin after:\n")
-//    //solution.forEach(i => i.show)
+    var begin = System.nanoTime();
+    var i = 0
+    while(i < 100000) {
+      val test = new AllDifferent_Regin(all)
+     test.Solve()
+      i = i + 1;
+    }
+    var end = System.nanoTime();
+    println(end-begin)
+
+    //val solution = test.get_Var()
+      //print("Regin after:\n")
+    //solution.forEach(i => i.show)
 //
 //
 //      //  test.show()
-//       begin = System.nanoTime();
-//     i = 0
-//    while(i < 10000) {
-//      val test1 = new AllDifferent_Zhang(all)
-//      test1.Solve()
-//      i = i + 1;
-//    }
-//      end = System.nanoTime();
-//      println(end-begin)
+      begin = System.nanoTime();
+     i = 0
+    while(i < 100000) {
+      val test1 = new AllDifferent_Zhang(all)
+      test1.Solve()
+      i = i + 1;
+    }
+      end = System.nanoTime();
+      println(end-begin)
+      begin = System.nanoTime();
+      i = 0
+      while(i < 100000) {
+          val test2 = new AllDifferent_Zhen(all)
+          test2.Solve()
+          i = i + 1;
+      }
+      end = System.nanoTime();
+      println(end-begin)
+
 //      val solution1 = test1.get_Var()
 //      print("zhang after:\n")
 //      solution1.forEach(i => i.show)
