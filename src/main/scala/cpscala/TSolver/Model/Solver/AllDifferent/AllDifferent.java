@@ -2,36 +2,40 @@ package cpscala.TSolver.Model.Solver.AllDifferent;
 
 import cpscala.XModel.XVar;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
-public class AllDifferent {
-     static class Edge { //边
-        int S, V;
+public abstract class AllDifferent {
+    static class Edge { //边
+        int Start, End;
 
         Edge(int s, int v) {
-            S = s;
-            V = v;
+            Start = s;
+            End = v;
         }
+        @Override
+        public boolean equals(Object obj) {
+            if(this == obj)
+                return true;
+            Edge in = (Edge)obj;
+            return Start == in.Start && End == in.End;
+        }
+
     }
 
     protected ArrayList<XVar> vars;
     private ArrayList<XVar> after_vars;
-    //int[] ori_solution;
-    //int[] mapped_solution;
-     int vsize;
-     int[][] bipartite;
 
-     ArrayList<Integer> all_values;
-     HashMap<Integer, Integer> values_to_id; //值到id的映射
+    int vsize;
+    int[][] bipartite;
+    ArrayList<Edge> Max_M ;
+    HashSet<Integer> free;
+
+    ArrayList<Integer> all_values;
+    HashMap<Integer, Integer> values_to_id; //值到id的映射
 
 
-    //boolean isSolvable;
+    AllDifferent(ArrayList<XVar> XV) {
 
-     AllDifferent(ArrayList<XVar> XV) {
-        // isSolvable = true;
         vars = XV;
         vsize = XV.size();
         HashSet<Integer> all = new HashSet<>(); //将所有的取值扔到set里面
@@ -45,15 +49,24 @@ public class AllDifferent {
             values_to_id.put(all_values.get(i), i);
         }
         Generate_Bipartite();
+        Max_M = new ArrayList<>();
+        free = new HashSet<>();
+        Find_Max_Match();
+        Get_Free_Node();
 
     }
 
-    ArrayList<Integer> Get_Free_Node(ArrayList<Edge> M) {
-        ArrayList<Integer> free = new ArrayList<>();
+    void Get_Free_Node() {
+       free.clear();
+//        for (var m : M) {
+//            if(!all_values.contains(m.End))
+//                free.add(m.End);
+//
+//        }
         for (var a : all_values) {
             boolean f = false;
-            for (var b : M) {
-                if (a == b.V) {
+            for (var b : Max_M) {
+                if (a == b.End) {
                     f = true;
                     break;
                 }
@@ -67,7 +80,7 @@ public class AllDifferent {
 //        for(var a : free)
 //            System.out.print(a + "  ");
 //        System.out.println();
-        return free;
+
     }
 
     private boolean Hungary_Algorithm(int[] visited, int[] s_v, int[] s_x, int x) //匈牙利算法递归求增广路径
@@ -87,10 +100,10 @@ public class AllDifferent {
     }
 
 
-     ArrayList<Edge> Find_Max_Match() //匈牙利算法求最大匹配
+    void Find_Max_Match() //匈牙利算法求最大匹配
     {
-        ArrayList<Edge> Max_M = new ArrayList<>();
 
+        Max_M.clear();
         int[] s_x = new int[vsize];
         int[] s_v = new int[all_values.size()];
         Arrays.fill(s_x, -1);
@@ -109,7 +122,7 @@ public class AllDifferent {
             Max_M.add(new Edge(i, all_values.get(s_x[i])));
         for (var m : Max_M) //将图中匹配置为-1
         {
-            bipartite[m.S][values_to_id.get(m.V)] = -bipartite[m.S][values_to_id.get(m.V)];
+            bipartite[m.Start][values_to_id.get(m.End)] = -bipartite[m.Start][values_to_id.get(m.End)];
         }
 
 //        System.out.println("max match:");
@@ -123,7 +136,7 @@ public class AllDifferent {
 //        for (var e : Max_M) {
 //            System.out.println(e.V + "---------->" + e.S);
 //        }
-        return Max_M;
+
 
     }
 
@@ -142,22 +155,21 @@ public class AllDifferent {
         if (vsize > all_values.size())//变量的个数少于值的个数，必然无解
         {
 
-            return false;
+            return true;
         }
         // System.out.println("aa");
         for (int i = 0; i < vsize; ++i) //存在某个变量的论域为空 必然无解
         {
             if (vars.get(i).values_ori.length == 0) {
-                return false;
+                return true;
             }
             //if(vars.get(i).values_ori.length == 1)
             //    ori_solution[i] = vars.get(i).values_ori[0];
         }
-        return true;
+        return false;
     }
 
-     void generate_new_var()
-    {
+    void generate_new_var() {
         after_vars = new ArrayList<>();
         for (int i = 0; i < vsize; ++i) {
             ArrayList<Integer> values = new ArrayList<>();
@@ -176,10 +188,11 @@ public class AllDifferent {
 
         }
     }
+
     public boolean Solve() {
 
 
-        if (!preprocess())  //必然不可解，肯定不用解了，直接返回
+        if (preprocess())  //必然不可解，肯定不用解了，直接返回
             return false;
 
         try {
@@ -200,7 +213,9 @@ public class AllDifferent {
         return after_vars;
     }
 
-    void ShowGraph() {
+
+
+    private void ShowGraph() {
         System.out.println("graph:");
         for (var a : bipartite) {
             for (var b : a) {
@@ -209,6 +224,8 @@ public class AllDifferent {
             System.out.println();
         }
     }
+
+
 
     public void show() {
         for (var a : all_values)

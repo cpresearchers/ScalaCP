@@ -26,7 +26,7 @@ public class AllDifferent_Regin extends AllDifferent{
 
 
 
-    private ArrayList<HashSet<Integer>> Get_SCC(ArrayList<Integer> free)
+    private ArrayList<HashSet<Integer>> Get_SCC()
     {
     ArrayList<HashSet<Integer>> SCC = new ArrayList<>();
     ArrayList<Edge> All_Egde = new ArrayList<>();
@@ -99,13 +99,13 @@ public class AllDifferent_Regin extends AllDifferent{
         boolean isRootComponent = true;
         for(var a : All_Egde)
         {
-            if(a.S == current)
+            if(a.Start == current)
             {
-                if(isvisited[a.V] != 1)
-                    TarjanAlgorithm(time,stack,All_Egde,SCC,isvisited,LOW,a.V);
-                if(LOW[current] > LOW[a.V])
+                if(isvisited[a.End] != 1)
+                    TarjanAlgorithm(time,stack,All_Egde,SCC,isvisited,LOW,a.End);
+                if(LOW[current] > LOW[a.End])
                 {
-                    LOW[current] = LOW[a.V] ;
+                    LOW[current] = LOW[a.End] ;
                     isRootComponent = false;
                 }
 
@@ -165,15 +165,15 @@ public class AllDifferent_Regin extends AllDifferent{
     {
 
 
-        if(!preprocess())  //必然不可解，肯定不用解了，直接返回
+        if(preprocess())  //必然不可解，肯定不用解了，直接返回
             return  false;
 
         try {
-            ArrayList<Edge> Max_M = Find_Max_Match();
-            ArrayList<Integer> free = Get_Free_Node(Max_M);
+        //    Find_Max_Match();
+           // Get_Free_Node();
 
 
-            ArrayList<HashSet<Integer>> SCC = Get_SCC(free);
+            ArrayList<HashSet<Integer>> SCC = Get_SCC();
             Prune_all_edge_between_SCC(SCC);
 
             generate_new_var();
