@@ -4,7 +4,8 @@ import cpscala.XModel.XVar;
 
 import java.util.ArrayList;
 import java.util.BitSet;
-import java.util.Queue;
+import java.util.LinkedList;
+import java.util.List;
 
 public class AllDifferent_Li extends AllDifferent {
     // 总
@@ -29,13 +30,13 @@ public class AllDifferent_Li extends AllDifferent {
 //    int[] ASparse;
 //    int numA;
 
-    ArrayList<Integer> ANodes = new ArrayList<>();
-    ArrayList<Integer> gamma = new ArrayList<>();
+    List<Integer> ANodes = new LinkedList<>();
+    List<Integer> gamma = new LinkedList<>();
 
-    ArrayList<Integer> notANodes = new ArrayList<>();
-    ArrayList<Integer> notgamma = new ArrayList<>();
+    List<Integer> notANodes = new LinkedList<>();
+    List<Integer> notGamma = new LinkedList<>();
 
-    ArrayList<Integer> freeNodes = new ArrayList<>();
+    List<Integer> freeNodes = new LinkedList<>();
 
     public AllDifferent_Li(ArrayList<XVar> XV) {
         super(XV);
@@ -92,14 +93,15 @@ public class AllDifferent_Li extends AllDifferent {
         if (!preprocess())  //必然不可解，肯定不用解了，直接返回
             return false;
 
+        // 清
         ANodes.clear();
         gamma.clear();
         notANodes.clear();
-        notgamma.clear();
+        notGamma.clear();
         freeNodes.clear();
 
         ArrayList<Edge> Max_M = Find_Max_Match();
-        ArrayList<Integer> freeNodes = new ArrayList<>();
+//        ArrayList<Integer> freeNodes = new ArrayList<>();
 
         for (int i = 0; i < arity; ++i) {
             for (int j = 0; j < maxDomainSize; ++j) {
@@ -114,8 +116,6 @@ public class AllDifferent_Li extends AllDifferent {
                         A[i].set(idx);
                         B[j].set(idx);
                         matchedMask.set(idx);
-                        gamma.add(i);
-                        ANodes.add(j);
                         break;
                     case 0:
                         break;
@@ -126,8 +126,11 @@ public class AllDifferent_Li extends AllDifferent {
         }
 
         for (int i = 0; i < maxDomainSize; ++i) {
+            // 值的入匹配边为0，说明是自由点
             if (B[i].isEmpty()) {
                 freeNodes.add(i);
+            } else {
+                notGamma.add(i);
             }
         }
 
@@ -158,6 +161,7 @@ public class AllDifferent_Li extends AllDifferent {
         boolean extended = false;
         do {
             for (int i = 0; i < vsize; ++i) {
+//                while()
                 tmp.clear();
                 tmp.or(allowedEdges);
                 tmp.and(D[i]);
