@@ -46,7 +46,7 @@ public class Dichotomy {
     }
 
     // 判断一个元素是否属于前类
-    public Boolean belongToFormer(int a) {
+    public Boolean belongToFront(int a) {
         return sparse[a] < divIndex;
     }
 
@@ -57,17 +57,23 @@ public class Dichotomy {
 
     //将一个元素放到后类
     public void addToLatter(int a) {
-        if (belongToFormer(a)) {
+        if (belongToFront(a)) {
             swap(sparse[a], divIndex - 1);
+            divIndex -= 1;
+        } else {
+            System.out.println("not belong to front");
         }
-        divIndex -= 1;
+
     }
 
     public void addToPrevious(int a) {
         if (belongToLatter(a)) {
-            swap(divIndex - 1, sparse[a]);
+            swap(divIndex, sparse[a]);
+            divIndex += 1;
+        } else {
+            System.out.println("not belong to latter");
         }
-        divIndex += 1;
+
     }
 
     public int previousSize() {
@@ -86,31 +92,119 @@ public class Dichotomy {
         divIndex = 0;
     }
 
-    public DichIterator frontBegin() {
-        return new DichIterator(this, 0, dense[0]);
+    public Iterator frontBegin() {
+        return new Iterator(0);
     }
 
-    public DichIterator frontEnd() {
-        return new DichIterator(this, divIndex - 1, dense[divIndex - 1]);
+    public Iterator latterBegin() {
+        return new Iterator(divIndex);
     }
 
-    public void getFrontBegin(DichIterator it) {
+    public Iterator frontEnd() {
+        return new Iterator(divIndex - 1);
+    }
+
+    public Iterator latterEnd() {
+        return new Iterator(length - 1);
+    }
+
+    public void getFrontBegin(Iterator it) {
         it.index = 0;
-        it.value = dense[0];
     }
 
-    public void getFrontEnd(DichIterator it) {
+    public void getFrontEnd(Iterator it) {
         it.index = divIndex - 1;
-        it.value = dense[divIndex - 1];
     }
 
-    public void getLatterBegin(DichIterator it) {
+    public void getLatterBegin(Iterator it) {
         it.index = divIndex;
-        it.value = dense[divIndex];
     }
 
-    public void getLatterEnd(DichIterator it) {
+    public void getLatterEnd(Iterator it) {
         it.index = length - 1;
-        it.value = dense[length - 1];
     }
+
+    public class Iterator {
+        private int index;
+
+        public Iterator(int i) {
+            index = i;
+        }
+
+        public boolean isFrontBegin() {
+            return index == 0;
+        }
+
+        public boolean isFrontEnd() {
+            return index == divIndex - 1;
+        }
+
+        public boolean isLatterBegin() {
+            return index == divIndex;
+        }
+
+        public boolean isLatterEnd() {
+            return index == length - 1;
+        }
+
+        public boolean beforeFrontBegin() {
+            return index < 0;
+        }
+
+        public boolean afterFrontEnd() {
+            return index >= divIndex;
+        }
+
+        public boolean beforeLatterBegin() {
+            return index < divIndex;
+        }
+
+        public boolean afterLatterEnd() {
+            return index >= length;
+        }
+
+        public void previous() {
+            --index;
+        }
+
+        public void next() {
+            ++index;
+        }
+
+        public void moveElementToLatterAndGoPrevious() {
+            addToLatter(dense[index]);
+            if (!beforeFrontBegin()) {
+                previous();
+            }
+        }
+
+        public void moveElementToFrontAndGoNext() {
+            addToPrevious(dense[index]);
+            if (!afterLatterEnd()) {
+                next();
+            }
+        }
+
+        public void moveElementToFrontAndGoPrevious() {
+            addToPrevious(dense[index]);
+            if (!beforeLatterBegin()) {
+                previous();
+            }
+        }
+
+        public int getValue() {
+            if (index < length && index > -1) {
+                return dense[index];
+            } else {
+                System.out.println("error");
+
+            }
+            return -1;
+        }
+
+        public int getIndex() {
+            return index;
+        }
+    }
+
 }

@@ -2,10 +2,7 @@ package cpscala.TSolver.Model.Solver.AllDifferent;
 
 import cpscala.XModel.XVar;
 
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class AllDifferent_Li extends AllDifferent {
     // 总
@@ -30,13 +27,19 @@ public class AllDifferent_Li extends AllDifferent {
 //    int[] ASparse;
 //    int numA;
 
-    List<Integer> ANodes = new LinkedList<>();
-    List<Integer> gamma = new LinkedList<>();
+//    List<Integer> ANodes = new LinkedList<>();
+//    List<Integer> gamma = new LinkedList<>();
+//
+//    List<Integer> notANodes = new LinkedList<>();
+//    List<Integer> notGamma = new LinkedList<>();
+//
+//    List<Integer> freeNodes = new LinkedList<>();
 
-    List<Integer> notANodes = new LinkedList<>();
-    List<Integer> notGamma = new LinkedList<>();
-
-    List<Integer> freeNodes = new LinkedList<>();
+    Set<Integer> ANodes = new HashSet<>();
+    Set<Integer> notANodes = new HashSet<>();
+    Set<Integer> gamma = new HashSet<>();
+    Set<Integer> notGamma = new HashSet<>();
+    Set<Integer> freeNodes = new HashSet<>();
 
     public AllDifferent_Li(ArrayList<XVar> XV) {
         super(XV);
@@ -130,6 +133,7 @@ public class AllDifferent_Li extends AllDifferent {
             if (B[i].isEmpty()) {
                 freeNodes.add(i);
             } else {
+                // 默认都不在gamma里
                 notGamma.add(i);
             }
         }
@@ -171,6 +175,13 @@ public class AllDifferent_Li extends AllDifferent {
                     gamma.add(i);
                 }
             }
+
+            var itGamma = notGamma.iterator();
+
+//            while (itGamma.hasNext()){
+//
+//
+//            }
 
             extended = false;
             for (int i = 0; i < maxDomainSize; ++i) {
