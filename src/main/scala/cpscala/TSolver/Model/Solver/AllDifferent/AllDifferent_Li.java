@@ -9,6 +9,9 @@ public class AllDifferent_Li extends AllDifferent {
     BitSet matchedMask;
     BitSet unmatchedMask;
     BitSet tmp;
+    // 跨界边一定被删除
+    BitSet transboundary;
+    BitSet needCheckEdge;
     BitSet[] A;
     BitSet[] B;
     BitSet[] C;
@@ -50,6 +53,8 @@ public class AllDifferent_Li extends AllDifferent {
         unmatchedMask = new BitSet(numBit);
         allowedEdges = new BitSet(numBit);
         tmp = new BitSet(numBit);
+        transboundary = new BitSet(numBit);
+        needCheckEdge = new BitSet(numBit);
         A = new BitSet[vsize];
         B = new BitSet[maxDomainSize];
         C = new BitSet[maxDomainSize];
@@ -132,6 +137,8 @@ public class AllDifferent_Li extends AllDifferent {
             // 值的入匹配边为0，说明是自由点
             if (B[i].isEmpty()) {
                 freeNodes.add(i);
+                ANodes.add(i);
+                notANodes.remove(i);
             } else {
                 // 默认都不在gamma里
                 notGamma.add(i);
@@ -164,42 +171,120 @@ public class AllDifferent_Li extends AllDifferent {
         //申请一些临时变量用来标记是否结束
         boolean extended = false;
         do {
-            for (int i = 0; i < vsize; ++i) {
-//                while()
+//            for (int i = 0; i < vsize; ++i) {
+////                while()
+//                tmp.clear();
+//                tmp.or(allowedEdges);
+//                tmp.and(D[i]);
+//                if (!tmp.isEmpty()) {
+//                    extended = true;
+//                    allowedEdges.or(A[i]);
+//                    gamma.add(i);
+//                }
+//            }
+//            boolean extended = false;
+
+            extended = false;
+            var itGamma = notGamma.iterator();
+
+            while (itGamma.hasNext()) {
+                var i = itGamma.next();
                 tmp.clear();
                 tmp.or(allowedEdges);
                 tmp.and(D[i]);
                 if (!tmp.isEmpty()) {
                     extended = true;
                     allowedEdges.or(A[i]);
+                    itGamma.remove();
                     gamma.add(i);
                 }
             }
 
-            var itGamma = notGamma.iterator();
-
-//            while (itGamma.hasNext()){
-//
-//
+//            extended = false;
+//            for (int i = 0; i < maxDomainSize; ++i) {
+//                tmp.clear();
+//                tmp.or(allowedEdges);
+//                tmp.and(C[i]);
+//                if (!tmp.isEmpty()) {
+//                    extended = true;
+//                    allowedEdges.or(B[i]);
+//                    ANodes.add(i);
+//                }
 //            }
 
             extended = false;
-            for (int i = 0; i < maxDomainSize; ++i) {
+            var itA = notANodes.iterator();
+            while (itA.hasNext()) {
+                var i = itA.next();
                 tmp.clear();
                 tmp.or(allowedEdges);
                 tmp.and(C[i]);
-                if (!tmp.isEmpty()) {
+                while (!tmp.isEmpty()) {
                     extended = true;
                     allowedEdges.or(B[i]);
+                    itA.remove();
                     ANodes.add(i);
                 }
             }
+
+            extended = false;
+            var itGamma2 = notGamma.iterator();
+
+            while (itGamma2.hasNext()) {
+                var i = itGamma2.next();
+                tmp.clear();
+                tmp.or(allowedEdges);
+                tmp.and(B[i]);
+                if (!tmp.isEmpty()) {
+                    extended = true;
+                    allowedEdges.or(C[i]);
+                    itGamma2.remove();
+                    gamma.add(i);
+                }
+            }
+
+            extended = false;
+            var itA2 = notANodes.iterator();
+            while (itA2.hasNext()) {
+                var i = itA2.next();
+                tmp.clear();
+                tmp.or(allowedEdges);
+                tmp.and(A[i]);
+                while (!tmp.isEmpty()) {
+                    extended = true;
+                    allowedEdges.or(D[i]);
+                    itA2.remove();
+                    ANodes.add(i);
+                }
+            }
+
         } while (extended);
 
-        // step 4
+        // step 5 删掉Dc-A到gamma(A)的边
+        // 方法：从Dc-A的非匹配出边集合，与gmma(A)的非匹配入边的交集就是这种跨界边，原则小循环套大循环，一般而言Dc-A比较小
 
-        // step 5
+        tmp.clear();
+        transboundary.clear();
+        var it = notANodes.iterator();
+        while (it.hasNext()) {
+            var a = it.next();
 
+            tmp.or(C[a]);
+            var jt = gamma.iterator();
+            while (jt.hasNext()) {
+                var v = jt.next();
+                tmp.and(D[v]);
+                transboundary.or(tmp);
+            }
+        }
+
+        // step 6 过滤需要检查强连通分量的边
+
+        needCheckEdge.clear();
+        needCheckEdge.or(allowedEdges);
+        needCheckEdge.or(transboundary);
+        needCheckEdge.or(matchedMask);
+        needCheckEdge.flip(0, numBit - 1);
 
         return true;
     }
