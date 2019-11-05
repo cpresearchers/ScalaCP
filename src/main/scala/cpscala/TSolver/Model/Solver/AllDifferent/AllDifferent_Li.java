@@ -18,7 +18,7 @@ public class AllDifferent_Li extends AllDifferent {
     BitSet[] D;
     BitSet t;
     BitSet tt;
-    BitSet ts;
+    BitSet th;
     BitSet allowedEdges;
     int arity;
     int maxDomainSize;
@@ -93,7 +93,7 @@ public class AllDifferent_Li extends AllDifferent {
 
         t = new BitSet(numBit);
         tt = new BitSet(numBit);
-        ts = new BitSet(numBit);
+        th = new BitSet(numBit);
     }
 
 
@@ -286,37 +286,125 @@ public class AllDifferent_Li extends AllDifferent {
         needCheckEdge.or(matchedMask);
         needCheckEdge.flip(0, numBit - 1);
 
+        // step 7 SCC检查
+        int ii = needCheckEdge.nextClearBit(0);
+
+
+        // 第i个位置不为1
+        while (ii != -1) {
+
+            t.clear();
+            th.clear();
+            t.set(ii);
+
+            // 匹配变量
+//        extended = false;
+            var itNotGamma = notGamma.iterator();
+            while (itNotGamma.hasNext()) {
+                var i = itNotGamma.next();
+                tmp.clear();
+                // 注意这里是t
+                tmp.or(t);
+                tmp.and(D[i]);
+                if (!tmp.isEmpty()) {
+                    th.or(A[i]);
+                    itNotGamma.remove();
+                }
+            }
+
+            extended = false;
+            var itNotA = notANodes.iterator();
+            while (itNotA.hasNext()) {
+                var i = itNotA.next();
+                tmp.clear();
+                tmp.or(t);
+                tmp.and(C[i]);
+                while (!tmp.isEmpty()) {
+                    extended = true;
+                    tt.or(B[i]);
+                    itNotA.remove();
+                }
+            }
+
+            // 没有扩展出去，就可以删值了
+            // ??
+            if (!extended) {
+
+            }
+//            ii = needCheckEdge.nextClearBit(ii);
+            var xx = false;
+//             两处退出条件
+//             ??
+            while (!xx) {
+                // i就是第几个边，需要进行SCC检查
+                var itGamma2 = notGamma.iterator();
+                while (itGamma2.hasNext()) {
+                    var i = itGamma2.next();
+                    tmp.clear();
+                    // 注意这里是th
+                    tmp.or(th);
+                    tmp.and(B[i]);
+                    if (!tmp.isEmpty()) {
+                        extended = true;
+                        allowedEdges.or(C[i]);
+                        itGamma2.remove();
+                        gamma.add(i);
+                    }
+                }
+
+                extended = false;
+                var itA2 = notANodes.iterator();
+                while (itA2.hasNext()) {
+                    var i = itA2.next();
+                    tmp.clear();
+                    tmp.or(allowedEdges);
+                    tmp.and(A[i]);
+                    while (!tmp.isEmpty()) {
+                        extended = true;
+                        allowedEdges.or(D[i]);
+                        itA2.remove();
+                        ANodes.add(i);
+                    }
+                }
+
+                extended = false;
+                var itGamma = notGamma.iterator();
+                while (itGamma.hasNext()) {
+                    var i = itGamma.next();
+                    tmp.clear();
+                    tmp.or(allowedEdges);
+                    tmp.and(D[i]);
+                    if (!tmp.isEmpty()) {
+                        extended = true;
+                        allowedEdges.or(A[i]);
+                        itGamma.remove();
+                        gamma.add(i);
+                    }
+                }
+
+                extended = false;
+                var itA = notANodes.iterator();
+                while (itA.hasNext()) {
+                    var i = itA.next();
+                    tmp.clear();
+                    tmp.or(allowedEdges);
+                    tmp.and(C[i]);
+                    while (!tmp.isEmpty()) {
+                        extended = true;
+                        allowedEdges.or(B[i]);
+                        itA.remove();
+                        ANodes.add(i);
+                    }
+                }
+            }
+
+            ii = needCheckEdge.nextClearBit(ii);
+        }
+
         return true;
     }
-
-
-    // shengcheng gezhong shujujiegou
-    private void step1() {
-
-    }
-
 
     private int getIndex(int a, int b) {
         return a * maxDomainSize + b;
     }
-
-//    private void swapGamma(int i, int j) {
-//        int tmp = gammaADense[i];
-//        gammaADense[i] = gammaADense[j];
-//        gammaADense[j] = tmp;
-//
-//        gammaASparse[gammaADense[i]] = i;
-//        gammaASparse[gammaADense[j]] = j;
-//    }
-//
-//    private void swapA(int i, int j) {
-//        int tmp = ADense[i];
-//        ADense[i] = ADense[j];
-//        ADense[j] = tmp;
-//
-//        ASparse[ADense[i]] = i;
-//        ASparse[ADense[j]] = j;
-//    }
-
-
 }

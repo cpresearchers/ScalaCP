@@ -1,5 +1,6 @@
 package cpscala.TSolver.Model.Solver.AllDifferent;
 
+import java.util.BitSet;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -54,12 +55,12 @@ public class testli {
 ////            k.next();
 ////        }
 
-        Set<Integer> a = new HashSet<>();
-        a.add(1);
-        a.add(2);
-        a.add(3);
-        a.add(4);
-        var it = a.iterator();
+//        Set<Integer> a = new HashSet<>();
+//        a.add(1);
+//        a.add(2);
+//        a.add(3);
+//        a.add(4);
+//        var it = a.iterator();
 
 //        while (it.hasNext()) {
 //
@@ -71,7 +72,24 @@ public class testli {
 //            }
 //        }
 
+        BitSet s = new BitSet(5);
+//        s.set(0);
+//        s.set(4);
+//        s.set(7);
 
+//        System.out.println(s.toLongArray());
+
+//        for (int i = 0; i < s.size(); ++i) {
+//            System.out.println(s.get(i) ? 1 : 0);
+//        }
+        int i = s.nextSetBit(0);
+        System.out.println(i);
+//        BitSet a = new BitSet(5);
+//        BitSet b = new BitSet(5);
+//        BitSet c = new BitSet(5);
+//        c.clear();
+//        c.or(a);
+//        c.and(b);
 
     }
 }
