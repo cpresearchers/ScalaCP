@@ -1,26 +1,34 @@
 package cpscala.TSolver.Model.Solver.AllDifferent;
 
 import cpscala.XModel.XVar;
+import scala.Tuple2;
 
+import java.io.PrintStream;
 import java.util.*;
 
 public class AllDifferent_Li extends AllDifferent {
+
     // 总
     BitSet matchedMask;
     BitSet unmatchedMask;
     BitSet tmp;
     // 跨界边一定被删除
     BitSet transboundary;
+    BitSet untransboundary;
     BitSet needCheckEdge;
+    // 删除边
+    BitSet removedEdge;
+    // 无效边
+    BitSet invalidEdge;
     BitSet[] A;
     BitSet[] B;
     BitSet[] C;
     BitSet[] D;
     BitSet t;
-    BitSet tt;
-    BitSet th;
+    //    BitSet tt;
+//    BitSet th;
     BitSet allowedEdges;
-    int arity;
+    //    int arity;
     int maxDomainSize;
     int numBit;
 //    int[] gammaADense;
@@ -44,17 +52,24 @@ public class AllDifferent_Li extends AllDifferent {
     Set<Integer> notGamma = new HashSet<>();
     Set<Integer> freeNodes = new HashSet<>();
 
+    // 两个临时数据结构
+    Set<Integer> notATmp = new HashSet<>();
+    Set<Integer> notGTmp = new HashSet<>();
+
     public AllDifferent_Li(ArrayList<XVar> XV) {
         super(XV);
-        arity = vars.size();
+//        arity = vars.size();
         maxDomainSize = values_to_id.size();
-        numBit = arity * maxDomainSize;
+        numBit = vsize * maxDomainSize;
         matchedMask = new BitSet(numBit);
         unmatchedMask = new BitSet(numBit);
         allowedEdges = new BitSet(numBit);
         tmp = new BitSet(numBit);
         transboundary = new BitSet(numBit);
+        untransboundary = new BitSet(numBit);
         needCheckEdge = new BitSet(numBit);
+        removedEdge = new BitSet(numBit);
+        invalidEdge = new BitSet(numBit);
         A = new BitSet[vsize];
         B = new BitSet[maxDomainSize];
         C = new BitSet[maxDomainSize];
@@ -92,8 +107,8 @@ public class AllDifferent_Li extends AllDifferent {
         }
 
         t = new BitSet(numBit);
-        tt = new BitSet(numBit);
-        th = new BitSet(numBit);
+//        tt = new BitSet(numBit);
+//        th = new BitSet(numBit);
     }
 
 
@@ -101,17 +116,26 @@ public class AllDifferent_Li extends AllDifferent {
         if (!preprocess())  //必然不可解，肯定不用解了，直接返回
             return false;
 
-        // 清
+        // 清理集合
         ANodes.clear();
         gamma.clear();
         notANodes.clear();
         notGamma.clear();
         freeNodes.clear();
 
-        ArrayList<Edge> Max_M = Find_Max_Match();
-//        ArrayList<Integer> freeNodes = new ArrayList<>();
+        // 生成无效边
 
-        for (int i = 0; i < arity; ++i) {
+        // 初始化两个not集合
+        for (int i = 0; i < maxDomainSize; ++i) {
+            notANodes.add(i);
+        }
+        for (int i = 0; i < vsize; ++i) {
+            notGamma.add(i);
+        }
+
+        ArrayList<Edge> Max_M = Find_Max_Match();
+
+        for (int i = 0; i < vsize; ++i) {
             for (int j = 0; j < maxDomainSize; ++j) {
                 var idx = getIndex(i, j);
                 switch (bipartite[i][j]) {
@@ -126,6 +150,7 @@ public class AllDifferent_Li extends AllDifferent {
                         matchedMask.set(idx);
                         break;
                     case 0:
+                        invalidEdge.set(idx);
                         break;
                     default:
                         break;
@@ -139,176 +164,59 @@ public class AllDifferent_Li extends AllDifferent {
                 freeNodes.add(i);
                 ANodes.add(i);
                 notANodes.remove(i);
-            } else {
-                // 默认都不在gamma里
-                notGamma.add(i);
             }
+//            else {
+//                // 默认都不在gamma里
+//                notGamma.remove(i);
+//            }
         }
 
-//        System.out.println("---A---");
-//        for (var a : A) {
-//            System.out.println(a);
-//        }
-//        System.out.println("---B---");
-//        for (var a : B) {
-//            System.out.println(a);
-//        }
-//        System.out.println("---C---");
-//        for (var a : C) {
-//            System.out.println(a);
-//        }
-//        System.out.println("---D---");
-//        for (var a : D) {
-//            System.out.println(a);
-//        }
+        System.out.println("---A---");
+        for (var a : A) {
+            System.out.println(a);
+        }
+        System.out.println("---B---");
+        for (var a : B) {
+            System.out.println(a);
+        }
+        System.out.println("---C---");
+        for (var a : C) {
+            System.out.println(a);
+        }
+        System.out.println("---D---");
+        for (var a : D) {
+            System.out.println(a);
+        }
+        System.out.println("-------");
 
+        System.out.println(freeNodes.toString());
+        System.out.println(notANodes.toString());
+        System.out.println(ANodes.toString());
+        System.out.println(gamma.toString());
+        System.out.println(notGamma.toString());
         // step2
         for (var v : freeNodes) {
             allowedEdges.or(C[v]);
         }
 
+        System.out.println("---allowedEdges---");
+        System.out.println(allowedEdges);
+
+
         // step 3
         //申请一些临时变量用来标记是否结束
         boolean extended = false;
         do {
-//            for (int i = 0; i < vsize; ++i) {
-////                while()
-//                tmp.clear();
-//                tmp.or(allowedEdges);
-//                tmp.and(D[i]);
-//                if (!tmp.isEmpty()) {
-//                    extended = true;
-//                    allowedEdges.or(A[i]);
-//                    gamma.add(i);
-//                }
-//            }
-//            boolean extended = false;
-
-            extended = false;
-            var itGamma = notGamma.iterator();
-
-            while (itGamma.hasNext()) {
-                var i = itGamma.next();
+            var itNotG = notGamma.iterator();
+            while (itNotG.hasNext()) {
+                var i = itNotG.next();
                 tmp.clear();
                 tmp.or(allowedEdges);
                 tmp.and(D[i]);
                 if (!tmp.isEmpty()) {
-                    extended = true;
                     allowedEdges.or(A[i]);
-                    itGamma.remove();
+                    itNotG.remove();
                     gamma.add(i);
-                }
-            }
-
-//            extended = false;
-//            for (int i = 0; i < maxDomainSize; ++i) {
-//                tmp.clear();
-//                tmp.or(allowedEdges);
-//                tmp.and(C[i]);
-//                if (!tmp.isEmpty()) {
-//                    extended = true;
-//                    allowedEdges.or(B[i]);
-//                    ANodes.add(i);
-//                }
-//            }
-
-            extended = false;
-            var itA = notANodes.iterator();
-            while (itA.hasNext()) {
-                var i = itA.next();
-                tmp.clear();
-                tmp.or(allowedEdges);
-                tmp.and(C[i]);
-                while (!tmp.isEmpty()) {
-                    extended = true;
-                    allowedEdges.or(B[i]);
-                    itA.remove();
-                    ANodes.add(i);
-                }
-            }
-
-            extended = false;
-            var itGamma2 = notGamma.iterator();
-
-            while (itGamma2.hasNext()) {
-                var i = itGamma2.next();
-                tmp.clear();
-                tmp.or(allowedEdges);
-                tmp.and(B[i]);
-                if (!tmp.isEmpty()) {
-                    extended = true;
-                    allowedEdges.or(C[i]);
-                    itGamma2.remove();
-                    gamma.add(i);
-                }
-            }
-
-            extended = false;
-            var itA2 = notANodes.iterator();
-            while (itA2.hasNext()) {
-                var i = itA2.next();
-                tmp.clear();
-                tmp.or(allowedEdges);
-                tmp.and(A[i]);
-                while (!tmp.isEmpty()) {
-                    extended = true;
-                    allowedEdges.or(D[i]);
-                    itA2.remove();
-                    ANodes.add(i);
-                }
-            }
-
-        } while (extended);
-
-        // step 5 删掉Dc-A到gamma(A)的边
-        // 方法：从Dc-A的非匹配出边集合，与gmma(A)的非匹配入边的交集就是这种跨界边，原则小循环套大循环，一般而言Dc-A比较小
-
-        tmp.clear();
-        transboundary.clear();
-        var it = notANodes.iterator();
-        while (it.hasNext()) {
-            var a = it.next();
-
-            tmp.or(C[a]);
-            var jt = gamma.iterator();
-            while (jt.hasNext()) {
-                var v = jt.next();
-                tmp.and(D[v]);
-                transboundary.or(tmp);
-            }
-        }
-
-        // step 6 过滤需要检查强连通分量的边
-
-        needCheckEdge.clear();
-        needCheckEdge.or(allowedEdges);
-        needCheckEdge.or(transboundary);
-        needCheckEdge.or(matchedMask);
-        needCheckEdge.flip(0, numBit - 1);
-
-        // step 7 SCC检查
-        int ii = needCheckEdge.nextClearBit(0);
-
-
-        // 第i个位置不为1
-        while (ii != -1) {
-
-            t.clear();
-            th.clear();
-            t.set(ii);
-
-            // 匹配变量
-//        extended = false;
-            var itNotGamma = notGamma.iterator();
-            while (itNotGamma.hasNext()) {
-                var i = itNotGamma.next();
-                tmp.clear();
-                // 注意这里是t
-                tmp.or(t);
-                tmp.and(D[i]);
-                if (!tmp.isEmpty()) {
-                    th.or(A[i]);
-                    itNotGamma.remove();
                 }
             }
 
@@ -317,88 +225,144 @@ public class AllDifferent_Li extends AllDifferent {
             while (itNotA.hasNext()) {
                 var i = itNotA.next();
                 tmp.clear();
-                tmp.or(t);
-                tmp.and(C[i]);
-                while (!tmp.isEmpty()) {
+                tmp.or(allowedEdges);
+                tmp.and(B[i]);
+                if (!tmp.isEmpty()) {
                     extended = true;
-                    tt.or(B[i]);
+                    allowedEdges.or(C[i]);
                     itNotA.remove();
+                    gamma.add(i);
                 }
             }
 
-            // 没有扩展出去，就可以删值了
-            // ??
-            if (!extended) {
+        } while (extended);
 
+        System.out.println(allowedEdges);
+
+        // step 5 删掉Dc-A到gamma(A)的边
+        // 方法：从Dc-A的非匹配出边集合，与gmma(A)的非匹配入边的交集就是这种跨界边，原则小循环套大循环，一般而言Dc-A比较小
+
+        transboundary.clear();
+        var it = notANodes.iterator();
+        while (it.hasNext()) {
+            var a = it.next();
+            var jt = gamma.iterator();
+            while (jt.hasNext()) {
+                var v = jt.next();
+                tmp.clear();
+                tmp.or(C[a]);
+                tmp.and(D[v]);
+                transboundary.or(tmp);
             }
-//            ii = needCheckEdge.nextClearBit(ii);
-            var xx = false;
-//             两处退出条件
-//             ??
-            while (!xx) {
-                // i就是第几个边，需要进行SCC检查
-                var itGamma2 = notGamma.iterator();
-                while (itGamma2.hasNext()) {
-                    var i = itGamma2.next();
+        }
+
+        untransboundary.clear();
+        untransboundary.or(transboundary);
+        untransboundary.flip(0, numBit);
+        System.out.println("-----transboundary-----");
+        System.out.println(transboundary.toString());
+
+        System.out.println("-----untransboundary-----");
+        System.out.println(untransboundary.toString());
+//
+        // step 6 过滤需要检查强连通分量的边
+        System.out.println("-----allowedEdges-----");
+        System.out.println(allowedEdges.toString());
+        System.out.println("-----matchedMask-----");
+        System.out.println(matchedMask.toString());
+        System.out.println("-----invalidEdge-----");
+        System.out.println(invalidEdge.toString());
+
+
+        needCheckEdge.clear();
+        needCheckEdge.or(allowedEdges);
+        needCheckEdge.or(transboundary);
+        needCheckEdge.or(matchedMask);
+        needCheckEdge.or(invalidEdge);
+        needCheckEdge.flip(0, numBit);
+
+        System.out.println("-----needCheckEdge-----");
+        System.out.println(needCheckEdge.toString());
+//
+        System.out.println("-----SCC-----");
+        // step 7 SCC检查
+        int ii = needCheckEdge.nextSetBit(0);
+        // 第i个位置不为1
+        while (ii != -1) {
+            System.out.println(ii);
+            t.clear();
+            t.set(ii);
+
+
+            // 获得边信息这个是非匹配边
+            var v_a = getValue(ii);
+
+            System.out.println(v_a);
+            notATmp.clear();
+            notGTmp.clear();
+
+            for (var a : notANodes) {
+                notATmp.add(a);
+            }
+            for (var v : notGamma) {
+                notGTmp.add(v);
+            }
+            // 拿到1的匹配边，以后对比这个dest就行了
+            var dest = B[v_a._2];
+            System.out.println("----dest----");
+            System.out.println(dest);
+            var inSCC = false;
+
+            do {
+                // 头部扩展
+                // 匹配变量
+                var itNotG2 = notGTmp.iterator();
+                while (itNotG2.hasNext()) {
+                    var i = itNotG2.next();
                     tmp.clear();
-                    // 注意这里是th
-                    tmp.or(th);
+                    tmp.or(t);
+                    tmp.and(D[i]);
+                    if (!tmp.isEmpty()) {
+                        t.or(A[i]);
+                        itNotG2.remove();
+                    }
+                }
+
+                // 匹配值
+                extended = false;
+                var itNotA2 = notATmp.iterator();
+                while (itNotA2.hasNext()) {
+                    var i = itNotA2.next();
+                    tmp.clear();
+                    tmp.or(t);
                     tmp.and(B[i]);
                     if (!tmp.isEmpty()) {
                         extended = true;
-                        allowedEdges.or(C[i]);
-                        itGamma2.remove();
-                        gamma.add(i);
+                        t.or(C[i]);
+                        t.and(untransboundary);
+                        itNotA2.remove();
                     }
                 }
 
-                extended = false;
-                var itA2 = notANodes.iterator();
-                while (itA2.hasNext()) {
-                    var i = itA2.next();
-                    tmp.clear();
-                    tmp.or(allowedEdges);
-                    tmp.and(A[i]);
-                    while (!tmp.isEmpty()) {
-                        extended = true;
-                        allowedEdges.or(D[i]);
-                        itA2.remove();
-                        ANodes.add(i);
-                    }
-                }
+                tmp.clear();
+                tmp.or(dest);
+                tmp.and(t);
+                inSCC = !tmp.isEmpty();
+//                if (!extended) {
+//                    break;
+//                }
+//                if (inSCC) {
+//                    break;
+//                }
+            } while (!inSCC && extended);
 
-                extended = false;
-                var itGamma = notGamma.iterator();
-                while (itGamma.hasNext()) {
-                    var i = itGamma.next();
-                    tmp.clear();
-                    tmp.or(allowedEdges);
-                    tmp.and(D[i]);
-                    if (!tmp.isEmpty()) {
-                        extended = true;
-                        allowedEdges.or(A[i]);
-                        itGamma.remove();
-                        gamma.add(i);
-                    }
-                }
-
-                extended = false;
-                var itA = notANodes.iterator();
-                while (itA.hasNext()) {
-                    var i = itA.next();
-                    tmp.clear();
-                    tmp.or(allowedEdges);
-                    tmp.and(C[i]);
-                    while (!tmp.isEmpty()) {
-                        extended = true;
-                        allowedEdges.or(B[i]);
-                        itA.remove();
-                        ANodes.add(i);
-                    }
-                }
+            if (inSCC) {
+                System.out.println(ii + " in SCC");
+            } else if (!extended) {
+                System.out.println(ii + " is not SCC");
             }
 
-            ii = needCheckEdge.nextClearBit(ii);
+            ii = needCheckEdge.nextSetBit(ii + 1);
         }
 
         return true;
@@ -406,5 +370,10 @@ public class AllDifferent_Li extends AllDifferent {
 
     private int getIndex(int a, int b) {
         return a * maxDomainSize + b;
+    }
+
+    private Tuple2<Integer, Integer> getValue(int index) {
+        return Tuple2.apply(index / maxDomainSize, index % maxDomainSize);
+
     }
 }
