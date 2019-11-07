@@ -100,18 +100,18 @@ public class Test {
 
         ArrayList<XVar> all = new ArrayList<XVar>();
 
-        all.add(new XVar(1, "a", new int[]{1, 2,3,4}));
+        all.add(new XVar(1, "a", new int[]{1, 2,3}));
         all.add(new XVar(2, "b", new int[]{1, 2}));
         all.add(new XVar(3, "c", new int[]{2, 3}));
         all.add(new XVar(4, "d", new int[]{3,4,5}));
         all.add(new XVar(5, "e", new int[]{4, 5}));
-       // all.add(new XVar(6, "f", new int[]{1, 2, 14, 15, 55, 34, 99, 124, 115, 888}));
+        all.add(new XVar(6, "f", new int[]{1, 2, 6, 15, 55, 34, 99, 124, 115, 888}));
 
         //
-        //    all.add(new XVar(1, "a", Array[Int](1)))
-        //    all.add(new XVar(2, "b", Array[Int](1, 2)))
-        //    all.add(new XVar(3, "c", Array[Int](1,2, 3, 4)))
-        //    all.add(new XVar(4, "d", Array[Int](1, 2, 4, 5)))
+//            all.add(new XVar(1, "a", Array[Int](1)))
+//            all.add(new XVar(2, "b", Array[Int](1, 2)))
+//            all.add(new XVar(3, "c", Array[Int](1,2, 3, 4)))
+//            all.add(new XVar(4, "d", Array[Int](1, 2, 4, 5)))
 
 
         all.forEach(i -> i.show());
@@ -130,7 +130,7 @@ public class Test {
         Regin.get_Var().forEach(i ->  i.show());
 
 
-        // Compare();
+         //Compare();
 
     }
 }

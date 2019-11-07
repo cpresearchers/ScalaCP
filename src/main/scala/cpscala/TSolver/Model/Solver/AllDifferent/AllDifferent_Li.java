@@ -134,7 +134,7 @@ public class AllDifferent_Li extends AllDifferent {
             notGamma.add(i);
         }
 
-        Find_Max_Match();
+       // Find_Max_Match();
 
         for (int i = 0; i < vsize; ++i) {
             for (int j = 0; j < maxDomainSize; ++j) {

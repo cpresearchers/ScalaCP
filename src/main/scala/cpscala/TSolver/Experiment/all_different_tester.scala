@@ -84,30 +84,36 @@ object all_different_tester {
     var begin = System.nanoTime();
     var i = 0
     while (i < 100000) {
-      val test = new AllDifferent_Regin(all)
-      test.Solve()
+      val test2 = new AllDifferent_Zhen(all)
+      test2.Solve()
       i = i + 1;
     }
-    var end = System.nanoTime();
+    var end = System.nanoTime()
+    print("Zhen:  ")
     println(end - begin)
 
-    begin = System.nanoTime();
+
+    begin = System.nanoTime()
     i = 0
     while (i < 100000) {
       val test1 = new AllDifferent_Zhang(all)
       test1.Solve()
       i = i + 1;
     }
-    end = System.nanoTime();
+    end = System.nanoTime()
+    print("Zhang:  ")
     println(end - begin)
-    begin = System.nanoTime();
+
+
+    begin = System.nanoTime()
     i = 0
     while (i < 100000) {
-      val test2 = new AllDifferent_Zhen(all)
-      test2.Solve()
+      val test = new AllDifferent_Regin(all)
+      test.Solve()
       i = i + 1;
     }
-    end = System.nanoTime();
+    end = System.nanoTime()
+    print("Regin:  ")
     println(end - begin)
 
 
