@@ -3,10 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="dc861cef-a025-4dc8-bbee-133e5b560ac6" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/all_different_tester.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/all_different_tester.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/CPF_Path_Tester.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/CPF_Path_Tester.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/AllDifferent/AllDifferent_Li.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/AllDifferent/AllDifferent_Li.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/AllDifferent/Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/AllDifferent/Test.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Experiment/all_different_tester$.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Experiment/all_different_tester$.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/CPF_Path_Tester$.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/CPF_Path_Tester$.class" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -95,10 +95,10 @@
     <property name="create.test.in.the.same.root" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Global Libraries" />
+    <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="project.structure.side.proportion" value="0.40441176" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -283,7 +283,8 @@
       <workItem from="1572866044572" duration="2212000" />
       <workItem from="1572935755643" duration="36000" />
       <workItem from="1573090187725" duration="1735000" />
-      <workItem from="1573092124922" duration="1294000" />
+      <workItem from="1573092124922" duration="5704000" />
+      <workItem from="1573106015008" duration="5448000" />
     </task>
     <task id="LOCAL-00001" summary="补充了all_different">
       <created>1569054478508</created>
@@ -390,7 +391,14 @@
       <option name="project" value="LOCAL" />
       <updated>1573092445426</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Alldiff 添加Li">
+      <created>1573093430168</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1573093430168</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -463,15 +471,36 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/AllDifferent/AllDifferent_Li.java</url>
-          <line>62</line>
-          <option name="timeStamp" value="8" />
+          <line>280</line>
+          <option name="timeStamp" value="22" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/AllDifferent/AllDifferent_Li.java</url>
-          <line>136</line>
-          <option name="timeStamp" value="12" />
+          <line>263</line>
+          <option name="timeStamp" value="26" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/AllDifferent/AllDifferent_Li.java</url>
+          <line>372</line>
+          <option name="timeStamp" value="30" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/AllDifferent/AllDifferent_Li.java</url>
+          <line>379</line>
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <condition expression="v &gt; 6" language="JAVA" />
+          <url>file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/AllDifferent/AllDifferent_Li.java</url>
+          <line>257</line>
+          <option name="timeStamp" value="35" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="((AllDifferent_Li)this).Max_M" custom="cpscala.TSolver.Model.Solver.AllDifferent.AllDifferent_Li" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

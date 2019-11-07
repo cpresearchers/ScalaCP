@@ -2,9 +2,7 @@ package cpscala.TSolver.Model.Solver.AllDifferent;
 
 import cpscala.XModel.XVar;
 import scala.Tuple2;
-import scala.collection.immutable.Range;
 
-import java.io.PrintStream;
 import java.util.*;
 
 public class AllDifferent_Li extends AllDifferent {
@@ -134,7 +132,7 @@ public class AllDifferent_Li extends AllDifferent {
             notGamma.add(i);
         }
 
-       // Find_Max_Match();
+        // Find_Max_Match();
 
         for (int i = 0; i < vsize; ++i) {
             for (int j = 0; j < maxDomainSize; ++j) {
@@ -172,36 +170,36 @@ public class AllDifferent_Li extends AllDifferent {
 //            }
         }
 
-        System.out.println("---A---");
+        //System.out.println("---A---");
         for (var a : A) {
-            System.out.println(a);
+            //System.out.println(a);
         }
-        System.out.println("---B---");
+        //System.out.println("---B---");
         for (var a : B) {
-            System.out.println(a);
+            //System.out.println(a);
         }
-        System.out.println("---C---");
+        //System.out.println("---C---");
         for (var a : C) {
-            System.out.println(a);
+            //System.out.println(a);
         }
-        System.out.println("---D---");
+        //System.out.println("---D---");
         for (var a : D) {
-            System.out.println(a);
+            //System.out.println(a);
         }
-        System.out.println("-------");
+        //System.out.println("-------");
 
-        System.out.println(freeNodes.toString());
-        System.out.println(notANodes.toString());
-        System.out.println(ANodes.toString());
-        System.out.println(gamma.toString());
-        System.out.println(notGamma.toString());
+        //System.out.println(freeNodes.toString());
+        //System.out.println(notANodes.toString());
+        //System.out.println(ANodes.toString());
+        //System.out.println(gamma.toString());
+        //System.out.println(notGamma.toString());
         // step2
         for (var v : freeNodes) {
             allowedEdges.or(C[v]);
         }
 
-        System.out.println("---allowedEdges---");
-        System.out.println(allowedEdges);
+        //System.out.println("---allowedEdges---");
+        //System.out.println(allowedEdges);
 
 
         // step 3
@@ -232,13 +230,18 @@ public class AllDifferent_Li extends AllDifferent {
                     extended = true;
                     allowedEdges.or(C[i]);
                     itNotA.remove();
-                    gamma.add(i);
+                    ANodes.add(i);
+                    //gamma.add(i);
                 }
             }
 
         } while (extended);
+//        tmp.clear();
+//        tmp.or(allowedEdges);
+//        tmp.xor(matchedEdges);
+        allowedEdges.and(unmatchedMask);
 
-        System.out.println(allowedEdges);
+        //System.out.println(allowedEdges);
 
         // step 5 删掉Dc-A到gamma(A)的边
         // 方法：从Dc-A的非匹配出边集合，与gmma(A)的非匹配入边的交集就是这种跨界边，原则小循环套大循环，一般而言Dc-A比较小
@@ -259,23 +262,23 @@ public class AllDifferent_Li extends AllDifferent {
 
         // 删除跨界边
         removedEdge.clear();
-        removedEdge.and(transboundary);
+        removedEdge.or(transboundary);
         untransboundary.clear();
         untransboundary.or(transboundary);
         untransboundary.flip(0, numBit);
-        System.out.println("-----transboundary-----");
-        System.out.println(transboundary.toString());
+        //System.out.println("-----transboundary-----");
+        //System.out.println(transboundary.toString());
 
-        System.out.println("-----untransboundary-----");
-        System.out.println(untransboundary.toString());
+        //System.out.println("-----untransboundary-----");
+        //System.out.println(untransboundary.toString());
 //
         // step 6 过滤需要检查强连通分量的边
-        System.out.println("-----allowedEdges-----");
-        System.out.println(allowedEdges.toString());
-        System.out.println("-----matchedMask-----");
-        System.out.println(matchedMask.toString());
-        System.out.println("-----invalidEdge-----");
-        System.out.println(invalidEdge.toString());
+        //System.out.println("-----allowedEdges-----");
+        //System.out.println(allowedEdges.toString());
+        //System.out.println("-----matchedMask-----");
+        //System.out.println(matchedMask.toString());
+        //System.out.println("-----invalidEdge-----");
+        //System.out.println(invalidEdge.toString());
 
 
         needCheckEdge.clear();
@@ -285,23 +288,23 @@ public class AllDifferent_Li extends AllDifferent {
         needCheckEdge.or(invalidEdge);
         needCheckEdge.flip(0, numBit);
 
-        System.out.println("-----needCheckEdge-----");
-        System.out.println(needCheckEdge.toString());
+        //System.out.println("-----needCheckEdge-----");
+        //System.out.println(needCheckEdge.toString());
 //
-        System.out.println("-----SCC-----");
+        //System.out.println("-----SCC-----");
         // step 7 SCC检查
         int ii = needCheckEdge.nextSetBit(0);
         // 第i个位置不为1
         while (ii != -1) {
-            System.out.println(ii);
+            //System.out.println(ii);
             t.clear();
             t.set(ii);
 
 
             // 获得边信息这个是非匹配边
-            var v_a = getValue(ii);
+            var v_a = getValueID(ii);
 
-            System.out.println(v_a);
+            //System.out.println(v_a);
             notATmp.clear();
             notGTmp.clear();
 
@@ -313,8 +316,8 @@ public class AllDifferent_Li extends AllDifferent {
             }
             // 拿到1的匹配边，以后对比这个dest就行了
             var dest = B[v_a._2];
-            System.out.println("----dest----");
-            System.out.println(dest);
+            //System.out.println("----dest----");
+            //System.out.println(dest);
             var inSCC = false;
 
             do {
@@ -361,9 +364,9 @@ public class AllDifferent_Li extends AllDifferent {
             } while (!inSCC && extended);
 
             if (inSCC) {
-                System.out.println(ii + " in SCC");
+                //System.out.println(ii + " in SCC");
             } else if (!extended) {
-                System.out.println(ii + " is not SCC");
+                ////System.out.println(ii + " is not SCC");
                 removedEdge.set(ii);
             }
 
@@ -371,7 +374,7 @@ public class AllDifferent_Li extends AllDifferent {
         }
 
         for (int i = removedEdge.nextSetBit(0); i != -1; i = removedEdge.nextSetBit(i + 1)) {
-            var r = getValue(i);
+            var r = getValueID(i);
             bipartite[r._1][r._2] = 0;
         }
         generate_new_var();
@@ -383,8 +386,9 @@ public class AllDifferent_Li extends AllDifferent {
         return a * maxDomainSize + b;
     }
 
-    private Tuple2<Integer, Integer> getValue(int index) {
-        return Tuple2.apply(index / maxDomainSize, index % maxDomainSize);
+    private Tuple2<Integer, Integer> getValueID(int index) {
+        return Tuple2.apply(index / maxDomainSize,index % maxDomainSize);
 
     }
+
 }
