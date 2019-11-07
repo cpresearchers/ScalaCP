@@ -256,6 +256,9 @@ public class AllDifferent_Li extends AllDifferent {
             }
         }
 
+        // 删除跨界边
+        removedEdge.clear();
+        removedEdge.and(transboundary);
         untransboundary.clear();
         untransboundary.or(transboundary);
         untransboundary.flip(0, numBit);
@@ -360,6 +363,7 @@ public class AllDifferent_Li extends AllDifferent {
                 System.out.println(ii + " in SCC");
             } else if (!extended) {
                 System.out.println(ii + " is not SCC");
+                removedEdge.set(ii);
             }
 
             ii = needCheckEdge.nextSetBit(ii + 1);

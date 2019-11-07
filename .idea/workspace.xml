@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="48a296e1-df47-41ca-bb68-ee7d758e3d3e" name="Default Changelist" comment="Alldiff_Li">
+    <list default="true" id="48a296e1-df47-41ca-bb68-ee7d758e3d3e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/all_different_tester.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Experiment/all_different_tester.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/AllDifferent/AllDifferent_Li.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/AllDifferent/AllDifferent_Li.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Experiment/all_different_tester$.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/classes/cpscala/TSolver/Experiment/all_different_tester$.class" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -279,7 +277,7 @@
       <workItem from="1572484882085" duration="13354000" />
       <workItem from="1572831540212" duration="11771000" />
       <workItem from="1572932650587" duration="11805000" />
-      <workItem from="1573003664968" duration="19630000" />
+      <workItem from="1573003664968" duration="21102000" />
     </task>
     <task id="LOCAL-00001" summary="补充了all_different">
       <created>1569054478508</created>
@@ -379,7 +377,14 @@
       <option name="project" value="LOCAL" />
       <updated>1572960993441</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Alldiff_Li">
+      <created>1573049737149</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1573049737149</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -487,17 +492,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/AllDifferent/AllDifferent_Li.java</url>
-          <line>310</line>
+          <line>313</line>
           <option name="timeStamp" value="30" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/AllDifferent/AllDifferent_Li.java</url>
-          <line>332</line>
+          <line>335</line>
           <option name="timeStamp" value="31" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/scala/cpscala/TSolver/Model/Solver/AllDifferent/AllDifferent_Li.java</url>
-          <line>346</line>
+          <line>349</line>
           <option name="timeStamp" value="32" />
         </line-breakpoint>
       </breakpoints>
