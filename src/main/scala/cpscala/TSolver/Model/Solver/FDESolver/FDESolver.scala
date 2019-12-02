@@ -134,12 +134,12 @@ abstract class FDESolver(fdeM: FDEModel1, propagatorName: String, varType: Strin
       }
     }
 
-    case "STRbit_SSet" => {
+    case "STRbit_Bit" => {
       for (i <- 0 until numTabs) {
         val xc: FDETab = fdeM.tabs(i)
         val ts: Array[Array[Int]] = xc.tuples
         val scope: Array[Var] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
-        tabs(i) = new TableSTRbit_SSet(xc.id, xc.arity, numVars, scope, ts, helper)
+        tabs(i) = new TableSTRbit_Bit(xc.id, xc.arity, numVars, scope, ts, helper)
 
         for (v <- scope) {
           subscription(v.id) += tabs(i)
@@ -147,12 +147,12 @@ abstract class FDESolver(fdeM: FDEModel1, propagatorName: String, varType: Strin
       }
     }
 
-    case "STRbit_2" => {
+    case "CT_Bit" => {
       for (i <- 0 until numTabs) {
         val xc: FDETab = fdeM.tabs(i)
         val ts: Array[Array[Int]] = xc.tuples
         val scope: Array[Var] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
-        tabs(i) = new TableSTRbit_2(xc.id, xc.arity, numVars, scope, ts, helper)
+        tabs(i) = new TableCT_Bit(xc.id, xc.arity, numVars, scope, ts, helper)
 
         for (v <- scope) {
           subscription(v.id) += tabs(i)
@@ -192,11 +192,36 @@ abstract class FDESolver(fdeM: FDEModel1, propagatorName: String, varType: Strin
   var back_start_time = 0L
   var end_time = 0L
 
+  def searchMemory(): Unit={
+    var finished = false
+    //initial propagate
+    var consistent = initialPropagate()
+    System.gc()
+    val mb = 1
+    val runtime = Runtime.getRuntime
+//    println("\nMemory in MB")
+//    println("** Used Memory:  " + (runtime.totalMemory - runtime.freeMemory)/mb)
+//    println("** Free Memory:  " + runtime.freeMemory/mb)
+//    println("** Total Memory: " + runtime.totalMemory/mb)
+//    println("** Max Memory:   " + runtime.maxMemory/mb)
+    helper.memory=(runtime.totalMemory - runtime.freeMemory)/mb
+  }
+
   def search(timeLimit: Long): Unit = {
     var finished = false
 
     //initial propagate
     var consistent = initialPropagate()
+
+//    System.gc()
+//    val mb = 1024*1024
+//    val runtime = Runtime.getRuntime
+//    println("\nMemory in MB")
+//    println("** Used Memory:  " + (runtime.totalMemory - runtime.freeMemory)/mb)
+//    println("** Free Memory:  " + runtime.freeMemory/mb)
+//    println("** Total Memory: " + runtime.totalMemory/mb)
+//    println("** Max Memory:   " + runtime.maxMemory/mb)
+
     end_time = System.nanoTime
     helper.propTime += (end_time - prop_start_time)
 //    println(end_time - prop_start_time)
@@ -242,12 +267,12 @@ abstract class FDESolver(fdeM: FDEModel1, propagatorName: String, varType: Strin
       if (consistent && I.full()) {
         I.show()
         // 若想求出所有解，则将consistent设置为false，且不返回
-                consistent = false
+//                consistent = false
 //        println(helper.filterDomainTime* 1e-9)
 //        println(helper.updateTableTime* 1e-9)
         end_time = System.nanoTime
         helper.time = end_time - start_time
-//        return
+        return
       }
       while (!consistent && !I.empty()) {
         back_start_time = System.nanoTime

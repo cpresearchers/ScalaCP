@@ -207,6 +207,7 @@ class FDEBitSetVar (val name: String, val id: Int, numVars: Int, vals: Array[Int
         //本表已修改
         changed = true
       }
+//      bitDoms(level)(i) = bitDoms(level)(i) & words(i)
       i += 1
     }
     //记录是否改变

@@ -59,7 +59,6 @@ class Table_CTAddition(val id: Int, val arity: Int, val num_vars: Int, val scope
       var diff = false
       val v = scope(i)
       v.mask(localMask(i))
-
       // 本地论域快照与全局论域不同
       // 更新本地论域快照
       // snapshotChanged 即为需要propagate，否则不用propagate
@@ -70,31 +69,45 @@ class Table_CTAddition(val id: Int, val arity: Int, val num_vars: Int, val scope
         }
         j += 1
       }
-
       if (diff) {
         Sval += i
         snapshotChanged = true
       }
-
       if (v.unBind()) {
         Ssup += i
       }
-
       i += 1
     }
+
+    i=arity-1
+    val v = scope(i)
+    v.mask(localMask(i))
+    var diff = false
+    var j = 0
+    while (j < varNumBit(i)) {
+      if (lastMask(i)(j) != localMask(i)(j)) {
+        diff = true
+        lastMask(i)(j) = localMask(i)(j)
+      }
+      j += 1
+    }
+    if (diff) {
+      currTab.intersectWord(helper.vcMap(id).getBitDom())   //变量变化更新currentable
+    }
+
     return snapshotChanged
   }
 
-  def updateTable(): Boolean = {
+  def updateTable(): (Boolean,Boolean) = {
     //    //println(s"      ut cid: ${id}===========>")
-    currTab.intersectWord(helper.vcMap(id).getBitDom())
+
+    var changed=false
     var i = 0
     while (i < Sval.length) {
       val vv: Int = Sval(i)
       val v: Var = scope(vv)
       //      v.mask(localMask(vv))
       //println(s"cid: ${id}, vid: ${v.id}: localMask ${Constants.toFormatBinaryString(localMask(vv)(0))}")
-
       // 获得delta更新数据
       var numValid = 0
       var numRemoved = 0
@@ -123,20 +136,22 @@ class Table_CTAddition(val id: Int, val arity: Int, val num_vars: Int, val scope
         currTab.reverseMask()
       }
 
-      val changed = currTab.intersectWithMask()
+      if(currTab.intersectWithMask()){
+        changed=true
+      }
 
       //传播失败
       if (currTab.isEmpty()) {
         //println(s"update faild!!: ${Thread.currentThread().getName}, cid: ${id}")
         failWeight += 1
-        return false
+        return (false,changed)
       }
 
       i += 1
     }
 
     firstPropagate = false
-    return true
+    return (true,changed)
   }
 
   def filterDomains(y: ArrayBuffer[Var]): Boolean = {
@@ -186,7 +201,7 @@ class Table_CTAddition(val id: Int, val arity: Int, val num_vars: Int, val scope
     val res = updateTable()
 //        val utEnd = System.nanoTime
 //        helper.updateTableTime += utEnd - utStart
-    if (!res) {
+    if (!res._1) {
       return false
     }
 
@@ -194,14 +209,20 @@ class Table_CTAddition(val id: Int, val arity: Int, val num_vars: Int, val scope
     val fi = filterDomains(evt)
 //        val fiEnd = System.nanoTime
 //        helper.filterDomainTime += fiEnd - fiStart
-    if (helper.vcMap(id).removeValues(currTab.getWord())) {
-      if (helper.vcMap(id).size() == 0) {
-        return false
-      }
-      else {
+//    if (helper.vcMap(id).removeValues(currTab.getWord())) {
+//      if (helper.vcMap(id).size() == 0) {
+//        return false
+//      }
+//      else {
+//        evt += helper.vcMap(id)
+//      }
+//
+//    }
+
+    if (res._2) {
+      if (helper.vcMap(id).removeValues(currTab.getWord())) {
         evt += helper.vcMap(id)
       }
-
     }
     //    println(id+"   "+helper.vcMap(id).id+"   "+helper.vcMap(id).size()+"  "+evt.size)
     return fi

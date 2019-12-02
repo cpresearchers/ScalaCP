@@ -7,6 +7,7 @@ import scala.reflect.ClassTag
 
 class HeuDomWdeg[VT <: Var :ClassTag, PT <: Propagator[VT]](numVars: Int, vars: Array[VT], subscription: Array[ArrayBuffer[PT]]) extends Heuristic[VT] {
 
+
   override def selectLiteral(level: Int, levelvdense: Array[Int]): (VT, Int) = {
     var mindmwd = Double.MaxValue
     var minvid = levelvdense(level)

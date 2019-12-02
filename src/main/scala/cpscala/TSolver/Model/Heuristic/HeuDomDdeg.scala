@@ -12,6 +12,7 @@ class HeuDomDdeg[VT <: Var :ClassTag, PT <: Propagator[VT]](numVars: Int, vars: 
     var minvid = levelvdense(level)
 
     var i = level
+
     while (i < numVars) {
       val vid = levelvdense(i)
       val v = vars(vid)

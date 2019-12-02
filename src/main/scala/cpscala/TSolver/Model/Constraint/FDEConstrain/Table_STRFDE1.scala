@@ -14,6 +14,14 @@ class Table_STRFDE1 (val id: Int, val arity: Int, val num_vars: Int, val scope: 
   // 初始化变量时，其论域已经被序列化，诸如[0, 1, ..., var.size()]，所以可以直接用取值作为下标
   private[this] val bitTables = Array.tabulate(arity)(i => new Array[Array[BitSupport]](scope(i).size()))
   // 分界符，二维数组，第一维变量，第二维取值
+  private[this] val last = Array.tabulate(arity)(i => new Array[Int](scope(i).size()))
+  // 分界符栈
+  // 在搜索树初始层，若变量值的last改变了，即更新变量栈顶层的Array（后来想了想，0层不需要保存，因为1层对应的栈顶保存的即是0层初始化GAC后的信息）
+  // 在搜索树的非初始层，当变量值的last第一次发生改变时，将改变前的last值保存在该变量栈顶层Array中
+  //  private[this] val lastLevel = Array.fill[Array[Array[Int]]](num_vars + 1)(Array.tabulate(arity)(i => Array.fill[Int](scope(i).size())(-1)))
+
+  //  private[this] val lastLevel= new Array[Map[(Int,Int),Int]](num_vars+1)
+
   private[this] val lengthTuple = tuples.length
   // 比特元组的数量，tupleLength不能被64整除，要为余数创建一个比特元组
   private[this] val numBit = Math.ceil(lengthTuple.toDouble / Constants.BITSIZE.toDouble).toInt
@@ -46,14 +54,9 @@ class Table_STRFDE1 (val id: Int, val arity: Int, val num_vars: Int, val scope: 
   // 为true说明初始化数据结构完成，可以进行初始删值
   private[this] var isInitial = false
 
-  //  for(i<-0 until num_vars+1){
-  //    lastLevel(i)=Map()
-  //  }
-
   override def setup(): Boolean = {
 
     if (!isInitial) {
-      //      println(s"cons: ${id} setup ===============>")
 
       val tempBitTable = Array.tabulate(arity)(i => {
         Array.fill(scope(i).size())(new ArrayBuffer[BitSupport]())
@@ -114,6 +117,7 @@ class Table_STRFDE1 (val id: Int, val arity: Int, val num_vars: Int, val scope: 
           j -= 1
           val tempBitSupports = tempBitTable(i)(j)
           bitTables(i)(j) = tempBitSupports.toArray
+          last(i)(j) = tempBitSupports.length - 1
         }
         i += 1
       }
@@ -151,6 +155,7 @@ class Table_STRFDE1 (val id: Int, val arity: Int, val num_vars: Int, val scope: 
     while (i < arity) {
       val v = scope(i)
       v.mask(localMask(i))
+
       // 根据新旧mask的比较确定是否有删值
       var diff = false
       var j = 0
@@ -171,7 +176,10 @@ class Table_STRFDE1 (val id: Int, val arity: Int, val num_vars: Int, val scope: 
         Constants.getValues(removeMask(i), removeValues)
         // 寻找新的无效元组
         for (a <- removeValues) {
-          val bitSupports= bitTables(i)(a)
+          val old = last(i)(a)
+          val bitSupports = bitTables(i)(a)
+          //          println(old+"  "+bitSupports.size)
+
           for (l <- 0 to bitSupports.size-1) {
             val ts = bitSupports(l).ts
             val u = bitSupports(l).mask & bitLevel(level)(ts)
@@ -200,7 +208,7 @@ class Table_STRFDE1 (val id: Int, val arity: Int, val num_vars: Int, val scope: 
 
         for (a <- validValues) {
           val bitSupports = bitTables(i)(a)
-          val old = bitSupports.length-1
+          val old = last(i)(a)
           // 寻找支持的比特元组
           var now = old
 
@@ -211,7 +219,11 @@ class Table_STRFDE1 (val id: Int, val arity: Int, val num_vars: Int, val scope: 
           if (now == -1) {
             deleted = true
             v.remove(a)
-            //                        println(s"    cur_cid: ${id}, var: ${v.id}, remove val: ${a}")
+            //                   println(s"    cur_cid: ${id}, var: ${v.id}, remove val: ${a}")
+          } else {
+            if (now != old) {
+              last(i)(a) = now
+            }
           }
         }
         if (deleted) {
@@ -230,6 +242,7 @@ class Table_STRFDE1 (val id: Int, val arity: Int, val num_vars: Int, val scope: 
   }
 
   override def propagate(evt: ArrayBuffer[Var]): Boolean = {
+
     //    val ditStart = System.nanoTime
     deleteInvalidTuple()
     //    val ditEnd = System.nanoTime
