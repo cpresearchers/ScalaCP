@@ -1,80 +1,95 @@
 package cpscala.TSolver.Model.Variable
 
-import cpscala.TSolver.CpUtil.{Constants, INDEX}
+import java.util.concurrent.atomic.{AtomicIntegerArray, AtomicLongArray}
+
 import cpscala.TSolver.CpUtil.SearchHelper.SearchHelper
+import cpscala.TSolver.CpUtil.{Constants, INDEX}
 
-import scala.collection.mutable.ArrayBuffer
-
-class SafeFDEBitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[Int], val helper: SearchHelper) extends Var {
+class SafeFDEBitSetVar(val name: String, val id: Int, num_vars: Int, vals: Array[Int], val helper: SearchHelper) extends PVar {
   // 总层数
-  val numLevel = numVars + 3
+  val numLevel: Int = num_vars + 3
+  // 搜索树当前层数
+  var curLevel: Int = 0
 
+  // 论域初始大小
   override val capacity = vals.length
+  // 论域比特组个数
   val numBit = Math.ceil(capacity.toDouble / Constants.BITSIZE.toDouble).toInt
-  val bitMark = Array.fill[Long](numBit)(0L)
-  val bitDoms = Array.fill[Long](numLevel, numBit)(0L)
-  var word=  Array.fill(numBit)(0L)
+  // 临时比特论域
+  val bitTmp: Array[Long] = Array.fill[Long](numBit)(Constants.ALLONELONG)
+  // 最后一个比特组的末尾无效位置清0
+  bitTmp(numBit - 1) <<= (Constants.BITSIZE - capacity % Constants.BITSIZE)
+  // 原子比特论域
+  val bitDoms: Array[AtomicLongArray] = Array.fill[AtomicLongArray](numLevel)(new AtomicLongArray(bitTmp))
 
-  // 初始化第0级的bitDom
+  val bitMark = new AtomicLongArray(numBit)
   var ii = 0
   while (ii < numBit) {
-    bitDoms(0)(ii) = Constants.ALLONELONG
+    bitMark.set(ii, 0)
     ii += 1
   }
-  bitDoms(0)(numBit - 1) <<= (Constants.BITSIZE - capacity % Constants.BITSIZE)
-  word(numBit - 1) <<= (Constants.BITSIZE - capacity % Constants.BITSIZE)
 
   override def getNumBit(): Int = numBit
 
   override def newLevel(): Int = {
-    val pre_level = level
-    level += 1
+    val pre_level = curLevel
+    curLevel += 1
 
     var i = 0
     while (i < numBit) {
-      bitDoms(level)(i) = bitDoms(pre_level)(i)
+      bitDoms(curLevel).set(i, bitDoms(pre_level).get(i))
       i += 1
     }
-
-    return level
+    return curLevel
   }
 
   override def backLevel(): Int = {
     // 若变量在当前层赋值，则撤销赋值
-    if (bindLevel == level) {
+    if (bindLevel == curLevel) {
       bindLevel = Constants.kINTINF
     }
-    level -= 1
-    return level
+    curLevel -= 1
+    return curLevel
   }
 
   //提交改动
   override def restrict(): Unit = {
+    var previousBits: Long = 0L
+    var newBits: Long = 0L
+
     var i = 0
     while (i < numBit) {
-      bitDoms(level)(i) &= bitMark(i)
+      do {
+        previousBits = bitMark.get(i)
+        // Clear the relevant bit
+        newBits = bitDoms(curLevel).get(i) & previousBits
+        // Try to set the new bit mask, and loop round until successful
+      } while (!bitDoms(curLevel).compareAndSet(curLevel, previousBits, newBits))
+      //      cur_size.set(java.lang.Long.bitCount(newBits))
       i += 1
     }
   }
 
   override def size(): Int = {
-    var curr_size = 0
-    for (a <- bitDoms(level)) {
-      curr_size += java.lang.Long.bitCount(a)
+    var cursize = 0
+    var i = 0
+    while (i < numBit) {
+      cursize += java.lang.Long.bitCount(bitDoms(curLevel).get(i))
+      i += 1
     }
-    //    bitDoms(level).foreach(a => curr_size += java.lang.Long.bitCount(a))
-    return curr_size
+
+    return cursize
   }
 
   override def bind(a: Int): Unit = {
     val (x, y) = INDEX.getXY(a)
     var i = 0
     while (i < numBit) {
-      bitDoms(level)(i) = 0
+      bitDoms(curLevel).set(i, 0)
       i += 1
     }
-    bitDoms(level)(x) = Constants.MASK1(y)
-    bindLevel = level
+    bitDoms(curLevel).set(x, Constants.MASK1(y))
+    bindLevel = curLevel
   }
 
   override def isBind(): Boolean = {
@@ -83,38 +98,54 @@ class SafeFDEBitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[
 
   override def remove(a: Int): Unit = {
     val (x, y) = INDEX.getXY(a)
-    bitDoms(level)(x) &= Constants.MASK0(y)
+    var previousBits: Long = 0L
+    var newBits: Long = 0L
+
+    do {
+      previousBits = bitDoms(curLevel).get(x)
+      // Clear the relevant bit
+      newBits = previousBits & Constants.MASK0(y)
+      // Try to set the new bit mask, and loop round until successful
+    } while (!bitDoms(curLevel).compareAndSet(x, previousBits, newBits))
   }
 
   override def isEmpty(): Boolean = {
-    for (a <- bitDoms(level)) {
-      if (a != 0) {
+    var i = 0
+    while (i < numBit) {
+      if (bitDoms(curLevel).get(i) != 0L) {
         return false
       }
+      i += 1
     }
+
     return true
   }
 
   override def clearMark(): Unit = {
     var i = 0
     while (i < numBit) {
-      bitMark(i) = 0L
+      bitMark.set(i, 0L)
       i += 1
     }
   }
 
   override def mark(a: Int): Unit = {
     val (x, y) = INDEX.getXY(a)
-    // mark中没有并且没有被删掉才加入mark
-    if ((bitMark(x) & Constants.MASK1(y) & bitDoms(level)(x)) == 0L) {
-      bitMark(x) |= Constants.MASK1(y)
-    }
+    var previousBits: Long = 0L
+    var newBits: Long = 0L
+
+    do {
+      previousBits = bitMark.get(x)
+      // Clear the relevant bit
+      newBits = previousBits | Constants.MASK1(y)
+      // Try to set the new bit mask, and loop round until successful
+    } while (!bitDoms(curLevel).compareAndSet(x, previousBits, newBits))
   }
 
   override def fullMark(): Boolean = {
     var i = 0
     while (i < numBit) {
-      if (bitMark(i) != bitDoms(level)(i)) {
+      if (bitMark.get(i) != bitDoms(curLevel).get(i)) {
         return false
       }
       i += 1
@@ -123,18 +154,16 @@ class SafeFDEBitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[
   }
 
   override def contains(a: Int): Boolean = {
-    if (a == Constants.INDEXOVERFLOW) {
-      return false
-    }
     val (x, y) = INDEX.getXY(a)
-    return (bitDoms(level)(x) & Constants.MASK1(y)) != 0L
+    return (bitDoms(curLevel).get(x) & Constants.MASK1(y)) != 0L
   }
 
   override def minValue(): Int = {
     var i = 0
     while (i < numBit) {
-      if (bitDoms(level)(i) != 0L) {
-        return INDEX.getIndex(i, Constants.FirstLeft(bitDoms(level)(i)))
+      val a = bitDoms(curLevel).get(i)
+      if (a != 0L) {
+        return i * Constants.BITSIZE + Constants.FirstLeft(a)
       }
       i += 1
     }
@@ -143,13 +172,16 @@ class SafeFDEBitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[
 
   override def nextValue(a: Int): Int = {
     var b = a + 1
-    while (b < capacity) {
-      if (contains(b))
-        return b
-      else
-        b += 1
+    while (b < capacity && !contains(b)) {
+      b += 1
     }
-    return Constants.INDEXOVERFLOW
+
+    if (b < capacity) {
+      return b
+    }
+    else {
+      return Constants.INDEXOVERFLOW
+    }
   }
 
   override def lastValue(): Int = ???
@@ -158,78 +190,86 @@ class SafeFDEBitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[
 
   override def maxValue(a: Int): Int = ???
 
-  override def get(index: Int): Int = ???
-
-  override def mask(m: Array[Long]): Unit = {
+  override def mask(mask: Array[Long]): Unit = {
     var i = 0
     while (i < numBit) {
-      m(i) = bitDoms(level)(i)
+      mask(i) = bitDoms(curLevel).get(i)
       i += 1
     }
   }
 
-  override def getValidValues(values: ArrayBuffer[Int]): Int = {
-    values.clear()
-    var j = 0
-    var end = 0
-    var i = 0
-    var base = 0
-
-    while (i < numBit) {
-      val a = bitDoms(level)(i)
-      base = i * Constants.BITSIZE
-      if (a != 0) {
-        j = Constants.FirstLeft(a)
-        end = Constants.FirstRight(a)
-        while (j <= end) {
-          if ((a & Constants.MASK1(j)) != 0) {
-            values += (j + base)
-          }
-          j += 1
-        }
-      }
-      i += 1
-    }
-    return values.length
-  }
-
-  override def removeValues(words:Array[Long]):Boolean={
-    //本表默认未修改
+  override def submitMask(mask: Array[Long]): Boolean = {
+    var previousBits: Long = 0L
+    var newBits: Long = 0L
     var changed = false
-    var w = 0L
-    var currentWords = 0L
     var i = 0
     while (i < numBit) {
-      currentWords = bitDoms(level)(i)
-      w = currentWords & words(i)
-      if (w != currentWords) {
-        bitDoms(level)(i) = w
-        //本表已修改
+      do {
+        previousBits = bitDoms(curLevel).get(i)
+        // Clear the relevant bit
+        newBits = previousBits & mask(i)
+        // Try to set the new bit mask, and loop round until successful
+      } while (!bitDoms(curLevel).compareAndSet(i, previousBits, newBits))
+
+      if (previousBits != newBits) {
         changed = true
       }
+
       i += 1
     }
-    //记录是否改变
     return changed
   }
 
-  override def getBitDom(): Array[Long] = {
+  override def submitMaskAndIsSame(mask: Array[Long]): (Boolean, Boolean) = {
+    var previousBits: Long = 0L
+    var newBits: Long = 0L
+    var changed = false
+    var same = true
     var i = 0
     while (i < numBit) {
-      word(i)=bitDoms(level)(i)
-      i+=1
+      do {
+        previousBits = bitDoms(curLevel).get(i)
+        // Clear the relevant bit
+        newBits = previousBits & mask(i)
+        // Try to set the new bit mask, and loop round until successful
+      } while (!bitDoms(curLevel).compareAndSet(i, previousBits, newBits))
+
+      if (previousBits != newBits) {
+        changed = true
+      }
+
+      if (mask(i) != newBits) {
+        same = false
+      }
+
+      i += 1
     }
-    return word
+    return (changed, same)
   }
 
-  //  def getLastRemovedValuesByMask(oldSize: Long, vals: ArrayBuffer[Int]): Int = ???
+  override def submitMaskAndGet(mask: Array[Long]): Long = ???
+
+  override def getAndSubmitMask(mask: Array[Long]): Long = ???
 
   override def show(): Unit = {
-    print("var = " + id + ", level = " + level + " ")
-    for (i <- 0 until numBit) {
-      printf("%x ", bitDoms(level)(i))
+    println(s"     var: ${id}, size: ${size()}")
+    var i = 0
+    while (i < numBit) {
+      //      println(s"     mask${i}: ${Constants.toFormatBinaryString(bitDoms(curLevel).get(i))}")
+      i += 1
     }
-    println()
+  }
+
+  override def get(index: Int): Int = ???
+
+  override def isChanged(mask: Array[Long]): Boolean = {
+    var ii = 0
+    while (ii < numBit) {
+      if (bitDoms(level).get(ii) != mask(ii)) {
+        return true
+      }
+      ii += 1
+    }
+    return false
   }
 }
-

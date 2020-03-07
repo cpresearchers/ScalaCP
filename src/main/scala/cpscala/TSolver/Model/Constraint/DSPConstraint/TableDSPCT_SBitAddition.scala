@@ -6,7 +6,7 @@ import cpscala.TSolver.Model.Variable.PVar
 
 import scala.collection.mutable.ArrayBuffer
 
-class TableDSPCT_SBitAddition (val id: Int, val arity: Int, val num_vars: Int, val scope: Array[PVar], val tuples: Array[Array[Int]], val helper: DSPSearchHelper) extends DSPPropagator {
+class TableDSPCT_SBitAddition(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[PVar], val tuples: Array[Array[Int]], val helper: DSPSearchHelper) extends DSPPropagator {
   val currTab = new RSBitSet(id, tuples.length, num_vars)
   val supports = new Array[Array[Array[Long]]](arity)
   val numBit = currTab.numBit
@@ -14,6 +14,7 @@ class TableDSPCT_SBitAddition (val id: Int, val arity: Int, val num_vars: Int, v
   // 活动变量
   val Xevt = new ArrayBuffer[PVar](arity)
   Xevt.clear()
+  level = 0
 
   for (vv <- 0 until arity) {
     supports(vv) = Array.ofDim[Long](scope(vv).size, numBit)
