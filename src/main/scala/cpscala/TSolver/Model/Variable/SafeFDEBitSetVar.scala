@@ -5,7 +5,7 @@ import cpscala.TSolver.CpUtil.SearchHelper.SearchHelper
 
 import scala.collection.mutable.ArrayBuffer
 
-class SafeFDEBitSetVar (val name: String, val id: Int, numVars: Int, vals: Array[Int], val helper: SearchHelper) extends Var {
+class SafeFDEBitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[Int], val helper: SearchHelper) extends PVar {
   // 总层数
   val numLevel = numVars + 3
 
@@ -13,7 +13,7 @@ class SafeFDEBitSetVar (val name: String, val id: Int, numVars: Int, vals: Array
   val numBit = Math.ceil(capacity.toDouble / Constants.BITSIZE.toDouble).toInt
   val bitMark = Array.fill[Long](numBit)(0L)
   val bitDoms = Array.fill[Long](numLevel, numBit)(0L)
-  var word=  Array.fill(numBit)(0L)
+  var word = Array.fill(numBit)(0L)
 
   // 初始化第0级的bitDom
   var ii = 0
@@ -23,6 +23,10 @@ class SafeFDEBitSetVar (val name: String, val id: Int, numVars: Int, vals: Array
   }
   bitDoms(0)(numBit - 1) <<= (Constants.BITSIZE - capacity % Constants.BITSIZE)
   word(numBit - 1) <<= (Constants.BITSIZE - capacity % Constants.BITSIZE)
+
+  // 用于多线程的时间戳部分
+  var tmpIndexedMask: Tuple2[Int, Long]
+
 
   override def getNumBit(): Int = numBit
 
@@ -193,7 +197,7 @@ class SafeFDEBitSetVar (val name: String, val id: Int, numVars: Int, vals: Array
     return values.length
   }
 
-  override def removeValues(words:Array[Long]):Boolean={
+  override def removeValues(words: Array[Long]): Boolean = {
     //本表默认未修改
     var changed = false
     var w = 0L
@@ -216,12 +220,12 @@ class SafeFDEBitSetVar (val name: String, val id: Int, numVars: Int, vals: Array
   override def getBitDom(): Array[Long] = {
     var i = 0
     while (i < numBit) {
-      word(i)=bitDoms(level)(i)
-      i+=1
+      word(i) = bitDoms(level)(i)
+      i += 1
     }
     return word
   }
-
+ 
   //  def getLastRemovedValuesByMask(oldSize: Long, vals: ArrayBuffer[Int]): Int = ???
 
   override def show(): Unit = {
