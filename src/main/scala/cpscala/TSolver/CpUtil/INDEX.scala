@@ -18,4 +18,5 @@ object INDEX {
     (in2D.x << Constants.DIVBIT) + in2D.y
   }
 
+  val overflow = -1
 }

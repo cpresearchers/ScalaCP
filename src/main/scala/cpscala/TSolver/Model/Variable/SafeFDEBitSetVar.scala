@@ -1,11 +1,13 @@
 package cpscala.TSolver.Model.Variable
 
+import java.util.concurrent.atomic.{AtomicInteger, AtomicIntegerArray, AtomicLong, AtomicLongArray}
+
 import cpscala.TSolver.CpUtil.{Constants, INDEX}
-import cpscala.TSolver.CpUtil.SearchHelper.SearchHelper
+import cpscala.TSolver.CpUtil.SearchHelper.{PFDESearchHelper, SearchHelper}
 
 import scala.collection.mutable.ArrayBuffer
 
-class SafeFDEBitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[Int], val helper: SearchHelper) extends PVar {
+class SafeFDEBitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[Int], val helper: PFDESearchHelper) extends PVar {
   // 总层数
   val numLevel = numVars + 3
 
@@ -13,24 +15,43 @@ class SafeFDEBitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[
   val numBit = Math.ceil(capacity.toDouble / Constants.BITSIZE.toDouble).toInt
   val bitMark = Array.fill[Long](numBit)(0L)
   val bitDoms = Array.fill[Long](numLevel, numBit)(0L)
+  //  val bitDoms = Array.fill[AtomicLongArray](numLevel)(new AtomicLongArray(numBit))
   var word = Array.fill(numBit)(0L)
 
   // 初始化第0级的bitDom
   var ii = 0
   while (ii < numBit) {
     bitDoms(0)(ii) = Constants.ALLONELONG
+    //    bitDoms(0).set(ii, Constants.ALLONELONG)
     ii += 1
   }
   bitDoms(0)(numBit - 1) <<= (Constants.BITSIZE - capacity % Constants.BITSIZE)
+  //  bitDoms(0).set(numBit - 1, bitDoms(0).get(numBit) << (Constants.BITSIZE - capacity % Constants.BITSIZE))
   word(numBit - 1) <<= (Constants.BITSIZE - capacity % Constants.BITSIZE)
 
   // 用于多线程的时间戳部分
-  var tmpIndexedMask: Tuple2[Int, Long]
+  //记录stamp所对应的值
+  // 值为正就是仅删除值
+  // 值为负就是仅保留值
+  val stamp2Val = ArrayBuffer.fill[Int](capacity)(-1)
+  // 记录删值时的stamp
+  // 这里的值做为索引不分正负
+  //  val val2Stamp = Array.fill[Long](capacity)(-1)
+  val val2Stamp = new AtomicIntegerArray(capacity)
+  // 原子时间戳
+  val atomicStamp = new AtomicInteger(0)
 
+  var baseStamp = 0
+  val stamps = Array.fill(numVars)(Constants.INDEXOVERFLOW)
+  var topStamp: Int
 
   override def getNumBit(): Int = numBit
 
   override def newLevel(): Int = {
+    // 检查时间戳
+    //    checkStamps()
+    stamps(level) = atomicStamp.get()
+
     val pre_level = level
     level += 1
 
@@ -44,12 +65,18 @@ class SafeFDEBitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[
   }
 
   override def backLevel(): Int = {
+    // 检查时间戳
+
     // 若变量在当前层赋值，则撤销赋值
     if (bindLevel == level) {
       bindLevel = Constants.kINTINF
     }
     level -= 1
+
+    atomicStamp.set(stamps(level))
+
     return level
+
   }
 
   //提交改动
@@ -85,10 +112,78 @@ class SafeFDEBitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[
     bindLevel != 1
   }
 
+  // safe remove value a
+  // 安全删值版本
   override def remove(a: Int): Unit = {
-    val (x, y) = INDEX.getXY(a)
-    bitDoms(level)(x) &= Constants.MASK0(y)
+
+    // 一个值a的stamp有效 那么a.s
+    if (CheckValidityByStamp(a, val2Stamp)) {
+      // bitdom上删值
+      val (x, y) = INDEX.getXY(a)
+      bitDoms(level)(x) &= Constants.MASK0(y)
+
+      // 再原子增一次
+      // 由于不用
+      val2Stamp.set(a, s)
+
+      // 全局时间戳自增
+      val s = atomicStamp.incrementAndGet()
+
+    }
+
+    //    if (val2Stamp.updateAndGet(a, x -> x < baseStamp ? baseStamp: x) == newValue)
+
+    //    val previousBits = bitDoms(level)(x)
+    //    // Clear the relevant bit
+    //    val newBits = Constants.MASK0(y) & previousBits
+    //    // Try to set the new bit mask, and loop round until successful
+    //    return !bitDoms(level).compareAndSet(level, previousBits, newBits)
+
   }
+
+
+  //  def tryIncrementAndGetIfLessThan(stamps: AtomicLong, upperbound: Int): Boolean = {
+  //    while (true) {
+  //      val current = stamps.get()
+  //      if (current >= baseStamp) return false
+  //      if (stamps.compareAndSet(current, Long.MaxValue)) return true
+  //    }
+  //  }
+
+
+  // 原子地检查一个值是否有效
+  def CheckValidityByStamp(index: Int, atomicStamps: AtomicIntegerArray): Boolean = {
+    var capa = 0
+    do {
+      capa = atomicStamps.get(index)
+      // 若大于等于baseStamp 则该值已删除返回false
+      if (capa <= baseStamp) return false
+    } while (!atomicStamps.compareAndSet(index, capa, Int.MaxValue))
+    return true
+  }
+
+  // 原子地检查一个值是否有效，可与下一个函数合并
+  def CheckValidityByStamp(index: Int): Boolean = {
+    var capa = 0
+    do {
+      capa = val2Stamp.get(index)
+      // 若大于等于baseStamp 则该值已删除返回false
+      if (capa <= baseStamp) return false
+    } while (!val2Stamp.compareAndSet(index, capa, Int.MaxValue))
+    return true
+  }
+
+  def IncreaseStampAndMarkValue(index: Int, atomicStamps: AtomicIntegerArray): Boolean = {
+    var capa = 0
+    do {
+      capa = atomicStamp.get()
+      val2Stamp.set(index, capa)
+      stamp2Val(capa) = index
+    } while (!atomicStamps.compareAndSet(index, capa, Int.MaxValue))
+  }
+
+  // return true if the assignment was made, false otherwise
+  def greaterThanCAS(index: Int, newValue: Int): Boolean = val2Stamp.getAndUpdate(index, (x) => if (x < newValue) newValue else x) < newValue
 
   override def isEmpty(): Boolean = {
     for (a <- bitDoms(level)) {
@@ -225,7 +320,7 @@ class SafeFDEBitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[
     }
     return word
   }
- 
+
   //  def getLastRemovedValuesByMask(oldSize: Long, vals: ArrayBuffer[Int]): Int = ???
 
   override def show(): Unit = {
