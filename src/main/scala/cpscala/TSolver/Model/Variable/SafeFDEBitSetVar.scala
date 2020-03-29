@@ -37,10 +37,19 @@ class SafeFDEBitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[
   // 记录删值时的stamp
   // 这里的值做为索引不分正负
   //  val val2Stamp = Array.fill[Long](capacity)(-1)
+  // 初值为最大值
   val val2Stamp = new AtomicIntegerArray(capacity)
+  var ii = 0
+  while (ii < capacity) {
+    val2Stamp.set(ii, Int.MaxValue)
+    ii += 1
+  }
+
   // 原子时间戳
+  // 大于等于此值都是在的
   val atomicStamp = new AtomicInteger(0)
 
+  // 此层的第一个
   var baseStamp = 0
   val stamps = Array.fill(numVars)(Constants.INDEXOVERFLOW)
   var topStamp: Int
@@ -192,6 +201,11 @@ class SafeFDEBitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[
       }
     }
     return true
+  }
+
+  def getDeltaValues(s: Int) = Int {
+    return
+
   }
 
   override def clearMark(): Unit = {
