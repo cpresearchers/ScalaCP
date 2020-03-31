@@ -133,11 +133,11 @@ class SafeFDEBitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[
 
       // 再原子增一次
       // 由于不用
-      val2Stamp.set(a, s)
+      //      val2Stamp.set(a, s)
 
       // 全局时间戳自增
-      val s = atomicStamp.incrementAndGet()
-
+      //      val s = atomicStamp.incrementAndGet()
+      IncreaseStampAndMarkValue(a, atomicStamp)
     }
 
     //    if (val2Stamp.updateAndGet(a, x -> x < baseStamp ? baseStamp: x) == newValue)
@@ -182,13 +182,13 @@ class SafeFDEBitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[
     return true
   }
 
-  def IncreaseStampAndMarkValue(index: Int, atomicStamps: AtomicIntegerArray): Boolean = {
+  def IncreaseStampAndMarkValue(index: Int, atomicStamps: AtomicInteger): Boolean = {
     var capa = 0
     do {
       capa = atomicStamp.get()
       val2Stamp.set(index, capa)
       stamp2Val(capa) = index
-    } while (!atomicStamps.compareAndSet(index, capa, Int.MaxValue))
+    } while (!atomicStamps.compareAndSet(capa, Int.MaxValue))
   }
 
   // return true if the assignment was made, false otherwise
@@ -203,10 +203,10 @@ class SafeFDEBitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[
     return true
   }
 
-  def getDeltaValues(s: Int) = Int {
-    return
-
-  }
+//  def getDeltaValues(s: Int) = Int {
+//    return
+//
+//  }
 
   override def clearMark(): Unit = {
     var i = 0

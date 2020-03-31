@@ -1,9 +1,11 @@
 package cpscala.TSolver.Model.Variable
 
-import java.util.concurrent.atomic.AtomicLongArray
+import java.util.concurrent.atomic.{AtomicInteger, AtomicIntegerArray, AtomicLongArray}
 
 import cpscala.TSolver.CpUtil.{Constants, INDEX}
 import cpscala.TSolver.CpUtil.SearchHelper.SearchHelper
+
+import scala.collection.mutable.ArrayBuffer
 
 class SafeSparseSetVar(val name: String, val id: Int, num_vars: Int, vals: Array[Int], val helper: SearchHelper) extends PVar {
   // 总层数
@@ -28,6 +30,32 @@ class SafeSparseSetVar(val name: String, val id: Int, num_vars: Int, vals: Array
     bitMark.set(ii, 0)
     ii += 1
   }
+
+  // 用于多线程的时间戳部分
+  //记录stamp所对应的值
+  // 值为正就是仅删除值
+  // 值为负就是仅保留值
+  val stamp2Val = ArrayBuffer.fill[Int](capacity)(Constants.INDEXOVERFLOW)
+  // 记录删值时的stamp
+  // 这里的值做为索引不分正负
+  //  val val2Stamp = Array.fill[Long](capacity)(-1)
+  // 初值为最大值
+  val val2Stamp = new AtomicIntegerArray(capacity)
+  val denseStamp = new AtomicIntegerArray(capacity)
+  ii = 0
+  while (ii < capacity) {
+    val2Stamp.set(ii, Constants.IntMax)
+    ii += 1
+  }
+
+  // 原子时间戳
+  // 大于等于此值都是在的
+  val atomicStamp = new AtomicInteger(0)
+
+  // 此层的第一个
+  var baseStamp = 0
+  val stamps = Array.fill(capacity)(Constants.INDEXOVERFLOW)
+
 
   override def getNumBit(): Int = numBit
 
@@ -96,17 +124,65 @@ class SafeSparseSetVar(val name: String, val id: Int, num_vars: Int, vals: Array
     bindLevel != 1
   }
 
-  override def remove(a: Int): Unit = {
-    val (x, y) = INDEX.getXY(a)
-    var previousBits: Long = 0L
-    var newBits: Long = 0L
+  // 传入的一定是正数
+  def getValueByPositiveStamp(s: Int): Int = {
+    return stamp2Val(s)
+  }
 
+  // 第一个返回值是变量值，
+  // 第二个返回值是动作：
+  // 0 = 未知
+  // 1 = 删值
+  // 2 = 留值
+  // 3 = 尚未写入
+  def getValueByStamp(s: Int): (Int, Int) = {
+    val a = stamp2Val(s)
+    if (s < 0) {
+      return (a, 2)
+    } else if (s > 0) {
+      //
+      if (a == -1) {
+        return (a, 3)
+      } else {
+        return (a, 1)
+      }
+    } else {
+      return (Constants.IntMin, 0)
+    }
+  }
+
+  override def remove(a: Int): Unit = {
+    //    val (x, y) = INDEX.getXY(a)
+    //    var previousBits: Long = 0L
+    //    var newBits: Long = 0L
+    //
+    //    do {
+    //      previousBits = bitDoms(curLevel).get(x)
+    //      // Clear the relevant bit
+    //      newBits = previousBits & Constants.MASK0(y)
+    //      // Try to set the new bit mask, and loop round until successful
+    //    } while (!bitDoms(curLevel).compareAndSet(x, previousBits, newBits))
+  }
+
+  // 原子地检查一个值是否有效，可与下一个函数合并
+  def CheckValidityByStamp(index: Int): Boolean = {
+    var capa = 0
     do {
-      previousBits = bitDoms(curLevel).get(x)
-      // Clear the relevant bit
-      newBits = previousBits & Constants.MASK0(y)
-      // Try to set the new bit mask, and loop round until successful
-    } while (!bitDoms(curLevel).compareAndSet(x, previousBits, newBits))
+      capa = val2Stamp.get(index)
+      // 若大于等于baseStamp 则该值已删除返回false
+      if (capa <= baseStamp) return false
+    } while (!val2Stamp.compareAndSet(index, capa, Constants.IntMax))
+    return true
+  }
+
+  def IncreaseStampAndMarkValue(index: Int, atomicStamps: AtomicInteger): Unit = {
+    var capa = 0
+    do {
+      capa = atomicStamp.get()
+      val2Stamp.set(index, capa)
+    } while (!atomicStamps.compareAndSet(capa, capa + 1))
+    //计算成功后再添入，不成功不添入stamp2Val默认为-1
+    stamp2Val(capa + 1) = index
   }
 
   override def isEmpty(): Boolean = {
