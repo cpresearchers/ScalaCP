@@ -78,7 +78,7 @@ class SafeFDEBitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[
 
     // 若变量在当前层赋值，则撤销赋值
     if (bindLevel == level) {
-      bindLevel = Constants.kINTINF
+      bindLevel = Constants.kINTMAXINF
     }
     level -= 1
 

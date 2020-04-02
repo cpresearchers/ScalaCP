@@ -48,7 +48,7 @@ class SafeSimpleBitVar(val name: String, val id: Int, num_vars: Int, vals: Array
     // 若变量在当前层赋值，则撤销赋值
     level_size(cur_level) = -1
     if (binded_level == cur_level) {
-      binded_level = Constants.kINTINF
+      binded_level = Constants.kINTMAXINF
     }
 
     // 当前层size置0，这一层不要了

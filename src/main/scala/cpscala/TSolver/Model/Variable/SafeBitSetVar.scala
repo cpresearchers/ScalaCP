@@ -46,7 +46,7 @@ class SafeBitSetVar(val name: String, val id: Int, num_vars: Int, vals: Array[In
   override def backLevel(): Int = {
     // 若变量在当前层赋值，则撤销赋值
     if (bindLevel == curLevel) {
-      bindLevel = Constants.kINTINF
+      bindLevel = Constants.kINTMAXINF
     }
     curLevel -= 1
     return curLevel

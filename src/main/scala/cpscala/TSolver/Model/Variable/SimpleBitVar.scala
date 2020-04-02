@@ -41,7 +41,7 @@ class SimpleBitVar(val name: String, val id: Int, num_vars: Int, vals: Array[Int
     // 若变量在当前层赋值，则撤销赋值
     level_size(helper.level) = level_size(helper.level)
     if (bindLevel == helper.level) {
-      bindLevel = Constants.kINTINF
+      bindLevel = Constants.kINTMAXINF
     }
     return helper.level
   }

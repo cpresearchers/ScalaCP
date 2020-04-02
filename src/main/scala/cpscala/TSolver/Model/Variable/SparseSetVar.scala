@@ -62,7 +62,7 @@ class SparseSetVar(val name: String, val id: Int, num_vars: Int, vals: Array[Int
     // level在Solver中已经先减了，所以level是旧层
     sizeLevel(level) = -1
     if (bindLevel == level) {
-      bindLevel = Constants.kINTINF
+      bindLevel = Constants.kINTMAXINF
     }
 
     level -= 1

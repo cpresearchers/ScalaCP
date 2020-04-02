@@ -9,7 +9,8 @@ object Constants {
   @inline val INDEXOVERFLOW: Int = -1
   val kINDEXOVERFLOW: Int = -1
   val ALLONELONG: Long = 0xFFFFFFFFFFFFFFFFL
-  val kINTINF: Int = 0x3f3f3f3f
+  val kINTMAXINF: Int = 0x3f3f3f3f
+  val kINTMININF: Int = -0x3f3f3f3f
   val kLONGINF: Long = 0x3f3f3f3f3f3f3f3fL
 
   //高位的index为0
@@ -130,13 +131,13 @@ object Constants {
   }
 
 
-  // 记录最大最小值
-  val IntMax = 0x3f3f3f3f
-  val IntMin = -IntMax
+  //  // 记录最大最小值
+  //  val IntMax = 0x3f3f3f3f
+  //  val IntMin = -IntMax
 
 
   // 分别记录保留值，删除值，未记录值
-  object ValType extends Enumeration{
+  object ValType extends Enumeration {
     type ExecutorState = Value
     val Reserve, Delete, Unknown = Value
   }

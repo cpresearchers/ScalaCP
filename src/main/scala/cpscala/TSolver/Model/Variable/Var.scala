@@ -11,7 +11,7 @@ abstract class Var {
   val helper: SearchHelper
   val capacity = 0
   // !!尚未全部改动
-  var bindLevel = Constants.kINTINF
+  var bindLevel = Constants.kINTMAXINF
 
   var level = 0
 

@@ -15,69 +15,73 @@ class SafeSparseSetVar(val name: String, val id: Int, num_vars: Int, vals: Array
 
   // 论域初始大小
   override val capacity = vals.length
+
+  ////////////////////////
+  // BIT 相关
+  ////////////////////////
   // 论域比特组个数
   val numBit = Math.ceil(capacity.toDouble / Constants.BITSIZE.toDouble).toInt
   // 临时比特论域
-  val bitTmp: Array[Long] = Array.fill[Long](numBit)(Constants.ALLONELONG)
+  //  val bitTmp: Array[Long] = Array.fill[Long](numBit)(Constants.ALLONELONG)
   // 最后一个比特组的末尾无效位置清0
-  bitTmp(numBit - 1) <<= (Constants.BITSIZE - capacity % Constants.BITSIZE)
+  //  bitTmp(numBit - 1) <<= (Constants.BITSIZE - capacity % Constants.BITSIZE)
   // 原子比特论域
-  val bitDoms: Array[AtomicLongArray] = Array.fill[AtomicLongArray](numLevel)(new AtomicLongArray(bitTmp))
+  //  val bitDoms: Array[AtomicLongArray] = Array.fill[AtomicLongArray](numLevel)(new AtomicLongArray(bitTmp))
 
-  val bitMark = new AtomicLongArray(numBit)
-  var ii = 0
-  while (ii < numBit) {
-    bitMark.set(ii, 0)
-    ii += 1
-  }
+  //  val bitMark = new AtomicLongArray(numBit)
+  //  var ii = 0
+  //  while (ii < numBit) {
+  //    bitMark.set(ii, 0)
+  //    ii += 1
+  //  }
+  ////////////////////////
 
   // 用于多线程的时间戳部分
   //记录stamp所对应的值
   // 值为正就是仅删除值
   // 值为负就是仅保留值
+  // 初始值为-1
+  // 相当于dense数组
   val stamp2Val = ArrayBuffer.fill[Int](capacity)(Constants.INDEXOVERFLOW)
   // 记录删值时的stamp
   // 这里的值做为索引不分正负
-  //  val val2Stamp = Array.fill[Long](capacity)(-1)
-  // 初值为最大值
+  // 初始值全为0 代表存在
+  // 相当于sparse数组
   val val2Stamp = new AtomicIntegerArray(capacity)
-  val denseStamp = new AtomicIntegerArray(capacity)
-  ii = 0
-  while (ii < capacity) {
-    val2Stamp.set(ii, Constants.IntMax)
-    ii += 1
-  }
+
 
   // 原子时间戳
   // 大于等于此值都是在的
+  // 从0开始
   val atomicStamp = new AtomicInteger(0)
 
   // 此层的第一个
-  var baseStamp = 0
-  val stamps = Array.fill(capacity)(Constants.INDEXOVERFLOW)
+  val stamps = Array.fill(capacity)(0)
 
-
+  // 供别的方法使用
   override def getNumBit(): Int = numBit
 
   override def newLevel(): Int = {
-    val pre_level = curLevel
-    curLevel += 1
-
-    var i = 0
-    while (i < numBit) {
-      bitDoms(curLevel).set(i, bitDoms(pre_level).get(i))
-      i += 1
-    }
-    return curLevel
+    level += 1
+    stamps(level) = atomicStamp.get()
+    return level
   }
 
   override def backLevel(): Int = {
-    // 若变量在当前层赋值，则撤销赋值
-    if (bindLevel == curLevel) {
-      bindLevel = Constants.kINTINF
+    // !!注意边界
+    var i = atomicStamp.get()
+    while (i > stamps(level)) {
+      stamp2Val(i) = Constants.INDEXOVERFLOW
+      i -= 1
     }
-    curLevel -= 1
-    return curLevel
+
+    stamps(level) = Constants.INDEXOVERFLOW
+    if (bindLevel == level) {
+      bindLevel = Constants.kINTMAXINF
+    }
+    level -= 1
+
+    return level
   }
 
   //提交改动
@@ -147,43 +151,60 @@ class SafeSparseSetVar(val name: String, val id: Int, num_vars: Int, vals: Array
         return (a, 1)
       }
     } else {
-      return (Constants.IntMin, 0)
+      return (Constants.kINTMININF, 0)
     }
   }
 
   override def remove(a: Int): Unit = {
-    //    val (x, y) = INDEX.getXY(a)
-    //    var previousBits: Long = 0L
-    //    var newBits: Long = 0L
-    //
-    //    do {
-    //      previousBits = bitDoms(curLevel).get(x)
-    //      // Clear the relevant bit
-    //      newBits = previousBits & Constants.MASK0(y)
-    //      // Try to set the new bit mask, and loop round until successful
-    //    } while (!bitDoms(curLevel).compareAndSet(x, previousBits, newBits))
+    // 若为0，分配新值
+    //    var newStamp = 0
+    //    if (val2Stamp.compareAndSet(a, 0, {
+    //      newStamp = atomicStamp.getAndIncrement();
+    //      newStamp
+    //    })) {
+    //      stamp2Val(newStamp) = a
+    //    }
+
+    if (val2Stamp.compareAndSet(a, 0, Constants.kINTMAXINF)) {
+      val newStamp = atomicStamp.getAndIncrement()
+      stamp2Val(newStamp) = a
+    }
   }
+
 
   // 原子地检查一个值是否有效，可与下一个函数合并
   def CheckValidityByStamp(index: Int): Boolean = {
     var capa = 0
     do {
       capa = val2Stamp.get(index)
-      // 若大于等于baseStamp 则该值已删除返回false
-      if (capa <= baseStamp) return false
-    } while (!val2Stamp.compareAndSet(index, capa, Constants.IntMax))
+      // 若大于0则表示该值删除了
+      if (capa != 0) return false
+    } while (!val2Stamp.compareAndSet(index, capa, Constants.kINTMAXINF))
+
+    // 若为0，分配新值
     return true
   }
 
-  def IncreaseStampAndMarkValue(index: Int, atomicStamps: AtomicInteger): Unit = {
-    var capa = 0
-    do {
-      capa = atomicStamp.get()
-      val2Stamp.set(index, capa)
-    } while (!atomicStamps.compareAndSet(capa, capa + 1))
-    //计算成功后再添入，不成功不添入stamp2Val默认为-1
-    stamp2Val(capa + 1) = index
-  }
+  //
+  //  def IncreaseStampAndMarkValue(index: Int): Unit = {
+  //    var capa = 0
+  //    do {
+  //      capa = atomicStamp.get()
+  //      //      val2Stamp.set(index, capa)
+  //    } while (!atomicStamp.compareAndSet(capa, capa + 1))
+  //    //计算成功后再添入，不成功不添入stamp2Val默认为-1
+  //    stamp2Val(capa + 1) = index
+  //  }
+
+  //  def IncreaseStampAndMarkValue(index: Int, atomicStamps: AtomicInteger): Unit = {
+  //    var capa = 0
+  //    do {
+  //      capa = atomicStamp.get()
+  //      val2Stamp.set(index, capa)
+  //    } while (!atomicStamps.compareAndSet(capa, capa + 1))
+  //    //计算成功后再添入，不成功不添入stamp2Val默认为-1
+  //    stamp2Val(capa + 1) = index
+  //  }
 
   override def isEmpty(): Boolean = {
     var i = 0
