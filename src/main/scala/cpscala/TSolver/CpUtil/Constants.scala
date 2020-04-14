@@ -142,4 +142,24 @@ object Constants {
     val Reserve, Delete, Unknown = Value
   }
 
+  // 十亿级前缀标识常量
+  // 30位值部，2位标识部
+  val KVALUEPARTBITLENGTH = 30
+  val kPERFIXMASK: Int = 0x40000000 // 十亿级
+  val kSUFFIXMASK: Int = 0x3fffffff // 十亿级
+
+  // 给数据添加前缀
+  def markValue(a: Int) = a | kPERFIXMASK
+
+  // 去掉数据据前缀
+  def demarkValue(a: Int) = a & kSUFFIXMASK
+
+  // 解析数据
+  def resolveMark(a: Int) = (a >> 30, a & kSUFFIXMASK)
+
+  // 解析数据
+  def resolveBoolean(a: Int) = (a >= kPERFIXMASK, a & kSUFFIXMASK)
+
+
+  // 原子版本
 }

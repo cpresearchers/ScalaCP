@@ -15,7 +15,8 @@ class SafeSparseSetVar(val name: String, val id: Int, num_vars: Int, vals: Array
 
   // 论域初始大小
   override val capacity = vals.length
-
+  // 论域大小
+  var curSize = new AtomicInteger(capacity)
   ////////////////////////
   // BIT 相关
   ////////////////////////
@@ -37,26 +38,50 @@ class SafeSparseSetVar(val name: String, val id: Int, num_vars: Int, vals: Array
   ////////////////////////
 
   // 用于多线程的时间戳部分
-  //记录stamp所对应的值
+  // 记录stamp所对应的值
+  // 值部由两个部分组成，通过标识部和值部组成。
+  // 值部可存储十亿级的数据
+  // 标识部可以表达两类情况
   // 值为正就是仅删除值
   // 值为负就是仅保留值
   // 初始值为-1
   // 相当于dense数组
-  val stamp2Val = ArrayBuffer.fill[Int](capacity)(Constants.INDEXOVERFLOW)
+  //  val stamp2Val = ArrayBuffer.fill[Int](capacity)(Constants.INDEXOVERFLOW)
+
+
   // 记录删值时的stamp
   // 这里的值做为索引不分正负
   // 初始值全为0 代表存在
   // 相当于sparse数组
   val val2Stamp = new AtomicIntegerArray(capacity)
 
+  // 记录stamp所对应的值
+  // 值部由两个部分组成，通过标识部和值部组成。
+  // 值部可存储十亿级的数据
+  // 标识部可以表达两类情况
+  // 值为正就是仅删除值
+  // 值为负就是仅保留值
+  // 由于所有的值没
+  // 初始值为markedValue
+  // 原子交换后改为
+  // 相当于dense数组
+  // 但删值在前留值在后
+  val stamp2Val = new AtomicIntegerArray(capacity)
+
+  var ii = 0
+  while (ii < capacity) {
+    stamp2Val.set(ii, Constants.markValue(ii))
+    ii += 1
+  }
 
   // 原子时间戳
   // 大于等于此值都是在的
   // 从0开始
+  // mark就是删值，非就是留值
   val atomicStamp = new AtomicInteger(0)
 
-  // 此层的第一个
-  val stamps = Array.fill(capacity)(0)
+  // 为每层记录其stamp，默认为-1
+  val stamps = Array.fill(capacity)(Constants.INDEXOVERFLOW)
 
   // 供别的方法使用
   override def getNumBit(): Int = numBit
@@ -68,70 +93,78 @@ class SafeSparseSetVar(val name: String, val id: Int, num_vars: Int, vals: Array
   }
 
   override def backLevel(): Int = {
-    // !!注意边界
-    var i = atomicStamp.get()
-    while (i > stamps(level)) {
-      stamp2Val(i) = Constants.INDEXOVERFLOW
-      i -= 1
-    }
-
     stamps(level) = Constants.INDEXOVERFLOW
     if (bindLevel == level) {
       bindLevel = Constants.kINTMAXINF
     }
     level -= 1
 
+    // dense恢复
+    var i = atomicStamp.get()
+    while (i > stamps(level)) {
+      //      stamp2Val(i) = Constants.INDEXOVERFLOW
+      val a = stamp2Val.get(i)
+      stamp2Val.set(i, Constants.markValue(a))
+      val j = capacity - i
+      val b = stamp2Val.get(j)
+      stamp2Val.set(j, Constants.markValue(b))
+      i -= 1
+    }
+
     return level
   }
 
   //提交改动
   override def restrict(): Unit = {
-    var previousBits: Long = 0L
-    var newBits: Long = 0L
-
-    var i = 0
-    while (i < numBit) {
-      do {
-        previousBits = bitMark.get(i)
-        // Clear the relevant bit
-        newBits = bitDoms(curLevel).get(i) & previousBits
-        // Try to set the new bit mask, and loop round until successful
-      } while (!bitDoms(curLevel).compareAndSet(curLevel, previousBits, newBits))
-      //      cur_size.set(java.lang.Long.bitCount(newBits))
-      i += 1
-    }
+    //    var previousBits: Long = 0L
+    //    var newBits: Long = 0L
+    //
+    //    var i = 0
+    //    while (i < numBit) {
+    //      do {
+    //        previousBits = bitMark.get(i)
+    //        // Clear the relevant bit
+    //        newBits = bitDoms(curLevel).get(i) & previousBits
+    //        // Try to set the new bit mask, and loop round until successful
+    //      } while (!bitDoms(curLevel).compareAndSet(curLevel, previousBits, newBits))
+    //      //      cur_size.set(java.lang.Long.bitCount(newBits))
+    //      i += 1
+    //    }
   }
 
   override def size(): Int = {
-    var cursize = 0
-    var i = 0
-    while (i < numBit) {
-      cursize += java.lang.Long.bitCount(bitDoms(curLevel).get(i))
-      i += 1
-    }
-
-    return cursize
+    return curSize.get()
   }
 
+  // 串行程序使用
   override def bind(a: Int): Unit = {
-    val (x, y) = INDEX.getXY(a)
-    var i = 0
-    while (i < numBit) {
-      bitDoms(curLevel).set(i, 0)
-      i += 1
+    //    bindLevel = level
+    //    val (x, y) = INDEX.getXY(a)
+    //    var i = 0
+    //    while (i < numBit) {
+    //      bitDoms(curLevel).set(i, 0)
+    //      i += 1
+    //    }
+    //    bitDoms(curLevel).set(x, Constants.MASK1(y))
+    //    bindLevel = curLevel
+
+    bindLevel = level
+    if (val2Stamp.compareAndSet(a, 0, Constants.kINTMAXINF)) {
+      val newStamp = atomicStamp.getAndIncrement()
+      val2Stamp.set(a, Constants.markValue(newStamp))
+      stamp2Val.set(newStamp, a)
     }
-    bitDoms(curLevel).set(x, Constants.MASK1(y))
-    bindLevel = curLevel
   }
 
+  // 并行使用，无并行问题
   override def isBind(): Boolean = {
-    bindLevel != 1
+    bindLevel != Constants.kINTMAXINF
   }
 
-  // 传入的一定是正数
-  def getValueByPositiveStamp(s: Int): Int = {
-    return stamp2Val(s)
-  }
+  //  // 传入的一定是正数
+  //  def getValueByPositiveStamp(s: Int): Int = {
+  //    return stamp2Val(s)
+  //  }
 
   // 第一个返回值是变量值，
   // 第二个返回值是动作：
@@ -140,11 +173,11 @@ class SafeSparseSetVar(val name: String, val id: Int, num_vars: Int, vals: Array
   // 2 = 留值
   // 3 = 尚未写入
   def getValueByStamp(s: Int): (Int, Int) = {
-    val a = stamp2Val(s)
     if (s < 0) {
-      return (a, 2)
+      val a = stamp2Val.get(math.abs(s))
+      return (Constants.resolveMark(a)._2, 2)
     } else if (s > 0) {
-      //
+      val a = stamp2Val.get(s)
       if (a == -1) {
         return (a, 3)
       } else {
