@@ -53,6 +53,7 @@ class SafeSparseSetVar(val name: String, val id: Int, num_vars: Int, vals: Array
   // 这里的值做为索引不分正负
   // 初始值全为0 代表存在
   // 相当于sparse数组
+  // 初值为 0^mark~capacity^mark
   val val2Stamp = new AtomicIntegerArray(capacity)
 
   // 记录stamp所对应的值
@@ -66,10 +67,12 @@ class SafeSparseSetVar(val name: String, val id: Int, num_vars: Int, vals: Array
   // 原子交换后改为
   // 相当于dense数组
   // 但删值在前留值在后
+  // 初值为 0^mark~capacity^mark
   val stamp2Val = new AtomicIntegerArray(capacity)
 
   var ii = 0
   while (ii < capacity) {
+    val2Stamp.set(ii, Constants.markValue(ii))
     stamp2Val.set(ii, Constants.markValue(ii))
     ii += 1
   }
@@ -404,3 +407,6 @@ class SafeSparseSetVar(val name: String, val id: Int, num_vars: Int, vals: Array
   }
 }
 
+object SafeSparseSetVar{
+  val kDEFAULTVALUE = -2
+}
