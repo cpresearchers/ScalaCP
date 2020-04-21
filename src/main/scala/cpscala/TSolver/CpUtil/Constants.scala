@@ -284,7 +284,7 @@ object Constants {
   def resolveMark(a: Int) = (a >> 30, a & kSUFFIXMASK)
 
   // 解析数据
-  def resolveBoolean(a: Int) = (a >= kPERFIXMASK, a & kSUFFIXMASK)
+  def resolveMarkBoolean(a: Int) = (a >= kPERFIXMASK, a & kSUFFIXMASK)
 
 
   // 原子版本

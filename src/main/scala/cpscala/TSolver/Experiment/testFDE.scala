@@ -77,23 +77,24 @@ object testFDE {
 //        dataLine += (ct.helper.backTime.toDouble * 1e-9).toString()
 //        dataLine += ct.helper.c_sum.toString()
 //        //-------------间隔单独提交并行CT-------------
-        try {
-          pType = "PW-CT"
-          varType = "BitSet"
-          heuName = "Dom/Ddeg"
-          println(s"${pType} ${heuName}===============>")
-          val PWCT = new PWCoarseSolver(xm, pType, varType, heuName)
-          PWCT.search(Constants.TIME)
-          dataLine += pType
-          dataLine += PWCT.helper.nodes.toString()
-          dataLine += (PWCT.helper.time.toDouble * 1e-9).toString()
-          dataLine += (PWCT.helper.branchTime.toDouble * 1e-9).toString()
-          dataLine += (PWCT.helper.propTime.toDouble * 1e-9).toString()
-          dataLine += (PWCT.helper.backTime.toDouble * 1e-9).toString()
-          dataLine += PWCT.helper.c_sum.toString()
-        }catch{
-          case e: OutOfMemoryError => println("1111111111111111111")
-        }
+
+//        try {
+//          pType = "PW-CT"
+//          varType = "BitSet"
+//          heuName = "Dom/Ddeg"
+//          println(s"${pType} ${heuName}===============>")
+//          val PWCT = new PWCoarseSolver(xm, pType, varType, heuName)
+//          PWCT.search(Constants.TIME)
+//          dataLine += pType
+//          dataLine += PWCT.helper.nodes.toString()
+//          dataLine += (PWCT.helper.time.toDouble * 1e-9).toString()
+//          dataLine += (PWCT.helper.branchTime.toDouble * 1e-9).toString()
+//          dataLine += (PWCT.helper.propTime.toDouble * 1e-9).toString()
+//          dataLine += (PWCT.helper.backTime.toDouble * 1e-9).toString()
+//          dataLine += PWCT.helper.c_sum.toString()
+//        }catch{
+//          case e: OutOfMemoryError => println("1111111111111111111")
+//        }
 
 //
 //        pType = "STR2"
@@ -110,20 +111,20 @@ object testFDE {
 //        dataLine += (FDESTR2.helper.backTime.toDouble * 1e-9).toString()
 //        dataLine += FDESTR2.helper.c_sum.toString()
 
-//        pType = "STRbit_FDE"
-//        varType = "FDEBitSet"
-//        heuName = "Dom/Ddeg"
-//        println(s"${pType} ${heuName}===============>")
-//        val FDEct = new FDECoarseSolver1(fdem, pType, varType, heuName)
-//        FDEct.search(Constants.TIME)
-//        dataLine += pType
-//        println(FDEct.helper.nodes)
-//        dataLine += FDEct.helper.nodes.toString()
-//        dataLine += (FDEct.helper.time.toDouble * 1e-9).toString()
-//        dataLine += (FDEct.helper.branchTime.toDouble * 1e-9).toString()
-//        dataLine += (FDEct.helper.propTime.toDouble * 1e-9).toString()
-//        dataLine += (FDEct.helper.backTime.toDouble * 1e-9).toString()
-//        dataLine += FDEct.helper.c_sum.toString()
+        pType = "STRbit_FDE"
+        varType = "FDEBitSet"
+        heuName = "Dom/Ddeg"
+        println(s"${pType} ${heuName}===============>")
+        val FDEct = new FDECoarseSolver1(fdem, pType, varType, heuName)
+        FDEct.search(Constants.TIME)
+        dataLine += pType
+        println(FDEct.helper.nodes)
+        dataLine += FDEct.helper.nodes.toString()
+        dataLine += (FDEct.helper.time.toDouble * 1e-9).toString()
+        dataLine += (FDEct.helper.branchTime.toDouble * 1e-9).toString()
+        dataLine += (FDEct.helper.propTime.toDouble * 1e-9).toString()
+        dataLine += (FDEct.helper.backTime.toDouble * 1e-9).toString()
+        dataLine += FDEct.helper.c_sum.toString()
 
         writer.writeRow(dataLine)
         println("end: " + f.getName)

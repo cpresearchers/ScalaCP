@@ -15,13 +15,26 @@ class SafeSparseSetVar(val name: String, val id: Int, num_vars: Int, vals: Array
 
   // 论域初始大小
   override val capacity = vals.length
-  // 论域大小
-  var curSize = new AtomicInteger(capacity)
+  // [原子] 论域大小
+  var currentSize = new AtomicInteger(capacity)
+
+  // 记录每一层论域大小用于回溯
+  val sizeLevel: Array[Int] = Array.fill(numLevel)(Constants.INDEXOVERFLOW)
+  val dense = new AtomicIntegerArray(capacity)
+  val sparse = new AtomicIntegerArray(capacity)
+
+  var ii = 0
+  while (ii < capacity) {
+    dense.set(ii, Constants.markValue(ii))
+    sparse.set(ii, Constants.markValue(ii))
+    ii += 1
+  }
+
   ////////////////////////
   // BIT 相关
   ////////////////////////
   // 论域比特组个数
-  val numBit = Math.ceil(capacity.toDouble / Constants.BITSIZE.toDouble).toInt
+  val numBit = math.ceil(capacity.toDouble / Constants.BITSIZE.toDouble).toInt
   // 临时比特论域
   //  val bitTmp: Array[Long] = Array.fill[Long](numBit)(Constants.ALLONELONG)
   // 最后一个比特组的末尾无效位置清0
@@ -54,7 +67,7 @@ class SafeSparseSetVar(val name: String, val id: Int, num_vars: Int, vals: Array
   // 初始值全为0 代表存在
   // 相当于sparse数组
   // 初值为 0^mark~capacity^mark
-  val val2Stamp = new AtomicIntegerArray(capacity)
+  //  val val2Stamp = new AtomicIntegerArray(capacity)
 
   // 记录stamp所对应的值
   // 值部由两个部分组成，通过标识部和值部组成。
@@ -68,42 +81,42 @@ class SafeSparseSetVar(val name: String, val id: Int, num_vars: Int, vals: Array
   // 相当于dense数组
   // 但删值在前留值在后
   // 初值为 0^mark~capacity^mark
-  val stamp2Val = new AtomicIntegerArray(capacity)
-
-  var ii = 0
-  while (ii < capacity) {
-    val2Stamp.set(ii, Constants.markValue(ii))
-    stamp2Val.set(ii, Constants.markValue(ii))
-    ii += 1
-  }
+  //  val stamp2Val = new AtomicIntegerArray(capacity)
+  //
+  //  var ii = 0
+  //  while (ii < capacity) {
+  //    val2Stamp.set(ii, Constants.markValue(ii))
+  //    stamp2Val.set(ii, Constants.markValue(ii))
+  //    ii += 1
+  //  }
 
   // 原子时间戳
   // 大于等于此值都是在的
   // 从0开始
   // mark就是删值，非就是留值
-  val atomicStamp = new AtomicInteger(0)
+  //  val atomicStamp = new AtomicInteger(0)
 
-  // 为每层记录其stamp，默认为-1
-  val stamps = Array.fill(capacity)(Constants.INDEXOVERFLOW)
+  //   为每层记录其stamp，默认为-1
+  //  val stamps = Array.fill(capacity)(Constants.INDEXOVERFLOW)
 
   // 供别的方法使用
   override def getNumBit(): Int = numBit
 
   override def newLevel(): Int = {
     level += 1
-    stamps(level) = atomicStamp.get()
+    sizeLevel(level) = currentSize.get()
     return level
   }
 
   override def backLevel(): Int = {
-    stamps(level) = Constants.INDEXOVERFLOW
+    sizeLevel(level) = Constants.INDEXOVERFLOW
     if (bindLevel == level) {
       bindLevel = Constants.kINTMAXINF
     }
     level -= 1
 
     // dense恢复
-    var i = atomicStamp.get()
+    var i = currentSize.get()
     while (i > stamps(level)) {
       //      stamp2Val(i) = Constants.INDEXOVERFLOW
       val a = stamp2Val.get(i)
@@ -113,6 +126,8 @@ class SafeSparseSetVar(val name: String, val id: Int, num_vars: Int, vals: Array
       stamp2Val.set(j, Constants.markValue(b))
       i -= 1
     }
+
+    atomicStamp.set(sta)
 
     return level
   }
@@ -136,7 +151,7 @@ class SafeSparseSetVar(val name: String, val id: Int, num_vars: Int, vals: Array
   }
 
   override def size(): Int = {
-    return curSize.get()
+    return currentSize.get()
   }
 
   // 串行程序使用
@@ -201,10 +216,65 @@ class SafeSparseSetVar(val name: String, val id: Int, num_vars: Int, vals: Array
     //      stamp2Val(newStamp) = a
     //    }
 
-    if (val2Stamp.compareAndSet(a, 0, Constants.kINTMAXINF)) {
-      val newStamp = atomicStamp.getAndIncrement()
-      stamp2Val(newStamp) = a
+    //    if (val2Stamp.compareAndSet(a, 0, Constants.kINTMAXINF)) {
+    //      val newStamp = atomicStamp.getAndIncrement()
+    //      stamp2Val(newStamp) = a
+    //    }
+
+    //    var capa = 0
+    //    var pos = 0
+    //    do {
+    //      capa = currentSize.get()
+    //      pos = sparse.get(a)
+    //      if (pos >= capa) {
+    //        return
+    //      }
+    //    } while (currentSize.compareAndSet(capa, capa + 1))
+    //    currentSize.compareAndExchange()
+    //    sparse.compareAndExchange(a)
+
+    // deleted: 是否原子删除
+    // ori: a在dense的原位置
+    // unmarkedValue: a在dense的umarked位置
+    // y: 是demark位置
+    val (deleted, ori_pos, sourcePosition) = tryDemarkIfMarked(a)
+    if (deleted) {
+      // 删的值的位置是unmarkedValue
+      // dest_pos是当前论域大小减1，也是交换的位置，
+      val destPosition = currentSize.decrementAndGet()
+      val destValue = dense.get(destPosition)
+      val swapedMarkedPosition = dense.compareAndExchange(destPosition, destValue, sourcePosition)
+      // cc是marked的要去掉
+      val swapValue = Constants.demarkValue(swapedMarkedPosition)
+
     }
+
+
+  }
+
+  def tryDecrementIfGreaterThan(capacity: AtomicInteger, least: Int): Boolean = {
+    var capa = 0
+    do {
+      capa = capacity.get
+      if (capa <= least) return false
+    } while (
+      !capacity.compareAndSet(capa, capa - 1))
+    true
+  }
+
+  def tryDemarkIfMarked(a: Int): (Boolean, Int, Int) = {
+    var ori = 0
+    var pos = 0
+    var marked = false
+    do {
+      ori = sparse.get(a)
+      // 拿到是否mark，及解析后的pos
+      (marked, pos) = Constants.resolveMarkBoolean(ori)
+      if (pos < currentSize.get()) {
+        return (false, ori, pos)
+      }
+    } while (sparse.compareAndSet(a, ori, pos))
+    return (true, ori, pos)
   }
 
 
@@ -407,6 +477,6 @@ class SafeSparseSetVar(val name: String, val id: Int, num_vars: Int, vals: Array
   }
 }
 
-object SafeSparseSetVar{
+object SafeSparseSetVar {
   val kDEFAULTVALUE = -2
 }
