@@ -1,5 +1,7 @@
 package cpscala.TSolver.CpUtil
 
+import java.util.concurrent.atomic.{AtomicIntegerArray, AtomicLongArray}
+
 import cpscala.TSolver.Model.Constraint.SConstraint.BitSupport
 
 import scala.collection.mutable.ArrayBuffer
@@ -22,6 +24,32 @@ class FDEBitSet(id: Int, numTuples: Int, numVars: Int) extends RSBitSet(id, numT
       val offset = index(i)
       currentWords = words(currentLevel)(offset)
       w = currentWords & dom(offset)
+      if (w != currentWords) {
+        words(currentLevel)(offset) = w
+        //本表已修改
+        changed = true
+        if (w == 0L) {
+          val j = limit(currentLevel)
+          index(i) = index(j)
+          index(j) = offset
+          limit(currentLevel) -= 1
+        }
+      }
+      i -= 1
+    }
+    //记录是否改变
+    return changed
+  }
+
+  def intersectWord(dom: AtomicLongArray): Boolean = {
+    var changed = false
+    var w = 0L
+    var currentWords = 0L
+    var i = limit(currentLevel)
+    while (i >= 0) {
+      val offset = index(i)
+      currentWords = words(currentLevel)(offset)
+      w = currentWords & dom.get(offset)
       if (w != currentWords) {
         words(currentLevel)(offset) = w
         //本表已修改

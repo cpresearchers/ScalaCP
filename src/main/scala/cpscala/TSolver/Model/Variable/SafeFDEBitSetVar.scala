@@ -3,7 +3,7 @@ package cpscala.TSolver.Model.Variable
 import java.util.concurrent.atomic.{AtomicInteger, AtomicIntegerArray, AtomicLong, AtomicLongArray}
 
 import cpscala.TSolver.CpUtil.{Constants, INDEX}
-import cpscala.TSolver.CpUtil.SearchHelper.{PFDESearchHelper, SearchHelper}
+import cpscala.TSolver.CpUtil.SearchHelper.SearchHelper
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -325,7 +325,7 @@ class SafeFDEBitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[
   //    return word
   //  }
 
-  def getAtomicBitDom() = bitDoms(level)
+  override def getAtomicBitDom() = bitDoms(level)
 
 
   //  def getLastRemovedValuesByMask(oldSize: Long, vals: ArrayBuffer[Int]): Int = ???

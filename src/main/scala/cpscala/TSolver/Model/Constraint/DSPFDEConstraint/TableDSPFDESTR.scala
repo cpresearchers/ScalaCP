@@ -1,6 +1,6 @@
 package cpscala.TSolver.Model.Constraint.DSPFDEConstraint
 
-import cpscala.TSolver.CpUtil.Constants
+import cpscala.TSolver.CpUtil.{Constants, INDEX}
 import cpscala.TSolver.CpUtil.SearchHelper.{DSPFDESearchHelper, FDESearchHelper}
 import cpscala.TSolver.Model.Constraint.DSPConstraint.DSPPropagator
 import cpscala.TSolver.Model.Constraint.FDEConstrain.FDEPropagator
@@ -10,7 +10,7 @@ import cpscala.TSolver.Model.Variable.{PVar, Var}
 import scala.collection.mutable.ArrayBuffer
 import scala.util.control.Breaks.{break, breakable}
 
-class TableDSPFDESTR  (val id: Int, val arity: Int, val num_vars: Int, val scope: Array[PVar], val tuples: Array[Array[Int]], val helper: DSPFDESearchHelper) extends DSPPropagator {
+class TableDSPFDESTR(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[PVar], val tuples: Array[Array[Int]], val helper: DSPFDESearchHelper) extends DSPPropagator {
 
   // 比特子表，三维数组，第一维变量，第二维取值，第三维元组
   // 初始化变量时，其论域已经被序列化，诸如[0, 1, ..., var.size()]，所以可以直接用取值作为下标
@@ -27,7 +27,7 @@ class TableDSPFDESTR  (val id: Int, val arity: Int, val num_vars: Int, val scope
   // 在搜索树初始层，若比特元组改变了，即更新栈顶层的Array（后来想了想，0层不需要保存，因为1层对应的栈顶保存的即是0层初始化GAC后的信息）
   // 在搜索树的非初始层，当比特元组第一次发生改变时，将改变前的比特元组保存在栈顶层Array中
   private[this] val bitLevel = Array.ofDim[Long](num_vars + 1, numBit)
-  bitLevel(0)=Array.fill(numBit)(Constants.ALLONELONG);
+  bitLevel(0) = Array.fill(numBit)(Constants.ALLONELONG);
   bitLevel(0)(numBit - 1) <<= Constants.BITSIZE - lengthTuple % Constants.BITSIZE
 
   // 变量的比特组个数
@@ -113,13 +113,21 @@ class TableDSPFDESTR  (val id: Int, val arity: Int, val num_vars: Int, val scope
       while (i < arity) {
         val v = scope(i)
         // 初始化lastMask
-        v.mask(lastMask(i))
+        //        v.mask(lastMask(i))
+        v.mask(localMask(i))
         // 因为变量还未删值，所以j既为index，又为取值
         var j = v.size()
         while (j > 0) {
           j -= 1
           val tempBitSupports = tempBitTable(i)(j)
           bitTables(i)(j) = tempBitSupports.toArray
+
+          if (tempBitSupports.isEmpty) {
+            // 巧妙，bit删值，即将mask中值j对应的bit位设置为0
+            val (x, y) = INDEX.getXY(j)
+            localMask(i)(x) &= Constants.MASK0(y)
+            helper.varIsChange.set(true)
+          }
         }
         i += 1
       }
@@ -131,19 +139,21 @@ class TableDSPFDESTR  (val id: Int, val arity: Int, val num_vars: Int, val scope
       var i = 0
       while (i < arity) {
         val v = scope(i)
-        // j既为取值，又为下标
-        var j = v.size()
-        while (j > 0) {
-          j -= 1
-          if (bitTables(i)(j).isEmpty) {
-            v.remove(j)
-            helper.varStamp(v.id) = helper.globalStamp
-            //println(s"       var:${x.id} remove new value:${value}")
-          }
-        }
+        // 更新变量论域
+        v.submitMask(localMask(i))
+
         if (v.isEmpty()) {
+          helper.isConsistent = false
           return false
         }
+
+        // 更新lastMask
+        var j = 0
+        while (j < varNumBit(i)) {
+          lastMask(i)(j) = localMask(i)(j)
+          j += 1
+        }
+
         i += 1
       }
     }
@@ -177,8 +187,8 @@ class TableDSPFDESTR  (val id: Int, val arity: Int, val num_vars: Int, val scope
         Constants.getValues(removeMask(i), removeValues)
         // 寻找新的无效元组
         for (a <- removeValues) {
-          val bitSupports= bitTables(i)(a)
-          for (l <- 0 to bitSupports.size-1) {
+          val bitSupports = bitTables(i)(a)
+          for (l <- 0 to bitSupports.size - 1) {
             val ts = bitSupports(l).ts
             val u = bitSupports(l).mask & bitLevel(level)(ts)
 
@@ -206,12 +216,12 @@ class TableDSPFDESTR  (val id: Int, val arity: Int, val num_vars: Int, val scope
 
         for (a <- validValues) {
           val bitSupports = bitTables(i)(a)
-          val old = bitSupports.length-1
+          val old = bitSupports.length - 1
           // 寻找支持的比特元组
           var now = old
 
-          if(now == -1 || (bitSupports(now).mask & bitLevel(level)(bitSupports(now).ts)) == 0L){
-            now=findSupport(bitSupports,bitLevel(level))
+          if (now == -1 || (bitSupports(now).mask & bitLevel(level)(bitSupports(now).ts)) == 0L) {
+            now = findSupport(bitSupports, bitLevel(level))
           }
 
           if (now == -1) {
@@ -235,26 +245,88 @@ class TableDSPFDESTR  (val id: Int, val arity: Int, val num_vars: Int, val scope
     return true
   }
 
-//  override def propagate(evt: ArrayBuffer[Var]): Boolean = {
-//    //    val ditStart = System.nanoTime
-//    deleteInvalidTuple()
-//    //    val ditEnd = System.nanoTime
-//    //    helper.updateTableTime += ditEnd - ditStart
-//
-//    //    val ssStart = System.nanoTime
-//    val ss = searchSupport(evt)
-//    //    val ssEnd = System.nanoTime
-//    //    helper.filterDomainTime += ssEnd - ssStart
-//
-//    return ss
-//  }
+
+  // 寻找没有支持的值
+  def searchSupport(): Boolean = {
+    Xevt.clear()
+    var i = 0
+    while (i < arity && helper.isConsistent) {
+      val v = scope(i)
+
+      if (v.unBind()) {
+        var deleted = false
+        //        v.getValidValues(validValues)
+        Constants.getValues(localMask(i), validValues)
+
+        for (a <- validValues) {
+          val bitSupports = bitTables(i)(a)
+          val old = bitSupports.length - 1
+          // 寻找支持的比特元组
+          var now = old
+
+          if (now == -1 || (bitSupports(now).mask & bitLevel(level)(bitSupports(now).ts)) == 0L) {
+            now = findSupport(bitSupports, bitLevel(level))
+          }
+
+          if (now == -1) {
+            deleted = true
+            //            v.remove(a)
+            // 巧妙，bit删值，即将mask中值value对应的bit位设置为0
+            val (x, y) = INDEX.getXY(a)
+            localMask(i)(x) &= Constants.MASK0(y)
+            //                        println(s"    cur_cid: ${id}, var: ${v.id}, remove val: ${a}")
+          }
+        }
+        if (deleted) {
+//          if (v.isEmpty()) {
+//            failWeight += 1
+//            return false
+//          }
+//          //更新lastMask
+//          v.mask(lastMask(i))
+//          evt += v
+          if(v.submitMask(localMask(i))){
+            if (v.isEmpty()) {
+              helper.isConsistent = false
+              failWeight += 1
+              return false
+            }
+            Xevt += v
+          }
+
+          // 更新lastMask
+          var j = 0
+          while (j < varNumBit(i)) {
+            lastMask(i)(j) = localMask(i)(j)
+            j += 1
+          }
+        }
+      }
+      i += 1
+    }
+    return true
+  }
+
+  //  override def propagate(evt: ArrayBuffer[Var]): Boolean = {
+  //    //    val ditStart = System.nanoTime
+  //    deleteInvalidTuple()
+  //    //    val ditEnd = System.nanoTime
+  //    //    helper.updateTableTime += ditEnd - ditStart
+  //
+  //    //    val ssStart = System.nanoTime
+  //    val ss = searchSupport(evt)
+  //    //    val ssEnd = System.nanoTime
+  //    //    helper.filterDomainTime += ssEnd - ssStart
+  //
+  //    return ss
+  //  }
 
   // 新层
   def newLevel(): Unit = {
-    val prelevel=level
+    val prelevel = level
     level += 1
-    for (i<-0 until numBit){
-      bitLevel(level)(i)=bitLevel(prelevel)(i)
+    for (i <- 0 until numBit) {
+      bitLevel(level)(i) = bitLevel(prelevel)(i)
     }
     // 到达新层后不用更改lastMask，lastMask与上层保持一致
   }
@@ -284,12 +356,19 @@ class TableDSPFDESTR  (val id: Int, val arity: Int, val num_vars: Int, val scope
   override def isSatisfied(): Unit = ???
 
   def findSupport(bitSupports: Array[BitSupport], bitVal: Array[Long]): Int = {
-    var i=bitSupports.size-1
-    while(i>=0){
+    var i = bitSupports.size - 1
+    while (i >= 0) {
       if ((bitSupports(i).mask & bitVal(bitSupports(i).ts)) != 0L) return i
-      i-=1
+      i -= 1
     }
-    return  -1
+    return -1
+  }
+
+  def propagate(): Boolean = {
+
+    deleteInvalidTuple()
+
+    return searchSupport()
   }
 
   def submitPropagtors(): Boolean = {
@@ -324,17 +403,17 @@ class TableDSPFDESTR  (val id: Int, val arity: Int, val num_vars: Int, val scope
     //    println(s"${id} end-----")
   }
 
-  override def propagate(): Boolean = {
-    //    val ditStart = System.nanoTime
-    deleteInvalidTuple()
-    //    val ditEnd = System.nanoTime
-    //    helper.updateTableTime += ditEnd - ditStart
-
-    //    val ssStart = System.nanoTime
-    val ss = searchSupport(Xevt)
-    //    val ssEnd = System.nanoTime
-    //    helper.filterDomainTime += ssEnd - ssStart
-
-    return ss
-  }
+//  override def propagate(): Boolean = {
+//    //    val ditStart = System.nanoTime
+//    deleteInvalidTuple()
+//    //    val ditEnd = System.nanoTime
+//    //    helper.updateTableTime += ditEnd - ditStart
+//
+//    //    val ssStart = System.nanoTime
+//    val ss = searchSupport(Xevt)
+//    //    val ssEnd = System.nanoTime
+//    //    helper.filterDomainTime += ssEnd - ssStart
+//
+//    return ss
+//  }
 }

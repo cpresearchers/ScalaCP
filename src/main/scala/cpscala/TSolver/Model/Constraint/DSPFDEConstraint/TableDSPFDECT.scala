@@ -64,6 +64,7 @@ class TableDSPFDECT(val id: Int, val arity: Int, val num_vars: Int, val scope: A
     while (i < arity - 1) {
       var diff = false
       val v = scope(i)
+      scopeStamp(i) = helper.pVarStamp.get(v.id)
       v.mask(localMask(i))
 
       // 本地论域快照与全局论域不同
@@ -93,11 +94,12 @@ class TableDSPFDECT(val id: Int, val arity: Int, val num_vars: Int, val scope: A
 
   def updateTable(): Boolean = {
     //    //println(s"      ut cid: ${id}===========>")
-    currTab.intersectWord(helper.vcMap(id).getBitDom())
+    currTab.intersectWord(helper.vcMap(id).getAtomicBitDom())
+
     var i = 0
-    while (i < Sval.length) {
+    while (i < Sval.length && helper.isConsistent) {
       val vv: Int = Sval(i)
-      val v: Var = scope(vv)
+      //      val v: PVar = scope(vv)
       //      v.mask(localMask(vv))
       //println(s"cid: ${id}, vid: ${v.id}: localMask ${Constants.toFormatBinaryString(localMask(vv)(0))}")
 
@@ -116,7 +118,7 @@ class TableDSPFDECT(val id: Int, val arity: Int, val num_vars: Int, val scope: A
 
       currTab.clearMask()
       if (numRemoved >= numValid || firstPropagate) {
-        v.getValidValues(values)
+        Constants.getValues(localMask(vv), values)
         for (a <- values) {
           currTab.addToMask(supports(vv)(a))
         }
@@ -134,6 +136,7 @@ class TableDSPFDECT(val id: Int, val arity: Int, val num_vars: Int, val scope: A
       //传播失败
       if (currTab.isEmpty()) {
         //println(s"update faild!!: ${Thread.currentThread().getName}, cid: ${id}")
+        helper.isConsistent = false
         failWeight += 1
         return false
       }
@@ -183,40 +186,104 @@ class TableDSPFDECT(val id: Int, val arity: Int, val num_vars: Int, val scope: A
 
     return true
   }
-//
-//  override def propagate(evt: ArrayBuffer[Var]): Boolean = {
-//    //println(s"${id} cons starts ------------------>")
-//    //L32~L33
-//    initial()
-//    //        val utStart = System.nanoTime
-//    val res = updateTable()
-//    //        val utEnd = System.nanoTime
-//    //        helper.updateTableTime += utEnd - utStart
-//    if (!res) {
-//      return false
-//    }
-//
-//    //        val fiStart = System.nanoTime
-//    val fi = filterDomains(evt)
-//    //        val fiEnd = System.nanoTime
-//    //        helper.filterDomainTime += fiEnd - fiStart
-//    if (helper.vcMap(id).removeValues(currTab.getWord())) {
-//      if (helper.vcMap(id).size() == 0) {
-//        return false
-//      }
-//      else {
-//        evt += helper.vcMap(id)
-//      }
-//
-//    }
-//    //    println(id+"   "+helper.vcMap(id).id+"   "+helper.vcMap(id).size()+"  "+evt.size)
-//    return fi
-//  }
+
+  def filterDomains(): Boolean = {
+    Xevt.clear()
+
+    var i = 0
+    while (i < Ssup.length && helper.isConsistent) {
+      var deleted: Boolean = false
+      val vv: Int = Ssup(i)
+      val v = scope(vv)
+      //      v.getValidValues(values)
+      Constants.getValues(localMask(vv), values)
+
+      for (a <- values) {
+        var index = residues(vv)(a)
+        if (index == Constants.kINDEXOVERFLOW || (currTab.words(helper.level)(index) & supports(vv)(a)(index)) == 0L) { //res失效
+          index = currTab.intersectIndex(supports(vv)(a))
+          if (index != -1) { //重新找到支持
+            residues(vv)(a) = index
+          }
+          else {
+            deleted = true
+            //无法找到支持, 删除(v, a)
+            //println(s"      cons:${id} var:${v.id} remove new value:${a}")
+            //            v.remove(a)
+            val (x, y) = INDEX.getXY(a)
+            localMask(vv)(x) &= Constants.MASK0(y)
+          }
+        }
+      }
+
+      if (deleted) {
+        val (changed, same) = v.submitMaskAndIsSame(localMask(vv))
+        if (changed) {
+          helper.pVarStamp.set(v.id, helper.pGlobalStamp.incrementAndGet())
+          if (same) {
+            scopeStamp(vv) = helper.pVarStamp.get(v.id)
+          }
+          // 本地线程删值
+          if (v.isEmpty()) {
+            helper.isConsistent = false
+            failWeight += 1
+            //println(s"filter faild!!: ${Thread.currentThread().getName}, cid: ${id}, vid: ${v.id}")
+            return false
+          }
+
+          Xevt += v
+        }
+        var j = 0
+        while (j < varNumBit(vv)) {
+          lastMask(vv)(j) = localMask(vv)(j)
+          j += 1
+        }
+      }
+
+      i += 1
+    }
+
+    return true
+  }
+
+  //
+  //  override def propagate(evt: ArrayBuffer[Var]): Boolean = {
+  //    //println(s"${id} cons starts ------------------>")
+  //    //L32~L33
+  //    initial()
+  //    //        val utStart = System.nanoTime
+  //    val res = updateTable()
+  //    //        val utEnd = System.nanoTime
+  //    //        helper.updateTableTime += utEnd - utStart
+  //    if (!res) {
+  //      return false
+  //    }
+  //
+  //    //        val fiStart = System.nanoTime
+  //    val fi = filterDomains(evt)
+  //    //        val fiEnd = System.nanoTime
+  //    //        helper.filterDomainTime += fiEnd - fiStart
+  //    if (helper.vcMap(id).removeValues(currTab.getWord())) {
+  //      if (helper.vcMap(id).size() == 0) {
+  //        return false
+  //      }
+  //      else {
+  //        evt += helper.vcMap(id)
+  //      }
+  //
+  //    }
+  //    //    println(id+"   "+helper.vcMap(id).id+"   "+helper.vcMap(id).size()+"  "+evt.size)
+  //    return fi
+  //  }
 
   override def propagate(): Boolean = {
     //println(s"${id} cons starts ------------------>")
     //L32~L33
-    initial()
+    val ini = initial()
+    if (!ini) {
+      helper.notChangedTabs.incrementAndGet()
+      return false
+    }
     //        val utStart = System.nanoTime
     val res = updateTable()
     //        val utEnd = System.nanoTime
@@ -226,7 +293,8 @@ class TableDSPFDECT(val id: Int, val arity: Int, val num_vars: Int, val scope: A
     }
 
     //        val fiStart = System.nanoTime
-    val fi = filterDomains(Xevt)
+    //    val fi = filterDomains(Xevt)
+    val fi = filterDomains()
     //        val fiEnd = System.nanoTime
     //        helper.filterDomainTime += fiEnd - fiStart
     if (helper.vcMap(id).removeValues(currTab.getWord())) {

@@ -1,5 +1,7 @@
 package cpscala.TSolver.Model.Variable
 
+import java.util.concurrent.atomic.AtomicLongArray
+
 abstract class PVar extends Var {
 
   def simpleMask(): Long = ???
@@ -23,4 +25,7 @@ abstract class PVar extends Var {
   def getAndSubmitMask(mask: Array[Long]): Long = ???
 
   def isChanged(mask: Array[Long]): Boolean = ???
+
+  def getAtomicBitDom(): AtomicLongArray = ???
+
 }
