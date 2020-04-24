@@ -2,6 +2,7 @@ package cpscala.TSolver.Experiment
 
 import cpscala.TSolver.CpUtil.Constants
 import cpscala.TSolver.Model.Constraint.SConstraint.TableCT_Bit
+import cpscala.TSolver.Model.Solver.DSPFDESolver.DSPFDECoarseSolver
 import cpscala.TSolver.Model.Solver.DSPSolver._
 import cpscala.TSolver.Model.Solver.FDESolver.FDECoarseSolver1
 import cpscala.TSolver.Model.Solver.IPSolver._
@@ -86,27 +87,56 @@ object main {
     println("backtrack time = " + (backTime / exe).toDouble * 1e-9 + "s")
     println("c_sum = " + c_sum)
     println("p_sum = " + p_sum)
+//
+//    time = 0L
+//    branchTime = 0L
+//    backTime = 0L
+//    propTime = 0L
+//    //    pType = "CT_Bit"
+//    pType = "PW-CT"
+//    varType = "BitSet"
+//    println(s"${pType} ===============>")
+//    i = 0
+//    while (i < exe) {
+//      //                val ct = new SCoarseSolver(xm, pType, varType, "")
+//      val ct = new PWCoarseSolver(xm, pType, varType, heuName)
+//      ct.search(Constants.TIME)
+//      node = ct.helper.nodes
+//      time += ct.helper.time
+//      branchTime += ct.helper.branchTime
+//      propTime += ct.helper.propTime
+//      backTime += ct.helper.backTime
+//      c_sum = ct.helper.c_sum
+//      p_sum = ct.helper.p_sum
+//      i += 1
+//    }
+//    println("node = " + node)
+//    println("search time = " + (time / exe).toDouble * 1e-9 + "s")
+//    println("branch time = " + (branchTime / exe).toDouble * 1e-9 + "s")
+//    println("propagate time = " + (propTime / exe).toDouble * 1e-9 + "s")
+//    println("backtrack time = " + (backTime / exe).toDouble * 1e-9 + "s")
+//    println("c_sum = " + c_sum)
+//    println("p_sum = " + p_sum)
 
     time = 0L
     branchTime = 0L
     backTime = 0L
     propTime = 0L
-    //    pType = "CT_Bit"
-    pType = "PW-CT"
-    varType = "BitSet"
+    pType = "DSCPFDE"
+    varType = "SafeFDEBitSet"
     println(s"${pType} ===============>")
     i = 0
     while (i < exe) {
       //                val ct = new SCoarseSolver(xm, pType, varType, "")
-      val ct = new PWCoarseSolver(xm, pType, varType, heuName)
+      val ct = new DSPFDECoarseSolver(fdem,4, pType, varType, heuName)
       ct.search(Constants.TIME)
       node = ct.helper.nodes
       time += ct.helper.time
       branchTime += ct.helper.branchTime
       propTime += ct.helper.propTime
       backTime += ct.helper.backTime
-      c_sum = ct.helper.c_sum
-      p_sum = ct.helper.p_sum
+      c_sum = ct.helper.c_sub.get()
+      p_sum = ct.helper.c_prop.get()
       i += 1
     }
     println("node = " + node)

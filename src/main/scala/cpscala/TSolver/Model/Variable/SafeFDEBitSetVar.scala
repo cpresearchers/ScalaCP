@@ -6,6 +6,8 @@ import cpscala.TSolver.CpUtil.{Constants, INDEX}
 import cpscala.TSolver.CpUtil.SearchHelper.SearchHelper
 
 import scala.collection.mutable.ArrayBuffer
+//import scala.collection.parallel.immutable
+import scala.collection.{immutable, mutable}
 
 class SafeFDEBitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[Int], val helper: SearchHelper) extends PVar {
   // 总层数
@@ -25,7 +27,8 @@ class SafeFDEBitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[
   // 最后一个比特组的末尾无效位置清0
   bitTmp(numBit - 1) <<= (Constants.BITSIZE - capacity % Constants.BITSIZE)
   //  val bitDoms = Array.fill[Long](numLevel, numBit)(0L)
-  val bitDoms: Array[AtomicLongArray] = Array.fill[AtomicLongArray](numLevel)(new AtomicLongArray(bitTmp))
+  val bitDoms: Vector[AtomicLongArray] = Vector.fill[AtomicLongArray](numLevel)(new AtomicLongArray(bitTmp))
+  //    Array.fill[AtomicLongArray](numLevel)(new AtomicLongArray(bitTmp))
 
   //  var word = Array.fill(numBit)(0L)
 
@@ -110,6 +113,29 @@ class SafeFDEBitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[
       newBits = previousBits & Constants.MASK0(y)
       // Try to set the new bit mask, and loop round until successful
     } while (!bitDoms(level).compareAndSet(x, previousBits, newBits))
+  }
+
+
+  override def submitMask(mask: Array[Long]): Boolean = {
+    var previousBits: Long = 0L
+    var newBits: Long = 0L
+    var changed = false
+    var i = 0
+    while (i < numBit) {
+      do {
+        previousBits = bitDoms(level).get(i)
+        // Clear the relevant bit
+        newBits = previousBits & mask(i)
+        // Try to set the new bit mask, and loop round until successful
+      } while (!bitDoms(level).compareAndSet(i, previousBits, newBits))
+
+      if (previousBits != newBits) {
+        changed = true
+      }
+
+      i += 1
+    }
+    return changed
   }
 
   override def isEmpty(): Boolean = {
@@ -289,17 +315,9 @@ class SafeFDEBitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[
     var changed = false
     var newBits = 0L
     var previousBits = 0L
+
     var i = 0
     while (i < numBit) {
-      //      previousBits = bitDoms(level)(i)
-      //      newBits = previousBits & words(i)
-      //      if (newBits != previousBits) {
-      //        bitDoms(level)(i) = newBits
-      //        //本表已修改
-      //        changed = true
-      //      }
-      //      i += 1
-
       do {
         previousBits = bitDoms(level).get(i)
         // Clear the relevant bit
@@ -311,31 +329,27 @@ class SafeFDEBitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[
         changed = true
       }
 
+      i += 1
     }
     //记录是否改变
     return changed
   }
 
-  //  override def getBitDom(): Array[Long] = {
-  //    var i = 0
-  //    while (i < numBit) {
-  //      word(i) = bitDoms(level)(i)
-  //      i += 1
-  //    }
-  //    return word
-  //  }
-
-  override def getAtomicBitDom() = bitDoms(level)
+  override def getAtomicBitDom(): AtomicLongArray = {
+    val c = bitDoms(level)
+    return c
+  }
 
 
   //  def getLastRemovedValuesByMask(oldSize: Long, vals: ArrayBuffer[Int]): Int = ???
 
   override def show(): Unit = {
-    print("var = " + id + ", level = " + level + " ")
-    for (i <- 0 until numBit) {
-      printf("%x ", bitDoms(level).get(i))
-    }
-    println()
+    print("var = " + id + ", level = " + level + " size = " + size() + " ")
+    //    for (i <- 0 until numBit) {
+    //      printf(bitDoms(level).get(i).toBinaryString)
+    //    }
+
+    println("[ " + Constants.getValues(bitDoms(level)).mkString(" ") + " ]")
   }
 
   //提交改动
@@ -354,5 +368,32 @@ class SafeFDEBitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[
       //      cur_size.set(java.lang.Long.bitCount(newBits))
       i += 1
     }
+  }
+
+  override def submitMaskAndIsSame(mask: Array[Long]): (Boolean, Boolean) = {
+    var previousBits: Long = 0L
+    var newBits: Long = 0L
+    var changed = false
+    var same = true
+    var i = 0
+    while (i < numBit) {
+      do {
+        previousBits = bitDoms(level).get(i)
+        // Clear the relevant bit
+        newBits = previousBits & mask(i)
+        // Try to set the new bit mask, and loop round until successful
+      } while (!bitDoms(level).compareAndSet(i, previousBits, newBits))
+
+      if (previousBits != newBits) {
+        changed = true
+      }
+
+      if (mask(i) != newBits) {
+        same = false
+      }
+
+      i += 1
+    }
+    return (changed, same)
   }
 }

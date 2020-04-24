@@ -32,7 +32,7 @@ abstract class DSPFDESolver(fdeM: FDEModel1, val parallelism: Int, propagatorNam
     subscription(i) = new ArrayBuffer[DSPPropagator]()
   }
 
-  val I = new AssignedStack[PVar](numVars)
+  val I = new AssignedStack[PVar](fdeM.num_OriVars)
 
   // 启发式对象
   var heuristic: Heuristic[PVar] = null
@@ -51,15 +51,16 @@ abstract class DSPFDESolver(fdeM: FDEModel1, val parallelism: Int, propagatorNam
 
   //初始化约束
   propagatorName match {
-    case "STRbit_FDE" => {
+    case "DSCPFDE" => {
       for (i <- 0 until fdeM.num_OriTabs) {
         val xc: FDETab = fdeM.tabs(i)
         val ts: Array[Array[Int]] = xc.tuples
         val scope: Array[PVar] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
         // str fde
         tabs(i) = new TableDSPFDESTR(xc.id, xc.arity, fdeM.num_OriVars, scope, ts, helper)
+
         for (v <- scope) {
-          subscription(v.id) += tabs(i)
+          helper.subscription(v.id) += tabs(i)
         }
       }
       for (i <- fdeM.num_OriTabs until numTabs) {
@@ -67,8 +68,9 @@ abstract class DSPFDESolver(fdeM: FDEModel1, val parallelism: Int, propagatorNam
         val ts: Array[Array[Int]] = xc.tuples
         val scope: Array[PVar] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
         tabs(i) = new TableDSPFDECT(xc.id, xc.arity, fdeM.num_OriVars, scope, ts, helper) //只包含原始变量层数为原始变量即可
+
         for (v <- scope) {
-          subscription(v.id) += tabs(i)
+          helper.subscription(v.id) += tabs(i)
         }
       }
     }
@@ -81,12 +83,21 @@ abstract class DSPFDESolver(fdeM: FDEModel1, val parallelism: Int, propagatorNam
   // 初始化启发式对象
   heuName match {
     case "Dom/Ddeg" => {
-      heuristic = new HeuDomDdeg[PVar, DSPPropagator](numVars, vars, helper.subscription)
+      heuristic = new HeuDomDdeg[PVar, DSPPropagator](fdeM.num_OriVars, vars, helper.subscription)
     }
 
     case "Dom/Wdeg" => {
-      heuristic = new HeuDomWdeg[PVar, DSPPropagator](numVars, vars, helper.subscription)
+      heuristic = new HeuDomWdeg[PVar, DSPPropagator](fdeM.num_OriVars, vars, helper.subscription)
     }
+  }
+
+  helper.num_old = fdeM.num_OriVars
+  var i = fdeM.num_OriVars
+  var j = fdeM.num_OriTabs
+  while (i < numVars) {
+    helper.vcMap += (j -> vars(i).asInstanceOf[SafeFDEBitSetVar])
+    j += 1
+    i += 1
   }
 
   var start_time = 0L
@@ -103,11 +114,12 @@ abstract class DSPFDESolver(fdeM: FDEModel1, val parallelism: Int, propagatorNam
     var finished = false
 
     //initial propagate
+//    println("initial propagate")
     var consistent = initialPropagate()
     end_time = System.nanoTime
     helper.propTime += (end_time - prop_start_time)
 
-    //infoShow()
+//    infoShow()
     //    return
 
     if (!consistent) {
@@ -137,7 +149,7 @@ abstract class DSPFDESolver(fdeM: FDEModel1, val parallelism: Int, propagatorNam
       //      println("nodes: " + helper.nodes)
 
       I.push(v, a)
-      //      println(s"push:(${v.id}, ${a})")
+//      println(s"push:(${v.id}, ${a})")
       bind(v, a)
       end_time = System.nanoTime
       helper.branchTime += (end_time - branch_start_time)
@@ -161,7 +173,7 @@ abstract class DSPFDESolver(fdeM: FDEModel1, val parallelism: Int, propagatorNam
       while (!consistent && !I.empty()) {
         back_start_time = System.nanoTime
         val (v, a) = I.pop()
-        //        println(s"pop:(${v.id}, ${a})")
+//        println(s"pop:(${v.id}, ${a})")
         backLevel()
         v.remove(a)
         remove(v, a)

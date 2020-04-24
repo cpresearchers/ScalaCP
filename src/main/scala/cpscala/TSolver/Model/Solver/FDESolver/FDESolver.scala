@@ -69,7 +69,7 @@ abstract class FDESolver(fdeM: FDEModel1, propagatorName: String, varType: Strin
   //初始化约束
   propagatorName match {
 
-    case "FDE_CT"=>{
+    case "FDE_CT" => {
       for (i <- 0 until fdeM.num_OriTabs) {
         val xc: FDETab = fdeM.tabs(i)
         val ts: Array[Array[Int]] = xc.tuples
@@ -83,14 +83,14 @@ abstract class FDESolver(fdeM: FDEModel1, propagatorName: String, varType: Strin
         val xc: FDETab = fdeM.tabs(i)
         val ts: Array[Array[Int]] = xc.tuples
         val scope: Array[Var] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
-        tabs(i)=new Table_CTAddition(xc.id, xc.arity, fdeM.num_OriVars, scope, ts, helper)      //只包含原始变量层数为原始变量即可
+        tabs(i) = new Table_CTAddition(xc.id, xc.arity, fdeM.num_OriVars, scope, ts, helper) //只包含原始变量层数为原始变量即可
         for (v <- scope) {
           subscription(v.id) += tabs(i)
         }
       }
     }
 
-    case "STRbit_FDE"=>{
+    case "STRbit_FDE" => {
       for (i <- 0 until fdeM.num_OriTabs) {
         val xc: FDETab = fdeM.tabs(i)
         val ts: Array[Array[Int]] = xc.tuples
@@ -104,13 +104,13 @@ abstract class FDESolver(fdeM: FDEModel1, propagatorName: String, varType: Strin
         val xc: FDETab = fdeM.tabs(i)
         val ts: Array[Array[Int]] = xc.tuples
         val scope: Array[Var] = for (i <- (0 until xc.arity).toArray) yield vars(xc.scopeInt(i))
-        tabs(i)=new Table_CTAddition(xc.id, xc.arity, fdeM.num_OriVars, scope, ts, helper)      //只包含原始变量层数为原始变量即可
+        tabs(i) = new Table_CTAddition(xc.id, xc.arity, fdeM.num_OriVars, scope, ts, helper) //只包含原始变量层数为原始变量即可
         for (v <- scope) {
           subscription(v.id) += tabs(i)
         }
       }
     }
-    case "STRbit_FDE1"=>{
+    case "STRbit_FDE1" => {
       for (i <- 0 until numTabs) {
         val xc: FDETab = fdeM.tabs(i)
         val ts: Array[Array[Int]] = xc.tuples
@@ -162,6 +162,7 @@ abstract class FDESolver(fdeM: FDEModel1, propagatorName: String, varType: Strin
 
   }
 
+
   // 初始化启发式类
   heuName match {
     case "Dom/Ddeg" => {
@@ -172,13 +173,13 @@ abstract class FDESolver(fdeM: FDEModel1, propagatorName: String, varType: Strin
     }
   }
 
-  helper.num_old=fdeM.num_OriVars
-  var i=fdeM.num_OriVars
-  var j=fdeM.num_OriTabs
-  while(i<numVars){
-    helper.vcMap += (j->vars(i))
-    j+=1
-    i+=1
+  helper.num_old = fdeM.num_OriVars
+  var i = fdeM.num_OriVars
+  var j = fdeM.num_OriTabs
+  while (i < numVars) {
+    helper.vcMap += (j -> vars(i))
+    j += 1
+    i += 1
   }
 
   val Q = new CoarseQueue[Var](numVars)
@@ -196,12 +197,13 @@ abstract class FDESolver(fdeM: FDEModel1, propagatorName: String, varType: Strin
     var finished = false
 
     //initial propagate
+//    println("initial propagate")
     var consistent = initialPropagate()
     end_time = System.nanoTime
     helper.propTime += (end_time - prop_start_time)
-//    println(end_time - prop_start_time)
+    //    println(end_time - prop_start_time)
 
-    //infoShow()
+//    infoShow()
     //    return
 
     if (!consistent) {
@@ -226,9 +228,9 @@ abstract class FDESolver(fdeM: FDEModel1, propagatorName: String, varType: Strin
       val (v, a) = heuristic.selectLiteral(helper.level, levelvdense)
       newLevel()
       helper.nodes += 1
-//            println("nodes: " + helper.nodes)
+      //            println("nodes: " + helper.nodes)
       I.push(v, a)
-//            println(s"push:(${v.id}, ${a})")
+//      println(s"push:(${v.id}, ${a})")
       bind(v, a)
       end_time = System.nanoTime
       helper.branchTime += (end_time - branch_start_time)
@@ -236,25 +238,25 @@ abstract class FDESolver(fdeM: FDEModel1, propagatorName: String, varType: Strin
       consistent = checkConsistencyAfterAssignment(v)
       end_time = System.nanoTime
       helper.propTime += (end_time - prop_start_time)
-//      println(end_time - prop_start_time)
+      //      println(end_time - prop_start_time)
 
       //            infoShow()
       if (consistent && I.full()) {
         I.show()
         // 若想求出所有解，则将consistent设置为false，且不返回
-                consistent = false
-//        println(helper.filterDomainTime* 1e-9)
-//        println(helper.updateTableTime* 1e-9)
+        consistent = false
+        //        println(helper.filterDomainTime* 1e-9)
+        //        println(helper.updateTableTime* 1e-9)
         end_time = System.nanoTime
         helper.time = end_time - start_time
-//        return
+        return
       }
       while (!consistent && !I.empty()) {
         back_start_time = System.nanoTime
         val (v, a) = I.pop()
-//                println(s"pop:(${v.id}, ${a})")
+//        println(s"pop:(${v.id}, ${a})")
         backLevel()
-//        v.remove(a)
+        //        v.remove(a)
         remove(v, a)
         end_time = System.nanoTime
         helper.backTime += (end_time - back_start_time)
@@ -263,9 +265,9 @@ abstract class FDESolver(fdeM: FDEModel1, propagatorName: String, varType: Strin
         consistent = !v.isEmpty() && checkConsistencyAfterRefutation(v)
         end_time = System.nanoTime
         helper.propTime += (end_time - prop_start_time)
-//        println(end_time - prop_start_time)
+        //        println(end_time - prop_start_time)
 
-//        infoShow()
+        //        infoShow()
       }
       if (!consistent) {
         finished = true
@@ -337,7 +339,7 @@ abstract class FDESolver(fdeM: FDEModel1, propagatorName: String, varType: Strin
 
   def infoShow(): Unit = {
     for (x <- vars) {
-      println(s"     var:${x.id} size:${x.size()}")
+      x.show()
     }
   }
 

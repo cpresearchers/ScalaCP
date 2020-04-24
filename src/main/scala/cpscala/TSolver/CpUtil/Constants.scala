@@ -1,5 +1,7 @@
 package cpscala.TSolver.CpUtil
 
+import java.util.concurrent.atomic.{AtomicLong, AtomicLongArray}
+
 import scala.collection.mutable.ArrayBuffer
 
 object Constants {
@@ -240,6 +242,60 @@ object Constants {
       }
       i += 1
     }
+  }
+
+  //通过mask表示获取值存入values
+  @inline def getValues(b: Array[Long]): Array[Int] = {
+    val values = new ArrayBuffer[Int]()
+    var i = 0
+    var base = 0
+    var j = 0
+    var end = 0
+
+    while (i < b.length) {
+      val a = b(i)
+      base = i * BITSIZE
+      if (a != 0) {
+        j = FirstLeft(a)
+        end = FirstRight(a)
+        while (j <= end) {
+          if ((a & MASK1(j)) != 0) {
+            values += (j + base)
+          }
+          j += 1
+        }
+      }
+      i += 1
+    }
+
+    return values.toArray
+  }
+
+  //通过mask表示获取值存入values
+  @inline def getValues(b: AtomicLongArray): Array[Int] = {
+    val values = new ArrayBuffer[Int]()
+    var i = 0
+    var base = 0
+    var j = 0
+    var end = 0
+
+    while (i < b.length) {
+      val a = b.get(i)
+      base = i * BITSIZE
+      if (a != 0) {
+        j = FirstLeft(a)
+        end = FirstRight(a)
+        while (j <= end) {
+          if ((a & MASK1(j)) != 0) {
+            values += (j + base)
+          }
+          j += 1
+        }
+      }
+      i += 1
+    }
+
+    return values.toArray
   }
 
   //通过mask表示获取值存入values

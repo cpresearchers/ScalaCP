@@ -156,7 +156,7 @@ class Table_CTAddition(val id: Int, val arity: Int, val num_vars: Int, val scope
           else {
             deleted = true
             //无法找到支持, 删除(v, a)
-            //println(s"      cons:${id} var:${v.id} remove new value:${a}")
+//            println(s"\tCT id:${id} var:${v.id} remove new value:${a}")
             v.remove(a)
           }
         }
@@ -182,18 +182,18 @@ class Table_CTAddition(val id: Int, val arity: Int, val num_vars: Int, val scope
     //println(s"${id} cons starts ------------------>")
     //L32~L33
     initial()
-//        val utStart = System.nanoTime
+    //        val utStart = System.nanoTime
     val res = updateTable()
-//        val utEnd = System.nanoTime
-//        helper.updateTableTime += utEnd - utStart
+    //        val utEnd = System.nanoTime
+    //        helper.updateTableTime += utEnd - utStart
     if (!res) {
       return false
     }
 
-//        val fiStart = System.nanoTime
+    //        val fiStart = System.nanoTime
     val fi = filterDomains(evt)
-//        val fiEnd = System.nanoTime
-//        helper.filterDomainTime += fiEnd - fiStart
+    //        val fiEnd = System.nanoTime
+    //        helper.filterDomainTime += fiEnd - fiStart
     if (helper.vcMap(id).removeValues(currTab.getWord())) {
       if (helper.vcMap(id).size() == 0) {
         return false

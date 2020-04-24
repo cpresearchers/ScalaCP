@@ -3,7 +3,6 @@ package cpscala.TSolver.Model.Variable
 import java.util.concurrent.atomic.AtomicLongArray
 
 abstract class PVar extends Var {
-
   def simpleMask(): Long = ???
 
   def submitMask(mask: Long): Boolean = ???

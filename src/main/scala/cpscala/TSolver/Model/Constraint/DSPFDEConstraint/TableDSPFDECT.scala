@@ -4,7 +4,7 @@ import cpscala.TSolver.CpUtil.{Constants, FDEBitSet, INDEX}
 import cpscala.TSolver.CpUtil.SearchHelper.{DSPFDESearchHelper, FDESearchHelper}
 import cpscala.TSolver.Model.Constraint.DSPConstraint.DSPPropagator
 import cpscala.TSolver.Model.Constraint.FDEConstrain.FDEPropagator
-import cpscala.TSolver.Model.Variable.{PVar, Var}
+import cpscala.TSolver.Model.Variable.{PVar, SafeFDEBitSetVar, Var}
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -49,6 +49,8 @@ class TableDSPFDECT(val id: Int, val arity: Int, val num_vars: Int, val scope: A
   private[this] val removeMask = Array.tabulate(arity)(i => new Array[Long](varNumBit(i)))
   // 保存delta或者变量的剩余有效值
   private[this] val values = new ArrayBuffer[Int]()
+  //  private[this] val correspondingVariable: SafeFDEBitSetVar = helper.vcMap(id)
+
 
   // 是否首次传播
   var firstPropagate = true
@@ -94,7 +96,8 @@ class TableDSPFDECT(val id: Int, val arity: Int, val num_vars: Int, val scope: A
 
   def updateTable(): Boolean = {
     //    //println(s"      ut cid: ${id}===========>")
-    currTab.intersectWord(helper.vcMap(id).getAtomicBitDom())
+    //    val b = helper.vcMap(id).getAtomicBitDom()
+    currTab.intersectWord(helper.vcMap(id).bitDoms(helper.level))
 
     var i = 0
     while (i < Sval.length && helper.isConsistent) {
@@ -148,45 +151,6 @@ class TableDSPFDECT(val id: Int, val arity: Int, val num_vars: Int, val scope: A
     return true
   }
 
-  def filterDomains(y: ArrayBuffer[PVar]): Boolean = {
-    y.clear()
-    for (vv <- Ssup) {
-      var deleted: Boolean = false
-      val v = scope(vv)
-      v.getValidValues(values)
-
-      for (a <- values) {
-        var index = residues(vv)(a)
-        if (index == Constants.kINDEXOVERFLOW || (currTab.words(helper.level)(index) & supports(vv)(a)(index)) == 0L) { //res失效
-          index = currTab.intersectIndex(supports(vv)(a))
-          if (index != -1) { //重新找到支持
-            residues(vv)(a) = index
-          }
-          else {
-            deleted = true
-            //无法找到支持, 删除(v, a)
-            //println(s"      cons:${id} var:${v.id} remove new value:${a}")
-            v.remove(a)
-          }
-        }
-      }
-
-      if (deleted) {
-        // 论域删空退出
-        if (v.isEmpty()) {
-          //println(s"filter faild!!: ${Thread.currentThread().getName}, cid: ${id}, vid: ${v.id}")
-          failWeight += 1
-          return false
-        }
-        //更新lastMask
-        v.mask(lastMask(vv))
-        y += v
-      }
-    }
-
-    return true
-  }
-
   def filterDomains(): Boolean = {
     Xevt.clear()
 
@@ -212,6 +176,7 @@ class TableDSPFDECT(val id: Int, val arity: Int, val num_vars: Int, val scope: A
             //            v.remove(a)
             val (x, y) = INDEX.getXY(a)
             localMask(vv)(x) &= Constants.MASK0(y)
+//            println(s"\tCT id:${id} var:${v.id} remove new value:${a}")
           }
         }
       }
@@ -341,8 +306,9 @@ class TableDSPFDECT(val id: Int, val arity: Int, val num_vars: Int, val scope: A
       if (helper.isConsistent) {
         for (c <- helper.subscription(x.id)) {
           val index = c.scopeMap(x.id)
-          if (c.id != id && helper.pVarStamp.get(x.id) > c.scopeStamp(index)) {
-            //          if (c.id != id) {
+          //          if (c.id != id && helper.pVarStamp.get(x.id) > c.scopeStamp(index)) {
+          if (c.id != id) {
+            println(s"\t\t${id} submit:${c.id}")
             helper.submitToPool(c)
           }
         }

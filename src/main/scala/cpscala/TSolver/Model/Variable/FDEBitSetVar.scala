@@ -225,10 +225,17 @@ class FDEBitSetVar (val name: String, val id: Int, numVars: Int, vals: Array[Int
   //  def getLastRemovedValuesByMask(oldSize: Long, vals: ArrayBuffer[Int]): Int = ???
 
   override def show(): Unit = {
-    print("var = " + id + ", level = " + level + " ")
-    for (i <- 0 until numBit) {
-      printf("%x ", bitDoms(level)(i))
-    }
-    println()
+//    print("var = " + id + ", level = " + level + " ")
+//    for (i <- 0 until numBit) {
+//      printf("%x ", bitDoms(level)(i))
+//    }
+//    println()
+
+    print("var = " + id + ", level = " + level + " size = " + size() + " ")
+    //    for (i <- 0 until numBit) {
+    //      printf(bitDoms(level).get(i).toBinaryString)
+    //    }
+
+    println("[ " + Constants.getValues(bitDoms(level)).mkString(" ") + " ]")
   }
 }

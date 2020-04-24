@@ -8,7 +8,7 @@ import cpscala.TSolver.Model.Variable.Var
 import scala.collection.mutable.ArrayBuffer
 import scala.util.control.Breaks.{break, breakable}
 
-class Table_STRFDE1 (val id: Int, val arity: Int, val num_vars: Int, val scope: Array[Var], val tuples: Array[Array[Int]], val helper: FDESearchHelper) extends FDEPropagator {
+class Table_STRFDE1(val id: Int, val arity: Int, val num_vars: Int, val scope: Array[Var], val tuples: Array[Array[Int]], val helper: FDESearchHelper) extends FDEPropagator {
 
   // 比特子表，三维数组，第一维变量，第二维取值，第三维元组
   // 初始化变量时，其论域已经被序列化，诸如[0, 1, ..., var.size()]，所以可以直接用取值作为下标
@@ -18,14 +18,14 @@ class Table_STRFDE1 (val id: Int, val arity: Int, val num_vars: Int, val scope: 
   // 比特元组的数量，tupleLength不能被64整除，要为余数创建一个比特元组
   private[this] val numBit = Math.ceil(lengthTuple.toDouble / Constants.BITSIZE.toDouble).toInt
   // 比特元组的集合，比特元组的每个比特位记录对应位置的元组是否有效
-//  private[this] val bitVal = Array.fill[Long](numBit)(-1L)
-//  // 最后一个比特元组末尾清0
-//  bitVal(numBit - 1) <<= Constants.BITSIZE - lengthTuple % Constants.BITSIZE
+  //  private[this] val bitVal = Array.fill[Long](numBit)(-1L)
+  //  // 最后一个比特元组末尾清0
+  //  bitVal(numBit - 1) <<= Constants.BITSIZE - lengthTuple % Constants.BITSIZE
   // 比特元组栈
   // 在搜索树初始层，若比特元组改变了，即更新栈顶层的Array（后来想了想，0层不需要保存，因为1层对应的栈顶保存的即是0层初始化GAC后的信息）
   // 在搜索树的非初始层，当比特元组第一次发生改变时，将改变前的比特元组保存在栈顶层Array中
   private[this] val bitLevel = Array.ofDim[Long](num_vars + 1, numBit)
-  bitLevel(0)=Array.fill(numBit)(Constants.ALLONELONG);
+  bitLevel(0) = Array.fill(numBit)(Constants.ALLONELONG);
   bitLevel(0)(numBit - 1) <<= Constants.BITSIZE - lengthTuple % Constants.BITSIZE
 
   // 变量的比特组个数
@@ -132,7 +132,7 @@ class Table_STRFDE1 (val id: Int, val arity: Int, val num_vars: Int, val scope: 
           if (bitTables(i)(j).isEmpty) {
             v.remove(j)
             helper.varStamp(v.id) = helper.globalStamp
-            //println(s"       var:${x.id} remove new value:${value}")
+//            println(s"\tstrbit: id = ${id} var:${v.id} remove new value:${j}")
           }
         }
         if (v.isEmpty()) {
@@ -171,8 +171,8 @@ class Table_STRFDE1 (val id: Int, val arity: Int, val num_vars: Int, val scope: 
         Constants.getValues(removeMask(i), removeValues)
         // 寻找新的无效元组
         for (a <- removeValues) {
-          val bitSupports= bitTables(i)(a)
-          for (l <- 0 to bitSupports.size-1) {
+          val bitSupports = bitTables(i)(a)
+          for (l <- 0 to bitSupports.size - 1) {
             val ts = bitSupports(l).ts
             val u = bitSupports(l).mask & bitLevel(level)(ts)
 
@@ -200,18 +200,18 @@ class Table_STRFDE1 (val id: Int, val arity: Int, val num_vars: Int, val scope: 
 
         for (a <- validValues) {
           val bitSupports = bitTables(i)(a)
-          val old = bitSupports.length-1
+          val old = bitSupports.length - 1
           // 寻找支持的比特元组
           var now = old
 
-          if(now == -1 || (bitSupports(now).mask & bitLevel(level)(bitSupports(now).ts)) == 0L){
-            now=findSupport(bitSupports,bitLevel(level))
+          if (now == -1 || (bitSupports(now).mask & bitLevel(level)(bitSupports(now).ts)) == 0L) {
+            now = findSupport(bitSupports, bitLevel(level))
           }
 
           if (now == -1) {
             deleted = true
             v.remove(a)
-            //                        println(s"    cur_cid: ${id}, var: ${v.id}, remove val: ${a}")
+//            println(s"\tstrbit: id = ${id} var: ${v.id} remove val: ${a}")
           }
         }
         if (deleted) {
@@ -245,10 +245,10 @@ class Table_STRFDE1 (val id: Int, val arity: Int, val num_vars: Int, val scope: 
 
   // 新层
   def newLevel(): Unit = {
-    val prelevel=level
+    val prelevel = level
     level += 1
-    for (i<-0 until numBit){
-      bitLevel(level)(i)=bitLevel(prelevel)(i)
+    for (i <- 0 until numBit) {
+      bitLevel(level)(i) = bitLevel(prelevel)(i)
     }
     // 到达新层后不用更改lastMask，lastMask与上层保持一致
   }
@@ -278,12 +278,12 @@ class Table_STRFDE1 (val id: Int, val arity: Int, val num_vars: Int, val scope: 
   override def isSatisfied(): Unit = ???
 
   def findSupport(bitSupports: Array[BitSupport], bitVal: Array[Long]): Int = {
-    var i=bitSupports.size-1
-    while(i>=0){
-        if ((bitSupports(i).mask & bitVal(bitSupports(i).ts)) != 0L) return i
-      i-=1
+    var i = bitSupports.size - 1
+    while (i >= 0) {
+      if ((bitSupports(i).mask & bitVal(bitSupports(i).ts)) != 0L) return i
+      i -= 1
     }
-    return  -1
+    return -1
   }
 
 }
