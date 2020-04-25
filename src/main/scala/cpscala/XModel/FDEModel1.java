@@ -372,13 +372,13 @@ public class FDEModel1 {
             int vid = i + num_OriVars;
             int tid = i + num_OriTabs;
             HashMap<ArrayList<Integer>, Integer> tupleMap = new HashMap<ArrayList<Integer>, Integer>();
-            ArrayList<Integer> tuple = new ArrayList<>();
+
             for (int j = 0; j < tabs[tid].tuples.length; j++) {
+                ArrayList<Integer> tuple = new ArrayList<>();
                 for (int u = 0; u < tabs[tid].arity - 1; u++) {
                     tuple.add(tabs[tid].tuples[j][u]);
                 }
                 tupleMap.put(tuple, tabs[tid].tuples[j][tabs[tid].arity - 1]);
-                tuple.clear();
             }
             ArrayList<Integer> indexVar = new ArrayList<>();
             HashSet<Integer> c = new HashSet<>();
@@ -396,7 +396,7 @@ public class FDEModel1 {
 
                     }
                     for (int t = 0, end = ctuples.length; t < end; t++) {
-                        tuple.clear();
+                        ArrayList<Integer> tuple = new ArrayList<>();
                         for (int k = 0; k < indexVar.size(); k++) {
                             tuple.add(ctuples[t][indexVar.get(k)]);
                         }
@@ -418,7 +418,7 @@ public class FDEModel1 {
                         }
                     }
                     for (int t = 0, end = ctuples.length; t < end; t++) {
-                        tuple.clear();
+                        ArrayList<Integer> tuple = new ArrayList<>();
                         for (int k = 0; k < indexVar.size(); k++) {
                             tuple.add(ctuples[t][indexVar.get(k)]);
                         }
