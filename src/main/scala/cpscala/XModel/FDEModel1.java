@@ -383,6 +383,7 @@ public class FDEModel1 {
             ArrayList<Integer> indexVar = new ArrayList<>();
             HashSet<Integer> c = new HashSet<>();
             for (Tuple2<Integer, Integer> c2 : addtionTabsTabScopeArray.get(i)) {
+                ArrayList<Integer> tuple = new ArrayList<>();
                 if (!c.contains(c2._1)) {
                     int[][] ctuples = xm.tabs.get(c2._1).tuples;
                     for (int j = 0; j < tabs[tid].arity - 1; j++) {
@@ -396,7 +397,7 @@ public class FDEModel1 {
 
                     }
                     for (int t = 0, end = ctuples.length; t < end; t++) {
-                        ArrayList<Integer> tuple = new ArrayList<>();
+                        tuple.clear();
                         for (int k = 0; k < indexVar.size(); k++) {
                             tuple.add(ctuples[t][indexVar.get(k)]);
                         }
@@ -418,7 +419,7 @@ public class FDEModel1 {
                         }
                     }
                     for (int t = 0, end = ctuples.length; t < end; t++) {
-                        ArrayList<Integer> tuple = new ArrayList<>();
+                        tuple.clear();
                         for (int k = 0; k < indexVar.size(); k++) {
                             tuple.add(ctuples[t][indexVar.get(k)]);
                         }
