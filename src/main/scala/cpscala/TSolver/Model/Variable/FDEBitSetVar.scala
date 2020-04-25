@@ -231,7 +231,7 @@ class FDEBitSetVar (val name: String, val id: Int, numVars: Int, vals: Array[Int
 //    }
 //    println()
 
-    print("var = " + id + ", level = " + level + " size = " + size() + " ")
+    print("\tvar = " + id + ", level = " + level + " size = " + size() + " ")
     //    for (i <- 0 until numBit) {
     //      printf(bitDoms(level).get(i).toBinaryString)
     //    }

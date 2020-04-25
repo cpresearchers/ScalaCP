@@ -223,7 +223,7 @@ abstract class FDESolver(fdeM: FDEModel1, propagatorName: String, varType: Strin
       //        infoShow()
       //        return
       //      }
-      //      infoShow()
+      //            infoShow()
       branch_start_time = System.nanoTime
       val (v, a) = heuristic.selectLiteral(helper.level, levelvdense)
       newLevel()
@@ -240,7 +240,8 @@ abstract class FDESolver(fdeM: FDEModel1, propagatorName: String, varType: Strin
       helper.propTime += (end_time - prop_start_time)
       //      println(end_time - prop_start_time)
 
-      //            infoShow()
+//      infoShow()
+
       if (consistent && I.full()) {
         I.show()
         // 若想求出所有解，则将consistent设置为false，且不返回
@@ -267,7 +268,7 @@ abstract class FDESolver(fdeM: FDEModel1, propagatorName: String, varType: Strin
         helper.propTime += (end_time - prop_start_time)
         //        println(end_time - prop_start_time)
 
-        //        infoShow()
+//        infoShow()
       }
       if (!consistent) {
         finished = true

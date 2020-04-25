@@ -47,7 +47,16 @@ abstract class DSPFDESolver(fdeM: FDEModel1, val parallelism: Int, propagatorNam
     }
   }
 
-  val Xevt = new ArrayBuffer[PVar]()
+//  val Xevt = new ArrayBuffer[PVar]()
+
+  helper.num_old = fdeM.num_OriVars
+//  var i = fdeM.num_OriVars
+//  var j = fdeM.num_OriTabs
+//  while (i < numVars) {
+//    helper.vcMap += (j -> vars(i).asInstanceOf[SafeFDEBitSetVar])
+//    j += 1
+//    i += 1
+//  }
 
   //初始化约束
   propagatorName match {
@@ -61,7 +70,9 @@ abstract class DSPFDESolver(fdeM: FDEModel1, val parallelism: Int, propagatorNam
 
         for (v <- scope) {
           helper.subscription(v.id) += tabs(i)
+          subscription(v.id) += tabs(i)
         }
+
       }
       for (i <- fdeM.num_OriTabs until numTabs) {
         val xc: FDETab = fdeM.tabs(i)
@@ -71,6 +82,7 @@ abstract class DSPFDESolver(fdeM: FDEModel1, val parallelism: Int, propagatorNam
 
         for (v <- scope) {
           helper.subscription(v.id) += tabs(i)
+          subscription(v.id) += tabs(i)
         }
       }
     }
@@ -83,22 +95,15 @@ abstract class DSPFDESolver(fdeM: FDEModel1, val parallelism: Int, propagatorNam
   // 初始化启发式对象
   heuName match {
     case "Dom/Ddeg" => {
-      heuristic = new HeuDomDdeg[PVar, DSPPropagator](fdeM.num_OriVars, vars, helper.subscription)
+      heuristic = new HeuDomDdeg[PVar, DSPPropagator](fdeM.num_OriVars, vars, subscription)
     }
 
     case "Dom/Wdeg" => {
-      heuristic = new HeuDomWdeg[PVar, DSPPropagator](fdeM.num_OriVars, vars, helper.subscription)
+      heuristic = new HeuDomWdeg[PVar, DSPPropagator](fdeM.num_OriVars, vars, subscription)
     }
   }
 
-  helper.num_old = fdeM.num_OriVars
-  var i = fdeM.num_OriVars
-  var j = fdeM.num_OriTabs
-  while (i < numVars) {
-    helper.vcMap += (j -> vars(i).asInstanceOf[SafeFDEBitSetVar])
-    j += 1
-    i += 1
-  }
+
 
   var start_time = 0L
   var branch_start_time = 0L
@@ -153,13 +158,12 @@ abstract class DSPFDESolver(fdeM: FDEModel1, val parallelism: Int, propagatorNam
       bind(v, a)
       end_time = System.nanoTime
       helper.branchTime += (end_time - branch_start_time)
-
-
       prop_start_time = System.nanoTime
       consistent = checkConsistencyAfterAssignment(v)
       end_time = System.nanoTime
       helper.propTime += (end_time - prop_start_time)
-      //            infoShow()
+
+//      infoShow()
 
       if (consistent && I.full()) {
         I.show()
@@ -175,7 +179,7 @@ abstract class DSPFDESolver(fdeM: FDEModel1, val parallelism: Int, propagatorNam
         val (v, a) = I.pop()
 //        println(s"pop:(${v.id}, ${a})")
         backLevel()
-        v.remove(a)
+//        v.remove(a)
         remove(v, a)
         end_time = System.nanoTime
         helper.backTime += (end_time - back_start_time)
@@ -184,7 +188,7 @@ abstract class DSPFDESolver(fdeM: FDEModel1, val parallelism: Int, propagatorNam
         consistent = !v.isEmpty() && checkConsistencyAfterRefutation(v)
         end_time = System.nanoTime
         helper.propTime += (end_time - prop_start_time)
-        //infoShow()
+//        infoShow()
       }
 
       if (!consistent) {

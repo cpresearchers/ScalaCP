@@ -334,17 +334,44 @@ class SafeFDEBitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[
     //记录是否改变
     return changed
   }
+//
+//  override def removeValuesAndTestEmpty(words: Array[Long]): (Boolean, Boolean) = {
+//    //本表默认未修改
+//    var changed = false
+//    var empty = true
+//    var newBits = 0L
+//    var previousBits = 0L
+//
+//    var i = 0
+//    while (i < numBit) {
+//      do {
+//        previousBits = bitDoms(level).get(i)
+//        // Clear the relevant bit
+//        newBits = previousBits & words(i)
+//        // Try to set the new bit mask, and loop round until successful
+//      } while (!bitDoms(level).compareAndSet(i, previousBits, newBits))
+//
+//      if (previousBits != newBits) {
+//        changed = true
+//      }
+//
+//      if (newBits != 0L) {
+//        empty = false
+//      }
+//
+//      i += 1
+//    }
+//    //记录是否改变
+//    return (changed, empty)
+//  }
 
-  override def getAtomicBitDom(): AtomicLongArray = {
-    val c = bitDoms(level)
-    return c
-  }
+  override def getAtomicBitDom(): AtomicLongArray = bitDoms(level)
 
 
   //  def getLastRemovedValuesByMask(oldSize: Long, vals: ArrayBuffer[Int]): Int = ???
 
   override def show(): Unit = {
-    print("var = " + id + ", level = " + level + " size = " + size() + " ")
+    print("\tvar = " + id + ", level = " + level + " size = " + size() + " ")
     //    for (i <- 0 until numBit) {
     //      printf(bitDoms(level).get(i).toBinaryString)
     //    }
@@ -371,10 +398,12 @@ class SafeFDEBitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[
   }
 
   override def submitMaskAndIsSame(mask: Array[Long]): (Boolean, Boolean) = {
-    var previousBits: Long = 0L
-    var newBits: Long = 0L
+    //本表默认未修改
     var changed = false
-    var same = true
+    var empty = true
+    var newBits = 0L
+    var previousBits = 0L
+
     var i = 0
     while (i < numBit) {
       do {
@@ -388,12 +417,13 @@ class SafeFDEBitSetVar(val name: String, val id: Int, numVars: Int, vals: Array[
         changed = true
       }
 
-      if (mask(i) != newBits) {
-        same = false
+      if (newBits != 0L) {
+        empty = false
       }
 
       i += 1
     }
-    return (changed, same)
+    //记录是否改变
+    return (changed, empty)
   }
 }

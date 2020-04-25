@@ -49,14 +49,14 @@ class TableDSPFDECT(val id: Int, val arity: Int, val num_vars: Int, val scope: A
   private[this] val removeMask = Array.tabulate(arity)(i => new Array[Long](varNumBit(i)))
   // 保存delta或者变量的剩余有效值
   private[this] val values = new ArrayBuffer[Int]()
-  //  private[this] val correspondingVariable: SafeFDEBitSetVar = helper.vcMap(id)
-
+  private[this] val additionalVar: SafeFDEBitSetVar = scope.last.asInstanceOf[SafeFDEBitSetVar]
 
   // 是否首次传播
   var firstPropagate = true
 
   //检查变量
   def initial(): Boolean = {
+    //    println(s"\t\tini cid: ${id}===========>")
     Ssup.clear()
     Sval.clear()
     // 标记SVal是否为空，为空则跳出propagate
@@ -95,9 +95,9 @@ class TableDSPFDECT(val id: Int, val arity: Int, val num_vars: Int, val scope: A
   }
 
   def updateTable(): Boolean = {
-    //    //println(s"      ut cid: ${id}===========>")
-    //    val b = helper.vcMap(id).getAtomicBitDom()
-    currTab.intersectWord(helper.vcMap(id).bitDoms(helper.level))
+    //    println(s"\t\tut cid: ${id}===========>")
+    //    val b = additionalVar.getAtomicBitDom()
+    currTab.intersectWord(additionalVar.bitDoms(helper.level))
 
     var i = 0
     while (i < Sval.length && helper.isConsistent) {
@@ -152,6 +152,7 @@ class TableDSPFDECT(val id: Int, val arity: Int, val num_vars: Int, val scope: A
   }
 
   def filterDomains(): Boolean = {
+    //    println(s"\t\tfd cid: ${id}===========>")
     Xevt.clear()
 
     var i = 0
@@ -176,20 +177,16 @@ class TableDSPFDECT(val id: Int, val arity: Int, val num_vars: Int, val scope: A
             //            v.remove(a)
             val (x, y) = INDEX.getXY(a)
             localMask(vv)(x) &= Constants.MASK0(y)
-//            println(s"\tCT id:${id} var:${v.id} remove new value:${a}")
+            //            println(s"\t\tCT id:${id} var:${v.id} remove new value:${a}")
           }
         }
       }
 
       if (deleted) {
-        val (changed, same) = v.submitMaskAndIsSame(localMask(vv))
+        val (changed, empty) = v.submitMaskAndIsSame(localMask(vv))
         if (changed) {
-          helper.pVarStamp.set(v.id, helper.pGlobalStamp.incrementAndGet())
-          if (same) {
-            scopeStamp(vv) = helper.pVarStamp.get(v.id)
-          }
           // 本地线程删值
-          if (v.isEmpty()) {
+          if (empty) {
             helper.isConsistent = false
             failWeight += 1
             //println(s"filter faild!!: ${Thread.currentThread().getName}, cid: ${id}, vid: ${v.id}")
@@ -198,6 +195,18 @@ class TableDSPFDECT(val id: Int, val arity: Int, val num_vars: Int, val scope: A
 
           Xevt += v
         }
+
+        //        val (changed, empty) = v.submitMaskAndIsSame(localMask(vv))
+        //
+        //        if (changed) {
+        //          if (empty) {
+        //            helper.isConsistent = false
+        //            failWeight += 1
+        //            return false
+        //          }
+        //          Xevt += v
+        //        }
+
         var j = 0
         while (j < varNumBit(vv)) {
           lastMask(vv)(j) = localMask(vv)(j)
@@ -228,16 +237,16 @@ class TableDSPFDECT(val id: Int, val arity: Int, val num_vars: Int, val scope: A
   //    val fi = filterDomains(evt)
   //    //        val fiEnd = System.nanoTime
   //    //        helper.filterDomainTime += fiEnd - fiStart
-  //    if (helper.vcMap(id).removeValues(currTab.getWord())) {
-  //      if (helper.vcMap(id).size() == 0) {
+  //    if (additionalVar.removeValues(currTab.getWord())) {
+  //      if (additionalVar.size() == 0) {
   //        return false
   //      }
   //      else {
-  //        evt += helper.vcMap(id)
+  //        evt += additionalVar
   //      }
   //
   //    }
-  //    //    println(id+"   "+helper.vcMap(id).id+"   "+helper.vcMap(id).size()+"  "+evt.size)
+  //    //    println(id+"   "+additionalVar.id+"   "+additionalVar.size()+"  "+evt.size)
   //    return fi
   //  }
 
@@ -245,10 +254,10 @@ class TableDSPFDECT(val id: Int, val arity: Int, val num_vars: Int, val scope: A
     //println(s"${id} cons starts ------------------>")
     //L32~L33
     val ini = initial()
-    if (!ini) {
-      helper.notChangedTabs.incrementAndGet()
-      return false
-    }
+    //    if (!ini) {
+    //      //      helper.notChangedTabs.incrementAndGet()
+    //      return false
+    //    }
     //        val utStart = System.nanoTime
     val res = updateTable()
     //        val utEnd = System.nanoTime
@@ -262,16 +271,40 @@ class TableDSPFDECT(val id: Int, val arity: Int, val num_vars: Int, val scope: A
     val fi = filterDomains()
     //        val fiEnd = System.nanoTime
     //        helper.filterDomainTime += fiEnd - fiStart
-    if (helper.vcMap(id).removeValues(currTab.getWord())) {
-      if (helper.vcMap(id).size() == 0) {
+
+    //    if (additionalVar.removeValues(currTab.getWord())) {
+    //      if (additionalVar.size() == 0) {
+    //        return false
+    //      }
+    //      else {
+    //        Xevt += additionalVar
+    //      }
+    //    }
+
+    val (changed, empty) = additionalVar.submitMaskAndIsSame(currTab.getWord())
+    if (changed) {
+      if (empty) {
+        helper.isConsistent = false
+        failWeight += 1
+        //println(s"filter faild!!: ${Thread.currentThread().getName}, cid: ${id}, vid: ${v.id}")
         return false
       }
-      else {
-        Xevt += helper.vcMap(id)
-      }
 
+      Xevt += additionalVar
     }
-    //    println(id+"   "+helper.vcMap(id).id+"   "+helper.vcMap(id).size()+"  "+evt.size)
+
+
+
+    //    val (changed, empty) = additionalVar.removeValuesAndTestEmpty(currTab.getWord())
+    //    if (changed) {
+    //      if (empty) {
+    //        return false
+    //      }
+    //      else {
+    //        Xevt += additionalVar
+    //      }
+    //    }
+    //    println(id+"   "+additionalVar.id+"   "+additionalVar.size()+"  "+evt.size)
     return fi
   }
 
@@ -305,10 +338,10 @@ class TableDSPFDECT(val id: Int, val arity: Int, val num_vars: Int, val scope: A
     for (x <- Xevt) {
       if (helper.isConsistent) {
         for (c <- helper.subscription(x.id)) {
-          val index = c.scopeMap(x.id)
+          //          val index = c.scopeMap(x.id)
           //          if (c.id != id && helper.pVarStamp.get(x.id) > c.scopeStamp(index)) {
           if (c.id != id) {
-            println(s"\t\t${id} submit:${c.id}")
+            //            println(s"\t\t\tCT ${id} submit:${c.id}")
             helper.submitToPool(c)
           }
         }
@@ -319,7 +352,7 @@ class TableDSPFDECT(val id: Int, val arity: Int, val num_vars: Int, val scope: A
   }
 
   override def run(): Unit = {
-    //    println(s"${id} start  ----- cur_ID: ${Thread.currentThread().getId()}")
+    //    println(s"\t${id} start  --|Xevt| = ${Xevt.size}--- cur_ID: ${Thread.currentThread().getId()}")
     do {
       helper.c_prop.incrementAndGet()
       runningStatus.set(1)

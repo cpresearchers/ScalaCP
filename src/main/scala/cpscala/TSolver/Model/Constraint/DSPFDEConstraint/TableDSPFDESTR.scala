@@ -126,7 +126,7 @@ class TableDSPFDESTR(val id: Int, val arity: Int, val num_vars: Int, val scope: 
             val (x, y) = INDEX.getXY(j)
             localMask(i)(x) &= Constants.MASK0(y)
             helper.varIsChange.set(true)
-//            println(s"\tstrbit: id = ${id} var:${v.id} remove new value:${j}")
+            //            println(s"\t\tstrbit: id = ${id} var:${v.id} remove new value:${j}")
           }
         }
         i += 1
@@ -140,9 +140,15 @@ class TableDSPFDESTR(val id: Int, val arity: Int, val num_vars: Int, val scope: 
       while (i < arity) {
         val v = scope(i)
         // 更新变量论域
-        v.submitMask(localMask(i))
+//        val changed = v.submitMask(localMask(i))
+        //
+        //        if (v.isEmpty()) {
+        //          helper.isConsistent = false
+        //          return false
+        //        }
 
-        if (v.isEmpty()) {
+        val (changed, empty) = v.submitMaskAndIsSame(localMask(i))
+        if(empty){
           helper.isConsistent = false
           return false
         }
@@ -231,7 +237,7 @@ class TableDSPFDESTR(val id: Int, val arity: Int, val num_vars: Int, val scope: 
             val (x, y) = INDEX.getXY(a)
             localMask(i)(x) &= Constants.MASK0(y)
             //            println(s"    cur_cid: ${id}, var: ${v.id}, remove val: ${a}")
-//            println(s"\tstrbit: id = ${id} var: ${v.id} remove val: ${a}")
+            //            println(s"\t\tstrbit: id = ${id} var: ${v.id} remove val: ${a}")
             //            println(Constants.getValues(localMask(i)).mkString(" "))
           }
         }
@@ -243,8 +249,19 @@ class TableDSPFDESTR(val id: Int, val arity: Int, val num_vars: Int, val scope: 
           //          //更新lastMask
           //          v.mask(lastMask(i))
           //          evt += v
-          if (v.submitMask(localMask(i))) {
-            if (v.isEmpty()) {
+//          if (v.submitMask(localMask(i))) {
+//            if (v.isEmpty()) {
+//              helper.isConsistent = false
+//              failWeight += 1
+//              return false
+//            }
+//            Xevt += v
+//          }
+
+          val (changed, empty) = v.submitMaskAndIsSame(localMask(i))
+
+          if (changed) {
+            if (empty) {
               helper.isConsistent = false
               failWeight += 1
               return false
@@ -336,7 +353,7 @@ class TableDSPFDESTR(val id: Int, val arity: Int, val num_vars: Int, val scope: 
         for (c <- helper.subscription(x.id)) {
           // !!这里可以加限制条件c.v.simpleMask!=x.simpleMask
           if (c.id != id) {
-//            println(s"\t\t${id} submit:${c.id}")
+            //            println(s"\t\t\tSTR ${id} submit:${c.id}")
             helper.submitToPool(c)
           }
         }
@@ -346,83 +363,15 @@ class TableDSPFDESTR(val id: Int, val arity: Int, val num_vars: Int, val scope: 
   }
 
   override def run(): Unit = {
-    //    println(s"start: cur_ID: ${Thread.currentThread().getId()}, cons: ${id} =========>")
+    //    println(s"\tstart: cur_ID: ${Thread.currentThread().getId()}, cons: ${id} =========>")
     do {
       helper.c_prop.incrementAndGet()
       runningStatus.set(1)
       if (propagate() && Xevt.nonEmpty) {
-//        println(s"\t\t cid = ${id} Xevt(0) = ${Xevt(0).id}")
+        //        println(s"\t\t\t\t cid = ${id} Xevt(0) = ${Xevt(0).id}")
         submitPropagtors()
       }
     } while (!runningStatus.compareAndSet(1, 0))
     helper.counter.decrementAndGet()
   }
-
-  //  def propagate(): Boolean = {
-  //
-  //    deleteInvalidTuple()
-  //
-  //    return searchSupport()
-  //  }
-
-  //  def submitPropagtors(): Boolean = {
-  //    //println(s"   cur_ID: ${Thread.currentThread().getId()} cur_cid: ${id}  submitPropa")
-  //
-  //    // 提交其它约束
-  //    for (x <- Xevt) {
-  //      if (helper.isConsistent) {
-  //        for (c <- helper.subscription(x.id)) {
-  //          val index = c.scopeMap(x.id)
-  //          if (c.id != id && helper.pVarStamp.get(x.id) > c.scopeStamp(index)) {
-  //            //          if (c.id != id) {
-  //            helper.submitToPool(c)
-  //          }
-  //        }
-  //      }
-  //    }
-  //
-  //    return false
-  //  }
-
-  //  def submitPropagtors(): Boolean = {
-  //    // 提交其它约束
-  //    for (x <- Xevt) {
-  //      if (helper.isConsistent) {
-  //        for (c <- helper.subscription(x.id)) {
-  //          // !!这里可以加限制条件c.v.simpleMask!=x.simpleMask
-  //          if (c.id != id) {
-  //            helper.submitToPool(c)
-  //          }
-  //        }
-  //      }
-  //    }
-  //    return false
-  //  }
-  //
-  //  override def run(): Unit = {
-  //    //    println(s"${id} start  ----- cur_ID: ${Thread.currentThread().getId()}")
-  //    do {
-  //      helper.c_prop.incrementAndGet()
-  //      runningStatus.set(1)
-  //      if (propagate() && Xevt.nonEmpty) {
-  //        submitPropagtors()
-  //      }
-  //    } while (!runningStatus.compareAndSet(1, 0))
-  //    helper.counter.decrementAndGet()
-  //    //    println(s"${id} end-----")
-  //  }
-
-  //  override def propagate(): Boolean = {
-  //    //    val ditStart = System.nanoTime
-  //    deleteInvalidTuple()
-  //    //    val ditEnd = System.nanoTime
-  //    //    helper.updateTableTime += ditEnd - ditStart
-  //
-  //    //    val ssStart = System.nanoTime
-  //    val ss = searchSupport(Xevt)
-  //    //    val ssEnd = System.nanoTime
-  //    //    helper.filterDomainTime += ssEnd - ssStart
-  //
-  //    return ss
-  //  }
 }

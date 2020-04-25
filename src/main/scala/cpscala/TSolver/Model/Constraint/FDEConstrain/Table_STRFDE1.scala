@@ -132,7 +132,7 @@ class Table_STRFDE1(val id: Int, val arity: Int, val num_vars: Int, val scope: A
           if (bitTables(i)(j).isEmpty) {
             v.remove(j)
             helper.varStamp(v.id) = helper.globalStamp
-//            println(s"\tstrbit: id = ${id} var:${v.id} remove new value:${j}")
+//            println(s"\t\tstrbit: id = ${id} var:${v.id} remove new value:${j}")
           }
         }
         if (v.isEmpty()) {
@@ -211,7 +211,7 @@ class Table_STRFDE1(val id: Int, val arity: Int, val num_vars: Int, val scope: A
           if (now == -1) {
             deleted = true
             v.remove(a)
-//            println(s"\tstrbit: id = ${id} var: ${v.id} remove val: ${a}")
+//            println(s"\t\tstrbit: id = ${id} var: ${v.id} remove val: ${a}")
           }
         }
         if (deleted) {

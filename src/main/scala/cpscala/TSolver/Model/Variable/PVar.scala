@@ -17,6 +17,8 @@ abstract class PVar extends Var {
 
   def submitMask(mask: Array[Long]): Boolean = ???
 
+//  def submitMaskAndTestChangedAndEmpty(mask: Array[Long]): (Boolean, Boolean) = ???
+
   def submitMaskAndIsSame(mask: Array[Long]): (Boolean, Boolean) = ???
 
   def submitMaskAndGet(mask: Array[Long]): Long = ???
@@ -26,5 +28,7 @@ abstract class PVar extends Var {
   def isChanged(mask: Array[Long]): Boolean = ???
 
   def getAtomicBitDom(): AtomicLongArray = ???
+
+  def removeValuesAndTestEmpty(words: Array[Long]): (Boolean, Boolean) = ???
 
 }

@@ -156,7 +156,7 @@ class Table_CTAddition(val id: Int, val arity: Int, val num_vars: Int, val scope
           else {
             deleted = true
             //无法找到支持, 删除(v, a)
-//            println(s"\tCT id:${id} var:${v.id} remove new value:${a}")
+//            println(s"\t\tCT id:${id} var:${v.id} remove new value:${a}")
             v.remove(a)
           }
         }

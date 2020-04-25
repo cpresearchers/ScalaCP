@@ -70,7 +70,7 @@ abstract class Var {
 
   def show(): Unit = ???
 
-  def removeValues(word:Array[Long]):Boolean = ???
+  def removeValues(word: Array[Long]): Boolean = ???
 
-  def getBitDom():Array[Long] = ???
+  def getBitDom(): Array[Long] = ???
 }

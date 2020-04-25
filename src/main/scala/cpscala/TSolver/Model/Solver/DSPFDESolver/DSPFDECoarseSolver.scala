@@ -11,7 +11,7 @@ class DSPFDECoarseSolver(fdeM: FDEModel1, parallelism: Int, propagatorName: Stri
       tabs(c).setup()
     }
 
-    helper.globalStamp += 1
+//    helper.globalStamp += 1
     // 初始删值
     for (c <- 0 until fdeM.num_OriTabs) {
       if (!tabs(c).setup()) {
