@@ -2,7 +2,6 @@ package cpscala.XModel;
 
 import cpscala.JModel.JModel;
 import scala.Tuple2;
-
 import java.util.*;
 
 //元组未排序
@@ -373,7 +372,6 @@ public class FDEModel1 {
             int vid = i + num_OriVars;
             int tid = i + num_OriTabs;
             HashMap<ArrayList<Integer>, Integer> tupleMap = new HashMap<ArrayList<Integer>, Integer>();
-
             for (int j = 0; j < tabs[tid].tuples.length; j++) {
                 ArrayList<Integer> tuple = new ArrayList<>();
                 for (int u = 0; u < tabs[tid].arity - 1; u++) {
@@ -384,7 +382,6 @@ public class FDEModel1 {
             ArrayList<Integer> indexVar = new ArrayList<>();
             HashSet<Integer> c = new HashSet<>();
             for (Tuple2<Integer, Integer> c2 : addtionTabsTabScopeArray.get(i)) {
-                ArrayList<Integer> tuple = new ArrayList<>();
                 if (!c.contains(c2._1)) {
                     int[][] ctuples = xm.tabs.get(c2._1).tuples;
                     for (int j = 0; j < tabs[tid].arity - 1; j++) {
@@ -398,7 +395,7 @@ public class FDEModel1 {
 
                     }
                     for (int t = 0, end = ctuples.length; t < end; t++) {
-                        tuple.clear();
+                        ArrayList<Integer> tuple = new ArrayList<>();
                         for (int k = 0; k < indexVar.size(); k++) {
                             tuple.add(ctuples[t][indexVar.get(k)]);
                         }
@@ -420,7 +417,7 @@ public class FDEModel1 {
                         }
                     }
                     for (int t = 0, end = ctuples.length; t < end; t++) {
-                        tuple.clear();
+                        ArrayList<Integer> tuple = new ArrayList<>();
                         for (int k = 0; k < indexVar.size(); k++) {
                             tuple.add(ctuples[t][indexVar.get(k)]);
                         }
@@ -443,7 +440,7 @@ public class FDEModel1 {
             tabs[i] = new FDETab(i, "", newTuples[i], newScopes);
 //            tabs[i].show();
         }
-
+//        xm.tabs.get(406).show();
     }
 
     public void addtionTabVar(int id, ArrayList<Integer> scope, ArrayList<Tuple2<Integer, Integer>> scopeArray) {
@@ -467,7 +464,7 @@ public class FDEModel1 {
         for (int i = 0, end = scopeArray.size(); i < end; i++) {
             if (!c.contains(scopeArray.get(i)._1)) {
                 newScopesInt[scopeArray.get(i)._1].add(id + num_OriVars);
-                indexTab = scopeArray.get(i)._1;
+                indexTab=scopeArray.get(i)._1;
                 for (int k = 0; k < arity; k++) {
                     for (int j = 0; j < xm.tabs.get(indexTab).scope.length; j++) {
                         if (scope.get(k) == xm.tabs.get(indexTab).scope[j].id) {
@@ -488,7 +485,7 @@ public class FDEModel1 {
             }
             if (!c.contains(scopeArray.get(i)._2)) {
                 newScopesInt[scopeArray.get(i)._2].add(id + num_OriVars);
-                indexTab = scopeArray.get(i)._2;
+                indexTab=scopeArray.get(i)._2;
                 for (int k = 0; k < arity; k++) {
                     for (int j = 0; j < xm.tabs.get(indexTab).scope.length; j++) {
                         if (scope.get(k) == xm.tabs.get(indexTab).scope[j].id) {

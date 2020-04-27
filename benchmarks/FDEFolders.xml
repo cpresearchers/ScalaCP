@@ -1,53 +1,51 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <folders>
-    <inputRoot>/Volumes/BOOTCAMP/bench/optiSTRpackage/test</inputRoot>
-        <!--<folder format="2">rand-10-20-10</folder>-->
-        <!--<folder format="2">rand-3-20-20</folder>-->
-        <!--<folder format="2">rand-3-20-20-fcd</folder>-->
-        <!--<folder format="2">rand-8-20-5</folder>-->
-        <!--<folder format="2">rand-10-60-20</folder>-->
-        <!--<folder format="2">rand-5-12-12</folder>-->
-        <!--<folder format="2">rand-3-24-24</folder>-->
-        <!--<folder format="2">rand-3-24-24-fcd</folder>-->
-        <!--<folder format="2">modifiedRenault</folder>-->
-        <!--<folder format="2">travellingSalesman-25</folder>-->
-        <!--<folder format="2">travellingSalesman-20</folder>-->
-        <!--<folder format="2">varDimacs</folder>&ndash;&gt;-->
-        <!--<folder format="2">aim-50</folder>-->
-        <!--<folder format="2">aim-100</folder>-->
-        <!--<folder format="2">dubois</folder>-->
-        <!--<folder format="2">renault</folder>-->
+    <inputRoot>D:\data2</inputRoot>
+        <folder format="2">rand-10-20-10</folder>
+        <folder format="2">rand-3-20-20</folder>
+        <folder format="2">rand-3-20-20-fcd</folder>
+        <folder format="2">rand-8-20-5</folder>
+        <folder format="2">rand-10-60-20</folder>
+        <folder format="2">rand-5-12-12</folder>
+        <folder format="2">rand-3-24-24</folder>
+        <folder format="2">rand-3-24-24-fcd</folder>
+        <folder format="2">modifiedRenault</folder>
+        <folder format="2">travellingSalesman-25</folder>
+        <folder format="2">travellingSalesman-20</folder>
+        <folder format="2">aim-50</folder>
+    <folder format="2">aim-100</folder>
+    <folder format="2">dubois</folder>
+    <folder format="2">renault</folder>
 
-        <!--<folder format="2">ukVg</folder>-->
-        <!--<folder format="2">jnhSat</folder>-->
+    <!--<folder format="2">varDimacs</folder>
+    <folder format="2">ukVg</folder>
+        <folder format="2">jnhSat</folder>
 
-        <!--<folder format="2">jnhUnsat</folder>-->
-        <!--<folder format="2">wordsVg</folder>-->
-        <!--<folder format="2">lexVg</folder>-->
-        <!--<folder format="2">pret</folder>-->
-        <!--<folder format="2">aim-200</folder>-->
-        <!--<folder format="2">golombRulerArity3</folder>-->
-        <!--<folder format="2">ramsey3</folder>-->
-        <!--<folder format="2">schurrLemma</folder>-->
-        <!--<folder format="2">chessboardColoration</folder>-->
-        <!--<folder format="2">allIntervalSeries</folder>-->
-        <!--<folder format="2">ogdVg</folder>-->
-        <!--<folder format="3">Random-m1-5-10-10</folder>-->
+        <folder format="2">jnhUnsat</folder>
+        <folder format="2">wordsVg</folder>
+        <folder format="2">lexVg</folder>
+        <folder format="2">pret</folder>
+        <folder format="2">aim-200</folder>
+        <folder format="2">golombRulerArity3</folder>
+        <folder format="2">ramsey3</folder>
+        <folder format="2">schurrLemma</folder>
+        <folder format="2">chessboardColoration</folder>
+        <folder format="2">allIntervalSeries</folder>
+        <folder format="2">ogdVg</folder>
+        <folder format="3">Random-m1-5-10-10</folder>
 
-<!-- folder   <folder format="2">rand-3-20-20-fcd_total50</folder>-->
-<!--    <folder format="2">rand-3-20-20_total50</folder>-->
-<!--    <folder format="2">rand-8-20-5_total20</folder>-->
-<!--    <folder format="2">aarand-10-20-10_total20</folder>-->
-<!--    <folder format="2">rand-5-12-12_total50</folder>-->
-    <!-- <folder format="2">travellingSalesman-20_total15</folder>
+    <folder format="2">rand-3-20-20-fcd_total50</folder>
+    <folder format="2">rand-3-20-20_total50</folder>
+    <folder format="2">rand-8-20-5_total20</folder>
+    <folder format="2">aarand-10-20-10_total20</folder>
+    <folder format="2">rand-5-12-12_total50</folder>
+    <folder format="2">travellingSalesman-20_total15</folder>
     <folder format="2">travellingSalesman-25_total15</folder>
-    <folder format="2">renault</folder> -->
-    <folder format="2">modifiedRenault</folder>
 
     <folder format="2">dubois</folder>
     <folder format="2">aim-50</folder>
     <folder format="2">aim-100</folder>
-    <folder format="2">aim-200</folder>
+    <folder format="2">aim-200</folder>-->
 
-    <outputRoot>/Volumes/BOOTCAMP/bench/optiSTRpackage/result</outputRoot>
+    <outputRoot>D:/result</outputRoot>
 </folders>

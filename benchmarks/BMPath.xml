@@ -5,10 +5,10 @@
 <!--        <BMFile name="0" format="2">/Users/lizhe/Downloads/TestCases/rand-5-10-2-7-529-11_ext-merged.xml</BMFile>-->
         <!--<BMFile name="0" format="2">D:/optiSTRpackage/csptools/rand-4-10-2-10-500-fcd-5_ext-merged.xml</BMFile>-->
 <!--        <BMFile name="0" format="2">D:/optiSTRpackage/rand-8-20-5_total20/rand-8-20-5-18-800-0_ext.xml</BMFile>-->
-<!--        <BMFile name="0" format="3">benchmarks/test2.xml</BMFile>-->
+ <BMFile name="0" format="3">benchmarks/test2.xml</BMFile>
         <!--<BMFile name="0" format="3">benchmarks/queen4.xml</BMFile>-->
 <!--        <BMFile name="0" format="2">/Users/lizhe/Downloads/aim-50/aim-50-2-0-sat-3_ext.xml</BMFile>-->
-        <BMFile name="0" format="2">/Users/lizhe/Downloads/aim-50/aim-50-3-4-sat-2_ext.xml</BMFile>
+        <!--<BMFile name="0" format="2">/Users/lizhe/Downloads/aim-50/aim-50-3-4-sat-2_ext.xml</BMFile>-->
 <!--        <BMFile name="0" format="2">/Users/lizhe/Downloads/aim-50/aim-50-1-6-sat-2_ext.xml</BMFile>-->
 <!--        <BMFile name="0" format="3">benchmarks/rand-5-12-12-200-12442-01.xml</BMFile>-->
         <!--<BMFile name="0" format="2">D:/optiSTRpackage/aim-200_600s8/aim-200-3-4-sat-1_ext.xml</BMFile>-->
