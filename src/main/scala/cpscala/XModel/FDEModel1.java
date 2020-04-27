@@ -372,7 +372,6 @@ public class FDEModel1 {
             int vid = i + num_OriVars;
             int tid = i + num_OriTabs;
             HashMap<ArrayList<Integer>, Integer> tupleMap = new HashMap<ArrayList<Integer>, Integer>();
-
             for (int j = 0; j < tabs[tid].tuples.length; j++) {
                 ArrayList<Integer> tuple = new ArrayList<>();
                 for (int u = 0; u < tabs[tid].arity - 1; u++) {
@@ -383,7 +382,6 @@ public class FDEModel1 {
             ArrayList<Integer> indexVar = new ArrayList<>();
             HashSet<Integer> c = new HashSet<>();
             for (Tuple2<Integer, Integer> c2 : addtionTabsTabScopeArray.get(i)) {
-                ArrayList<Integer> tuple = new ArrayList<>();
                 if (!c.contains(c2._1)) {
                     int[][] ctuples = xm.tabs.get(c2._1).tuples;
                     for (int j = 0; j < tabs[tid].arity - 1; j++) {
@@ -397,7 +395,7 @@ public class FDEModel1 {
 
                     }
                     for (int t = 0, end = ctuples.length; t < end; t++) {
-                        tuple.clear();
+                        ArrayList<Integer> tuple = new ArrayList<>();
                         for (int k = 0; k < indexVar.size(); k++) {
                             tuple.add(ctuples[t][indexVar.get(k)]);
                         }
@@ -419,7 +417,7 @@ public class FDEModel1 {
                         }
                     }
                     for (int t = 0, end = ctuples.length; t < end; t++) {
-                        tuple.clear();
+                        ArrayList<Integer> tuple = new ArrayList<>();
                         for (int k = 0; k < indexVar.size(); k++) {
                             tuple.add(ctuples[t][indexVar.get(k)]);
                         }
@@ -442,7 +440,7 @@ public class FDEModel1 {
             tabs[i] = new FDETab(i, "", newTuples[i], newScopes);
 //            tabs[i].show();
         }
-
+//        xm.tabs.get(406).show();
     }
 
     public void addtionTabVar(int id, ArrayList<Integer> scope, ArrayList<Tuple2<Integer, Integer>> scopeArray) {
