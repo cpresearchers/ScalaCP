@@ -34,15 +34,17 @@
         <!--<folder format="2">ogdVg</folder>-->
         <!--<folder format="3">Random-m1-5-10-10</folder>-->
 
-<!--    <folder format="2">rand-3-20-20-fcd_total50</folder>-->
+<!-- folder   <folder format="2">rand-3-20-20-fcd_total50</folder>-->
 <!--    <folder format="2">rand-3-20-20_total50</folder>-->
 <!--    <folder format="2">rand-8-20-5_total20</folder>-->
 <!--    <folder format="2">aarand-10-20-10_total20</folder>-->
 <!--    <folder format="2">rand-5-12-12_total50</folder>-->
-<!--    <folder format="2">travellingSalesman-20_total15</folder>-->
-<!--    <folder format="2">travellingSalesman-25_total15</folder>-->
+    <!-- <folder format="2">travellingSalesman-20_total15</folder>
+    <folder format="2">travellingSalesman-25_total15</folder>
+    <folder format="2">renault</folder> -->
+    <folder format="2">modifiedRenault</folder>
 
-<!--    <folder format="2">dubois</folder>-->
+    <folder format="2">dubois</folder>
     <folder format="2">aim-50</folder>
     <folder format="2">aim-100</folder>
     <folder format="2">aim-200</folder>

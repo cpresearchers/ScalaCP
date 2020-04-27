@@ -1,6 +1,8 @@
 package cpscala.TSolver.Experiment
 
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
 
 import com.github.tototoshi.csv.CSVWriter
 import cpscala.TSolver.CpUtil.Constants
@@ -41,7 +43,8 @@ object test_DSPFDE {
     val outputRoot = (file \\ "outputRoot").text
     val outputFolder = (file \\ "outputFolder").text
     val inputFolderNodes = file \\ "folder"
-
+    // 时间格式
+    val fm = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
 
     val numThreads = Array[Int](2, 4, 6)
     val timeLimit = 1200000000000L
@@ -68,7 +71,7 @@ object test_DSPFDE {
       var dataLine = new ArrayBuffer[String](titleLine.length)
 
       for (f <- files) {
-        println("Build Model: " + f.getName)
+        println(s"[${fm.format(new Date())}] Build Model: " + f.getName)
         //        val xm = new XModel(f.getPath, true, fmt)
         val fdem = new FDEModel1(f.getPath, fmt);
         dataLine.clear()
@@ -79,7 +82,7 @@ object test_DSPFDE {
         pType = "STRbit_FDE"
         varType = "FDEBitSet"
         heuName = "Dom/Ddeg"
-        println(s"${pType} ${heuName}===============>")
+        println(s"[${fm.format(new Date())}] ${pType} ${heuName}===============>")
         val FDEct = new FDECoarseSolver1(fdem, pType, varType, heuName)
         FDEct.search(Constants.TIME)
         dataLine += pType
@@ -95,7 +98,7 @@ object test_DSPFDE {
         varType = "SafeFDEBitSet"
         //        heuName = "Dom/Ddeg"
         for (p <- numThreads) {
-          println(s"${pType} @ ${p} ${heuName}===============>")
+          println(s"[${fm.format(new Date())}] ${pType} @ ${p} ${heuName}===============>")
           val ct = new DSPFDECoarseSolver(fdem, p, pType, varType, heuName)
           ct.search(timeLimit)
           dataLine += pType + "@" + p
@@ -177,12 +180,12 @@ object test_DSPFDE {
         //        dataLine += FDEct.helper.c_sum.toString()
 
         writer.writeRow(dataLine)
-        println("end: " + f.getName)
+        println(s"[${fm.format(new Date())}] end: " + f.getName)
       }
       writer.close()
-      println("-----" + folderStr + " done!-----")
+      println(s"[${fm.format(new Date())}] -----" + folderStr + " done!-----")
     }
-    println("-----All done!-----")
+    println(s"[${fm.format(new Date())}] -----All done!-----")
   }
 
   //获取指定单个目录下所有文件

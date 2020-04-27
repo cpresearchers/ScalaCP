@@ -2,6 +2,7 @@ package cpscala.XModel;
 
 import cpscala.JModel.JModel;
 import scala.Tuple2;
+
 import java.util.*;
 
 //元组未排序
@@ -466,7 +467,7 @@ public class FDEModel1 {
         for (int i = 0, end = scopeArray.size(); i < end; i++) {
             if (!c.contains(scopeArray.get(i)._1)) {
                 newScopesInt[scopeArray.get(i)._1].add(id + num_OriVars);
-                indexTab=scopeArray.get(i)._1;
+                indexTab = scopeArray.get(i)._1;
                 for (int k = 0; k < arity; k++) {
                     for (int j = 0; j < xm.tabs.get(indexTab).scope.length; j++) {
                         if (scope.get(k) == xm.tabs.get(indexTab).scope[j].id) {
@@ -487,7 +488,7 @@ public class FDEModel1 {
             }
             if (!c.contains(scopeArray.get(i)._2)) {
                 newScopesInt[scopeArray.get(i)._2].add(id + num_OriVars);
-                indexTab=scopeArray.get(i)._2;
+                indexTab = scopeArray.get(i)._2;
                 for (int k = 0; k < arity; k++) {
                     for (int j = 0; j < xm.tabs.get(indexTab).scope.length; j++) {
                         if (scope.get(k) == xm.tabs.get(indexTab).scope[j].id) {
